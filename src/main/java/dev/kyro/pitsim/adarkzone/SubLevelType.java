@@ -10,8 +10,7 @@ public enum SubLevelType {
 	WITHER_SKELETON("witherskeleton"),
 	CREEPER("creeper"),
 	IRON_GOLEM("irongolem"),
-	ENDERMAN("enderman"),
-	;
+	ENDERMAN("enderman");
 
 	public final String identifer;
 

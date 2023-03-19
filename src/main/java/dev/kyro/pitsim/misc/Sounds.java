@@ -82,7 +82,7 @@ public class Sounds {
 	public static final SoundEffect ANVIL_RAIN = new SoundEffect(Sound.ANVIL_LAND, 0.5, 0.45);
 	public static final SoundEffect FIRE_EXTINGUISH = new SoundEffect(Sound.FIREWORK_TWINKLE, 1.3, 0.45);
 	public static final SoundEffect BLOCK_LAND = new SoundEffect(Sound.DIG_STONE, 1.3, 0.45);
-	public static final SoundEffect TNT_PLACE = new SoundEffect("block.grass.place", 1.3, 1);
+	public static final SoundEffect TNT_PLACE = new SoundEffect(Sound.DIG_GRASS, 1.3, 1);
 	public static final SoundEffect TNT_PRIME = new SoundEffect("game.tnt.primed", 1.3, 1);
 	public static final SoundEffect DISORDER = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1.3, 1.5);
 	public static final SoundEffect DISORDER2 = new SoundEffect(Sound.PORTAL_TRAVEL, 1, 1.25);

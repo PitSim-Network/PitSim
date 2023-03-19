@@ -2,6 +2,7 @@ package dev.kyro.pitsim.misc;
 
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.controllers.ItemManager;
 import net.minecraft.server.v1_8_R3.MojangsonParseException;
 import net.minecraft.server.v1_8_R3.MojangsonParser;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -16,6 +17,7 @@ import org.bukkit.material.MaterialData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class CustomSerializer {
 	public static String serialize(ItemStack itemStack) {
@@ -63,8 +65,12 @@ public class CustomSerializer {
 		return CraftItemStack.asBukkitCopy(nmsStack);
 	}
 
-	@SuppressWarnings("deprecation")
 	public static ItemStack deserialize(String itemString) {
+		return deserialize(itemString, null);
+	}
+
+	@SuppressWarnings("deprecation")
+	public static ItemStack deserialize(String itemString, UUID informUUID) {
 		String[] stringArr = itemString.split("\t");
 		ItemStack itemStack = new ItemStack(Material.getMaterial(stringArr[0]), Integer.parseInt(stringArr[1]));
 		itemStack.setDurability((short) Integer.parseInt(stringArr[2]));
@@ -96,7 +102,14 @@ public class CustomSerializer {
 		}
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
-		if(pitItem != null) pitItem.updateItem(itemStack);
+		if(pitItem != null) {
+			ItemStack oldStack = itemStack.clone();
+			pitItem.updateItem(itemStack);
+			if(informUUID != null && !oldStack.equals(itemStack)) {
+				ItemManager.updatedItems.putIfAbsent(informUUID, new ArrayList<>());
+				ItemManager.updatedItems.get(informUUID).add(itemStack);
+			}
+		}
 		return itemStack;
 	}
 }

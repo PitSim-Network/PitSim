@@ -57,12 +57,13 @@ public abstract class PitBoss {
 	public abstract String getRawDisplayName();
 	public abstract ChatColor getChatColor();
 	public abstract String getSkinName();
-	public abstract int getMaxHealth();
-	public abstract double getMeleeDamage();
+	public abstract double getMaxHealth();
+	public abstract double getDamage();
 	public abstract double getReach();
 	public abstract double getReachRanged();
-	public abstract DropPool createDropPool();
 	public abstract int getSpeedLevel();
+	public abstract int getDroppedSouls();
+	public abstract DropPool createDropPool();
 
 //	Internal events (override to add functionality)
 	public void onSpawn() {}

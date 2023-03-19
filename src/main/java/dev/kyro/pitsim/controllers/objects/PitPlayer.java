@@ -677,10 +677,10 @@ public class PitPlayer {
 				player.setLevel(0);
 				player.setExp(0);
 			} else if(shield.isActive()) {
-				player.setLevel(0);
+				player.setLevel((int) Math.ceil(shield.getDisplayAmount()));
 				player.setExp((float) (shield.getPreciseAmount() / shield.getMaxShield()));
 			} else {
-				player.setLevel((int) Math.ceil(shield.getDisplayAmount()));
+				player.setLevel(0);
 				player.setExp(1 - ((float) shield.getTicksUntilReactivation() / shield.getInitialTicksUntilReactivation()));
 			}
 			return;

@@ -4,12 +4,14 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -27,8 +29,6 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 		hasEnchantGlint = true;
 		isMystic = true;
 		auctionCategory = AuctionCategory.OVERWORLD_GEAR;
-
-		itemEnchants.put(Enchantment.DAMAGE_ALL, 2);
 	}
 
 	@Override
@@ -76,15 +76,28 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 	@Override
 	public void updateItem(ItemStack itemStack) {
 		if(!isThisItem(itemStack)) throw new RuntimeException();
+		boolean isJewel = MysticFactory.isJewel(itemStack, false);
+		boolean isJewelComplete = MysticFactory.isJewel(itemStack, true);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		Integer enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
-		if(enchantNum == 0) {
+		if(enchantNum == 0 && !isJewel) {
 			new AItemStackBuilder(itemStack)
 					.setName(getName())
 					.setLore(getLore());
 			return;
 		}
+
+		if(getLives(itemStack) == 0 && isJewelComplete) {
+			itemStack.setType(Material.STONE_SWORD);
+			itemStack.removeEnchantment(Enchantment.DAMAGE_ALL);
+			Misc.removeEnchantGlint(itemStack);
+		} else {
+			itemStack.setType(Material.GOLD_SWORD);
+			itemStack.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 2);
+			Misc.addEnchantGlint(itemStack);
+		}
+
 		EnchantManager.setItemLore(itemStack, null);
 	}
 

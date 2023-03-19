@@ -44,12 +44,11 @@ public class AltarRewards {
 			if(ProgressionManager.isUnlocked(pitPlayer, AltarBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
 				rewardCount *= 1.2;
 
-
 			if(hasTurmoil) {
-				int breakChance = positiveTurmoil ? 3 : 15;
+				double breakChance = positiveTurmoil ? 0.03 : 0.1;
 
 				double multiplier = 1;
-				while(new Random().nextInt(100) > breakChance) multiplier += 0.1;
+				while(Math.random() > breakChance) multiplier += 0.1;
 				rewardCount *= multiplier;
 			}
 

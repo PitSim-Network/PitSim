@@ -29,6 +29,11 @@ public class KTestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
+//		new HypixelSound(player, player.getLocation()).play(HypixelSound.Sound.FRESH_DROP);
+
+		ProgressionGUI progressionGUI = new ProgressionGUI(player);
+		progressionGUI.open();
+
 //		for(Block block : getNearbyBlocks(player.getLocation(), 100)) {
 //			Block blockBelow = block.getRelative(0, -1, 0);
 //			if(blockBelow == null || blockBelow.getType() != Material.AIR) continue;
@@ -50,9 +55,6 @@ public class KTestCommand implements CommandExecutor {
 //				}
 //			}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(30 * 20));
 //		}
-
-		ProgressionGUI progressionGUI = new ProgressionGUI(player);
-		progressionGUI.open();
 
 //		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 //		ItemStack itemStack = player.getItemInHand();

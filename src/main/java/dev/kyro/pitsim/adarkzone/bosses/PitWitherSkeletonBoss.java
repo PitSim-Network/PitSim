@@ -1,9 +1,6 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
-import dev.kyro.pitsim.adarkzone.BossManager;
-import dev.kyro.pitsim.adarkzone.DropPool;
-import dev.kyro.pitsim.adarkzone.PitBoss;
-import dev.kyro.pitsim.adarkzone.SubLevelType;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.*;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
@@ -45,13 +42,13 @@ public class PitWitherSkeletonBoss extends PitBoss {
 	}
 
 	@Override
-	public int getMaxHealth() {
-		return BossManager.getHealth(getSubLevelType());
+	public double getMaxHealth() {
+		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
 	}
 
 	@Override
-	public double getMeleeDamage() {
-		return BossManager.getDamage(getSubLevelType());
+	public double getDamage() {
+		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_DAMAGE);
 	}
 
 	@Override
@@ -65,12 +62,17 @@ public class PitWitherSkeletonBoss extends PitBoss {
 	}
 
 	@Override
-	public DropPool createDropPool() {
-		return new DropPool();
+	public int getSpeedLevel() {
+		return 5;
 	}
 
 	@Override
-	public int getSpeedLevel() {
-		return 5;
+	public int getDroppedSouls() {
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_SOULS);
+	}
+
+	@Override
+	public DropPool createDropPool() {
+		return new DropPool();
 	}
 }

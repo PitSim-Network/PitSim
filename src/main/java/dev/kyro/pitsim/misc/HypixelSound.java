@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EnchantSound {
+public class HypixelSound {
 	public Map<Integer, List<SoundPart>> soundMap = new HashMap<>();
 
 	public Player player;
 	public Location location;
 
-	public EnchantSound(Player player, Location location) {
+	public HypixelSound(Player player, Location location) {
 		this.player = player;
 		this.location = location;
 	}
@@ -46,31 +46,117 @@ public class EnchantSound {
 		}
 	}
 
-	public enum Tier {
+	public enum Sound {
+		FRESH_DROP(-1, 0),
 		TIER_1(1, 60),
 		TIER_2(2, 70),
 		TIER_3(3, 82);
 
 		public int tier;
 		public int length;
-		Tier(int tier, int length) {
+		Sound(int tier, int length) {
 			this.tier = tier;
 			this.length = length;
 		}
 
-		public static Tier getTier(int tier) {
-			for(Tier value : values()) {
+		public static Sound getTier(int tier) {
+			for(Sound value : values()) {
 				if(value.tier == tier) return value;
 			}
 			return null;
 		}
 	}
 
+	public void play(Sound sound) {
+		play(sound, false);
+	}
+
 	//	The rare boolean is the same as artifact and other things worthy of displaying in chat message
-	public void play(Tier tier, boolean rareSound) {
+	public void play(Sound sound, boolean rareSound) {
 		int tick = 0;
 
-		if(tier == Tier.TIER_1) {
+		if(sound == Sound.FRESH_DROP) {
+			addSound(tick, "random.orb", 1.0, 1.7936507);
+			addSound(tick, "random.click", 0.25, 0.82539684);
+			addSound(tick, "random.successful_hit", 0.4, 0.82539684);
+			addSound(tick, "note.harp", 0.65, 0.82539684);
+			addSound(tick, "random.click", 0.25, 1.0476191);
+			addSound(tick, "random.successful_hit", 0.4, 1.0476191);
+			addSound(tick, "note.harp", 0.65, 1.0476191);
+			addSound(tick, "random.click", 0.25, 1.1111112);
+			addSound(tick, "random.successful_hit", 0.4, 1.1111112);
+			addSound(tick, "note.harp", 0.65, 1.1111112);
+			addSound(tick, "random.click", 0.25, 1.4126984);
+			addSound(tick, "random.successful_hit", 0.4, 1.4126984);
+			addSound(tick, "note.harp", 0.65, 1.4126984);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 0.82539684);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 1.0476191);
+			tick += 1;
+			addSound(tick, "random.click", 0.25, 0.93650794);
+			addSound(tick, "random.successful_hit", 0.4, 0.93650794);
+			addSound(tick, "note.harp", 0.65, 0.93650794);
+			addSound(tick, "random.click", 0.25, 1.1746032);
+			addSound(tick, "random.successful_hit", 0.4, 1.1746032);
+			addSound(tick, "note.harp", 0.65, 1.1746032);
+			addSound(tick, "random.click", 0.25, 1.2539682);
+			addSound(tick, "random.successful_hit", 0.4, 1.2539682);
+			addSound(tick, "note.harp", 0.65, 1.2539682);
+			addSound(tick, "random.click", 0.25, 1.5873016);
+			addSound(tick, "random.successful_hit", 0.4, 1.5873016);
+			addSound(tick, "note.harp", 0.65, 1.5873016);
+			addSound(tick, "random.pop", 0.95, 1.1111112);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 0.93650794);
+			addSound(tick, "random.pop", 0.95, 1.4126984);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 1.1746032);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 1.2539682);
+			tick += 1;
+			addSound(tick, "random.click", 0.25, 1.0476191);
+			addSound(tick, "random.successful_hit", 0.4, 1.0476191);
+			addSound(tick, "note.harp", 0.65, 1.0476191);
+			addSound(tick, "random.click", 0.25, 1.3333334);
+			addSound(tick, "random.successful_hit", 0.4, 1.3333334);
+			addSound(tick, "note.harp", 0.65, 1.3333334);
+			addSound(tick, "random.click", 0.25, 1.4126984);
+			addSound(tick, "random.successful_hit", 0.4, 1.4126984);
+			addSound(tick, "note.harp", 0.65, 1.4126984);
+			addSound(tick, "random.click", 0.25, 1.7777778);
+			addSound(tick, "random.successful_hit", 0.4, 1.7777778);
+			addSound(tick, "note.harp", 0.65, 1.7777778);
+			addSound(tick, "random.pop", 0.95, 1.5873016);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 1.0476191);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 1.3333334);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 1.4126984);
+			tick += 1;
+			addSound(tick, "random.click", 0.25, 1.1746032);
+			addSound(tick, "random.successful_hit", 0.4, 1.1746032);
+			addSound(tick, "note.harp", 0.65, 1.1746032);
+			addSound(tick, "random.click", 0.25, 1.4920635);
+			addSound(tick, "random.successful_hit", 0.4, 1.4920635);
+			addSound(tick, "note.harp", 0.65, 1.4920635);
+			addSound(tick, "random.click", 0.25, 1.5873016);
+			addSound(tick, "random.successful_hit", 0.4, 1.5873016);
+			addSound(tick, "note.harp", 0.65, 1.5873016);
+			addSound(tick, "random.click", 0.25, 2.0);
+			addSound(tick, "random.successful_hit", 0.4, 2.0);
+			addSound(tick, "note.harp", 0.65, 2.0);
+			addSound(tick, "random.pop", 0.95, 1.7777778);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 1.1746032);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 1.4920635);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 1.5873016);
+			tick += 1;
+			addSound(tick, "random.pop", 0.95, 2.0);
+		}else if(sound == Sound.TIER_1) {
 			addSound(tick, "random.pop", 0.8, 0.5555556);
 			addSound(tick, "random.pop", 0.8, 1.1111112);
 			tick += 3;
@@ -165,7 +251,7 @@ public class EnchantSound {
 			tick += 1;
 			addSound(tick, "fireworks.twinkle", 0.9, 1.7936507);
 			addSound(tick, "fireworks.largeBlast", 0.9, 1.1904762);
-		} else if(tier == Tier.TIER_2) {
+		} else if(sound == Sound.TIER_2) {
 			addSound(tick, "random.pop", 0.8, 0.5555556);
 			addSound(tick, "random.pop", 0.8, 1.1111112);
 			tick += 3;
@@ -319,7 +405,7 @@ public class EnchantSound {
 			tick += 1;
 			addSound(tick, "fireworks.twinkle", 0.9, 1.7936507);
 			addSound(tick, "fireworks.largeBlast", 0.9, 1.1904762);
-		} else if(tier == Tier.TIER_3) {
+		} else if(sound == Sound.TIER_3) {
 			addSound(tick, "random.pop", 0.8, 0.5555556);
 			addSound(tick, "random.pop", 0.8, 1.1111112);
 			tick += 3;
@@ -559,5 +645,29 @@ public class EnchantSound {
 				tick++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+
+//		new Thread(() -> {
+//			int millis = 0;
+//			while(true) {
+//				if(!soundMap.containsKey(millis)) {
+//					millis++;
+//					sleep(1);
+//					continue;
+//				}
+//
+//				List<SoundPart> parts = soundMap.remove(millis);
+//				parts.forEach(SoundPart::play);
+//				if(soundMap.isEmpty()) break;
+//				millis++;
+//			}
+//		}).start();
+	}
+
+	public static void sleep(int millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

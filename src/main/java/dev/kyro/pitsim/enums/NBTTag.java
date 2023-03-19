@@ -16,7 +16,8 @@ public enum NBTTag {
 
 	IS_JEWEL("pr-isjewel"),
 	IS_GEMMED("pr-isgemmed"),
-	ORIGINAL_COLOR("pr-original-color"),
+	SAVED_PANTS_COLOR("pr-saved-color"), // for when item is broken (but is kept up to date all the time)
+	ORIGINAL_PANTS_COLOR("pr-original-color"), // for undying pants
 	CURRENT_LIVES("pr-current-lives"),
 	MAX_LIVES("pr-max-lives"),
 	TAINTED_TIER("pr-tainted-tier"),

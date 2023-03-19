@@ -2,10 +2,10 @@ package dev.kyro.pitsim.storage;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
+import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.misc.Base64;
 import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
@@ -139,7 +139,6 @@ public class StorageProfile {
 	}
 
 	public void setData(PluginMessage message) {
-		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 		List<String> strings = message.getStrings();
 		List<Integer> ints = message.getIntegers();
 		int invCount = ints.get(0);
@@ -148,11 +147,11 @@ public class StorageProfile {
 		armor = new ItemStack[4];
 
 		for(int i = 0; i < 36; i++) {
-			cachedInventory[i] = strings.get(i).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i));
+			cachedInventory[i] = strings.get(i).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i), uuid);
 		}
 
 		for(int i = 0; i < 4; i++) {
-			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i + 36));
+			armor[i] = strings.get(i + 36).isEmpty() ? new ItemStack(Material.AIR) : deserialize(strings.get(i + 36), uuid);
 		}
 
 		enderChest = new Inventory[ENDERCHEST_MAX_PAGES];
@@ -164,7 +163,7 @@ public class StorageProfile {
 			int page = i / 27;
 
 			Inventory inventory = enderChest[page];
-			inventory.setItem((i % 27) + 9, deserialize(strings.get(i + invCount)));
+			inventory.setItem((i % 27) + 9, deserialize(strings.get(i + invCount), uuid));
 		}
 
 		for(int i = 0; i < enderChest.length; i++) {
@@ -297,10 +296,14 @@ public class StorageProfile {
 	}
 
 	public static ItemStack deserialize(String string) {
+		return deserialize(string, null);
+	}
+
+	public static ItemStack deserialize(String string, UUID informUUID) {
 		if(string.isEmpty()) return new ItemStack(Material.AIR);
 		try {
 //			return Base64.itemFrom64(string);
-			return CustomSerializer.deserialize(string);
+			return CustomSerializer.deserialize(string, informUUID);
 //		} catch(IOException e) {
 		} catch(Exception e) {
 			throw new RuntimeException(e);

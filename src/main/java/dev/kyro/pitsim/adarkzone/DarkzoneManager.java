@@ -170,7 +170,7 @@ public class DarkzoneManager implements Listener {
 		if(attackEvent.getWrapperEvent().getSpigotEvent().getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
 		PitMob pitMob = getPitMob(attackEvent.getAttacker());
 		if(pitMob != null) {
-			attackEvent.getWrapperEvent().getSpigotEvent().setDamage(pitMob.getMeleeDamage());
+			attackEvent.getWrapperEvent().getSpigotEvent().setDamage(pitMob.getDamage());
 		}
 	}
 

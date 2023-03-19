@@ -33,6 +33,29 @@ public class VilePanel extends AGUIPanel {
 		super(gui);
 		vileGUI = (VileGUI) gui;
 
+		int nextSlot = 0;
+		for(int i = 0; i < player.getInventory().getSize(); i++) {
+			ItemStack itemStack = player.getInventory().getItem(i);
+			if(Misc.isAirOrNull(itemStack)) continue;
+			itemStack = itemStack.clone();
+			if(!MysticFactory.hasLives(itemStack)) continue;
+
+			PitItem pitItem = ItemFactory.getItem(itemStack);
+			assert pitItem != null;
+			TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
+
+			if(temporaryItem.isAtMaxLives(itemStack) || temporaryItem.getLives(itemStack) == 0) continue;
+
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			ALoreBuilder loreBuilder = new ALoreBuilder(itemMeta.getLore()).addLore(
+					"",
+					"&eClick to repair!"
+			);
+			new AItemStackBuilder(itemStack).setLore(loreBuilder);
+
+			getInventory().setItem(nextSlot, itemStack);
+			slots.put(nextSlot++, i);
+		}
 	}
 
 	@Override
@@ -72,7 +95,7 @@ public class VilePanel extends AGUIPanel {
 			assert pitRepair != null;
 			TemporaryItem temporaryItem = pitRepair.getAsTemporaryItem();
 
-			itemStack = temporaryItem.addLives(itemStack, 1);
+			temporaryItem.addLives(itemStack, 1);
 			player.getInventory().setItem(invSlot, itemStack);
 			player.closeInventory();
 
@@ -98,28 +121,6 @@ public class VilePanel extends AGUIPanel {
 
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
-		int slot = 0;
-
-		for(int i = 0; i < player.getInventory().getSize(); i++) {
-			ItemStack itemStack = player.getInventory().getItem(i);
-			if(!MysticFactory.isJewel(itemStack, true)) continue;
-
-			PitItem pitItem = ItemFactory.getItem(itemStack);
-			assert pitItem != null;
-			TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
-
-			if(temporaryItem.isAtMaxLives(itemStack)) continue;
-
-			ItemMeta itemMeta = itemStack.getItemMeta();
-			ALoreBuilder loreBuilder = new ALoreBuilder(itemMeta.getLore()).addLore(
-					"",
-					"&eClick to repair!"
-			);
-			new AItemStackBuilder(itemStack).setLore(loreBuilder);
-
-			getInventory().setItem(slot, itemStack);
-			slots.put(slot++, i);
-		}
 	}
 
 	@Override

@@ -32,8 +32,8 @@ public class ProgressionManager implements Listener {
 		registerBranch(new DefenceBranch());
 		registerBranch(new SoulBranch());
 		registerBranch(new ManaBranch());
-		registerBranch(new BrewingBranch());
 		registerBranch(new AltarBranch());
+		registerBranch(new BrewingBranch());
 
 		registerMainUnlock(new MainProgressionStart("start", 1, 3));
 
@@ -60,8 +60,8 @@ public class ProgressionManager implements Listener {
 		registerMainUnlock(new MainProgressionMajorUnlock(DefenceBranch.class, index++));
 		registerMainUnlock(new MainProgressionMajorUnlock(SoulBranch.class, index++));
 		registerMainUnlock(new MainProgressionMajorUnlock(ManaBranch.class, index++));
-		registerMainUnlock(new MainProgressionMajorUnlock(BrewingBranch.class, index++));
 		registerMainUnlock(new MainProgressionMajorUnlock(AltarBranch.class, index++));
+		registerMainUnlock(new MainProgressionMajorUnlock(BrewingBranch.class, index++));
 	}
 
 	/*
@@ -157,7 +157,7 @@ public class ProgressionManager implements Listener {
 	public static int getUnlockCost(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
 		int unlocks = pitPlayer.darkzoneData.mainProgressionUnlocks.size();
 		int cost = (unlocks + 1) * 10;
-		if(unlock instanceof MainProgressionMajorUnlock) cost *= 2;
+		if(unlock instanceof MainProgressionMajorUnlock) cost *= 1.5;
 		return cost;
 	}
 
@@ -180,7 +180,8 @@ public class ProgressionManager implements Listener {
 		return "&f" + souls + " soul" + (souls == 1 ? "" : "s");
 	}
 
-	public static void addPurchaseCostLore(ALoreBuilder loreBuilder, UnlockState unlockState, int currentSouls, int cost, boolean alwaysDisplayCost) {
+	public static void addPurchaseCostLore(Object object, ALoreBuilder loreBuilder, UnlockState unlockState,
+										   int currentSouls, int cost, boolean alwaysDisplayCost) {
 		String costString = formatSouls(cost);
 		if(unlockState == UnlockState.LOCKED) {
 			if(alwaysDisplayCost) loreBuilder.addLore("&7Unlock Cost: " + costString, "");
@@ -193,7 +194,11 @@ public class ProgressionManager implements Listener {
 				loreBuilder.addLore("&eClick to purchase!");
 			}
 		} else if(unlockState == UnlockState.UNLOCKED) {
-			loreBuilder.addLore("&aClick to open!");
+			if(object instanceof MainProgressionMajorUnlock) {
+				loreBuilder.addLore("&eClick to open!");
+			} else {
+				loreBuilder.addLore("&aAlready unlocked!");
+			}
 		}
 	}
 

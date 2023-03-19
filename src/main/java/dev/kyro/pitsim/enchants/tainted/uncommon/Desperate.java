@@ -34,7 +34,7 @@ public class Desperate extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Deal &c+" + getDamageIncrease(enchantLvl) + "% more damage when you have less " +
+				"&7Deal &c+" + getDamageIncrease(enchantLvl) + "% &7more damage when you have less " +
 						"health than your target"
 		).getLore();
 	}

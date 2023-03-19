@@ -43,8 +43,9 @@ public class Charcoal extends StaticPitItem implements TemporaryItem {
 	@Override
 	public List<String> getLore() {
 		return new ALoreBuilder(
-				"&7Eye gathered from the Spiders",
-				"&7of the Spider Caves",
+				"&7Charcoal gathered from the Wither",
+				"&7Skeletons of the Wither Skeleton",
+				"&7Caves",
 				"",
 				"&5Tainted Item"
 		).getLore();

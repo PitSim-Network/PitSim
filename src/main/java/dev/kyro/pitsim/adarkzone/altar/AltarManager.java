@@ -29,6 +29,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,7 +110,6 @@ public class AltarManager implements Listener {
 		int difference = info.darkzoneLevel - altarLevel;
 		String color = difference > 0 ? "&c" : "&a";
 		String status = difference > 0 ? "&7Taking &f" + Math.min(difference, 100) + "% &7of &bXP &7and &6Gold" : "&aYou are stronger than the Darkzone!";
-
 
 		setText(player, new String[] {
 				"&5Darkzone Level: " + info.darkzoneLevel,
@@ -195,5 +195,23 @@ public class AltarManager implements Listener {
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStand), dw, true);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
+	}
+
+	public static double getReduction(PitPlayer pitPlayer) {
+		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
+
+		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.altarXP);
+		int difference = prestigeInfo.darkzoneLevel - altarLevel;
+		if(difference <= 0) return 0;
+		return 100 - 100 * Math.pow(0.99, difference);
+	}
+
+	public static String getReductionFormatted(PitPlayer pitPlayer) {
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		return decimalFormat.format(getReduction(pitPlayer));
+	}
+
+	public static double getReductionMultiplier(PitPlayer pitPlayer) {
+		return Misc.getReductionMultiplier(getReduction(pitPlayer));
 	}
 }

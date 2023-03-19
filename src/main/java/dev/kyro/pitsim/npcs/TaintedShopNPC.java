@@ -2,7 +2,7 @@ package dev.kyro.pitsim.npcs;
 
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
-import dev.kyro.pitsim.inventories.TaintedGUI;
+import dev.kyro.pitsim.inventories.TaintedShopGUI;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class TaintedShopNPC extends PitNPC {
 
 	@Override
 	public void onClick(Player player) {
-		TaintedGUI taintedGUI = new TaintedGUI(player);
-		taintedGUI.open();
+		TaintedShopGUI taintedShopGUI = new TaintedShopGUI(player);
+		taintedShopGUI.open();
 	}
 }

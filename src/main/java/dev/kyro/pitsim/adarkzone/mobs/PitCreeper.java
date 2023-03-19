@@ -1,9 +1,6 @@
 package dev.kyro.pitsim.adarkzone.mobs;
 
-import dev.kyro.pitsim.adarkzone.DarkzoneManager;
-import dev.kyro.pitsim.adarkzone.DropPool;
-import dev.kyro.pitsim.adarkzone.PitMob;
-import dev.kyro.pitsim.adarkzone.PitNameTag;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.aitems.mobdrops.Gunpowder;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -22,6 +19,11 @@ public class PitCreeper extends PitMob {
 
 	public PitCreeper(Location spawnLocation, MobStatus mobStatus) {
 		super(spawnLocation, mobStatus);
+	}
+
+	@Override
+	public SubLevelType getSubLevelType() {
+		return SubLevelType.CREEPER;
 	}
 
 	@EventHandler
@@ -47,7 +49,7 @@ public class PitCreeper extends PitMob {
 			Vector velocity = player.getLocation().subtract(vectorStart).toVector().normalize().multiply(0.3).multiply(multiplier);
 			player.setVelocity(velocity);
 
-			double damage = multiplier * 15;
+			double damage = multiplier * getDamage();
 			player.damage(damage, entity);
 		}
 
@@ -80,12 +82,13 @@ public class PitCreeper extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return isMinion() ? 200 : 160;
+		int maxHealth = DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
+		return isMinion() ? (int) (maxHealth * 1.25) : maxHealth;
 	}
 
 	@Override
-	public double getMeleeDamage() {
-		return 10;
+	public double getDamage() {
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.HEALTH);
 	}
 
 	@Override
@@ -95,7 +98,7 @@ public class PitCreeper extends PitMob {
 
 	@Override
 	public int getDroppedSouls() {
-		return 8;
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_SOULS);
 	}
 
 	@Override

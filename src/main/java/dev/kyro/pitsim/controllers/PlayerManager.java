@@ -240,20 +240,20 @@ public class PlayerManager implements Listener {
 		killEvent.xpCap += pitPlayer.moonBonus;
 	}
 
-	public static void sendItemBreakMessage(Player player, ItemStack itemStack) {
-		PitItem pitItem = ItemFactory.getItem(itemStack);
-		assert pitItem != null;
-		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
-
-		itemStack = temporaryItem.setLives(itemStack, 0);
-		pitItem.updateItem(itemStack);
-
-		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&cRIP!&7 Your "));
-		message.addExtra(Misc.createItemHover(itemStack));
-		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7 broke")));
-
-		player.sendMessage(message);
-	}
+//	public static void sendItemBreakMessage(Player player, ItemStack itemStack) {
+//		PitItem pitItem = ItemFactory.getItem(itemStack);
+//		assert pitItem != null;
+//		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
+//
+//		itemStack = temporaryItem.setLives(itemStack, 0);
+//		pitItem.updateItem(itemStack);
+//
+//		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&cRIP!&7 Your "));
+//		message.addExtra(Misc.createItemHover(itemStack));
+//		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7 broke")));
+//
+//		player.sendMessage(message);
+//	}
 
 	public static void sendLivesLostMessage(Player player, int livesLost) {
 		if(livesLost == 0) return;

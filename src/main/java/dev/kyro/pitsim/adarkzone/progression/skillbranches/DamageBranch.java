@@ -83,7 +83,7 @@ public class DamageBranch extends SkillBranch {
 
 			@Override
 			public ItemStack getBaseStack() {
-				return new AItemStackBuilder(Material.SKULL_ITEM, 1, 1)
+				return new AItemStackBuilder(Material.SKULL_ITEM)
 						.setLore(new ALoreBuilder(
 								"&7Unlocks the ability to summon",
 								"&7bosses in the &5Darkzone"
@@ -103,7 +103,7 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "Damage vs Mobs and Bosses";
+				return "&cDamage vs Mobs and Bosses";
 			}
 
 			@Override
@@ -133,7 +133,7 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "Heal on Mob Kill";
+				return "&cHeal on Mob Kill";
 			}
 
 			@Override
@@ -162,7 +162,7 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "Cheaper Boss Spawning";
+				return "&cCheaper Boss Spawning";
 			}
 
 			@Override

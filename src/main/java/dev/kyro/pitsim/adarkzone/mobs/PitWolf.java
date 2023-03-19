@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.adarkzone.mobs;
 
-import dev.kyro.pitsim.adarkzone.DropPool;
-import dev.kyro.pitsim.adarkzone.PitMob;
-import dev.kyro.pitsim.adarkzone.PitNameTag;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.aitems.mobdrops.Leather;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MobStatus;
@@ -25,6 +23,11 @@ public class PitWolf extends PitMob {
 		LivingEntity entity = event.getEntity();
 		if(!isThisMob(entity)) return;
 		event.setCancelled(true);
+	}
+
+	@Override
+	public SubLevelType getSubLevelType() {
+		return SubLevelType.WOLF;
 	}
 
 	@Override
@@ -54,12 +57,12 @@ public class PitWolf extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return isMinion() ? 10 : 80;
+		return isMinion() ? 10 : DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.HEALTH);
 	}
 
 	@Override
-	public double getMeleeDamage() {
-		return 10;
+	public double getDamage() {
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
 	}
 
 	@Override
@@ -69,7 +72,7 @@ public class PitWolf extends PitMob {
 
 	@Override
 	public int getDroppedSouls() {
-		return 4;
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_SOULS);
 	}
 
 	@Override

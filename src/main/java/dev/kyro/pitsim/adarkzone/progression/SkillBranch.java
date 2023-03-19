@@ -58,7 +58,7 @@ public abstract class SkillBranch implements Listener {
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		if(getBaseStack().getItemMeta().hasLore()) loreBuilder.addLore(getBaseStack().getItemMeta().getLore()).addLore("");
 
-		ProgressionManager.addPurchaseCostLore(loreBuilder, unlockState, pitPlayer.taintedSouls, cost, false);
+		ProgressionManager.addPurchaseCostLore(unlock, loreBuilder, unlockState, pitPlayer.taintedSouls, cost, false);
 		if(unlockState == UnlockState.UNLOCKED) Misc.addEnchantGlint(baseStack);
 
 		return new AItemStackBuilder(baseStack)
@@ -98,7 +98,8 @@ public abstract class SkillBranch implements Listener {
 			ALoreBuilder loreBuilder = new ALoreBuilder();
 			if(getBaseStack().getItemMeta().hasLore()) loreBuilder.addLore(getBaseStack().getItemMeta().getLore()).addLore("");
 
-			ProgressionManager.addPurchaseCostLore(loreBuilder, unlockState, pitPlayer.taintedSouls, getCost(), true);
+			ProgressionManager.addPurchaseCostLore(MajorProgressionUnlock.this, loreBuilder,
+					unlockState, pitPlayer.taintedSouls, getCost(), true);
 			if(unlockState == UnlockState.UNLOCKED) Misc.addEnchantGlint(baseStack);
 
 			return new AItemStackBuilder(baseStack)
@@ -145,7 +146,7 @@ public abstract class SkillBranch implements Listener {
 			}
 			loreBuilder.addLore("");
 
-			ProgressionManager.addPurchaseCostLore(loreBuilder, unlockState, pitPlayer.taintedSouls, getCost(level), true);
+			ProgressionManager.addPurchaseCostLore(Path.this, loreBuilder, unlockState, pitPlayer.taintedSouls, getCost(level), true);
 			if(unlockState == UnlockState.UNLOCKED) Misc.addEnchantGlint(baseStack);
 
 			return new AItemStackBuilder(baseStack)

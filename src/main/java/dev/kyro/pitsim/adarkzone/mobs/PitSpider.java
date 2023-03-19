@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.adarkzone.mobs;
 
-import dev.kyro.pitsim.adarkzone.DropPool;
-import dev.kyro.pitsim.adarkzone.PitMob;
-import dev.kyro.pitsim.adarkzone.PitNameTag;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.aitems.mobdrops.SpiderEye;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MobStatus;
@@ -28,6 +26,11 @@ public class PitSpider extends PitMob {
 	}
 
 	@Override
+	public SubLevelType getSubLevelType() {
+		return SubLevelType.SPIDER;
+	}
+
+	@Override
 	public String getRawDisplayName() {
 		return isMinion() ? "Minion Spider" : "Spider";
 	}
@@ -39,12 +42,13 @@ public class PitSpider extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return isMinion() ? 120 : 60;
+		int maxHealth = DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.HEALTH);
+		return isMinion() ? maxHealth * 2 : maxHealth;
 	}
 
 	@Override
-	public double getMeleeDamage() {
-		return 10;
+	public double getDamage() {
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
 	}
 
 	@Override
@@ -54,7 +58,7 @@ public class PitSpider extends PitMob {
 
 	@Override
 	public int getDroppedSouls() {
-		return 3;
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_SOULS);
 	}
 
 	@Override

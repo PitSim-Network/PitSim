@@ -139,7 +139,7 @@ public class Regularity extends PitEnchant {
 		return new PitLoreBuilder(
 				"&7Your hits against players have a &a" + secondHitChance(enchantLvl) + "% &7chance to &astrike again &7for &c" +
 						secondHitDamage(enchantLvl) + "% &7damage if the final damage of your strike is low enough. " +
-						"Does not work with " + Billionaire.INSTANCE.getDisplayName()
+						"Does not work with " + Billionaire.INSTANCE.getDisplayName().replaceAll(" ", "[]")
 		).getLore();
 	}
 

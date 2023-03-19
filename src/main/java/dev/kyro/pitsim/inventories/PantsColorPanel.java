@@ -66,7 +66,7 @@ public class PantsColorPanel extends AGUIPanel {
 					originalPantColor == PantColor.GREEN || originalPantColor == PantColor.YELLOW || originalPantColor == PantColor.ORANGE) {
 
 				NBTItem nbtMystic = new NBTItem(player.getInventory().getLeggings());
-				nbtMystic.setString(NBTTag.ORIGINAL_COLOR.getRef(), originalPantColor.displayName);
+				nbtMystic.setString(NBTTag.ORIGINAL_PANTS_COLOR.getRef(), originalPantColor.displayName);
 
 				player.getInventory().setLeggings(nbtMystic.getItem());
 
@@ -74,7 +74,7 @@ public class PantsColorPanel extends AGUIPanel {
 
 			if(slot == 41) {
 				NBTItem nbtMystic = new NBTItem(player.getInventory().getLeggings());
-				nbtMystic.removeKey(NBTTag.ORIGINAL_COLOR.getRef());
+				nbtMystic.removeKey(NBTTag.ORIGINAL_PANTS_COLOR.getRef());
 
 				player.getInventory().setLeggings(nbtMystic.getItem());
 			}
@@ -125,7 +125,7 @@ public class PantsColorPanel extends AGUIPanel {
 		}
 
 		ItemStack playerPants = player.getInventory().getLeggings();
-		PantColor originalColor = getOrginalColor(playerPants);
+		PantColor originalColor = getOriginalColor(playerPants);
 
 		if(originalColor != null) {
 
@@ -134,8 +134,8 @@ public class PantsColorPanel extends AGUIPanel {
 			originalMeta.setDisplayName(ChatColor.GOLD + "Original Color");
 			List<String> originalLore = new ArrayList<>();
 			originalLore.add(ChatColor.translateAlternateColorCodes('&', "&7Color: "
-					+ originalColor.chatColor + getOrginalColor(playerPants).displayName));
-			originalLore.add(ChatColor.GRAY + "Hex: " + getOrginalColor(playerPants).hexColor);
+					+ originalColor.chatColor + getOriginalColor(playerPants).displayName));
+			originalLore.add(ChatColor.GRAY + "Hex: " + getOriginalColor(playerPants).hexColor);
 			originalLore.add("");
 			originalLore.add(ChatColor.GRAY + "Wearing: " + playerPants.getItemMeta().getDisplayName());
 			originalLore.add("");
@@ -160,16 +160,16 @@ public class PantsColorPanel extends AGUIPanel {
 
 	}
 
-	public PantColor getOrginalColor(ItemStack item) {
+	public PantColor getOriginalColor(ItemStack item) {
 		if(Misc.isAirOrNull(item)) return null;
 		ItemMeta itemMeta = item.getItemMeta();
 		if(itemMeta == null || !itemMeta.hasLore()) return null;
 
 		NBTItem nbtItem = new NBTItem(item);
 
-		if(!nbtItem.hasKey(NBTTag.ORIGINAL_COLOR.getRef())) return null;
+		if(!nbtItem.hasKey(NBTTag.ORIGINAL_PANTS_COLOR.getRef())) return null;
 
-		return PantColor.getPantColor(nbtItem.getString(NBTTag.ORIGINAL_COLOR.getRef()));
+		return PantColor.getPantColor(nbtItem.getString(NBTTag.ORIGINAL_PANTS_COLOR.getRef()));
 	}
 
 	@Override

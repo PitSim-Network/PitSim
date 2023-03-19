@@ -27,41 +27,35 @@ public interface TemporaryItem {
 		return nbtItem.getInteger(NBTTag.MAX_LIVES.getRef());
 	}
 
-	default ItemStack addLives(ItemStack itemStack, int lives) {
-		return setLives(itemStack, getLives(itemStack) + lives);
+	default void addLives(ItemStack itemStack, int lives) {
+		setLives(itemStack, getLives(itemStack) + lives);
 	}
 
 //	This also increases lives
-	default ItemStack addMaxLives(ItemStack itemStack, int lives) {
+	default void addMaxLives(ItemStack itemStack, int lives) {
 		int currentLives = getLives(itemStack);
-		itemStack = setLives(itemStack, currentLives + lives);
-		return setMaxLives(itemStack, currentLives + lives);
+		setLives(itemStack, currentLives + lives);
+		setMaxLives(itemStack, currentLives + lives);
 	}
 
-	default ItemStack setLives(ItemStack itemStack, int lives) {
+	default void setLives(ItemStack itemStack, int lives) {
 		PitItem pitItem = (PitItem) this;
 		TemporaryType type = getTemporaryType();
-		if(type != TemporaryType.LOOSES_LIVES_ON_DEATH) return itemStack;
+		if(type != TemporaryType.LOOSES_LIVES_ON_DEATH) return;
 
-		NBTItem nbtItem = new NBTItem(itemStack);
+		NBTItem nbtItem = new NBTItem(itemStack, true);
 		nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), lives);
-
-		itemStack = nbtItem.getItem();
 		pitItem.updateItem(itemStack);
-		return itemStack;
 	}
 
-	default ItemStack setMaxLives(ItemStack itemStack, int lives) {
+	default void setMaxLives(ItemStack itemStack, int lives) {
 		PitItem pitItem = (PitItem) this;
 		TemporaryType type = getTemporaryType();
-		if(type != TemporaryType.LOOSES_LIVES_ON_DEATH) return itemStack;
+		if(type != TemporaryType.LOOSES_LIVES_ON_DEATH) return;
 
-		NBTItem nbtItem = new NBTItem(itemStack);
+		NBTItem nbtItem = new NBTItem(itemStack, true);
 		nbtItem.setInteger(NBTTag.MAX_LIVES.getRef(), lives);
-
-		itemStack = nbtItem.getItem();
 		pitItem.updateItem(itemStack);
-		return itemStack;
 	}
 
 	default boolean isAtMaxLives(ItemStack itemStack) {
@@ -77,12 +71,12 @@ public interface TemporaryItem {
 		if(type == TemporaryType.LOST_ON_DEATH) {
 			return new ItemDamageResult(new ItemStack(Material.AIR), 0);
 		} else if(type == TemporaryType.LOOSES_LIVES_ON_DEATH) {
-			NBTItem nbtItem = new NBTItem(itemStack);
+			NBTItem nbtItem = new NBTItem(itemStack, true);
 			int currentLives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
 			int livesLost = Math.min(attemptToLoseLives, currentLives);
 			nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), currentLives - livesLost);
-			pitItem.updateItem(nbtItem.getItem());
-			return new ItemDamageResult(nbtItem.getItem(), livesLost);
+			pitItem.updateItem(itemStack);
+			return new ItemDamageResult(itemStack, livesLost);
 		}
 		throw new RuntimeException();
 	}

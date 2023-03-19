@@ -111,6 +111,11 @@ public class KillEvent extends Event {
 			ItemStack itemStack = entry.getValue();
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			if(!(pitItem instanceof TemporaryItem)) continue;
+
+			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
+			int currentLives = temporaryItem.getLives(itemStack);
+			if(currentLives == 0) continue;
+
 			deadVulnerableItems.put(entry.getKey(), new ItemInfo(pitItem, entry.getValue(), 1));
 		}
 	}

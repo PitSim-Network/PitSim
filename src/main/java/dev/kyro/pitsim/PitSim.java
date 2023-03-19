@@ -47,6 +47,7 @@ import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.commands.beta.BaseBetaCommand;
+import dev.kyro.pitsim.commands.beta.ResetCommand;
 import dev.kyro.pitsim.commands.beta.SoulsCommand;
 import dev.kyro.pitsim.commands.essentials.*;
 import dev.kyro.pitsim.controllers.*;
@@ -557,7 +558,6 @@ public class PitSim extends JavaPlugin {
 	private void registerNPCs() {
 		if(status.isDarkzone()) {
 			NPCManager.registerNPC(new TaintedShopNPC(Collections.singletonList(MapManager.getDarkzone())));
-			NPCManager.registerNPC(new LeggingsShopNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new PotionMasterNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new MainProgressionNPC(Collections.singletonList(MapManager.getDarkzone())));
@@ -599,6 +599,7 @@ public class PitSim extends JavaPlugin {
 
 		AMultiCommand betaCommand = new BaseBetaCommand("beta");
 		new SoulsCommand(betaCommand, "souls");
+		new ResetCommand(betaCommand, "reset");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());
