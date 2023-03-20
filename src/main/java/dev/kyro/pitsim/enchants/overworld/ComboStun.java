@@ -13,7 +13,6 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
@@ -55,6 +54,7 @@ public class ComboStun extends PitEnchant {
 					PitSim.anticheat.exemptPlayer(attackEvent.getDefenderPlayer(), duration * 500L, AnticheatManager.FlagType.KNOCKBACK, AnticheatManager.FlagType.SIMULATION);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 10);
+		}
 
 		Misc.stunEntity(attackEvent.getDefender(), duration);
 		Sounds.COMBO_STUN.play(attackEvent.getAttacker());
