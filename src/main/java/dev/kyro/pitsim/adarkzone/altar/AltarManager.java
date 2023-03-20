@@ -151,6 +151,7 @@ public class AltarManager implements Listener {
 		Player player = event.getPlayer();
 		Block block = CONFIRM_LOCATION.clone().add(0, 2, 0).getBlock();
 		if(!event.getClickedBlock().equals(block)) return;
+		if(isInAnimation(player)) return;
 
 		AltarGUI altarGUI = new AltarGUI(player);
 		altarGUI.open();

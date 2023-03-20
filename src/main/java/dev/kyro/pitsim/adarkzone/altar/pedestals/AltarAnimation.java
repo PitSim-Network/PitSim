@@ -140,7 +140,6 @@ public class AltarAnimation {
 					for(Location previousLocation : previousLocations) {
 						particle.display(player, previousLocation.clone().add(0, y, 0), pedestal.getParticleColor());
 					}
-					Sounds.BEAM_CONNECT.play(player, 0.1f, Math.min(0.05f * ticks, 2f));
 				}
 
 				if(ticks >= STREAM_TICKS) {
@@ -148,7 +147,7 @@ public class AltarAnimation {
 						particle.display(player, previousLocation.clone().add(0, y, 0), pedestal.getParticleColor());
 					}
 					return;
-				}
+				} else Sounds.BEAM_CONNECT.play(player, 0.1f, Math.min(0.05f * ticks, 2f));
 
 				ticks++;
 			}
