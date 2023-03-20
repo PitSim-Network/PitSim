@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ChaosBooster extends Booster {
 	public ChaosBooster() {
-		super("Chaos Booster", "chaos", 16, ChatColor.GREEN);
+		super("Chaos Booster", "chaos", 15, ChatColor.GREEN);
 	}
 
 	@Override

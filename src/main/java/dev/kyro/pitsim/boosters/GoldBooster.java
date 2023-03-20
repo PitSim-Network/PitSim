@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GoldBooster extends Booster {
 	public GoldBooster() {
-		super("Gold Booster", "gold", 12, ChatColor.GOLD);
+		super("Gold Booster", "gold", 11, ChatColor.GOLD);
 	}
 
 	@EventHandler

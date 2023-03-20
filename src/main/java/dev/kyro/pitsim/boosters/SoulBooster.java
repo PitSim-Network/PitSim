@@ -9,16 +9,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class PvPBooster extends Booster {
-	public PvPBooster() {
-		super("PvP Booster", "pvp", 13, ChatColor.RED);
+public class SoulBooster extends Booster {
+	public SoulBooster() {
+		super("Soul Booster", "darkzone", 17, ChatColor.WHITE);
 	}
-
-//	@EventHandler(priority = EventPriority.HIGH)
-//	public void onKill(KillEvent killEvent) {
-//		if(!isActive()) return;
-//		killEvent.playerKillWorth *= 2;
-//	}
 
 	@Override
 	public List<String> getDescription() {
@@ -27,8 +21,12 @@ public class PvPBooster extends Booster {
 
 	@Override
 	public ItemStack getDisplayItem() {
-		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_SWORD);
-		ALoreBuilder loreBuilder = new ALoreBuilder("&7Don't loose lives on &3Jewel", "&3Items&7.", "");
+		AItemStackBuilder builder = new AItemStackBuilder(Material.GHAST_TEAR);
+		ALoreBuilder loreBuilder = new ALoreBuilder(
+				"&7Gain &f+50% souls &7from mobs",
+				"&7and bosses in the &5Darkzone",
+				""
+		);
 		if(minutes > 0) {
 			builder.setName("&a" + name);
 			loreBuilder.addLore("&7Status: &aActive!", "&7Expires in: &e" + minutes + " minutes", "");

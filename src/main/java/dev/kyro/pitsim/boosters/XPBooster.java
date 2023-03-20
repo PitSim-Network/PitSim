@@ -14,7 +14,7 @@ import java.util.List;
 
 public class XPBooster extends Booster {
 	public XPBooster() {
-		super("XP Booster", "xp", 10, ChatColor.AQUA);
+		super("XP Booster", "xp", 9, ChatColor.AQUA);
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
