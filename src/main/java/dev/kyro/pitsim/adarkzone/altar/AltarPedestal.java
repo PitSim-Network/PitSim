@@ -8,6 +8,7 @@ import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.AltarBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
@@ -57,6 +58,7 @@ public abstract class AltarPedestal implements Listener {
 	public abstract String getDisplayName();
 	public abstract int getActivationCost();
 	public abstract ItemStack getItem(Player player);
+	public abstract ParticleColor getParticleColor();
 
 
 	public boolean isUnlocked(Player player) {

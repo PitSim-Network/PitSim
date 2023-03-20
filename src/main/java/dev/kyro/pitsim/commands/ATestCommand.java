@@ -1,11 +1,13 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.adarkzone.altar.BiomeChanger;
-import dev.kyro.pitsim.ahelp.HelpManager;
+import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.AltarAnimation;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.HeresyPedestal;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.KnowledgePedestal;
+import dev.kyro.pitsim.adarkzone.altar.pedestals.RenownPedestal;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,6 +32,15 @@ public class ATestCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
+
+		List<AltarPedestal> activatedPedestals = new ArrayList<>();
+		activatedPedestals.add(AltarPedestal.getPedestal(KnowledgePedestal.class));
+		activatedPedestals.add(AltarPedestal.getPedestal(RenownPedestal.class));
+		activatedPedestals.add(AltarPedestal.getPedestal(HeresyPedestal.class));
+		AltarAnimation altarAnimation = new AltarAnimation(player, 10, activatedPedestals, null);
+		altarAnimation.drawPedestalStreams();
+
+
 
 //		if(BiomeChanger.players.contains(player.getUniqueId())) {
 //			BiomeChanger.players.remove(player.getUniqueId());

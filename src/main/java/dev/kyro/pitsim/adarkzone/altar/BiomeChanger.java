@@ -7,18 +7,16 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import dev.kyro.pitsim.PitSim;
 import net.minecraft.server.v1_8_R3.PacketPlayOutMapChunk;
-import org.bukkit.Bukkit;
+import net.minecraft.server.v1_8_R3.PacketPlayOutMapChunkBulk;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.craftbukkit.v1_8_R3.CraftChunk;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import net.minecraft.server.v1_8_R3.BiomeDesert;
-import org.bukkit.plugin.Plugin;
 
-import java.util.*;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BiomeChanger {
 	
@@ -32,7 +30,8 @@ public class BiomeChanger {
 	public BiomeChanger(PitSim instance) {
 		biomes.put(Biome.DESERT, (byte) 2);
 
-		ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(instance, PacketType.Play.Server.MAP_CHUNK, PacketType.Play.Server.MAP_CHUNK_BULK) {
+		ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(instance, PacketType.Play.Server.MAP_CHUNK,
+				PacketType.Play.Server.MAP_CHUNK_BULK) {
 
 			@Override
 			public void onPacketSending(PacketEvent event) {
@@ -41,8 +40,39 @@ public class BiomeChanger {
 				Player player = event.getPlayer();
 				PacketContainer packet = event.getPacket();
 				PacketType type = packet.getType();
+
 				if(type == PacketType.Play.Server.MAP_CHUNK) {
-					translateMapChunk(packet, player, biome);
+					PacketPlayOutMapChunk packetHandle = (PacketPlayOutMapChunk) packet.getHandle();
+
+					Field x;
+					Field z;
+
+					try {
+						x = packetHandle.getClass().getDeclaredField("a");
+						x.setAccessible(true);
+						z = packetHandle.getClass().getDeclaredField("b");
+						z.setAccessible(true);
+					} catch(NoSuchFieldException e) {
+						throw new RuntimeException(e);
+					}
+
+					Chunk chunk;
+					try {
+						chunk = player.getWorld().getChunkAt(x.getInt(packetHandle), z.getInt(packetHandle));
+					} catch(IllegalAccessException e) {
+						throw new RuntimeException(e);
+					}
+
+					boolean found = false;
+					for(Chunk storedChunk : chunkList) {
+						if(storedChunk.getX() == chunk.getX() && storedChunk.getZ() == chunk.getZ()
+								&& storedChunk.getWorld().equals(chunk.getWorld())) {
+							found = true;
+							break;
+						}
+					}
+
+					if(found) translateMapChunk(packet, player, biome);
 				}
 				else if(type == PacketType.Play.Server.MAP_CHUNK_BULK) {
 					translateMapChunkBulk(packet, player, biome);
@@ -60,18 +90,43 @@ public class BiomeChanger {
 	}
 
 	protected void translateMapChunkBulk(PacketContainer packet, Player player, Biome biome) {
+
+		Field x;
+		Field z;
+
+		try {
+			x = PacketPlayOutMapChunkBulk.class.getDeclaredField("a");
+			x.setAccessible(true);
+			z = PacketPlayOutMapChunkBulk.class.getDeclaredField("b");
+			z.setAccessible(true);
+		} catch(NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+
 		int dataStartIndex = 0;
-		PacketPlayOutMapChunk.ChunkMap[] chunks = (PacketPlayOutMapChunk.ChunkMap[])packet.getModifier().read(2);
+		PacketPlayOutMapChunk.ChunkMap[] chunks = (PacketPlayOutMapChunk.ChunkMap[]) packet.getModifier().read(2);
 		for(int chunkNum = 0; chunkNum < chunks.length; chunkNum++) {
-			ChunkInfo info = new ChunkInfo(player, chunks[chunkNum].b, 0, true, chunks[chunkNum].a, 0);
-			if(info.data == null || info.data.length == 0) {
-				info.data = chunks[chunkNum].a;
+			PacketPlayOutMapChunkBulk packetHandle = (PacketPlayOutMapChunkBulk) packet.getHandle();
+
+			try {
+				Chunk chunk = player.getWorld().getChunkAt(((int[]) x.get(packetHandle))[chunkNum], ((int[]) z.get(packetHandle))[chunkNum]);
+
+				for(Chunk storedChunk : chunkList) {
+					if(!storedChunk.getWorld().equals(chunk.getWorld())) continue;
+					if(storedChunk.getX() == chunk.getX() && storedChunk.getZ() == chunk.getZ()) {
+						ChunkInfo info = new ChunkInfo(player, chunks[chunkNum].b, 0, true, chunks[chunkNum].a, 0);
+						if(info.data == null || info.data.length == 0) {
+							info.data = chunks[chunkNum].a;
+						} else {
+							info.startIndex = dataStartIndex;
+						}
+						translateChunkInfo(info, biome);
+						dataStartIndex += info.size;
+					}
+				}
+			} catch(IllegalAccessException e) {
+				throw new RuntimeException(e);
 			}
-			else {
-				info.startIndex = dataStartIndex;
-			}
-			translateChunkInfo(info, biome);
-			dataStartIndex += info.size;
 		}
 	}
 
@@ -85,24 +140,6 @@ public class BiomeChanger {
 					continue;
 				}
 				info.data[i] = replacement == null ? defaultBiomeId : this.getBiomeID(replacement);
-			}
-		}
-	}
-
-	public static void refreshChunk(World world, Chunk chunk) {
-		PacketPlayOutMapChunk packet = new PacketPlayOutMapChunk(((CraftChunk)chunk).getHandle(), true, 0xffff);
-
-		int absChunkX = Math.abs(chunk.getX());
-		int absChunkZ = Math.abs(chunk.getX());
-
-		int viewDistance = Bukkit.getViewDistance();
-		for(Player player : chunk.getWorld().getPlayers()) {
-			Location location = player.getLocation();
-			int absX = absChunkX - Math.abs(location.getBlockX());
-			int absZ = absChunkZ - Math.abs(location.getBlockZ());
-
-			if((absX >= 0 && absX <= viewDistance) || (absZ >= 0 && absZ <= viewDistance)) {
-				((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
 			}
 		}
 	}

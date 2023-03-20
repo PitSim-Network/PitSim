@@ -16,7 +16,7 @@ public class CounterJanitor extends PitPerk {
 	public static CounterJanitor INSTANCE;
 
 	public CounterJanitor() {
-		super("Counter-Janitor", "counter-janitor", new ItemStack(Material.SPONGE), 19, true, "COUNTER_JANITOR", INSTANCE, true);
+		super("Counter-Janitor", "counter-janitor", new ItemStack(Material.SPONGE), 19, true, "COUNTER_JANITOR", INSTANCE, false);
 		INSTANCE = this;
 	}
 

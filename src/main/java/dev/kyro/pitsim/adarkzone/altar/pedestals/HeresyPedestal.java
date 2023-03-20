@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.altar.pedestals;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,6 +23,11 @@ public class HeresyPedestal extends AltarPedestal {
 	@Override
 	public int getActivationCost() {
 		return 200;
+	}
+
+	@Override
+	public ParticleColor getParticleColor() {
+		return ParticleColor.DARK_PURPLE;
 	}
 
 	@Override

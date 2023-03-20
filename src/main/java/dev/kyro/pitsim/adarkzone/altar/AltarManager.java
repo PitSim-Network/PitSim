@@ -36,8 +36,11 @@ import java.util.List;
 public class AltarManager implements Listener {
 	public static final Location TEXT_LOCATION = new Location(MapManager.getDarkzone(), 192.5, 95, -104.5);
 	public static final Location CONFIRM_LOCATION = new Location(MapManager.getDarkzone(), 192.5, 89.5, -104.5);
-	public static final int EFFECT_RADIUS = 10;
+	public static final Location ALTAR_CENTER = new Location(MapManager.getDarkzone(), 192.5, 92, -104.5);
+	public static final int EFFECT_CHUNK_RADIUS = 5;
+	public static final int EFFECT_RADIUS = EFFECT_CHUNK_RADIUS + 3;
 
+	public static final List<AltarAnimation> animations = new ArrayList<>();
 	public static ArmorStand[] textStands = new ArmorStand[7];
 
 	static {
@@ -78,8 +81,8 @@ public class AltarManager implements Listener {
 		}
 
 		List<Chunk> chunks = new ArrayList<>();
-		for(int x = -1 * EFFECT_RADIUS; x <= EFFECT_RADIUS; x++) {
-			for(int z = -1 * EFFECT_RADIUS; z <= EFFECT_RADIUS; z++) {
+		for(int x = -1 * EFFECT_CHUNK_RADIUS; x <= EFFECT_CHUNK_RADIUS; x++) {
+			for(int z = -1 * EFFECT_CHUNK_RADIUS; z <= EFFECT_CHUNK_RADIUS; z++) {
 				Chunk chunk = CONFIRM_LOCATION.clone().add(x, 0, z).getChunk();
 				if(!chunks.contains(chunk)) chunks.add(chunk);
 			}
@@ -164,19 +167,20 @@ public class AltarManager implements Listener {
 			}
 		}
 
-		Misc.strikeLightningForPlayers(CONFIRM_LOCATION, player);
-
-		AltarRewards.rewardPlayer(player);
-		AltarPedestal.disableAll(player);
-
 		disableText(player);
-		new BukkitRunnable() {
+
+		BukkitRunnable callback = new BukkitRunnable() {
 			@Override
 			public void run() {
+				Misc.strikeLightningForPlayers(CONFIRM_LOCATION, player);
+				AltarRewards.rewardPlayer(player);
+				AltarPedestal.disableAll(player);
 				enableText(player);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20 * 3);
 
+			}
+		};
+
+		animations.add(new AltarAnimation(player, AltarPedestal.getTotalCost(player), pedestals, callback));
 	}
 
 	public static void disableText(Player player) {
@@ -213,5 +217,18 @@ public class AltarManager implements Listener {
 
 	public static double getReductionMultiplier(PitPlayer pitPlayer) {
 		return Misc.getReductionMultiplier(getReduction(pitPlayer));
+	}
+
+	public static AltarAnimation getAnimation(Player player) {
+		for(AltarAnimation animation : animations) {
+			if(animation.player.equals(player)) {
+				return animation;
+			}
+		}
+		return null;
+	}
+
+	public static boolean isInAnimation(Player player) {
+		return getAnimation(player) != null;
 	}
 }
