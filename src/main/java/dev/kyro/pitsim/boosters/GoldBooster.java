@@ -25,12 +25,12 @@ public class GoldBooster extends Booster {
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!isActive()) return;
-		killEvent.goldMultipliers.add((1 + getGoldIncrease()) / 100.0);
+		killEvent.goldMultipliers.add(1 + (getGoldIncrease() / 100.0));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onKillMonitor(KillEvent killEvent) {
-		if(!isActive() || activatorUUID == null) return;
+		if(!isActive() || activatorUUID == null || killEvent.getKiller().getUniqueId().equals(activatorUUID)) return;
 		queueShare(killEvent.getFinalGold());
 	}
 
@@ -58,6 +58,6 @@ public class GoldBooster extends Booster {
 	}
 
 	public static double getGoldShare() {
-		return 2.5;
+		return 3;
 	}
 }

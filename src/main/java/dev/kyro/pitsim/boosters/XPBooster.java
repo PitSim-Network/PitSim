@@ -25,13 +25,13 @@ public class XPBooster extends Booster {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onKill(KillEvent killEvent) {
 		if(!isActive()) return;
-		killEvent.xpMultipliers.add((1 + getXPIncrease()) / 100.0);
-		killEvent.maxXPMultipliers.add((1 + getMaxXPIncrease()) / 100.0);
+		killEvent.xpMultipliers.add(1 + (getXPIncrease() / 100.0));
+		killEvent.maxXPMultipliers.add(1 + (getMaxXPIncrease() / 100.0));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onKillMonitor(KillEvent killEvent) {
-		if(!isActive() || activatorUUID == null) return;
+		if(!isActive() || activatorUUID == null || killEvent.getKiller().getUniqueId().equals(activatorUUID)) return;
 		queueShare(killEvent.getFinalXp());
 	}
 
@@ -63,6 +63,6 @@ public class XPBooster extends Booster {
 	}
 
 	public static double getXPShare() {
-		return 2.5;
+		return 3;
 	}
 }
