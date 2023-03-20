@@ -116,6 +116,7 @@ public class LevelManager {
 
 		ChatTriggerManager.sendProgressionInfo(pitPlayer);
 		ChatTriggerManager.sendPrestigeInfo(pitPlayer);
+		ChatTriggerManager.sendPerksInfo(pitPlayer);
 
 		String message = "%luckperms_prefix%";
 		if(pitPlayer.megastreak.isOnMega()) {

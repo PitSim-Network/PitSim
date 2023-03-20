@@ -21,7 +21,10 @@ public class Berserker extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
+
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
+		if(enchantLvl == 0) return;
+
 		if(!Misc.isCritical(attackEvent.getAttacker()) || Math.random() > getChance(enchantLvl) / 100.0) return;
 		attackEvent.multipliers.add(1.5);
 		Sounds.BERSERKER.play(attackEvent.getAttackerPlayer());
