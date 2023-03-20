@@ -185,6 +185,7 @@ public class ProxyMessaging implements Listener {
 			booster.minutes += integers.get(0);
 			booster.activatorUUID = activatorUUID;
 			booster.updateTime();
+			FirestoreManager.CONFIG.boosterActivatorMap.put(booster.refName, activatorUUID.toString());
 			FirestoreManager.CONFIG.save();
 			for(Player player : ChatTriggerManager.getSubscribedPlayers())
 				ChatTriggerManager.sendBoosterInfo(PitPlayer.getPitPlayer(player));
