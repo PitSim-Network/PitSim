@@ -78,7 +78,7 @@ public class Streaker extends PitPerk {
 			}
 		}
 
-		if(!playerTimes.containsKey(killEvent.getKiller()) && !pitPlayer.megastreak.isOnMega() && !SpawnManager.isInSpawn(pitPlayer.player.getLocation())) {
+		if(!playerTimes.containsKey(killEvent.getKiller()) && !pitPlayer.megastreak.isOnMega() && !SpawnManager.isInSpawn(pitPlayer.player)) {
 			playerTimes.put(killEvent.getKiller(), 0);
 			Sounds.STREAKER.play(killEvent.getKiller());
 			AOutput.send(killEvent.getKiller(), "&b&lSTREAKER!&7 Streak timer started!");

@@ -66,7 +66,7 @@ public class HelmetManager implements Listener {
 				ability.isActive = false;
 				toggledPlayers.remove(player);
 			} else {
-				if(SpawnManager.isInSpawn(player.getLocation())) {
+				if(SpawnManager.isInSpawn(player)) {
 					AOutput.error(player, "&c&lOOPS!&7 You cannot do this in spawn");
 					return;
 				}
@@ -76,7 +76,7 @@ public class HelmetManager implements Listener {
 			}
 
 		} else {
-			if(SpawnManager.isInSpawn(player.getLocation())) {
+			if(SpawnManager.isInSpawn(player)) {
 				AOutput.error(player, "&c&lOOPS!&7 You cannot do this in spawn");
 				return;
 			}

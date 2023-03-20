@@ -91,7 +91,7 @@ public class PhoenixAbility extends HelmetAbility {
 		pitPlayer.heal(player.getMaxHealth());
 		pitPlayer.heal(player.getMaxHealth() * 2, HealEvent.HealType.ABSORPTION, (int) player.getMaxHealth() * 2);
 		alreadyActivatedList.add(player.getUniqueId());
-		if(!SpawnManager.isInSpawn(player.getLocation())) {
+		if(!SpawnManager.isInSpawn(player)) {
 			for(Entity entity : player.getNearbyEntities(5, 5, 5)) {
 				if(!(entity instanceof Player)) continue;
 				Player target = (Player) entity;
@@ -101,7 +101,7 @@ public class PhoenixAbility extends HelmetAbility {
 				PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 				if(non == null) {
 					if(pitTarget.megastreak instanceof Uberstreak && pitTarget.megastreak.isOnMega()) continue;
-					if(SpawnManager.isInSpawn(target.getLocation())) continue;
+					if(SpawnManager.isInSpawn(target)) continue;
 					Vector force = target.getLocation().toVector().subtract(player.getLocation().toVector())
 							.setY(1).normalize().multiply(1.15);
 					target.setVelocity(force);

@@ -15,13 +15,16 @@ import dev.kyro.pitsim.aitems.mobdrops.EnderPearl;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Resilient;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
+import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
+import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.*;
@@ -163,6 +166,20 @@ public class DarkzoneManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onClick2(PlayerInteractEvent event) {
+		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		Player player = event.getPlayer();
+		if(!MapManager.inDarkzone(player) || SpawnManager.isInSpawn(player)) return;
+		ItemStack itemStack = player.getItemInHand();
+		if(Misc.isAirOrNull(itemStack)) return;
+		MysticType mysticType = MysticType.getMysticType(itemStack);
+		if(mysticType != MysticType.TAINTED_SCYTHE) return;
+
+		PitPlayerAttemptAbilityEvent newEvent = new PitPlayerAttemptAbilityEvent(player);
+		Bukkit.getPluginManager().callEvent(newEvent);
 	}
 
 	@EventHandler

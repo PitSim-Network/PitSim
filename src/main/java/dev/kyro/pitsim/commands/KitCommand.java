@@ -16,7 +16,7 @@ public class KitCommand implements CommandExecutor {
 		Player player = (Player) sender;
 
 		if(!player.isOp()) {
-			if(!SpawnManager.isInSpawn(player.getLocation())) {
+			if(!SpawnManager.isInSpawn(player)) {
 				AOutput.error(player, "You can only use this command in spawn!");
 				return false;
 			}

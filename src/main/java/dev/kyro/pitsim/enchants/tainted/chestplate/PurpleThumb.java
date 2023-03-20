@@ -150,7 +150,7 @@ public class PurpleThumb extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0) return;
 
-		if(SpawnManager.isInSpawn(player.getLocation())) {
+		if(SpawnManager.isInSpawn(player)) {
 			AOutput.error(player, "&c&lOOPS!&7 You cannot do this in spawn");
 			return;
 		}

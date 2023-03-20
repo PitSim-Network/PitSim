@@ -157,7 +157,7 @@ public class Non {
 		List<Player> nearbyPlayers = new ArrayList<>();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(onlinePlayer.getWorld() != non.getWorld()) continue;
-			if(SpawnManager.isInSpawn(onlinePlayer.getLocation())) continue;
+			if(SpawnManager.isInSpawn(onlinePlayer)) continue;
 			nearbyPlayers.add(onlinePlayer);
 		}
 		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 3.5, 3, 3.5)) {

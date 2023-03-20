@@ -11,8 +11,10 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -101,12 +103,11 @@ public class SpawnManager implements Listener {
 
 	@EventHandler
 	public void onShoot(EntityShootBowEvent event) {
-		if(!(event.getEntity() instanceof Player)) return;
-		if(!(event.getProjectile() instanceof Arrow)) return;
+		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
 
 		Player player = (Player) event.getEntity();
 
-		if(isInSpawn(player.getLocation()) || isInDarkzoneSpawn(player.getLocation())) {
+		if(isInSpawn(player)) {
 			event.setCancelled(true);
 			Sounds.NO.play(player);
 		}
@@ -114,23 +115,22 @@ public class SpawnManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onUse(PlayerInteractEvent event) {
+		if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
+
 		Player player = event.getPlayer();
-		if(!isInDarkzoneSpawn(player.getLocation())) return;
+		if(!isInSpawn(player)) return;
 
 		ItemStack item = player.getInventory().getItemInHand();
-		if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
-			if(item.getType() != Material.GOLD_HOE) return;
-			event.setCancelled(true);
-			AOutput.send(player, "&c&c&lERROR!&7 You cannot use this in the spawn area!");
-		}
+		if(item.getType() != Material.GOLD_HOE) return;
+
+		event.setCancelled(true);
+		AOutput.send(player, "&c&c&lERROR!&7 You cannot use this in the spawn area!");
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Pre event) {
 		Player player = event.getAttackerPlayer();
-		if(!event.isAttackerPlayer()) return;
-		if(!isInDarkzoneSpawn(player.getLocation())) return;
-
+		if(!event.isAttackerPlayer() || !isInSpawn(player)) return;
 		event.setCancelled(true);
 	}
 
@@ -148,28 +148,25 @@ public class SpawnManager implements Listener {
 		AOutput.send(event.getPlayer(), "&c&lITEM DELETED!&7 Dropped in spawn area.");
 	}
 
-	public static Boolean isInSpawn(Location loc) {
-		RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
-		RegionManager regions = container.get(loc.getWorld());
-		assert regions != null;
-		ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(loc)));
-
-		for(ProtectedRegion region : set) {
-			if(region.getId().contains("spawn")) {
-				return true;
-			}
-		}
-		return false;
+	public static boolean isInSpawn(Player player) {
+		return isInSpawn(player, player.getLocation());
 	}
 
-	public static Boolean isInDarkzoneSpawn(Location loc) {
+	public static boolean isInSpawn(Location location) {
+		return isInSpawn(null, location);
+	}
+
+	private static boolean isInSpawn(Player player, Location location) {
+		if(player != null && !player.isOp() && Misc.isEntity(player, PitEntityType.REAL_PLAYER) &&
+				CombatManager.isInCombat(player)) return false;
+
 		RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
-		RegionManager regions = container.get(loc.getWorld());
+		RegionManager regions = container.get(location.getWorld());
 		assert regions != null;
-		ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(loc)));
+		ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(location)));
 
 		for(ProtectedRegion region : set) {
-			if(region.getId().equals("darkzonespawn") || region.getId().equals("darkauction")) {
+			if(region.getId().contains("spawn") || region.getId().contains("auction")) {
 				return true;
 			}
 		}
@@ -178,7 +175,7 @@ public class SpawnManager implements Listener {
 
 	public static void clearSpawnStreaks() {
 		for(Player player : Bukkit.getOnlinePlayers()) {
-			if(isInSpawn(player.getLocation()) && !lastLocationMap.containsKey(player)) {
+			if(isInSpawn(player) && !lastLocationMap.containsKey(player)) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				pitPlayer.endKillstreak();
 			}

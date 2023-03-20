@@ -55,7 +55,7 @@ public class Volley extends PitEnchant {
 					return;
 				}
 
-				if(SpawnManager.isInSpawn(player.getLocation())) return;
+				if(SpawnManager.isInSpawn(player)) return;
 
 				Arrow volleyArrow = player.launchProjectile(Arrow.class);
 				volleyArrow.setVelocity(player.getEyeLocation().getDirection().normalize().multiply(arrowVelo));
