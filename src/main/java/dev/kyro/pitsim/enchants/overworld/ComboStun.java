@@ -1,7 +1,10 @@
 package dev.kyro.pitsim.enchants.overworld;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.HitCounter;
+import dev.kyro.pitsim.controllers.PolarManager;
+import dev.kyro.pitsim.controllers.objects.AnticheatManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -10,6 +13,8 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.EventHandler;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -41,8 +46,17 @@ public class ComboStun extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 5)) return;
 
 		else cooldown.restart();
+		int duration = (int) getDuration(enchantLvl) * 20;
 
-		Misc.stunEntity(attackEvent.getDefender(), (int) getDuration(enchantLvl) * 20);
+		if(PitSim.anticheat instanceof PolarManager) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					PitSim.anticheat.exemptPlayer(attackEvent.getDefenderPlayer(), duration * 500L, AnticheatManager.FlagType.KNOCKBACK, AnticheatManager.FlagType.SIMULATION);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 10);
+
+		Misc.stunEntity(attackEvent.getDefender(), duration);
 		Sounds.COMBO_STUN.play(attackEvent.getAttacker());
 
 		if(pitPlayer.stats != null) pitPlayer.stats.stun += getDuration(enchantLvl);

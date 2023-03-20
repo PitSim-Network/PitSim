@@ -10,24 +10,31 @@ public abstract class AnticheatManager implements Listener {
 
 
 	public enum FlagType {
-		ALL(null),
-		SIMULATION("simulation"),
-		REACH("reach"),
-		KNOCKBACK("antikb"),
-		GROUND_SPOOF("groundspoof"),
-		NO_FALL("nofall"),
-		;
+		ALL(null, null),
+		SIMULATION("simulation", "MOVEMENT"),
+		REACH("reach", "ATTACK"),
+		KNOCKBACK("antikb", "VELOCTY"),
+		GROUND_SPOOF("groundspoof", "MOVEMENT"),
+		NO_FALL("nofall", "MOVEMENT");
 
 		public String refName;
+		public String polarName;
 
-		FlagType(String refName) {
+		FlagType(String refName, String polarName) {
 			this.refName = refName;
+			this.polarName = polarName;
 		}
 
 		public static FlagType getFlag(String refName) {
 			for(FlagType flag : values()) if(flag != ALL && flag.refName.equalsIgnoreCase(refName)) return flag;
 			return null;
 		}
+
+		public static FlagType getFlagPolar(String polarName) {
+			for(FlagType flag : values()) if(flag != ALL && flag.polarName.equalsIgnoreCase(polarName)) return flag;
+			return null;
+		}
+
 	}
 }
 

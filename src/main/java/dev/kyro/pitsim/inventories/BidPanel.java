@@ -97,7 +97,7 @@ public class BidPanel extends AGUIPanel {
 		if(minBid(auctionItem) > pitPlayer.stats.highestBid) pitPlayer.stats.highestBid = minBid(auctionItem);
 		auctionItem.addBid(player.getUniqueId(), bid);
 		player.closeInventory();
-		CrossServerMessageManager.sendAuctionData("");
+		CrossServerMessageManager.updateAllServers();
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.ReallyToxic;
@@ -106,6 +107,14 @@ public class ChatTriggerManager implements Listener {
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
+	public static void sendBoosterInfo(PitPlayer pitPlayer) {
+		Map<String, Object> dataMap = new HashMap<>();
+		Map<String, Object> boosterDataMap = new HashMap<>();
+		for(Booster booster : BoosterManager.boosterList) boosterDataMap.put(booster.name, booster.minutes);
+		dataMap.put("boosterTime", boosterDataMap);
+		sendData(pitPlayer.player, encodeMap(dataMap));
+	}
+
 	public static Object encodeObject(Object object) {
 		if(object instanceof Mappable) {
 			return encodeMap(((Mappable) object).getAsMap());
@@ -136,8 +145,7 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static void subscribePlayer(Player player) {
-		if(subscribedPlayers.contains(player)) return;
-		subscribedPlayers.add(player);
+		if(!subscribedPlayers.contains(player)) subscribedPlayers.add(player);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		sendConstants(pitPlayer);
@@ -148,6 +156,7 @@ public class ChatTriggerManager implements Listener {
 		sendUberInfo(pitPlayer);
 		sendBountyInfo(pitPlayer);
 		sendToxicInfo(pitPlayer);
+		sendBoosterInfo(pitPlayer);
 	}
 
 	public static boolean isSubscribed(Player player) {

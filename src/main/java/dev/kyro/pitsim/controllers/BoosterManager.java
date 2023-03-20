@@ -5,6 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.controllers.objects.Booster;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -68,7 +69,10 @@ public class BoosterManager implements Listener {
 					if(booster.minutes == 0) booster.disable();
 					else booster.updateTime();
 				}
-				if(boosterEnabled) FirestoreManager.CONFIG.save();
+				if(boosterEnabled) {
+					for(Player player : ChatTriggerManager.getSubscribedPlayers()) ChatTriggerManager.sendBoosterInfo(PitPlayer.getPitPlayer(player));
+					FirestoreManager.CONFIG.save();
+				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
 
