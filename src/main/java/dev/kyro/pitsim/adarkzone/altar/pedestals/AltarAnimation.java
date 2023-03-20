@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.altar.pedestals;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.particles.RedstoneParticle;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.*;
@@ -40,7 +41,6 @@ public class AltarAnimation {
 		this.onComplete = onComplete;
 
 		playSoulAnimation();
-//		drawPedestalStreams();
 	}
 
 	public void playSoulAnimation() {
@@ -170,6 +170,14 @@ public class AltarAnimation {
 		}
 
 		AltarManager.animations.remove(this);
+	}
+
+	public void onQuit() {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		pitPlayer.taintedSouls += totalSouls;
+
+		onComplete = null;
+		endAnimation();
 	}
 
 	public static ItemStack getItemStack() {

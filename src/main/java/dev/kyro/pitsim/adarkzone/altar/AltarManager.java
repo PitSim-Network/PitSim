@@ -27,6 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
@@ -155,6 +156,15 @@ public class AltarManager implements Listener {
 
 		AltarGUI altarGUI = new AltarGUI(player);
 		altarGUI.open();
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		AltarPedestal.disableAll(event.getPlayer());
+
+		AltarAnimation altarAnimation = getAnimation(event.getPlayer());
+		if(altarAnimation == null) return;
+		altarAnimation.onQuit();
 	}
 
 	public static void activateAltar(Player player) {

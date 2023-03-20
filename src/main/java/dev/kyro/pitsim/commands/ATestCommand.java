@@ -1,10 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
-import dev.kyro.pitsim.adarkzone.altar.pedestals.AltarAnimation;
-import dev.kyro.pitsim.adarkzone.altar.pedestals.HeresyPedestal;
-import dev.kyro.pitsim.adarkzone.altar.pedestals.KnowledgePedestal;
-import dev.kyro.pitsim.adarkzone.altar.pedestals.RenownPedestal;
+import dev.kyro.pitsim.market.MarketGUI;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,12 +29,9 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		List<AltarPedestal> activatedPedestals = new ArrayList<>();
-		activatedPedestals.add(AltarPedestal.getPedestal(KnowledgePedestal.class));
-		activatedPedestals.add(AltarPedestal.getPedestal(RenownPedestal.class));
-		activatedPedestals.add(AltarPedestal.getPedestal(HeresyPedestal.class));
-		AltarAnimation altarAnimation = new AltarAnimation(player, 10, activatedPedestals, null);
-		altarAnimation.drawPedestalStreams();
+
+		MarketGUI marketGUI = new MarketGUI(player);
+		marketGUI.open();
 
 
 
@@ -125,12 +118,3 @@ public class ATestCommand implements CommandExecutor {
 
 
 
-
-//		ItemStack itemStack = player.getItemInHand();
-//		player.setItemInHand(TaintedEnchanting.enchantItem(itemStack));
-
-//		if(itemStack == null || !itemStack.hasItemMeta() || itemStack.getType() == Material.AIR) {
-//			MarketGUI marketGUI = new MarketGUI(player);
-//			marketGUI.open();
-//			return true;
-//		}

@@ -95,8 +95,10 @@ public class TaintedEnchanting {
 			}
 		}
 
+		nbtItem = new NBTItem(itemStack, true);
 		nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), previousTier + 1);
 		int addedLives = EnchantManager.getTaintedMaxLifeIncrease(previousTier + 1, temporaryItem.getMaxLives(itemStack));
+		itemStack = nbtItem.getItem();
 		temporaryItem.addMaxLives(itemStack, addedLives);
 		return itemStack;
 	}
