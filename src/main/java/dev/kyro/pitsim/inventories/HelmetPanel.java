@@ -165,7 +165,7 @@ public class HelmetPanel extends AGUIPanel {
 
 		int level = HelmetSystem.getLevel(HelmetManager.getHelmetGold(goldenHelmet));
 
-		int i = 1;
+		int i;
 		if(level < 5) i = 1;
 		else if(level > 94) i = 92;
 		else i = level - 4;
@@ -175,8 +175,7 @@ public class HelmetPanel extends AGUIPanel {
 			i++;
 		}
 
-		int k = 36;
-
+		int k = 37;
 		for(HelmetSystem.Passive passive : HelmetSystem.Passive.values()) {
 			AItemStackBuilder builder = new AItemStackBuilder(Material.INK_SACK);
 			ALoreBuilder loreBuilder = new ALoreBuilder();
@@ -201,7 +200,6 @@ public class HelmetPanel extends AGUIPanel {
 			builder.setLore(loreBuilder);
 			getInventory().setItem(k, builder.getItemStack());
 			k += 2;
-
 		}
 	}
 
