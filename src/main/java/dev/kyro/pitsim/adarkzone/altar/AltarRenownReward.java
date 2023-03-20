@@ -75,6 +75,7 @@ public class AltarRenownReward {
 						Sounds.ITEM_PICKUP.play(player);
 
 						reward(entry.getValue());
+						items.remove(entityItem);
 						cancel();
 					}
 				}
