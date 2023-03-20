@@ -68,7 +68,7 @@ public class EnderchestPanel extends AGUIPanel {
 
 		if((slot - 9) + 1 > accessiblePages) {
 			event.setCancelled(true);
-			AOutput.error(player, "&5&lRANK REQUIRED!&7 Browse ranks at &d&nhttps://store.pitsim.net");
+			AOutput.error(player, "&5&lRANK REQUIRED!&7 Browse ranks at &6&nhttps://store.pitsim.net");
 			return;
 		}
 

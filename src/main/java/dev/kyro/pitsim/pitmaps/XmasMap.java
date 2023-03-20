@@ -4,8 +4,7 @@ import com.xxmicloxx.NoteBlockAPI.model.Playlist;
 import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
-import dev.kyro.pitsim.controllers.BoosterManager;
-import dev.kyro.pitsim.controllers.objects.Booster;
+import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -56,8 +55,7 @@ public class XmasMap extends PitMap {
 		spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
 		spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
 
-		Booster booster = BoosterManager.getBooster("chaos");
-		if(booster.isActive()) {
+		if(ChaosBooster.INSTANCE.isActive()) {
 			spawn.add(0, -10, 0);
 		} else if(Math.random() < 0.5) {
 			spawn.add(0, -5, 0);

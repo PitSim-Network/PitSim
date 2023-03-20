@@ -69,14 +69,18 @@ public class ProxyMessaging implements Listener {
 	}
 
 	public static void sendBoosterUse(Booster booster, Player player, int time, boolean message) {
-
 		String playerName = "%luckperms_prefix%" + player.getName();
 		String playerNameColored = PlaceholderAPI.setPlaceholders(player, playerName);
 
-		String announcement = message ? ChatColor.
-				translateAlternateColorCodes('&', "&6&lBOOSTER! " + playerNameColored + " &7has used a " + booster.color + booster.name) : "";
+		String announcement = message ? ChatColor.translateAlternateColorCodes('&',
+				"&6&lBOOSTER! " + playerNameColored + " &7has used a " + booster.color + booster.name) : "";
 
-		new PluginMessage().writeString("BOOSTER USE").writeString(booster.refName).writeString(announcement).writeInt(time).send();
+		new PluginMessage().writeString("BOOSTER USE")
+				.writeString(booster.refName)
+				.writeString(announcement)
+				.writeString(player.getUniqueId().toString())
+				.writeInt(time)
+				.send();
 	}
 
 	public static void sendServerData() {
@@ -170,21 +174,33 @@ public class ProxyMessaging implements Listener {
 
 				new LeaderboardData(leaderboard, strings.get(i));
 			}
-
 		}
 
 		if(strings.size() >= 3 && strings.get(0).equals("BOOSTER USE")) {
 			String boosterString = strings.get(1);
 			Booster booster = BoosterManager.getBooster(boosterString);
+			UUID activatorUUID = UUID.fromString(strings.get(3));
 
 			assert booster != null;
 			booster.minutes += integers.get(0);
+			booster.activatorUUID = activatorUUID;
 			booster.updateTime();
 			FirestoreManager.CONFIG.save();
-			for(Player player : ChatTriggerManager.getSubscribedPlayers()) ChatTriggerManager.sendBoosterInfo(PitPlayer.getPitPlayer(player));
+			for(Player player : ChatTriggerManager.getSubscribedPlayers())
+				ChatTriggerManager.sendBoosterInfo(PitPlayer.getPitPlayer(player));
 
 			String announcement = strings.get(2);
 			if(!announcement.isEmpty()) Bukkit.broadcastMessage(strings.get(2));
+		}
+
+		if(strings.size() >= 1 && strings.get(0).equals("BOOSTER_SHARE")) {
+			String boosterString = strings.get(1);
+			Booster booster = BoosterManager.getBooster(boosterString);
+			assert booster != null;
+			UUID activatorUUID = UUID.fromString(strings.get(2));
+			Player activator = Bukkit.getPlayer(activatorUUID);
+			int amount = integers.get(0);
+			if(activator != null) booster.queueOnlineShare(activator, amount);
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("AUCTION ITEM REQUEST")) {
@@ -208,7 +224,6 @@ public class ProxyMessaging implements Listener {
 
 				AOutput.send(winner.getPlayer(), "&5&lDARK AUCTION! &7Received " + item.itemName + "&7.");
 			}
-
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("MIGRATE")) {

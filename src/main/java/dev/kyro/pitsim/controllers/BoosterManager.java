@@ -6,6 +6,7 @@ import dev.kyro.pitsim.boosters.GoldBooster;
 import dev.kyro.pitsim.boosters.XPBooster;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -99,6 +100,29 @@ public class BoosterManager implements Listener {
 
 			}
 		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(5), (60 * 5) * 20);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Booster booster : boosterList) {
+					if(booster.activatorUUID == null || booster.toShare == 0) continue;
+
+					int toShare = (int) booster.toShare;
+					Player activator = Bukkit.getPlayer(booster.activatorUUID);
+					if(activator != null) {
+						booster.queueOnlineShare(activator, toShare);
+					} else {
+						new PluginMessage().writeString("BOOSTER_SHARE")
+								.writeString(booster.refName)
+								.writeString(booster.activatorUUID.toString())
+								.writeInt(toShare)
+								.send();
+					}
+
+					booster.toShare = 0;
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0L, 20 * 10);
 	}
 
 	public static void registerBooster(Booster booster) {

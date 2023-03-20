@@ -20,7 +20,8 @@ public class Config {
 	public boolean nons = true;
 	public String mapData;
 
-	public HashMap<String, Integer> boosters = new HashMap<>();
+	public Map<String, String> boosterActivatorMap = new HashMap<>();
+	public Map<String, Integer> boosters = new HashMap<>();
 
 	//	PitSim pass stuff
 	public Date currentPassStart;
