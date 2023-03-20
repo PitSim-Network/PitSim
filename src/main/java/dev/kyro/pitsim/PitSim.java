@@ -583,6 +583,7 @@ public class PitSim extends JavaPlugin {
 
 		new HopperCommand(adminCommand, "hopper");
 		new UUIDCommand(adminCommand, "uuid");
+		new NBTCommand(adminCommand, "nbt");
 		new RandomizeCommand(adminCommand, "randomize");
 		new ReloadCommand(adminCommand, "reload");
 		new BypassCommand(adminCommand, "bypass");
