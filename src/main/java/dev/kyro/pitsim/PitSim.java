@@ -1050,7 +1050,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Inferno());
 		EnchantManager.registerEnchant(new dev.kyro.pitsim.enchants.tainted.scythe.Leech());
 		EnchantManager.registerEnchant(new Medic());
-		EnchantManager.registerEnchant(new PurpleThumb());
+		EnchantManager.registerEnchant(new Persephone());
 		EnchantManager.registerEnchant(new RollingThunder());
 		EnchantManager.registerEnchant(new Swarm());
 		EnchantManager.registerEnchant(new Terror());
