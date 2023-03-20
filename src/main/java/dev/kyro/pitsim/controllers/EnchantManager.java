@@ -241,7 +241,6 @@ public class EnchantManager implements Listener {
 				if(pitEnchant == null) continue;
 				if(pitEnchant.isUncommonEnchant) continue;
 				hasCommonEnchant = true;
-				break;
 			}
 			return !hasCommonEnchant && enchantNum == 3 && !isJewel(itemStack);
 		}
