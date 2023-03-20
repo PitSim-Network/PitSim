@@ -19,8 +19,8 @@ public class PvPBooster extends Booster {
 	public ItemStack getBaseDisplayItem() {
 		return new AItemStackBuilder(Material.GOLD_SWORD)
 				.setLore(new ALoreBuilder(
-						"&7Don't lose lives on &3Jewel",
-						"&7items"
+						"&7All players can use &3Jewel",
+						"&7items without losing lives"
 				)).getItemStack();
 	}
 }

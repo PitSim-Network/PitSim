@@ -19,7 +19,8 @@ public class ChaosBooster extends Booster {
 	public ItemStack getBaseDisplayItem() {
 		return new AItemStackBuilder(Material.TNT)
 				.setLore(new ALoreBuilder(
-						"&7Double the amount bots in middle"
+						"&7Doubles the number of bots",
+						"&7in middle"
 				)).getItemStack();
 	}
 }
