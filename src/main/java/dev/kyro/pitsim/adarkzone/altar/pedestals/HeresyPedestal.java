@@ -17,7 +17,7 @@ public class HeresyPedestal extends AltarPedestal {
 
 	@Override
 	public String getDisplayName() {
-		return "&5&lHERESY";
+		return "&4&lHERESY";
 	}
 
 	@Override
@@ -27,13 +27,13 @@ public class HeresyPedestal extends AltarPedestal {
 
 	@Override
 	public ParticleColor getParticleColor() {
-		return ParticleColor.DARK_PURPLE;
+		return ParticleColor.DARK_RED;
 	}
 
 	@Override
 	public ItemStack getItem(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.EMPTY_MAP)
-				.setName("&5Pedestal of Heresy")
+				.setName("&4Pedestal of Heresy")
 				.setLore(new ALoreBuilder(
 						"&7This pedestal increases your",
 						"&7chance of gaining &4Demonic Vouchers&7.",

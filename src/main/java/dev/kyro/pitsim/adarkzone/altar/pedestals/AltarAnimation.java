@@ -202,20 +202,8 @@ public class AltarAnimation {
 						PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(stand.getId());
 						((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
 						activeTurmoil = false;
-
-						BukkitTask task = streamRunnables.get(AltarPedestal.getPedestal(TurmoilPedestal.class));
-						if(task != null) task.cancel();
 					}
 				}.runTaskLater(PitSim.INSTANCE, (rotations * 2L) + 60);
-
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						BukkitTask task = streamRunnables.get(AltarPedestal.getPedestal(TurmoilPedestal.class));
-						if(task != null) task.cancel();
-						Sounds.TURMOIL_BREAK.play(player);
-					}
-				}.runTaskLater(PitSim.INSTANCE, (rotations * 2L) + 20);
 			}
 
 			rotations++;
