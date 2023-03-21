@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.boosters.SoulBooster;
 import dev.kyro.pitsim.controllers.objects.PitBossBar;
 import dev.kyro.pitsim.misc.MinecraftSkin;
 import dev.kyro.pitsim.misc.Misc;
@@ -177,6 +178,11 @@ public abstract class PitBoss {
 
 	public void kill(Player killer) {
 		dropPool.groupDistribution(killer, damageMap);
+
+		double droppedSouls = getDroppedSouls();
+		if(SoulBooster.INSTANCE.isActive()) droppedSouls *= 1 + (SoulBooster.getSoulsIncrease() / 100.0);
+		DarkzoneManager.createSoulExplosion(null, boss.getLocation().add(0, 0.5, 0), (int) droppedSouls, true);
+
 		remove();
 	}
 
