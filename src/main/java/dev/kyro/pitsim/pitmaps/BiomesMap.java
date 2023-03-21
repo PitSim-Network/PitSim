@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.pitmaps;
 
-import dev.kyro.pitsim.controllers.BoosterManager;
-import dev.kyro.pitsim.controllers.objects.Booster;
+import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
 
@@ -23,8 +22,7 @@ public class BiomesMap extends PitMap {
 		spawn.setX(spawn.getX() + (Math.random() * 6 - 3));
 		spawn.setZ(spawn.getZ() + (Math.random() * 6 - 3));
 
-		Booster booster = BoosterManager.getBooster("chaos");
-		if(booster.isActive()) {
+		if(ChaosBooster.INSTANCE.isActive()) {
 			spawn.add(0, -10, 0);
 		} else if(Math.random() < 0.5) {
 			spawn.add(0, -5, 0);

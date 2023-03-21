@@ -1,7 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.Booster;
+import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.controllers.objects.Non;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -72,10 +72,9 @@ public class NonManager {
 		int base = 25;
 		int max = 40;
 
-		Booster booster = BoosterManager.getBooster("chaos");
-		if(booster.isActive()) {
-			max = 60;
-			base = 60;
+		if(ChaosBooster.INSTANCE.isActive()) {
+			max = 50;
+			base = 50;
 		}
 
 		Location mid = MapManager.currentMap.getMid();
