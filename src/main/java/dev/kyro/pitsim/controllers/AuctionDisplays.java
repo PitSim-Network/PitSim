@@ -266,4 +266,35 @@ public class AuctionDisplays implements Listener {
 		return false;
 	}
 
+	public static void onDisable() {
+
+		for(UUID highestBidderStand : highestBidderStands) {
+			ArmorStand stand = getStand(highestBidderStand);
+			if(stand != null) stand.remove();
+		}
+
+		for(UUID highestBidStand : highestBidStands) {
+			ArmorStand stand = getStand(highestBidStand);
+			if(stand != null) stand.remove();
+		}
+
+		for(UUID rightClickStand : rightClickStands) {
+			ArmorStand stand = getStand(rightClickStand);
+			if(stand != null) stand.remove();
+		}
+
+		for(UUID pedestalArmorStand : pedestalArmorStands) {
+			ArmorStand stand = getStand(pedestalArmorStand);
+			if(stand != null) stand.remove();
+		}
+
+		for(UUID pedestalItem : pedestalItems) {
+			Item item = getItem(pedestalItem);
+			if(item != null) item.remove();
+		}
+
+		ArmorStand timerStand = getStand(timerStandUUID);
+		if(timerStand != null) timerStand.remove();
+	}
+
 }

@@ -331,6 +331,7 @@ public class PitSim extends JavaPlugin {
 			TaintedWell.onStop();
 			AltarManager.cleanUp();
 			FirestoreManager.AUCTION.save();
+			AuctionDisplays.onDisable();
 		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {

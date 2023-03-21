@@ -30,7 +30,7 @@ public class Heartbeat {
 				}
 				alternate = !alternate;
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0, 18);
+		}.runTaskTimer(PitSim.INSTANCE, 0, 15);
 	}
 
 	public static void beat(Player player) {

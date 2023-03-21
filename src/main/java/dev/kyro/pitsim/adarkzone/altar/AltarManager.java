@@ -179,19 +179,19 @@ public class AltarManager implements Listener {
 		}
 
 		disableText(player);
+		double multiplier = AltarRewards.getTurmoilMultiplier(player);
 
 		BukkitRunnable callback = new BukkitRunnable() {
 			@Override
 			public void run() {
 				Misc.strikeLightningForPlayers(CONFIRM_LOCATION, player);
-				AltarRewards.rewardPlayer(player);
+				AltarRewards.rewardPlayer(player, multiplier);
 				AltarPedestal.disableAll(player);
 				enableText(player);
-
 			}
 		};
 
-		animations.add(new AltarAnimation(player, AltarPedestal.getTotalCost(player), pedestals, callback));
+		animations.add(new AltarAnimation(player, AltarPedestal.getTotalCost(player), pedestals, multiplier, callback));
 	}
 
 	public static void disableText(Player player) {

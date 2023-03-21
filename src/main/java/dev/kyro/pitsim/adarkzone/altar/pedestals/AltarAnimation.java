@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.particles.RedstoneParticle;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -18,6 +19,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class AltarAnimation {
@@ -29,15 +32,18 @@ public class AltarAnimation {
 
 	public List<AltarPedestal> activatedPedestals;
 	public BukkitRunnable onComplete;
+	public double turmoilMultiplier;
 
 	public final Map<AltarPedestal, BukkitTask> streamRunnables = new HashMap<>();
 	public final List<EntityItem> soulItems = new ArrayList<>();
 	public final List<PedestalSpin> pedestalSpins = new ArrayList<>();
+	public boolean activeTurmoil = false;
 
-	public AltarAnimation(Player player, int totalSouls, List<AltarPedestal> activatedPedestals, BukkitRunnable onComplete) {
+	public AltarAnimation(Player player, int totalSouls, List<AltarPedestal> activatedPedestals, double turmoil, BukkitRunnable onComplete) {
 		this.player = player;
 		this.totalSouls = totalSouls;
 		this.activatedPedestals = activatedPedestals;
+		this.turmoilMultiplier = turmoil;
 		this.onComplete = onComplete;
 
 		playSoulAnimation();
@@ -90,19 +96,19 @@ public class AltarAnimation {
 				public void run() {
 					drawPedestalStream(pedestal);
 					pedestalSpins.add(new PedestalSpin(player, pedestal));
+
+					if(pedestal instanceof TurmoilPedestal) {
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								turmoilAnimation();
+							}
+						}.runTaskLater(PitSim.INSTANCE, 40);
+					}
 				}
 			}.runTaskLater(PitSim.INSTANCE, delay);
 			delay += 40;
 		}
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(BukkitTask value : streamRunnables.values()) {
-					value.cancel();
-				}
-			}
-		}.runTaskLater(PitSim.INSTANCE, delay + 20);
 
 		new BukkitRunnable() {
 			@Override
@@ -154,7 +160,80 @@ public class AltarAnimation {
 		}.runTaskTimer(PitSim.INSTANCE, 0, 1));
 	}
 
+	public void turmoilAnimation() {
+		activeTurmoil = true;
+
+		Location spawn = AltarManager.ALTAR_CENTER;
+		World world = ((CraftWorld) (spawn.getWorld())).getHandle();
+		EntityArmorStand stand = new EntityArmorStand(world, spawn.getX(), spawn.getY(), spawn.getZ());
+		stand.setInvisible(true);
+		stand.setGravity(false);
+		stand.setCustomNameVisible(true);
+		stand.setBasePlate(true);
+
+		PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(stand);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawnPacket);
+
+		DataWatcher dataWatcher = stand.getDataWatcher();
+
+		int rotations = 0;
+		for(double i = 0; i < turmoilMultiplier; i += 0.1) {
+			BigDecimal bd = new BigDecimal(Double.toString(i));
+			bd = bd.setScale(1, RoundingMode.HALF_UP);
+
+			String text = "&2&lTURMOIL " + (1 + bd.doubleValue()) + "x";
+
+			int finalRotations = rotations;
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					dataWatcher.watch(2, (Object) ChatColor.translateAlternateColorCodes('&', text));
+					PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(stand.getId(), dataWatcher, true);
+					((CraftPlayer) player).getHandle().playerConnection.sendPacket(meta);
+
+					Sounds.TURMOIL.play(player, 1.5f, Math.min(2f, 0.025F * finalRotations));
+				}
+			}.runTaskLater(PitSim.INSTANCE, 2L * rotations);
+
+			if(i >= turmoilMultiplier - 0.1) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(stand.getId());
+						((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
+						activeTurmoil = false;
+
+						BukkitTask task = streamRunnables.get(AltarPedestal.getPedestal(TurmoilPedestal.class));
+						if(task != null) task.cancel();
+					}
+				}.runTaskLater(PitSim.INSTANCE, (rotations * 2L) + 60);
+
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						BukkitTask task = streamRunnables.get(AltarPedestal.getPedestal(TurmoilPedestal.class));
+						if(task != null) task.cancel();
+						Sounds.TURMOIL_BREAK.play(player);
+					}
+				}.runTaskLater(PitSim.INSTANCE, (rotations * 2L) + 20);
+			}
+
+			rotations++;
+		}
+	}
+
 	public void endAnimation() {
+		if(activeTurmoil) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					endAnimation();
+				}
+			}.runTaskLater(PitSim.INSTANCE, 10);
+			return;
+		}
+
+
 		if(onComplete != null) onComplete.runTask(PitSim.INSTANCE);
 		for(EntityItem soulItem : soulItems) {
 			PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(soulItem.getId());

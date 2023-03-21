@@ -16,9 +16,9 @@ public class AltarRewards {
 	//Base amount is based on LOW/MEDIUM/HIGH system (All base numbers should be doubles)
 	//Multipliers are Wealth, Turmoil, and Souls/Base roll cost
 
-	public static void rewardPlayer(Player player) {
-		boolean hasTurmoil = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player);
-		boolean positiveTurmoil = new Random().nextBoolean();
+	public static final double MAX_TURMOIL_MULTIPLIER = 10.0;
+
+	public static void rewardPlayer(Player player, double turmoilMultiplier) {
 
 		for(AltarPedestal.ALTAR_REWARD reward : AltarPedestal.ALTAR_REWARD.values()) {;
 
@@ -44,13 +44,7 @@ public class AltarRewards {
 			if(ProgressionManager.isUnlocked(pitPlayer, AltarBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
 				rewardCount *= 1.2;
 
-			if(hasTurmoil) {
-				double breakChance = positiveTurmoil ? 0.03 : 0.1;
-
-				double multiplier = 1;
-				while(Math.random() > breakChance) multiplier += 0.1;
-				rewardCount *= multiplier;
-			}
+			rewardCount *= turmoilMultiplier;
 
 			reward.rewardPlayer(player, (int) Math.floor(rewardCount));
 		}
@@ -76,6 +70,22 @@ public class AltarRewards {
 		//Copy soul explosion code for xp orb count
 
 
+	}
+
+	public static double getTurmoilMultiplier(Player player) {
+		TurmoilPedestal pedestal = AltarPedestal.getPedestal(TurmoilPedestal.class);
+		if(!pedestal.isActivated(player)) return 1.0;
+
+		boolean positiveTurmoil = new Random().nextBoolean();
+
+		double breakChance = positiveTurmoil ? 0.03 : 0.1;
+
+		double multiplier = 1;
+		while(Math.random() > breakChance) {
+			multiplier += 0.1;
+			if(multiplier >= MAX_TURMOIL_MULTIPLIER) break;
+		}
+		return multiplier;
 	}
 
 	public static double getSoulMultiplier(Player player) {
