@@ -57,7 +57,7 @@ public class ComboMana extends PitEnchant {
 	}
 
 	public int getMana(int enchantLvl) {
-		return enchantLvl * 6 + 2;
+		return enchantLvl * 4 + 2;
 	}
 
 	public int getStrikes(int enchantLvl) {

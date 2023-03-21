@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.uncommon;
+package dev.kyro.pitsim.enchants.tainted.chestplate;
 
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -12,7 +12,7 @@ public class Resilient extends PitEnchant {
 	public static Resilient INSTANCE;
 
 	public Resilient() {
-		super("Resilient", false, ApplyType.CHESTPLATES,
+		super("Resilient", true, ApplyType.CHESTPLATES,
 				"resilient", "resilent", "resileint");
 		isUncommonEnchant = true;
 		isTainted = true;

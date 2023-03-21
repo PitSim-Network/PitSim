@@ -12,6 +12,7 @@ import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ComboDefence extends PitEnchant {
@@ -19,7 +20,7 @@ public class ComboDefence extends PitEnchant {
 
 	public ComboDefence() {
 		super("Combo: Defence", false, ApplyType.SCYTHES,
-				"combodefence", "defence", "cdefence");
+				"combodefence", "defence", "cdefence", "combodefense", "defense", "cdefense");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
@@ -41,15 +42,17 @@ public class ComboDefence extends PitEnchant {
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
-		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.DAMAGE_RESISTANCE, getSeconds(enchantLvl) * 20,
+		Misc.applyPotionEffect(attackEvent.getAttacker(), PotionEffectType.DAMAGE_RESISTANCE, getTicks(enchantLvl),
 				getAmplifier(enchantLvl), true, false);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		double seconds = getTicks(enchantLvl) / 20.0;
 		return new PitLoreBuilder(
 				"&7Every &e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7strike gain &9Resistance[]" +
-				AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " &7(" + getSeconds(enchantLvl) + "s)"
+				AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " &7(" + decimalFormat.format(seconds) + "s)"
 		).getLore();
 	}
 
@@ -59,8 +62,9 @@ public class ComboDefence extends PitEnchant {
 				"gives you &9Resistance &7every few strikes";
 	}
 
-	public int getSeconds(int enchantLvl) {
-		return enchantLvl + 2;
+	public int getTicks(int enchantLvl) {
+		if(enchantLvl == 1) return 40;
+		return enchantLvl * 20;
 	}
 
 	public int getAmplifier(int enchantLvl) {
@@ -68,6 +72,6 @@ public class ComboDefence extends PitEnchant {
 	}
 
 	public int getStrikes(int enchantLvl) {
-		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 4.5), 1);
+		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 6.0), 1);
 	}
 }

@@ -46,6 +46,6 @@ public class Mechanic extends PitEnchant {
 	}
 
 	public static int getDecreaseTicks(int enchantLvl) {
-		return enchantLvl * 4 + 8;
+		return enchantLvl * 10 + 10;
 	}
 }

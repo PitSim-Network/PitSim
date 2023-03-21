@@ -26,14 +26,14 @@ public class ShieldBuster extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
 		if(enchantLvl == 0) return 1;
 
-		return getMultiplier(enchantLvl);
+		return 1 + (getIncrease(enchantLvl) / 100.0);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		return new PitLoreBuilder(
-				"&7Your attacks deal &c" + decimalFormat.format(getMultiplier(enchantLvl)) + "x &7damage to other player's shields"
+				"&7Your attacks deal &c+" + getIncrease(enchantLvl) + "% &7damage to other player's shields"
 		).getLore();
 	}
 
@@ -43,7 +43,8 @@ public class ShieldBuster extends PitEnchant {
 				"significantly increases the damage you do to other players' shields";
 	}
 
-	public static double getMultiplier(int enchantLvl) {
-		return enchantLvl * 0.5 + 1.5;
+	public static int getIncrease(int enchantLvl) {
+		if(enchantLvl == 1) return 30;
+		return enchantLvl * 30 - 10;
 	}
 }

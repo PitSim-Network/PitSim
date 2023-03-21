@@ -18,7 +18,7 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enchants.tainted.uncommon.Resilient;
+import dev.kyro.pitsim.enchants.tainted.chestplate.Resilient;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.events.AttackEvent;

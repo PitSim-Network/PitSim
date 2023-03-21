@@ -46,6 +46,6 @@ public class Desperate extends PitEnchant {
 	}
 
 	public int getDamageIncrease(int enchantLvl) {
-		return enchantLvl * 8 + 4;
+		return enchantLvl * 5 + 4;
 	}
 }

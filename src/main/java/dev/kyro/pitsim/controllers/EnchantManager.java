@@ -386,10 +386,16 @@ public class EnchantManager implements Listener {
 				PitEnchant enchant = EnchantManager.getEnchant(key);
 				Integer enchantLvl = itemEnchants.getInteger(key);
 				if(enchant == null) continue;
-				loreBuilder.addLore("&f");
 
+				loreBuilder.addLore("&f");
 				loreBuilder.addLore(enchant.getDisplayName(displayUncommon) + enchantLevelToRoman(enchantLvl));
 				loreBuilder.addLore(enchant.getDescription(enchantLvl));
+
+//				for(int i = 0; i < 3; i++) {
+//					loreBuilder.addLore("&f");
+//					loreBuilder.addLore(enchant.getDisplayName(displayUncommon) + enchantLevelToRoman(i + 1));
+//					loreBuilder.addLore(enchant.getDescription(i + 1));
+//				}
 			}
 			if(isJewel) {
 				PitEnchant jewelEnchant = getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));

@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ public class Ethereal extends PitEnchant {
 
 	public Ethereal() {
 		super("Ethereal", false, ApplyType.CHESTPLATES,
-				"ethereal");
+				"ethereal", "eth");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
@@ -48,15 +47,14 @@ public class Ethereal extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0) return;
 
-		healEvent.multipliers.add(getHealingMultiplier(enchantLvl));
+		healEvent.multipliers.add(1 + (getHealingPercent(enchantLvl) / 100.0));
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		return new PitLoreBuilder(
-				"&7Heal &c" + decimalFormat.format(getHealingMultiplier(enchantLvl)) + "x &7from all sources, " +
-						"but lose &c+1 life on this item when you die"
+				"&7Heal &c+" + getHealingPercent(enchantLvl) + "% &7from all sources, " +
+						"but lose &c+1 life &7on this item when you die"
 		).getLore();
 	}
 
@@ -66,7 +64,8 @@ public class Ethereal extends PitEnchant {
 				"heals you for more from all sources, but loses additional lives when you die";
 	}
 
-	public static double getHealingMultiplier(int enchantLvl) {
-		return enchantLvl * 0.4 + 0.8;
+	public static int getHealingPercent(int enchantLvl) {
+		if(enchantLvl == 1) return 25;
+		return enchantLvl * 15 + 5;
 	}
 }
