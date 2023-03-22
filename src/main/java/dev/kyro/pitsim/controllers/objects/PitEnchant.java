@@ -66,9 +66,7 @@ public abstract class PitEnchant implements Listener, Summarizable {
 	public String getDisplayName(boolean displayUncommon, boolean overrideDisableCheck) {
 		String prefix = "";
 		if(isRare) {
-			if(applyType == ApplyType.SCYTHES) prefix += "&dSPELL! ";
-			else if(applyType == ApplyType.CHESTPLATES) prefix += "&dEFFECT! ";
-			else prefix += "&dRARE! ";
+			prefix += "&dRARE! ";
 		} else if(isUncommonEnchant && displayUncommon) {
 			prefix += "&aUNC. ";
 		}
