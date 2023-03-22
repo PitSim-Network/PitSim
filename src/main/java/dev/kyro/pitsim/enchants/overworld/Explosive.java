@@ -51,7 +51,7 @@ public class Explosive extends PitEnchant {
 				Player player = (Player) entity;
 				Non non = NonManager.getNon(player);
 
-				if(SpawnManager.isInSpawn(player.getLocation())) continue;
+				if(SpawnManager.isInSpawn(player)) continue;
 
 				if(player != shooter) {
 

@@ -11,7 +11,7 @@ public class ChaosBooster extends Booster {
 	public static ChaosBooster INSTANCE;
 
 	public ChaosBooster() {
-		super("Chaos Booster", "chaos", 16, ChatColor.GREEN);
+		super("Chaos Booster", "chaos", 15, ChatColor.GREEN);
 		INSTANCE = this;
 	}
 

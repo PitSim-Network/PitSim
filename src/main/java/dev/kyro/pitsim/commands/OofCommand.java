@@ -37,7 +37,7 @@ public class OofCommand implements CommandExecutor {
 			return false;
 		}
 
-		if(SpawnManager.isInSpawn(player.getLocation()) && !player.isOp()) {
+		if(SpawnManager.isInSpawn(player) && !player.isOp()) {
 			AOutput.send(player, "&c&lERROR!&7 You can't /oof in spawn!");
 			Sounds.ERROR.play(player);
 			return false;

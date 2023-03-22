@@ -43,6 +43,7 @@ public class Frail extends PitEnchant {
 	}
 
 	public static int getIncrease(int enchantLvl) {
-		return enchantLvl * 10;
+		if(enchantLvl == 1) return 4;
+		return enchantLvl * 7 - 1;
 	}
 }

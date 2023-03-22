@@ -18,7 +18,7 @@ public class XPBooster extends Booster {
 	public static XPBooster INSTANCE;
 
 	public XPBooster() {
-		super("XP Booster", "xp", 10, ChatColor.AQUA);
+		super("XP Booster", "xp", 9, ChatColor.AQUA);
 		INSTANCE = this;
 	}
 

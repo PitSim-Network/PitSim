@@ -54,11 +54,6 @@ public class BrewingBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -85,11 +80,6 @@ public class BrewingBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -114,11 +104,6 @@ public class BrewingBranch extends SkillBranch {
 								"&7around your potions"
 						))
 						.getItemStack();
-			}
-
-			@Override
-			public int getCost() {
-				return 10;
 			}
 		};
 	}
@@ -146,11 +131,6 @@ public class BrewingBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -165,11 +145,6 @@ public class BrewingBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "brewing-time-reduction";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override
@@ -191,11 +166,6 @@ public class BrewingBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "brewing-luck";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override

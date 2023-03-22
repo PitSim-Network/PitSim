@@ -31,7 +31,7 @@ public class Mending extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Your shield regenerates &9" + getIncreasePercent(enchantLvl) + "% faster"
+				"&7Your shield regenerates &9" + getIncreasePercent(enchantLvl) + "% &7faster when active"
 		).getLore();
 	}
 
@@ -42,6 +42,6 @@ public class Mending extends PitEnchant {
 	}
 
 	public static int getIncreasePercent(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 12;
 	}
 }

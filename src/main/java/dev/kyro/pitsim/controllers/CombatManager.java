@@ -89,7 +89,7 @@ public class CombatManager implements Listener {
 			}
 			DamageManager.death(player);
 		}
-		if(player.getWorld() == MapManager.getDarkzone() && !SpawnManager.isInDarkzoneSpawn(player.getLocation())) {
+		if(player.getWorld() == MapManager.getDarkzone() && !SpawnManager.isInSpawn(player)) {
 			DamageManager.death(player);
 		}
 	}

@@ -54,7 +54,7 @@ public class PitWitherSkeleton extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.HEALTH);
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_HEALTH);
 	}
 
 	@Override

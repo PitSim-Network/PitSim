@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.MobStatus;
@@ -25,6 +26,9 @@ public abstract class BasicDarkzoneEnchant extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
+
+		PitMob pitMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
+		if(pitMob == null || !getApplicableMobs().contains(pitMob.getClass())) return;
 
 		if(isOffensive()) {
 			int enchantLvl = attackEvent.getAttackerEnchantLevel(this);

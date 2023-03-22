@@ -174,7 +174,7 @@ public class Hopper {
 			for(Entity nearbyEntity : hopper.getNearbyEntities(5, 5, 5)) {
 				if(!(nearbyEntity instanceof Player) || team.contains(nearbyEntity.getUniqueId())) continue;
 				Player hitTarget = (Player) nearbyEntity;
-				if(SpawnManager.isInSpawn(hitTarget.getLocation())) continue;
+				if(SpawnManager.isInSpawn(hitTarget)) continue;
 
 				double range = 3.7;
 //				if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) &&

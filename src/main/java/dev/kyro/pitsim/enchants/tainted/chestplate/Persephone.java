@@ -35,8 +35,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class PurpleThumb extends PitEnchant {
-	public static PurpleThumb INSTANCE;
+public class Persephone extends PitEnchant {
+	public static Persephone INSTANCE;
 	public static Map<Player, List<FlowerBunch>> flowerMap = new HashMap<>();
 
 	public static final int MIN_FLOWER_COUNT = 8;
@@ -45,9 +45,9 @@ public class PurpleThumb extends PitEnchant {
 	public static final double EFFECT_RADIUS = 7;
 	public static final int DEFAULT_EFFECT_DURATION = 20 * 10;
 
-	public PurpleThumb() {
-		super("Purple Thumb", true, ApplyType.CHESTPLATES,
-				"purplethumb", "thumb");
+	public Persephone() {
+		super("Persephone", true, ApplyType.CHESTPLATES,
+				"persephone", "per", "pers", "perseph");
 		isTainted = true;
 		INSTANCE = this;
 
@@ -150,7 +150,7 @@ public class PurpleThumb extends PitEnchant {
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0) return;
 
-		if(SpawnManager.isInSpawn(player.getLocation())) {
+		if(SpawnManager.isInSpawn(player)) {
 			AOutput.error(player, "&c&lOOPS!&7 You cannot do this in spawn");
 			return;
 		}

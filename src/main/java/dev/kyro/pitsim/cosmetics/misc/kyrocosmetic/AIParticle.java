@@ -50,7 +50,7 @@ public abstract class AIParticle {
 	}
 
 	public void pickTarget() {
-		if(SpawnManager.isInSpawn(owner.getLocation())) {
+		if(SpawnManager.isInSpawn(owner)) {
 			target = null;
 			return;
 		}

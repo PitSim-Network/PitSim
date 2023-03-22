@@ -33,7 +33,7 @@ public class Greed extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Gain +" + getIncreasePercent(enchantLvl) + "% &7souls from kills on other players"
+				"&7Gain &f+" + getIncreasePercent(enchantLvl) + "% &7souls &7from kills on other players"
 		).getLore();
 	}
 

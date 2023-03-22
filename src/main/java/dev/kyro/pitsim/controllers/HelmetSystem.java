@@ -14,8 +14,7 @@ public class HelmetSystem {
 		XP_BOOST("&bXP Boost", 3, 3, 20, (short) 12, ChatColor.AQUA, 1),
 		GOLD_BOOST("&6Gold Boost", 4, 4, 20, (short) 14, ChatColor.GOLD, 1),
 		DAMAGE("&cDamage Dealt", 10, 5, 10, (short) 1, ChatColor.RED, 1),
-		DAMAGE_REDUCTION("&9Damage Received", 10, 10, 10, (short) 6, ChatColor.BLUE, 1),
-		DROP_CHANCE("&dItem Drop Chance", 7, 7, 12, (short) 13, ChatColor.LIGHT_PURPLE, 7.5);
+		DAMAGE_REDUCTION("&9Damage Received", 10, 10, 10, (short) 6, ChatColor.BLUE, 1);
 
 		public String refName;
 		public int everyX;

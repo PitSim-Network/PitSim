@@ -45,6 +45,6 @@ public class Hoarder extends PitEnchant {
 	}
 
 	public int getDecreasePercent(int enchantLvl) {
-		return enchantLvl * 20;
+		return enchantLvl * 10;
 	}
 }

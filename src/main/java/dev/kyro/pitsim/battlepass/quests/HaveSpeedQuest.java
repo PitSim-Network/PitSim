@@ -17,9 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class HaveSpeedQuest extends PassQuest {
 	public static HaveSpeedQuest INSTANCE;
 
@@ -35,7 +32,7 @@ public class HaveSpeedQuest extends PassQuest {
 				if(!HaveSpeedQuest.INSTANCE.isQuestActive()) return;
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					if(!onlinePlayer.hasPotionEffect(PotionEffectType.SPEED) ||
-							SpawnManager.isInSpawn(onlinePlayer.getLocation()) || MapManager.inDarkzone(onlinePlayer))
+							SpawnManager.isInSpawn(onlinePlayer) || MapManager.inDarkzone(onlinePlayer))
 						continue;
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 					HaveSpeedQuest.INSTANCE.progressQuest(pitPlayer, 1);

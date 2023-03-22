@@ -16,7 +16,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Singularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
-import dev.kyro.pitsim.enchants.tainted.chestplate.PurpleThumb;
+import dev.kyro.pitsim.enchants.tainted.chestplate.Persephone;
 import dev.kyro.pitsim.enchants.tainted.uncommon.ShieldBuster;
 import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.KillType;
@@ -277,7 +277,6 @@ public class DamageManager implements Listener {
 		}
 
 		AttackEvent.Pre preEvent;
-		if(event.getEntity() instanceof Fireball) return;
 
 		Map<PitEnchant, Integer> attackerEnchantMap = new HashMap<>();
 		if(realDamager instanceof Projectile) {
@@ -367,7 +366,7 @@ public class DamageManager implements Listener {
 
 		if(attackEvent.trueDamage != 0 || attackEvent.veryTrueDamage != 0) {
 			double finalHealth = attackEvent.getDefender().getHealth() - attackEvent.trueDamage - attackEvent.veryTrueDamage;
-			if(PurpleThumb.shouldPreventDeath(attackEvent.getDefenderPlayer())) finalHealth = Math.max(finalHealth, 1);
+			if(Persephone.shouldPreventDeath(attackEvent.getDefenderPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
 				attackEvent.setCancelled(true);
 				kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
@@ -379,7 +378,7 @@ public class DamageManager implements Listener {
 
 		if(attackEvent.selfTrueDamage != 0 || attackEvent.selfVeryTrueDamage != 0) {
 			double finalHealth = attackEvent.getAttacker().getHealth() - attackEvent.selfTrueDamage - attackEvent.selfVeryTrueDamage;
-			if(PurpleThumb.shouldPreventDeath(attackEvent.getAttackerPlayer())) finalHealth = Math.max(finalHealth, 1);
+			if(Persephone.shouldPreventDeath(attackEvent.getAttackerPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
 				attackEvent.setCancelled(true);
 				kill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), KillType.KILL);
@@ -399,7 +398,7 @@ public class DamageManager implements Listener {
 //		AOutput.send(attackEvent.attacker, "Final Damage: " + attackEvent.event.getFinalDamage());
 
 		if(finalDamage + attackEvent.executeUnder >= attackEvent.getDefender().getHealth()) {
-			if(PurpleThumb.shouldPreventDeath(attackEvent.getDefenderPlayer())) {
+			if(Persephone.shouldPreventDeath(attackEvent.getDefenderPlayer())) {
 				attackEvent.getWrapperEvent().getSpigotEvent().setDamage(0);
 				attackEvent.getDefender().setHealth(1);
 			} else {

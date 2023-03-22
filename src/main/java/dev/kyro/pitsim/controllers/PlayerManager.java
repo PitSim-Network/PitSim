@@ -13,8 +13,6 @@ import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
-import dev.kyro.pitsim.aitems.PitItem;
-import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.objects.*;
@@ -37,7 +35,6 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeEqualityPredicate;
 import net.luckperms.api.node.types.PermissionNode;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -132,13 +129,13 @@ public class PlayerManager implements Listener {
 						for(Player player : Bukkit.getOnlinePlayers()) {
 							if(!player.hasPermission("group.eternal") || MapManager.currentMap.world != player.getWorld() || VanishAPI.isInvisible(player))
 								continue;
-							if(SpawnManager.isInSpawn(player.getLocation())) continue;
+							if(SpawnManager.isInSpawn(player)) continue;
 							List<Player> nearbyNons = new ArrayList<>();
 							for(Entity nearbyEntity : player.getNearbyEntities(4, 4, 4)) {
 	//						if(nearbyEntity.getWorld() == Bukkit.getWorld("tutorial")) continue;
 							if(!(nearbyEntity instanceof Player)) continue;
 							Player nearby = (Player) nearbyEntity;
-							if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby.getLocation())) continue;
+							if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby)) continue;
 							if(nearby.getLocation().distance(player.getLocation()) > 4) continue;
 							nearbyNons.add(nearby);
 						}
@@ -267,7 +264,7 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		if(!(event.getRightClicked() instanceof Player)) return;
 		Player target = (Player) event.getRightClicked();
-		if(!player.isSneaking() || !SpawnManager.isInSpawn(player.getLocation()) || !SpawnManager.isInSpawn(target.getLocation()))
+		if(!player.isSneaking() || !SpawnManager.isInSpawn(player) || !SpawnManager.isInSpawn(target))
 			return;
 		if(!PlayerManager.isRealPlayer(target)) return;
 		if(viewShiftCooldown.getOrDefault(player.getUniqueId(), 0L) + 500 > System.currentTimeMillis()) return;
@@ -280,21 +277,6 @@ public class PlayerManager implements Listener {
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.ANVIL) {
 			event.setCancelled(true);
 		}
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onClick2(PlayerInteractEvent event) {
-		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		Player player = event.getPlayer();
-		if(!MapManager.inDarkzone(player)) return;
-		ItemStack itemStack = player.getItemInHand();
-		if(Misc.isAirOrNull(itemStack)) return;
-		MysticType mysticType = MysticType.getMysticType(itemStack);
-		if(mysticType != MysticType.TAINTED_SCYTHE) return;
-		if(SpawnManager.isInDarkzoneSpawn(player.getLocation())) return;
-
-		PitPlayerAttemptAbilityEvent newEvent = new PitPlayerAttemptAbilityEvent(player);
-		Bukkit.getPluginManager().callEvent(newEvent);
 	}
 
 	@EventHandler

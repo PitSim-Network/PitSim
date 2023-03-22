@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.Listener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class ProgressionManager implements Listener {
 		registerBranch(new SoulBranch());
 		registerBranch(new ManaBranch());
 		registerBranch(new AltarBranch());
-		registerBranch(new BrewingBranch());
+//		registerBranch(new BrewingBranch()); // TODO: Remove fake itemstack from MainProgressionPanel
 
 		registerMainUnlock(new MainProgressionStart("start", 1, 3));
 
@@ -61,7 +62,7 @@ public class ProgressionManager implements Listener {
 		registerMainUnlock(new MainProgressionMajorUnlock(SoulBranch.class, index++));
 		registerMainUnlock(new MainProgressionMajorUnlock(ManaBranch.class, index++));
 		registerMainUnlock(new MainProgressionMajorUnlock(AltarBranch.class, index++));
-		registerMainUnlock(new MainProgressionMajorUnlock(BrewingBranch.class, index++));
+//		registerMainUnlock(new MainProgressionMajorUnlock(BrewingBranch.class, index++));
 	}
 
 	/*
@@ -167,17 +168,18 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static String getUnlockCostFormatted(SkillBranch.MajorProgressionUnlock unlock) {
-		int cost = unlock.getCost();
+		int cost = ProgressionManager.getInitialSoulCost(unlock);
 		return formatSouls(cost);
 	}
 
 	public static String getUnlockCostFormatted(SkillBranch.Path unlock, int level) {
-		int cost = unlock.getCost(level);
+		int cost = ProgressionManager.getInitialSoulCost(unlock, level);
 		return formatSouls(cost);
 	}
 
 	public static String formatSouls(int souls) {
-		return "&f" + souls + " soul" + (souls == 1 ? "" : "s");
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
+		return "&f" + decimalFormat.format(souls) + " soul" + (souls == 1 ? "" : "s");
 	}
 
 	public static void addPurchaseCostLore(Object object, ALoreBuilder loreBuilder, UnlockState unlockState,
@@ -312,6 +314,58 @@ public class ProgressionManager implements Listener {
 				throw new RuntimeException();
 		}
 		return skillBranchData.majorUnlocks.contains(unlock.getRefName());
+	}
+
+	public static int getInitialSoulCost(SkillBranch.MajorProgressionUnlock unlock) {
+		double multiplier = getMultiplier(unlock.skillBranch.index);
+		double baseValue;
+		switch(unlock.position) {
+			case FIRST:
+				baseValue = 100;
+				break;
+			case LAST:
+				baseValue = 50_000;
+				break;
+			case FIRST_PATH:
+			case SECOND_PATH:
+				baseValue = 3_000;
+				break;
+			default:
+				throw new RuntimeException();
+		}
+		return (int) (baseValue * multiplier);
+	}
+
+	public static int getInitialSoulCost(SkillBranch.Path path, int level) {
+		double multiplier = getMultiplier(path.skillBranch.index);
+		double baseValue;
+		switch(level) {
+			case 1:
+				baseValue = 500;
+				break;
+			case 2:
+				baseValue = 1_000;
+				break;
+			case 3:
+				baseValue = 1_500;
+				break;
+			case 4:
+				baseValue = 5_000;
+				break;
+			case 5:
+				baseValue = 10_000;
+				break;
+			case 6:
+				baseValue = 20_000;
+				break;
+			default:
+				throw new RuntimeException();
+		}
+		return (int) (baseValue * multiplier);
+	}
+
+	public static double getMultiplier(int index) {
+		return 0.2 * index + 1;
 	}
 
 	public static class PathGUILocation {

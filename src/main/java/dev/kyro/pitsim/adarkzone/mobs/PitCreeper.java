@@ -83,7 +83,7 @@ public class PitCreeper extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		int maxHealth = DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.HEALTH);
+		int maxHealth = DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_HEALTH);
 		return isMinion() ? (int) (maxHealth * 1.25) : maxHealth;
 	}
 

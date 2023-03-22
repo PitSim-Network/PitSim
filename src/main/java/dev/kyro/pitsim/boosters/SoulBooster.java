@@ -7,20 +7,24 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class PvPBooster extends Booster {
-	public static PvPBooster INSTANCE;
+public class SoulBooster extends Booster {
+	public static SoulBooster INSTANCE;
 
-	public PvPBooster() {
-		super("PvP Booster", "pvp", 13, ChatColor.RED);
+	public SoulBooster() {
+		super("Soul Booster", "darkzone", 17, ChatColor.WHITE);
 		INSTANCE = this;
 	}
 
 	@Override
 	public ItemStack getBaseDisplayItem() {
-		return new AItemStackBuilder(Material.GOLD_SWORD)
+		return new AItemStackBuilder(Material.GHAST_TEAR)
 				.setLore(new ALoreBuilder(
-						"&7All players can use &3Jewel",
-						"&7items without losing lives"
+						"&7Gain &f+" + getSoulsIncrease() + "% souls &7from mobs",
+						"&7and bosses in the &5Darkzone"
 				)).getItemStack();
+	}
+
+	public static int getSoulsIncrease() {
+		return 50;
 	}
 }

@@ -60,11 +60,6 @@ public class SoulBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -89,11 +84,6 @@ public class SoulBranch extends SkillBranch {
 								"&7enchant items to &5Tier IV"
 						))
 						.getItemStack();
-			}
-
-			@Override
-			public int getCost() {
-				return 10;
 			}
 		};
 	}
@@ -120,11 +110,6 @@ public class SoulBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -150,11 +135,6 @@ public class SoulBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -169,11 +149,6 @@ public class SoulBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "souls-from-mobs";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override
@@ -195,11 +170,6 @@ public class SoulBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "fresh-chance";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override

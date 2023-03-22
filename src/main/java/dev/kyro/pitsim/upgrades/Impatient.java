@@ -2,6 +2,7 @@ package dev.kyro.pitsim.upgrades;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
@@ -53,11 +54,11 @@ public class Impatient extends RenownUpgrade {
 			@Override
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(UpgradeManager.hasUpgrade(player, INSTANCE) && SpawnManager.isInSpawn(player.getLocation())) {
-						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 40, 1, false, false);
-					}
-					if(UpgradeManager.getTier(player, INSTANCE) == 2 && SpawnManager.isInDarkzoneSpawn(player.getLocation())) {
+					if(UpgradeManager.hasUpgrade(player, INSTANCE) && SpawnManager.isInSpawn(player)) continue;
+					if(MapManager.inDarkzone(player)) {
 						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 40, 3, false, false);
+					} {
+						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 40, 1, false, false);
 					}
 				}
 			}

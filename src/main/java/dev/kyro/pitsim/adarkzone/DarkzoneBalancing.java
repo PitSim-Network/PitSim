@@ -15,7 +15,7 @@ public class DarkzoneBalancing {
 		BOSS_HEALTH(70, 1.3),
 		BOSS_SOULS(10, 1.4),
 		MOB_DAMAGE(8, 1.3),
-		HEALTH(40, 1.3),
+		MOB_HEALTH(40, 1.3),
 		MOB_SOULS(5, 1.4),
 		;
 

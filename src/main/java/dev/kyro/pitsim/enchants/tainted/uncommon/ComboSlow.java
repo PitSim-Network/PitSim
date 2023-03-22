@@ -48,8 +48,8 @@ public class ComboSlow extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7When you hit your opponent &e" + getStrikes(enchantLvl) + " times&7, apply &9Slowness " +
-						AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " &7(" + getSeconds(enchantLvl) + ")"
+				"&7When you hit your opponent &e" + getStrikes(enchantLvl) + "[]times&7, apply &9Slowness " +
+						AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " &7(" + getSeconds(enchantLvl) + "s)"
 		).getLore();
 	}
 
@@ -60,7 +60,7 @@ public class ComboSlow extends PitEnchant {
 	}
 
 	public int getSeconds(int enchantLvl) {
-		return enchantLvl + 2;
+		return enchantLvl + 1;
 	}
 
 	public int getAmplifier(int enchantLvl) {

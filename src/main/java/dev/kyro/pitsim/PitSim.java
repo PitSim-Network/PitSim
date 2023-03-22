@@ -37,10 +37,7 @@ import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyPlayerKillQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailySWGamePlayedQuest;
 import dev.kyro.pitsim.battlepass.quests.dzkillmobs.*;
-import dev.kyro.pitsim.boosters.ChaosBooster;
-import dev.kyro.pitsim.boosters.GoldBooster;
-import dev.kyro.pitsim.boosters.PvPBooster;
-import dev.kyro.pitsim.boosters.XPBooster;
+import dev.kyro.pitsim.boosters.*;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
@@ -586,6 +583,7 @@ public class PitSim extends JavaPlugin {
 
 		new HopperCommand(adminCommand, "hopper");
 		new UUIDCommand(adminCommand, "uuid");
+		new NBTCommand(adminCommand, "nbt");
 		new RandomizeCommand(adminCommand, "randomize");
 		new ReloadCommand(adminCommand, "reload");
 		new BypassCommand(adminCommand, "bypass");
@@ -739,6 +737,7 @@ public class PitSim extends JavaPlugin {
 		BoosterManager.registerBooster(new GoldBooster());
 		BoosterManager.registerBooster(new PvPBooster());
 		BoosterManager.registerBooster(new ChaosBooster());
+		BoosterManager.registerBooster(new SoulBooster());
 	}
 
 	public void registerUpgrades() {
@@ -1052,7 +1051,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Inferno());
 		EnchantManager.registerEnchant(new dev.kyro.pitsim.enchants.tainted.scythe.Leech());
 		EnchantManager.registerEnchant(new Medic());
-		EnchantManager.registerEnchant(new PurpleThumb());
+		EnchantManager.registerEnchant(new Persephone());
 		EnchantManager.registerEnchant(new RollingThunder());
 		EnchantManager.registerEnchant(new Swarm());
 		EnchantManager.registerEnchant(new Terror());
@@ -1075,6 +1074,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Ethereal());
 		EnchantManager.registerEnchant(new Fearmonger());
 		EnchantManager.registerEnchant(new Fortify());
+		EnchantManager.registerEnchant(new Greed());
 		EnchantManager.registerEnchant(new Hoarder());
 		EnchantManager.registerEnchant(new LeaveMeAlone());
 		EnchantManager.registerEnchant(new Mechanic());

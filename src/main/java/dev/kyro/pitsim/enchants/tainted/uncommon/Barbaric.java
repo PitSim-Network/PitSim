@@ -45,6 +45,6 @@ public class Barbaric extends PitEnchant {
 	}
 
 	public static int getDamageIncrease(int enchantLvl) {
-		return enchantLvl * 7 + 9;
+		return enchantLvl * 7 + 4;
 	}
 }

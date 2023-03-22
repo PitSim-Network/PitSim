@@ -57,10 +57,10 @@ public class Fearmonger extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
-		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		DecimalFormat decimalFormat = new DecimalFormat("0.##");
 		return new PitLoreBuilder(
-				"&7No mobs will attack you for " + decimalFormat.format(getImmuneTicks(enchantLvl) / 20.0) +
-						" second" + (getImmuneTicks(enchantLvl) / 20.0 == 1 ? "" : "s") + " following each mob kill"
+				"&7No mobs will attack you for &a" + decimalFormat.format(getImmuneTicks(enchantLvl) / 20.0) +
+						"&7 second" + (getImmuneTicks(enchantLvl) / 20.0 == 1 ? "" : "s") + " following each mob kill"
 		).getLore();
 	}
 

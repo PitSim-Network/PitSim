@@ -75,7 +75,7 @@ public class Adrenaline extends PitEnchant {
 	}
 
 	public static int getThresholdPercent(int enchantLvl) {
-		return 30;
+		return 40;
 	}
 
 	public static int getDamageIncrease(int enchantLvl) {

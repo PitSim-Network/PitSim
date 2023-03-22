@@ -71,6 +71,6 @@ public class StartingHand extends PitEnchant {
 	}
 
 	public static int getGoodLuckChance(int enchantLvl) {
-		return enchantLvl * 9 + 23;
+		return enchantLvl * 18 + 16;
 	}
 }

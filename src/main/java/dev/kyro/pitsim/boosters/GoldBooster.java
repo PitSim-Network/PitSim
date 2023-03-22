@@ -18,7 +18,7 @@ public class GoldBooster extends Booster {
 	public static GoldBooster INSTANCE;
 
 	public GoldBooster() {
-		super("Gold Booster", "gold", 12, ChatColor.GOLD);
+		super("Gold Booster", "gold", 11, ChatColor.GOLD);
 		INSTANCE = this;
 	}
 
