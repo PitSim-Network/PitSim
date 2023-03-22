@@ -24,7 +24,6 @@ import java.math.RoundingMode;
 import java.util.*;
 
 public class AltarAnimation {
-
 	public static final int STREAM_TICKS = 40;
 
 	public Player player;
@@ -80,7 +79,7 @@ public class AltarAnimation {
 				soulItems.add(entityItem);
 				Sounds.SOUL_DROP.play(player, 1f, Math.min(0.05f * ticks, 2f));
 
-				if(soulItems.size() >= (totalSouls / 5) + 4) {
+				if(soulItems.size() >= Math.sqrt(totalSouls) + (24 - Math.sqrt(AltarPedestal.BASE_COST))) {
 					cancel();
 					drawPedestalStreams();
 				}
