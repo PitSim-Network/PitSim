@@ -2,6 +2,7 @@ package dev.kyro.pitsim.brewing.objects;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
@@ -14,16 +15,16 @@ import org.bukkit.potion.PotionType;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BrewingIngredient implements Listener {
+public abstract class BrewingIngredient extends StaticPitItem implements Listener {
 	public int tier;
-	public NBTTag nbtTag;
+	public String nbtTag;
 	public String name;
 	public ChatColor color;
 	public PotionType potionType;
 
 	public static List<BrewingIngredient> ingredients = new ArrayList<>();
 
-	public BrewingIngredient(int tier, NBTTag nbtTag, String name, ChatColor color, PotionType potionType) {
+	public BrewingIngredient(int tier, String nbtTag, String name, ChatColor color, PotionType potionType) {
 		this.tier = tier;
 		this.nbtTag = nbtTag;
 		this.name = name;
