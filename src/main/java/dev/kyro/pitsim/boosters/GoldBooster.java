@@ -54,7 +54,7 @@ public class GoldBooster extends Booster {
 	}
 
 	public static int getGoldIncrease() {
-		return 30;
+		return 40;
 	}
 
 	public static double getGoldShare() {

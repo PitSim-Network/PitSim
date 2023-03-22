@@ -348,7 +348,7 @@ public class DamageManager implements Listener {
 		float absorption = nmsDefender.getAbsorptionHearts();
 		if(absorption != 0) nmsDefender.setAbsorptionHearts(0);
 
-		double finalDamage = Singularity.getAdjustedFinalDamage(attackEvent);
+		double finalDamage = Math.max(Singularity.getAdjustedFinalDamage(attackEvent), 0);
 		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(0);
 
 		DamageIndicator.onAttack(attackEvent, finalDamage);
