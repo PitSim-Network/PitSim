@@ -90,11 +90,6 @@ public class DamageBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -120,11 +115,6 @@ public class DamageBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -148,11 +138,6 @@ public class DamageBranch extends SkillBranch {
 								"&7Heal &c" + Misc.getHearts(getMobKillHealing()) + " &7on mob kill"
 						))
 						.getItemStack();
-			}
-
-			@Override
-			public int getCost() {
-				return 10;
 			}
 		};
 	}
@@ -180,11 +165,6 @@ public class DamageBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -199,11 +179,6 @@ public class DamageBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "mob-damage";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override
@@ -225,11 +200,6 @@ public class DamageBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "boss-damage";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override

@@ -96,11 +96,6 @@ public class DefenceBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -126,11 +121,6 @@ public class DefenceBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -155,11 +145,6 @@ public class DefenceBranch extends SkillBranch {
 								"&7from other players"
 						))
 						.getItemStack();
-			}
-
-			@Override
-			public int getCost() {
-				return 10;
 			}
 		};
 	}
@@ -189,11 +174,6 @@ public class DefenceBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -208,11 +188,6 @@ public class DefenceBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "mob-boss-reduction";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override
@@ -236,11 +211,6 @@ public class DefenceBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "max-shield";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override

@@ -167,12 +167,12 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static String getUnlockCostFormatted(SkillBranch.MajorProgressionUnlock unlock) {
-		int cost = unlock.getCost();
+		int cost = ProgressionManager.getInitialSoulCost(unlock);
 		return formatSouls(cost);
 	}
 
 	public static String getUnlockCostFormatted(SkillBranch.Path unlock, int level) {
-		int cost = unlock.getCost(level);
+		int cost = ProgressionManager.getInitialSoulCost(unlock, level);
 		return formatSouls(cost);
 	}
 
@@ -312,6 +312,58 @@ public class ProgressionManager implements Listener {
 				throw new RuntimeException();
 		}
 		return skillBranchData.majorUnlocks.contains(unlock.getRefName());
+	}
+
+	public static int getInitialSoulCost(SkillBranch.MajorProgressionUnlock unlock) {
+		double multiplier = getMultiplier(unlock.skillBranch.index);
+		double baseValue;
+		switch(unlock.position) {
+			case FIRST:
+				baseValue = 100;
+				break;
+			case LAST:
+				baseValue = 50_000;
+				break;
+			case FIRST_PATH:
+			case SECOND_PATH:
+				baseValue = 3_000;
+				break;
+			default:
+				throw new RuntimeException();
+		}
+		return (int) (baseValue * multiplier);
+	}
+
+	public static int getInitialSoulCost(SkillBranch.Path path, int level) {
+		double multiplier = getMultiplier(path.skillBranch.index);
+		double baseValue;
+		switch(level) {
+			case 1:
+				baseValue = 500;
+				break;
+			case 2:
+				baseValue = 1_000;
+				break;
+			case 3:
+				baseValue = 1_500;
+				break;
+			case 4:
+				baseValue = 5_000;
+				break;
+			case 5:
+				baseValue = 10_000;
+				break;
+			case 6:
+				baseValue = 20_000;
+				break;
+			default:
+				throw new RuntimeException();
+		}
+		return (int) (baseValue * multiplier);
+	}
+
+	public static double getMultiplier(int index) {
+		return 0.2 * index + 1;
 	}
 
 	public static class PathGUILocation {

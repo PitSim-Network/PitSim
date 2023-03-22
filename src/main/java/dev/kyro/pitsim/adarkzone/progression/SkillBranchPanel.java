@@ -61,7 +61,7 @@ public class SkillBranchPanel extends AGUIPanel {
 			if(state == UnlockState.LOCKED) {
 				Sounds.NO.play(player);
 			} else if(state == UnlockState.NEXT_TO_UNLOCK) {
-				int cost = unlock.getCost();
+				int cost = ProgressionManager.getInitialSoulCost(unlock);
 				if(pitPlayer.taintedSouls < cost) {
 					Lang.NOT_ENOUGH_SOULS.send(player);
 					return;
@@ -79,7 +79,7 @@ public class SkillBranchPanel extends AGUIPanel {
 			if(state == UnlockState.LOCKED) {
 				Sounds.NO.play(player);
 			} else if(state == UnlockState.NEXT_TO_UNLOCK) {
-				int cost = unlock.getCost(level);
+				int cost = ProgressionManager.getInitialSoulCost(unlock, level);
 				if(pitPlayer.taintedSouls < cost) {
 					Lang.NOT_ENOUGH_SOULS.send(player);
 					return;

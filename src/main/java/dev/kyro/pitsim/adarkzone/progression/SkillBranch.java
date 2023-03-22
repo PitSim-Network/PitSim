@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SkillBranch implements Listener {
+	public static int nextIndex = 0;
+	public int index;
+
 	public MajorProgressionUnlock firstUnlock;
 	public MajorProgressionUnlock lastUnlock;
 	public MajorProgressionUnlock firstPathUnlock;
@@ -24,6 +27,7 @@ public abstract class SkillBranch implements Listener {
 	public Path secondPath;
 
 	public SkillBranch() {
+		this.index = nextIndex++;
 		this.firstUnlock = createFirstUnlock();
 		this.firstUnlock.position = MajorUnlockPosition.FIRST;
 		this.lastUnlock = createLastUnlock();
@@ -86,7 +90,6 @@ public abstract class SkillBranch implements Listener {
 		public abstract String getDisplayName();
 		public abstract String getRefName();
 		public abstract ItemStack getBaseStack();
-		public abstract int getCost();
 
 		public MajorProgressionUnlock() {
 			this.skillBranch = SkillBranch.this;
@@ -99,7 +102,7 @@ public abstract class SkillBranch implements Listener {
 			if(getBaseStack().getItemMeta().hasLore()) loreBuilder.addLore(getBaseStack().getItemMeta().getLore()).addLore("");
 
 			ProgressionManager.addPurchaseCostLore(MajorProgressionUnlock.this, loreBuilder,
-					unlockState, pitPlayer.taintedSouls, getCost(), true);
+					unlockState, pitPlayer.taintedSouls, ProgressionManager.getInitialSoulCost(this), true);
 			if(unlockState == UnlockState.UNLOCKED) Misc.addEnchantGlint(baseStack);
 
 			return new AItemStackBuilder(baseStack)
@@ -128,7 +131,6 @@ public abstract class SkillBranch implements Listener {
 
 		public abstract String getDisplayName();
 		public abstract String getRefName();
-		public abstract int getCost(int level);
 		public abstract void addEffects();
 
 		public void addEffect(EffectData data) {
@@ -146,7 +148,8 @@ public abstract class SkillBranch implements Listener {
 			}
 			loreBuilder.addLore("");
 
-			ProgressionManager.addPurchaseCostLore(Path.this, loreBuilder, unlockState, pitPlayer.taintedSouls, getCost(level), true);
+			ProgressionManager.addPurchaseCostLore(Path.this, loreBuilder, unlockState, pitPlayer.taintedSouls,
+					ProgressionManager.getInitialSoulCost(this, level), true);
 			if(unlockState == UnlockState.UNLOCKED) Misc.addEnchantGlint(baseStack);
 
 			return new AItemStackBuilder(baseStack)

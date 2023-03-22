@@ -62,11 +62,6 @@ public class AltarBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -91,11 +86,6 @@ public class AltarBranch extends SkillBranch {
 								"&7more effective"
 						))
 						.getItemStack();
-			}
-
-			@Override
-			public int getCost() {
-				return 10;
 			}
 		};
 	}
@@ -122,11 +112,6 @@ public class AltarBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -152,11 +137,6 @@ public class AltarBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -171,11 +151,6 @@ public class AltarBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "altar-demonic-vouchers";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override
@@ -197,11 +172,6 @@ public class AltarBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "altar-renown";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override

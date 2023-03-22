@@ -57,7 +57,7 @@ public class PitWolf extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		return isMinion() ? 10 : DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.HEALTH);
+		return isMinion() ? 10 : DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_HEALTH);
 	}
 
 	@Override

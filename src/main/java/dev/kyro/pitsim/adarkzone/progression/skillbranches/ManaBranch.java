@@ -94,11 +94,6 @@ public class ManaBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -124,11 +119,6 @@ public class ManaBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -152,11 +142,6 @@ public class ManaBranch extends SkillBranch {
 								"&7Gain &b+" + getMobKillMana() + " mana &7on mob kill"
 						))
 						.getItemStack();
-			}
-
-			@Override
-			public int getCost() {
-				return 10;
 			}
 		};
 	}
@@ -184,11 +169,6 @@ public class ManaBranch extends SkillBranch {
 						))
 						.getItemStack();
 			}
-
-			@Override
-			public int getCost() {
-				return 10;
-			}
 		};
 	}
 
@@ -203,11 +183,6 @@ public class ManaBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "max-mana";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override
@@ -229,11 +204,6 @@ public class ManaBranch extends SkillBranch {
 			@Override
 			public String getRefName() {
 				return "mana-regen";
-			}
-
-			@Override
-			public int getCost(int level) {
-				return level;
 			}
 
 			@Override
