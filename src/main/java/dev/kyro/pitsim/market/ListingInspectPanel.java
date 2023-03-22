@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -136,6 +137,15 @@ public class ListingInspectPanel extends AGUIPanel {
 		bidsBuilder.getItemStack().getItemMeta().addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		if(listing.startingBid != -1) getInventory().setItem(22, bidsBuilder.getItemStack());
 
+		ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+		SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+		headMeta.setOwner(listing.ownerUUID.toString());
+		head.setItemMeta(headMeta);
+
+		new AItemStackBuilder(head)
+				.setName("&eView all listings by player");
+
+		if(player.hasPermission("pitsim.admin")) getInventory().setItem(35, head);
 	}
 
 	@Override
@@ -152,6 +162,11 @@ public class ListingInspectPanel extends AGUIPanel {
 	public void onClick(InventoryClickEvent event) {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
+
+		if(slot == 35 && player.hasPermission("pitsim.admin")) {
+			openPanel(new MarketAdminPanel(gui, listing.ownerUUID));
+			return;
+		}
 
 		if(slot == 11) {
 			if(listing.startingBid != -1) {

@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -13,10 +14,10 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class ConfirmDeletionPanel extends AGUIPanel {
+public class ConfirmStaffDeletionPanel extends AGUIPanel {
 	public MarketListing listing;
 
-	public ConfirmDeletionPanel(AGUI gui, MarketListing listing) {
+	public ConfirmStaffDeletionPanel(AGUI gui, MarketListing listing) {
 		super(gui);
 
 		this.listing = listing;
@@ -54,7 +55,7 @@ public class ConfirmDeletionPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
-		MarketAsyncTask.MarketTask task = MarketAsyncTask.MarketTask.REMOVE_LISTING;
+		MarketAsyncTask.MarketTask task = MarketAsyncTask.MarketTask.STAFF_REMOVE;
 
 		BukkitRunnable delete = new BukkitRunnable() {
 			@Override
@@ -65,10 +66,16 @@ public class ConfirmDeletionPanel extends AGUIPanel {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
-						YourListingsPanel panel = ((MarketGUI) gui).yourListingsPanel;
-						openPanel(panel);
-						panel.placeClaimables();
-						panel.placeListings();
+						if(listing.startingBid != -1) {
+							YourListingsPanel panel = ((MarketGUI) gui).yourListingsPanel;
+							openPanel(panel);
+							panel.placeClaimables();
+							panel.placeListings();
+							return;
+						}
+
+						AUtil.giveItemSafely(player, listing.getItemStack());
+						player.closeInventory();
 					}
 				}.runTask(PitSim.INSTANCE);
 			}
