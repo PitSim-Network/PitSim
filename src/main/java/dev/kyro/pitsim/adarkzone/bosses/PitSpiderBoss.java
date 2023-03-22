@@ -13,8 +13,8 @@ public class PitSpiderBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new SlamAbility(2, 40, 40, 3),
-				new CollapseAbility(2, 5, 5, 20, 20),
+				new SlamAbility(2, 40, 40, getDamage()),
+				new CollapseAbility(2, 5, 5, 20, getDamage()),
 				new GenericMinionAbility(1, SubLevelType.SPIDER, 2, 10,  5)
 		);
 	}

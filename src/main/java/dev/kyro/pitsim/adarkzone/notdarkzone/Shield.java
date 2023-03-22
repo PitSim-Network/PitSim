@@ -39,7 +39,7 @@ public class Shield {
 
 	@Exclude
 	public boolean isUnlocked() {
-		return ProgressionManager.isUnlocked(pitPlayer, DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.SECOND_PATH);
+		return ProgressionManager.isUnlocked(pitPlayer, DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST);
 	}
 
 	@Exclude

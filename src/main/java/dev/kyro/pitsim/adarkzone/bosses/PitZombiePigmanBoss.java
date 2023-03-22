@@ -7,16 +7,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-public class PitPigmanBoss extends PitBoss {
+public class PitZombiePigmanBoss extends PitBoss {
 
-	public PitPigmanBoss(Player summoner) {
+	public PitZombiePigmanBoss(Player summoner) {
 		super(summoner);
 
 		abilities(
 				new GenericMinionAbility(1, SubLevelType.ZOMBIE_PIGMAN, 3, 30),
 				new PoundAbility(1, 15),
 				new LightningAbility(10, 1, 0.025),
-				new RuptureAbility(1, 25, 2, 40),
+				new RuptureAbility(1, 25, getDamage(), 40),
 				new PopupAbility(1, new BlockData(Material.FIRE, (byte) 0), 3, 40, 150)
 		);
 	}

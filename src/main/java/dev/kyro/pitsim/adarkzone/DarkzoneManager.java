@@ -19,7 +19,6 @@ import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.chestplate.Resilient;
-import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -82,7 +81,7 @@ public class DarkzoneManager implements Listener {
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
-				SubLevelType.ZOMBIE_PIGMAN, PitPigmanBoss.class, PitZombiePigman.class, EntityType.PIG_ZOMBIE, RawPork.class,
+				SubLevelType.ZOMBIE_PIGMAN, PitZombiePigmanBoss.class, PitZombiePigman.class, EntityType.PIG_ZOMBIE, RawPork.class,
 				new Location(MapManager.getDarkzone(), 235, 19, -23),
 				15, 17, 1, 10);
 		registerSubLevel(subLevel);
@@ -220,15 +219,24 @@ public class DarkzoneManager implements Listener {
 	}
 
 	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.isAttackerRealPlayer()) return;
+
+		PitMob pitMob = getPitMob(attackEvent.getDefender());
+		if(pitMob == null) return;
+		pitMob.setTarget(attackEvent.getAttackerPlayer());
+	}
+
+	@EventHandler
 	public void onTarget(EntityTargetLivingEntityEvent event) {
 		if(!(event.getEntity() instanceof LivingEntity)) return;
 		LivingEntity entity = (LivingEntity) event.getEntity();
 		if(!isPitMob(entity)) return;
 
-		if(event.getTarget() instanceof Player) {
-			Player target = (Player) event.getTarget();
-			if(event.getReason() == EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY && !Fearmonger.isImmune(target)) return;
-		}
+//		if(event.getTarget() instanceof Player) {
+//			Player target = (Player) event.getTarget();
+//			if(event.getReason() == EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY && !Fearmonger.isImmune(target)) return;
+//		}
 
 		event.setCancelled(true);
 	}

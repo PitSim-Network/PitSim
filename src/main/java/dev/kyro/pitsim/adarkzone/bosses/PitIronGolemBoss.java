@@ -15,8 +15,8 @@ public class PitIronGolemBoss extends PitBoss {
 
 		abilities(
 				new GenericMinionAbility(1, SubLevelType.IRON_GOLEM, 1, 1),
-				new AnvilRainAbility(2, 40, 250, 10),
-				new CollapseAbility(2, 5, 5, 10, 20),
+				new AnvilRainAbility(2, 40, 250, getDamage()),
+				new CollapseAbility(2, 5, 5, 10, getDamage()),
 
 				new ComboAbility(5, 20, 0)
 		);

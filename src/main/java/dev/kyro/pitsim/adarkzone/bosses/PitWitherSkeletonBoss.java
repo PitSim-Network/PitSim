@@ -13,11 +13,11 @@ public class PitWitherSkeletonBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new DefensiveMinionAbility(SubLevelType.WITHER_SKELETON, 2, 8, 5000),
+				new DefensiveMinionAbility(SubLevelType.WITHER_SKELETON, 2, 8, 5 * 20),
 				new CageAbility(3, 60, 5),
-				new SlamAbility(2, 40, 50, 8),
+				new SlamAbility(2, 40, 50, getDamage()),
 				new ChargeAbility(3),
-				new SnakeAbility(3, 25, 4, Material.BEDROCK, (byte) 0, Sounds.WITHER_SNAKE)
+				new SnakeAbility(3, 25, getDamage(), Material.BEDROCK, (byte) 0, Sounds.WITHER_SNAKE)
 		);
 	}
 

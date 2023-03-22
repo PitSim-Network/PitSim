@@ -40,11 +40,11 @@ public abstract class PitBoss {
 	public List<PitBossAbility> abilities = new ArrayList<>();
 	public Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>();
 	public double skipRoutineChance = 0;
-	public long lastRoutineExecuteTick;
+	public long lastRoutineExecuteTick = PitSim.currentTick;
 	public int routineAbilityCooldownTicks = 20 * 8;
 
 	public BukkitTask routineRunnable;
-	private BukkitTask targetingRunnbale;
+	private BukkitTask targetingRunnable;
 
 	public PitBoss(Player summoner) {
 		this.summoner = summoner;
@@ -147,7 +147,7 @@ public abstract class PitBoss {
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20);
 
-		targetingRunnbale = new BukkitRunnable() {
+		targetingRunnable = new BukkitRunnable() {
 			int count = 0;
 			@Override
 			public void run() {
@@ -190,7 +190,7 @@ public abstract class PitBoss {
 		for(PitBossAbility ability : abilities) ability.disable();
 		npcBoss.destroy();
 		if(routineRunnable!= null) routineRunnable.cancel();
-		if(targetingRunnbale!= null) targetingRunnbale.cancel();
+		if(targetingRunnable != null) targetingRunnable.cancel();
 		onDeath();
 		getSubLevel().bossDeath();
 		BossManager.pitBosses.remove(this);

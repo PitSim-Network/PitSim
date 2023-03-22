@@ -164,8 +164,9 @@ public class Telebow extends PitEnchant {
 				if(pitPlayer.stats != null) pitPlayer.stats.telebow++;
 				return;
 			}
-
-		} catch(Exception ignored) {}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

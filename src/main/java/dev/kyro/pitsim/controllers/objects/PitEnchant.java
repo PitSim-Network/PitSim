@@ -67,7 +67,7 @@ public abstract class PitEnchant implements Listener, Summarizable {
 		String prefix = "";
 		if(isRare) {
 			prefix += "&dRARE! ";
-		} else if(isUncommonEnchant && displayUncommon) {
+		} else if(isUncommonEnchant && (displayUncommon || isTainted)) {
 			prefix += "&aUNC. ";
 		}
 		prefix += (isEnabled() || overrideDisableCheck ? "&9" : "&c");
