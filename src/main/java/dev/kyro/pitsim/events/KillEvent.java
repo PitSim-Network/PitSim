@@ -113,10 +113,15 @@ public class KillEvent extends Event {
 			if(!(pitItem instanceof TemporaryItem)) continue;
 
 			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
-			int currentLives = temporaryItem.getLives(itemStack);
-			if(currentLives == 0) continue;
-
-			deadVulnerableItems.put(entry.getKey(), new ItemInfo(pitItem, entry.getValue(), 1));
+			if(temporaryItem.getTemporaryType() == TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH) {
+				int currentLives = temporaryItem.getLives(itemStack);
+				if(currentLives == 0) continue;
+				deadVulnerableItems.put(entry.getKey(), new ItemInfo(pitItem, entry.getValue(), 1));
+			} else if(temporaryItem.getTemporaryType() == TemporaryItem.TemporaryType.LOST_ON_DEATH) {
+				deadVulnerableItems.put(entry.getKey(), new ItemInfo(pitItem, entry.getValue(), 0));
+			} else {
+				throw new RuntimeException();
+			}
 		}
 	}
 
