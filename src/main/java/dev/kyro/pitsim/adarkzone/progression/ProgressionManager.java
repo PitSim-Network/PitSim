@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.event.Listener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,7 +178,8 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static String formatSouls(int souls) {
-		return "&f" + souls + " soul" + (souls == 1 ? "" : "s");
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
+		return "&f" + decimalFormat.format(souls) + " soul" + (souls == 1 ? "" : "s");
 	}
 
 	public static void addPurchaseCostLore(Object object, ALoreBuilder loreBuilder, UnlockState unlockState,
