@@ -277,7 +277,6 @@ public class DamageManager implements Listener {
 		}
 
 		AttackEvent.Pre preEvent;
-		if(event.getEntity() instanceof Fireball) return;
 
 		Map<PitEnchant, Integer> attackerEnchantMap = new HashMap<>();
 		if(realDamager instanceof Projectile) {

@@ -3,17 +3,13 @@ package dev.kyro.pitsim.adarkzone.mobs;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.aitems.mobdrops.BlazeRod;
-import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MobStatus;
-import dev.kyro.pitsim.enums.PitEntityType;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -48,7 +44,7 @@ public class PitBlaze extends PitMob {
 	public void throwFireball(Player target) {
 		Location mobLocation = getMob().getLocation().add(0, 1.5, 0);
 		Location targetLocation = target.getLocation().add(0, 1, 0);
-		Location source = mobLocation.add(mobLocation.getDirection().normalize());
+		Location source = mobLocation.add(mobLocation.getDirection().normalize().multiply(1.5));
 
 		Vector direction = targetLocation.clone().subtract(mobLocation).toVector().normalize();
 
@@ -62,17 +58,6 @@ public class PitBlaze extends PitMob {
 		Fireball fireball = source.getWorld().spawn(source, Fireball.class);
 		fireball.setShooter(getMob());
 		fireball.setDirection(direction);
-	}
-
-	@EventHandler
-	public void onFireballExplode(EntityExplodeEvent event) {
-		if(event.getEntity() instanceof Fireball) event.setCancelled(true);
-
-		event.getLocation().getWorld().playEffect(event.getLocation(), Effect.EXPLOSION_LARGE, 1);
-		for(Entity entity : event.getLocation().getWorld().getNearbyEntities(event.getLocation(), 3, 3, 3)) {
-			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
-			DamageManager.createIndirectAttack(getMob(), (LivingEntity) entity, getDamage());
-		}
 	}
 
 	@EventHandler
