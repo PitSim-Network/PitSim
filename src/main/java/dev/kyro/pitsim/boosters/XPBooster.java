@@ -55,11 +55,11 @@ public class XPBooster extends Booster {
 	}
 
 	public static int getXPIncrease() {
-		return 30;
+		return 40;
 	}
 
 	public static int getMaxXPIncrease() {
-		return 20;
+		return 25;
 	}
 
 	public static double getXPShare() {
