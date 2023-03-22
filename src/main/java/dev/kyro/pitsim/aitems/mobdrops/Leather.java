@@ -2,19 +2,29 @@ package dev.kyro.pitsim.aitems.mobdrops;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
+import dev.kyro.pitsim.brewing.PotionManager;
+import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Leather extends StaticPitItem implements TemporaryItem {
+public class Leather extends BrewingIngredient implements TemporaryItem {
 
 	public Leather() {
+		super(4, "Neutrality", ChatColor.YELLOW, PotionType.REGEN);
 		hasDropConfirm = true;
 		auctionCategory = AuctionCategory.DARKZONE_DROPS;
 	}
@@ -57,5 +67,55 @@ public class Leather extends StaticPitItem implements TemporaryItem {
 	@Override
 	public TemporaryItem.TemporaryType getTemporaryType() {
 		return TemporaryType.LOST_ON_DEATH;
+	}
+
+
+	@Override
+	public void administerEffect(Player player, BrewingIngredient potency, int duration) {
+
+	}
+
+	@EventHandler
+	public void onHit(AttackEvent.Pre event) {
+		PotionEffect defenderEffect = PotionManager.getEffect(event.getDefenderPlayer(), this);
+
+		handleEvent(event, defenderEffect);
+
+		PotionEffect attackerEffect = PotionManager.getEffect(event.getAttackerPlayer(), this);
+
+		handleEvent(event, attackerEffect);
+	}
+
+	private void handleEvent(AttackEvent.Pre event, PotionEffect effect) {
+		if(effect != null) {
+			double attackerChance = (double) getPotency(effect.potency);
+			boolean attackerIsProtected = Math.random() <= attackerChance;
+
+			if(attackerIsProtected) {
+				event.setCancelled(true);
+				event.getWrapperEvent().setCancelled(true);
+				Sounds.AEGIS.play(event.getDefenderPlayer().getLocation());
+				event.getDefenderPlayer().getWorld().playEffect(event.getDefenderPlayer().getLocation(), Effect.EXPLOSION_LARGE, Effect.EXPLOSION_LARGE.getData(), 100);
+			}
+		}
+	}
+
+	@Override
+	public Object getPotency(BrewingIngredient potencyIngredient) {
+		return 0.1 * potencyIngredient.tier;
+	}
+
+	@Override
+	public List<String> getPotencyLore(BrewingIngredient potency) {
+		List<String> lore = new ArrayList<>();
+		lore.add("");
+		lore.add(ChatColor.WHITE + "" + (int) ((double) getPotency(potency) * 100) + "% " + ChatColor.GRAY + "chance to " + color + "deflect " + ChatColor.GRAY + "incoming");
+		lore.add(ChatColor.GRAY + "hits and " + color + "cancel " + ChatColor.GRAY + "out going hits.");
+		return lore;
+	}
+
+	@Override
+	public int getDuration(BrewingIngredient durationIngredient) {
+		return 2 * 60 * 20 * durationIngredient.tier;
 	}
 }

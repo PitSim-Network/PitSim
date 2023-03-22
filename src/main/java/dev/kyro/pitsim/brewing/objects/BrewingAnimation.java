@@ -2,6 +2,7 @@ package dev.kyro.pitsim.brewing.objects;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.mobdrops.SpiderEye;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.misc.Misc;
@@ -27,10 +28,7 @@ import org.bukkit.material.Cauldron;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BrewingAnimation {
 
@@ -103,28 +101,28 @@ public class BrewingAnimation {
 
 		strings[0] = ChatColor.YELLOW + "" + ChatColor.BOLD + "Brew Details";
 
-//		ItemStack identifier = ingredients.get(player)[0];
-//		if(BrewingIngredient.isIngredient(identifier))
-//			strings[1] = ChatColor.LIGHT_PURPLE + "Type: " + Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).color + Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).name;
-//		else strings[1] = ChatColor.LIGHT_PURPLE + "Type: " + ChatColor.YELLOW + "Place an Item!";
-//
-//		ItemStack potency = ingredients.get(player)[1];
-//		if(BrewingIngredient.isIngredient(potency))
-//			strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.DARK_PURPLE + "Tier " + AUtil.toRoman(Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(potency)).tier);
-//		else strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.YELLOW + "Place an Item!";
-//
-//		ItemStack duration = ingredients.get(player)[2];
-//		if(BrewingIngredient.isIngredient(duration) && BrewingIngredient.isIngredient(identifier) && (!(BrewingIngredient.getIngredientFromItemStack(identifier) instanceof SpiderEye)))
-//			strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " +
-//					ChatColor.DARK_PURPLE + Misc.ticksToTime(Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).getDuration(BrewingIngredient.getIngredientFromItemStack(duration)));
-//		else if(BrewingIngredient.getIngredientFromItemStack(identifier) instanceof SpiderEye) {
-//			strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.DARK_PURPLE + "INSTANT!";
-//		} else strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.YELLOW + "Decided by Type!";
-//
-//		ItemStack reduction = ingredients.get(player)[3];
-//		if(BrewingIngredient.isIngredient(reduction))
-//			strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.DARK_PURPLE + (105 - (Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(reduction)).tier * 10) + "m");
-//		else strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.YELLOW + "Place an Item!";
+		ItemStack identifier = ingredients.get(player)[0];
+		if(BrewingIngredient.isIngredient(identifier))
+			strings[1] = ChatColor.LIGHT_PURPLE + "Type: " + Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).color + Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).name;
+		else strings[1] = ChatColor.LIGHT_PURPLE + "Type: " + ChatColor.YELLOW + "Place an Item!";
+
+		ItemStack potency = ingredients.get(player)[1];
+		if(BrewingIngredient.isIngredient(potency))
+			strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.DARK_PURPLE + "Tier " + AUtil.toRoman(Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(potency)).tier);
+		else strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.YELLOW + "Place an Item!";
+
+		ItemStack duration = ingredients.get(player)[2];
+		if(BrewingIngredient.isIngredient(duration) && BrewingIngredient.isIngredient(identifier) && (!(BrewingIngredient.getIngredientFromItemStack(identifier) instanceof SpiderEye)))
+			strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " +
+					ChatColor.DARK_PURPLE + Misc.ticksToTime(Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).getDuration(BrewingIngredient.getIngredientFromItemStack(duration)));
+		else if(BrewingIngredient.getIngredientFromItemStack(identifier) instanceof SpiderEye) {
+			strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.DARK_PURPLE + "INSTANT!";
+		} else strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.YELLOW + "Decided by Type!";
+
+		ItemStack reduction = ingredients.get(player)[3];
+		if(BrewingIngredient.isIngredient(reduction))
+			strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.DARK_PURPLE + (105 - (Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(reduction)).tier * 10) + "m");
+		else strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.YELLOW + "Place an Item!";
 
 		setText(player, strings);
 	}
