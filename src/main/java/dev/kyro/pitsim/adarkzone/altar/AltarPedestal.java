@@ -35,10 +35,8 @@ import java.util.Random;
 import java.util.UUID;
 
 public abstract class AltarPedestal implements Listener {
-
 	public static final int BASE_COST = 100;
 	public static final int WEALTH_MULTIPLIER = 2;
-
 
 	public static List<AltarPedestal> altarPedestals = new ArrayList<>();
 	public Location location;
