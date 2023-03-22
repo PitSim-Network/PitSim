@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enchants.tainted.scythe;
 
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -11,38 +12,49 @@ import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 
 import java.util.List;
 
-public class WitherSkullSpell extends PitEnchant {
-	public static WitherSkullSpell INSTANCE;
+public class Necrotic extends PitEnchant {
+	public static Necrotic INSTANCE;
 
-	public WitherSkullSpell() {
+	public Necrotic() {
 		super("Necrotic", true, ApplyType.SCYTHES,
 				"necrotic", "necro");
 		isTainted = true;
 		INSTANCE = this;
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOW)
 	public void onDamage(AttackEvent.Pre attackEvent) {
+		if(!(attackEvent.getFireball() instanceof WitherSkull)) return;
+
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		if(attackEvent.getFireball() == null || attackEvent.getAttacker() != attackEvent.getDefender()) return;
-		attackEvent.getAttackerEnchantMap().clear();
-		attackEvent.getDefenderEnchantMap().clear();
-		attackEvent.setCancelled(true);
+		if(attackEvent.getAttacker() == attackEvent.getDefender()) {
+			attackEvent.setCancelled(true);
+			attackEvent.getAttackerEnchantMap().clear();
+			attackEvent.getDefenderEnchantMap().clear();
+			return;
+		}
+
+		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(DarkzoneBalancing.SCYTHE_DAMAGE * 3);
 	}
 
 	@EventHandler
 	public void onUse(PitPlayerAttemptAbilityEvent event) {
+		Player player = event.getPlayer();
+
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(event.getPlayer(), 20);
-		if(cooldown.isOnCooldown()) return;
-		Player player = event.getPlayer();
+		Cooldown cooldown = getCooldown(player, 4);
+		if(cooldown.isOnCooldown()) {
+			Sounds.NO.play(player);
+			return;
+		}
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
 			Sounds.NO.play(player);
@@ -68,6 +80,6 @@ public class WitherSkullSpell extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return 1;
+		return Math.max(22 - enchantLvl * 4, 0);
 	}
 }

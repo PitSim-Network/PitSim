@@ -173,7 +173,7 @@ public class Sounds {
 	public static final SoundEffect PITPOCKET = new SoundEffect(Sound.BURP, 1, 1);
 	public static final SoundEffect ADRENALINE = new SoundEffect(Sound.NOTE_PLING, 1, 1.65);
 	public static final SoundEffect HEMORRHAGE = new SoundEffect(Sound.DIG_STONE, 1, 0.8);
-	public static final SoundEffect METEOR = new SoundEffect(Sound.FIZZ, 0.5, 0.7);
+	public static final SoundEffect METEOR = new SoundEffect(Sound.FIZZ, 0.7, 0.7);
 	public static final SoundEffect METEOR_2 = new SoundEffect(Sound.EXPLODE, 0.75, 1.4);
 
 	//	Megastreaks

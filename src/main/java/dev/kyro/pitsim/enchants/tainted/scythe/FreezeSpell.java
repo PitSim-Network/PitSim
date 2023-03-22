@@ -80,7 +80,7 @@ public class FreezeSpell extends PitEnchant {
 		Sounds.FREEZE1.play(player);
 
 		for(Entity nearbyEntity : event.getPlayer().getNearbyEntities(6, 6, 6)) {
-			if(!Misc.isEntity(nearbyEntity, PitEntityType.REAL_PLAYER, PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS)) continue;
+			if(!Misc.isEntity(nearbyEntity, PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS)) continue;
 
 			Misc.applyPotionEffect((LivingEntity) nearbyEntity, PotionEffectType.SLOW, 40, 100, false, false);
 			Misc.applyPotionEffect((LivingEntity) nearbyEntity, PotionEffectType.WEAKNESS, 40, 100, false, false);
@@ -121,10 +121,10 @@ public class FreezeSpell extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
-		int seconds = getDuration(enchantLvl) / 20;
+		double seconds = getDuration(enchantLvl) / 20.0;
 		return new PitLoreBuilder(
-				"&7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana, " +
-						"freezing all nearby enemies for " + decimalFormat.format(seconds) + " second" +
+				"&7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, " +
+						"freezing all nearby mobs and bosses for " + decimalFormat.format(seconds) + " second" +
 						(seconds == 1 ? "" : "s")
 		).getLore();
 	}
@@ -132,14 +132,14 @@ public class FreezeSpell extends PitEnchant {
 	@Override
 	public String getSummary() {
 		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
-				"freezes all nearby enemies";
+				"freezes all nearby mobs and bosses";
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return 30 * (4 - enchantLvl);
+		return Math.max(30 - enchantLvl * 5, 0);
 	}
 
 	public static int getDuration(int enchantLvl) {
-		return 20 * 3;
+		return enchantLvl * 10 + 50;
 	}
 }

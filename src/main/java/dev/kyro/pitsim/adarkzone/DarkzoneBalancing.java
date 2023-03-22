@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone;
 
 public class DarkzoneBalancing {
+	public static double SCYTHE_DAMAGE = 7.5;
 
 	public static int getAttributeAsInt(SubLevelType type, Attribute attribute) {
 		return (int) getAttribute(type, attribute);

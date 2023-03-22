@@ -62,6 +62,7 @@ public class Devour extends PitEnchant {
 	}
 
 	public int getSoulCost(int enchantLvl) {
-		return enchantLvl;
+		if(enchantLvl == 1) return 2;
+		return enchantLvl + 2;
 	}
 }

@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TaintedScythe extends StaticPitItem implements TemporaryItem {
-	public static double BASE_DAMAGE = 7.5;
 
 	public TaintedScythe() {
 		hasUUID = true;

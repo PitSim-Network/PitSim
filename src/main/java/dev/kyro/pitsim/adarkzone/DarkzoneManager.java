@@ -60,25 +60,25 @@ public class DarkzoneManager implements Listener {
 		subLevel = new SubLevel(
 				SubLevelType.SKELETON, PitSkeletonBoss.class, PitSkeleton.class, EntityType.SKELETON, Bone.class,
 				new Location(MapManager.getDarkzone(), 424, 52, -128),
-				15, 17, 1, -1);
+				19, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.SPIDER, PitSpiderBoss.class, PitSpider.class, EntityType.SPIDER, SpiderEye.class,
 				new Location(MapManager.getDarkzone(), 463, 37, -72),
-				15, 17, 1, -1);
+				18, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.WOLF, PitWolfBoss.class, PitWolf.class, EntityType.WOLF, Leather.class,
 				new Location(MapManager.getDarkzone(), 419, 25, -27),
-				15, 17, 1, 50);
+				17, 17, 1, 50);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.BLAZE, PitBlazeBoss.class, PitBlaze.class, EntityType.BLAZE, BlazeRod.class,
 				new Location(MapManager.getDarkzone(), 342, 19, 15),
-				15, 17, 1, -1);
+				16, 17, 1, -1);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(

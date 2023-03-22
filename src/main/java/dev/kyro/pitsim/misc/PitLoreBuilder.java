@@ -8,6 +8,7 @@ import java.util.List;
 
 public class PitLoreBuilder extends ALoreBuilder {
 	public static List<Character> specialFormatting = new ArrayList<>();
+	public static List<Character> smallCharacters = new ArrayList<>();
 
 	static {
 		specialFormatting.add('k');
@@ -15,6 +16,11 @@ public class PitLoreBuilder extends ALoreBuilder {
 		specialFormatting.add('m');
 		specialFormatting.add('n');
 		specialFormatting.add('o');
+
+		smallCharacters.add('.');
+		smallCharacters.add(':');
+		smallCharacters.add('!');
+		smallCharacters.add(',');
 	}
 
 	private final int lineWidth;
@@ -34,7 +40,7 @@ public class PitLoreBuilder extends ALoreBuilder {
 		String lastChatColor = "";
 		for(String word : longLine.split(" ")) {
 			word = word.replaceAll("\\[]", " ");
-			if(ChatColor.stripColor(currentString).length() + 1 + ChatColor.stripColor(word).length() > lineWidth) {
+			if(getStringLength(currentString) + 1 + getStringLength(word) > lineWidth) {
 				getLore().add(currentString);
 				currentString = lastChatColor;
 			}
@@ -57,5 +63,14 @@ public class PitLoreBuilder extends ALoreBuilder {
 			currentString += word;
 		}
 		if(!ChatColor.stripColor(currentString).isEmpty()) getLore().add(currentString);
+	}
+
+	public static int getStringLength(String string) {
+		int length = 0;
+		for(char character : ChatColor.stripColor(string).toCharArray()) {
+			if(smallCharacters.contains(character)) continue;
+			length++;
+		}
+		return length;
 	}
 }

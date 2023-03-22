@@ -48,7 +48,7 @@ public class LeapAbility extends HelmetAbility {
 			return;
 		}
 
-		Cooldown cooldown = getCooldown(player, 100);
+		Cooldown cooldown = getCooldown(player, 40);
 		if(cooldown.isOnCooldown()) {
 			AOutput.error(player, "&cAbility on cooldown!");
 			Sounds.NO.play(player);

@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.enchants.tainted.scythe;
 
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.controllers.Cooldown;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.particles.FireworkSparkParticle;
@@ -39,7 +41,7 @@ public class ElectricShock extends PitEnchant {
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(player, 10);
+		Cooldown cooldown = getCooldown(player, 20);
 		if(cooldown.isOnCooldown()) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
@@ -101,7 +103,8 @@ public class ElectricShock extends PitEnchant {
 		}
 
 		excluded.add(endingEntity);
-		endingEntity.damage(5, player);
+		double damageMultiplier = 1 + 0.5 * (maxBounces - bounceNumber);
+		DamageManager.createIndirectAttack(player, endingEntity, DarkzoneBalancing.SCYTHE_DAMAGE * damageMultiplier);
 
 		if(bounceNumber >= maxBounces) return;
 		bounceNumber++;
@@ -131,7 +134,7 @@ public class ElectricShock extends PitEnchant {
 		return new PitLoreBuilder(
 				"&7Right-Clicking while looking at a mob casts this spell for &b" + getManaCost(enchantLvl) +
 						" mana&7, shooting an electric beam that chains between mobs up to &e" +
-						getMaxBounces(enchantLvl) + " time" + (getMaxBounces(enchantLvl) == 1 ? "" : "s")
+						getMaxBounces(enchantLvl) + "[]time" + (getMaxBounces(enchantLvl) == 1 ? "" : "s")
 		).getLore();
 	}
 
@@ -142,7 +145,7 @@ public class ElectricShock extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return 1;
+		return 20;
 	}
 
 	public static int getMaxBounces(int enchantLvl) {

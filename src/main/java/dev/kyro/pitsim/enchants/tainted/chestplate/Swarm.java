@@ -39,6 +39,7 @@ public class Swarm extends PitEnchant {
 					List<SwarmParticle> particleList = particleMap.get(onlinePlayer);
 
 					int enchantLvl = EnchantManager.getEnchantsOnPlayer(onlinePlayer).getOrDefault(INSTANCE, 0);
+					if(enchantLvl == 0) continue;
 					int targetParticles = getParticleCount(enchantLvl);
 
 					for(int i = particleList.size(); i < targetParticles; i++) particleList.add(new SwarmParticle(onlinePlayer));
@@ -79,10 +80,10 @@ public class Swarm extends PitEnchant {
 	}
 
 	public static int getReduction(int enchantLvl) {
-		return 50;
+		return 60;
 	}
 
 	public static int getParticleCount(int enchantLvl) {
-		return enchantLvl;
+		return enchantLvl + 1;
 	}
 }

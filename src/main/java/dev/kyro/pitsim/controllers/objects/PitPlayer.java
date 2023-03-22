@@ -721,8 +721,8 @@ public class PitPlayer {
 		float previousWalkSpeed = player.getWalkSpeed();
 
 		float newWalkSpeed = 0.2F;
-		newWalkSpeed *= 1 + (Sonic.getWalkSpeedIncrease(player) / 100.0);
-		newWalkSpeed *= 1 + (GottaGoFast.getWalkSpeedIncrease(player) / 100.0);
+		newWalkSpeed *= 1 + (Sonic.getWalkSpeedIncrease(this) / 100.0);
+		newWalkSpeed *= 1 + (GottaGoFast.getWalkSpeedIncrease(this) / 100.0);
 
 		if(previousWalkSpeed != newWalkSpeed) player.setWalkSpeed(newWalkSpeed);
 	}

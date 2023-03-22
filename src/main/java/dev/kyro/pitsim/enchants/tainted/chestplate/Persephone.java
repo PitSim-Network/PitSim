@@ -47,7 +47,7 @@ public class Persephone extends PitEnchant {
 
 	public Persephone() {
 		super("Persephone", true, ApplyType.CHESTPLATES,
-				"persephone", "per", "pers", "perseph");
+				"persephone", "per", "pers", "perse", "perseph");
 		isTainted = true;
 		INSTANCE = this;
 
@@ -210,7 +210,7 @@ public class Persephone extends PitEnchant {
 		return new PitLoreBuilder(
 				"&7Sneaking plants a handful of flower for &b" + getManaCost(enchantLvl) + " mana&7 (" +
 						getCooldownSeconds(enchantLvl) + "s cooldown). Each of the 6 different types of flowers " +
-						"gives an effect while standing near to them"
+						"gives an effect when in their proximity"
 		).getLore();
 	}
 
@@ -225,7 +225,7 @@ public class Persephone extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return 1;
+		return Math.max(25 - enchantLvl * 5, 0);
 	}
 
 	public static double getHealing() {

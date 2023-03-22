@@ -69,7 +69,7 @@ public class Hemorrhage extends PitEnchant {
 		return new PitLoreBuilder(
 				"&7Striking an enemy makes them &cbleed &7for " + getSeconds(enchantLvl) +
 						" second" + (getSeconds(enchantLvl) == 1 ? "" : "s") + " but costs &b" +
-						getManaCost(enchantLvl) + " mana &7(" + getCooldownSeconds(enchantLvl) + " second cooldown"
+						getManaCost(enchantLvl) + "[]mana &7(" + getCooldownSeconds(enchantLvl) + "s cooldown)"
 		).getLore();
 	}
 
@@ -80,18 +80,18 @@ public class Hemorrhage extends PitEnchant {
 	}
 
 	public static double getBleedDamage(int enchantLvl) {
-		return 0.5;
+		return 1;
 	}
 
 	public static int getSeconds(int enchantLvl) {
-		return 5;
+		return enchantLvl + 1;
 	}
 
 	public static int getCooldownSeconds(int enchantLvl) {
-		return 10;
+		return 8;
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return 1;
+		return 30;
 	}
 }

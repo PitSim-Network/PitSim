@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants.tainted.chestplate;
 
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -29,10 +30,10 @@ class Sonic extends PitEnchant {
 		event.multipliers.add(Misc.getReductionMultiplier(getManaReduction(enchantLvl)));
 	}
 
-	public static float getWalkSpeedIncrease(Player player) {
-		if(!INSTANCE.isEnabled()) return 0;
+	public static float getWalkSpeedIncrease(PitPlayer pitPlayer) {
+		if(!INSTANCE.isEnabled() || !pitPlayer.hasManaUnlocked()) return 0;
 
-		int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
+		int enchantLvl = EnchantManager.getEnchantLevel(pitPlayer.player, INSTANCE);
 		if(enchantLvl == 0) return 0;
 
 		return getWalkSpeedIncrease(enchantLvl);
@@ -57,6 +58,6 @@ class Sonic extends PitEnchant {
 	}
 
 	public static int getManaReduction(int enchantLvl) {
-		return 80 - (20 * enchantLvl);
+		return Math.max(140 - enchantLvl * 40, 0);
 	}
 }

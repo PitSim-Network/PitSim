@@ -112,10 +112,10 @@ public class Defraction extends PitEnchant {
 	}
 
 	public static int getChance(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 10 + 5;
 	}
 
 	public static int getManaReduction(int enchantLvl) {
-		return 50;
+		return 40;
 	}
 }

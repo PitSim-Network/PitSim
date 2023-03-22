@@ -82,10 +82,10 @@ public class Inferno extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return 1;
+		return Math.max(14 - enchantLvl * 2, 0);
 	}
 
 	public static int getFireSeconds(int enchantLvl) {
-		return 5;
+		return enchantLvl + 2;
 	}
 }

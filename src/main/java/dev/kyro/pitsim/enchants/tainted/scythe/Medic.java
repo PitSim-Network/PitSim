@@ -29,7 +29,7 @@ public class Medic extends PitEnchant {
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(player, 10);
+		Cooldown cooldown = getCooldown(player, 4);
 		if(cooldown.isOnCooldown()) {
 			Sounds.NO.play(player);
 			return;
@@ -60,7 +60,7 @@ public class Medic extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return 1;
+		return 50;
 	}
 
 	public static int getHealing(int enchantLvl) {
