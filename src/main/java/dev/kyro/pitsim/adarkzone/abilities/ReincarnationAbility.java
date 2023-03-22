@@ -18,14 +18,12 @@ import java.util.List;
 import java.util.Random;
 
 public class ReincarnationAbility extends PitBossAbility {
-	public long lastExecuteTime = 0;
-	public long cooldown;
+	public boolean hasActivated;
 	public int randomThreshold = 50;
 	public int rays = 25;
 
-	public ReincarnationAbility(double routineWeight, long cooldown) {
+	public ReincarnationAbility(double routineWeight) {
 		super(routineWeight);
-		this.cooldown = cooldown;
 	}
 
 	@Override
@@ -34,8 +32,8 @@ public class ReincarnationAbility extends PitBossAbility {
 	}
 
 	public void activate() {
+		hasActivated = true;
 		Sounds.REINCARNATION.play(getPitBoss().boss.getLocation(), 40);
-		lastExecuteTime = System.currentTimeMillis();
 
 		Location top = getPitBoss().boss.getLocation().add(0, 4, 0);
 		Vector velocity = top.clone().subtract(getPitBoss().boss.getLocation()).toVector().multiply(0.1);
@@ -80,7 +78,7 @@ public class ReincarnationAbility extends PitBossAbility {
 
 	@Override
 	public boolean shouldExecuteRoutine() {
-		if(System.currentTimeMillis() - lastExecuteTime < cooldown) return false;
+		if(hasActivated) return false;
 		if(getPitBoss().boss.getHealth() >= getPitBoss().boss.getMaxHealth() / 4) return false;
 
 		return getPitBoss().boss.getLocation().add(0, 7, 0).getBlock().getType() == Material.AIR;
