@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.mobs;
 
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.aitems.mobdrops.Gunpowder;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.enums.MobStatus;
@@ -50,7 +51,7 @@ public class PitCreeper extends PitMob {
 			player.setVelocity(velocity);
 
 			double damage = multiplier * getDamage();
-			player.damage(damage, entity);
+			DamageManager.createDirectAttack((LivingEntity) entity, player, damage);
 		}
 
 		Location effectLocation = entity.getLocation().add(0, 1, 0);
@@ -82,13 +83,13 @@ public class PitCreeper extends PitMob {
 
 	@Override
 	public int getMaxHealth() {
-		int maxHealth = DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
+		int maxHealth = DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.HEALTH);
 		return isMinion() ? (int) (maxHealth * 1.25) : maxHealth;
 	}
 
 	@Override
 	public double getDamage() {
-		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.HEALTH);
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
 	}
 
 	@Override

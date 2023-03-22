@@ -60,6 +60,7 @@ public class HypixelSound {
 		}
 
 		public static Sound getTier(int tier) {
+			if(tier > 3) tier = 3;
 			for(Sound value : values()) {
 				if(value.tier == tier) return value;
 			}

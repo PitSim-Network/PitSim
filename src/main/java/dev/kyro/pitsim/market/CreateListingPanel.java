@@ -338,8 +338,9 @@ public class CreateListingPanel extends AGUIPanel {
 
 	public void signPromptAuction() {
 
+
 		signClose = true;
-		SignPrompt.promptPlayer(player, "", "^^^^^", "Enter the Starting", "Bid (At least 10)", input -> {
+		SignPrompt.promptPlayer(player, "", "^^^^^", "Enter starting", "Bid (At least 10)", input -> {
 			openPanel(this);
 			int amount;
 			try {

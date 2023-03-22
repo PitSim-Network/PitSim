@@ -495,7 +495,7 @@ public class EnchantManager implements Listener {
 		if(tier == 3) {
 			if(Math.random() < 0.001) return 1111 - currentMaxLives;
 			if(Math.random() < 0.01) return 500 - currentMaxLives;
-		}
+		} else if(tier == 4) return 0;
 
 		int randomMultiplier = tier * 25;
 		return Math.max((int) (Math.random() * randomMultiplier), 10);

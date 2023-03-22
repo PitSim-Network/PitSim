@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.altar.pedestals;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
+import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,18 +17,23 @@ public class HeresyPedestal extends AltarPedestal {
 
 	@Override
 	public String getDisplayName() {
-		return "&5&lHERESY";
+		return "&4&lHERESY";
 	}
 
 	@Override
 	public int getActivationCost() {
-		return 50;
+		return 200;
+	}
+
+	@Override
+	public ParticleColor getParticleColor() {
+		return ParticleColor.DARK_RED;
 	}
 
 	@Override
 	public ItemStack getItem(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.EMPTY_MAP)
-				.setName("&5Pedestal of Heresy")
+				.setName("&4Pedestal of Heresy")
 				.setLore(new ALoreBuilder(
 						"&7This pedestal increases your",
 						"&7chance of gaining &4Demonic Vouchers&7.",

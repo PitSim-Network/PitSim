@@ -39,7 +39,6 @@ public class AuctionManager implements Listener {
 			@Override
 			public void run() {
 //				TODO: FIX CODE IN OTHER TOOD
-				if(true) return;
 
 				if(haveAuctionsEnded()) {
 					for(AuctionItem item : auctionItems) item.endAuction();

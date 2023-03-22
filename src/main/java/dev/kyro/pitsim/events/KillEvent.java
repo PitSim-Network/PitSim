@@ -113,6 +113,7 @@ public class KillEvent extends Event {
 			if(!(pitItem instanceof TemporaryItem)) continue;
 
 			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
+			if(temporaryItem.getTemporaryType() == TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH) continue;
 			int currentLives = temporaryItem.getLives(itemStack);
 			if(currentLives == 0) continue;
 

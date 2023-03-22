@@ -7,7 +7,7 @@ public class DarkzoneBalancing {
 	}
 
 	public static double getAttribute(SubLevelType subLevelType, Attribute attribute) {
-		return attribute.getBaseValue() * Math.pow(subLevelType.getIndex() + 1, attribute.getScalar());
+		return Math.floor(attribute.getBaseValue() * Math.pow(subLevelType.getIndex() + 1, attribute.getScalar()));
 	}
 
 	public enum Attribute {

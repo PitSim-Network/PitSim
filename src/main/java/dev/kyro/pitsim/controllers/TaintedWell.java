@@ -3,6 +3,9 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
+import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -11,10 +14,12 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.HypixelSound;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
@@ -37,6 +42,7 @@ public class TaintedWell implements Listener {
 	public static ArmorStand[] textStands = new ArmorStand[4];
 	public static Map<Player, ArmorStand> removeStands;
 	public static Map<Player, ArmorStand> enchantStands;
+	public static Map<UUID, Integer> enchantCostStands;
 	public static List<Player> enchantingPlayers;
 	private static Map<Player, ItemStack> playerItems;
 	public static Map<UUID, Integer> yawMap = new HashMap<>();
@@ -50,6 +56,7 @@ public class TaintedWell implements Listener {
 	static {
 		removeStands = new HashMap<>();
 		enchantStands = new HashMap<>();
+		enchantCostStands = new HashMap<>();
 		enchantingPlayers = new ArrayList<>();
 		playerItems = new HashMap<>();
 
@@ -177,11 +184,13 @@ public class TaintedWell implements Listener {
 		
 		PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(getStandID(wellStand), 0, CraftItemStack.asNMSCopy(itemStack));
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-		showButtons(player);
+		showButtons(player, getEnchantCost(getTier(itemStack), player));
 	}
 
-	public static void showButtons(Player player) {
-		ArmorStand removeStand = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 0.0, 0.5), ArmorStand.class);
+	public static void showButtons(Player player, int cost) {
+		Location spawnLoc = wellLocation.clone().add(0.5, 0.0, 0.5);
+
+		ArmorStand removeStand = wellLocation.getWorld().spawn(spawnLoc, ArmorStand.class);
 		removeStand.setGravity(false);
 		removeStand.setArms(true);
 		removeStand.setVisible(false);
@@ -189,14 +198,14 @@ public class TaintedWell implements Listener {
 		removeStand.setCustomNameVisible(true);
 		removeStands.put(player, removeStand);
 		
-		ArmorStand enchantStand = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 0.0, 0.5), ArmorStand.class);
+		ArmorStand enchantStand = wellLocation.getWorld().spawn(spawnLoc, ArmorStand.class);
 		enchantStand.setGravity(false);
 		enchantStand.setArms(true);
 		enchantStand.setVisible(false);
 		enchantStand.setCustomName(ChatColor.GREEN + "Enchant Item");
 		enchantStand.setCustomNameVisible(true);
 		enchantStands.put(player, enchantStand);
-		
+
 		PacketPlayOutEntityEquipment removePacket = new PacketPlayOutEntityEquipment(getStandID(removeStand), 4, CraftItemStack.asNMSCopy(new ItemStack(Material.REDSTONE_BLOCK)));
 		PacketPlayOutEntityEquipment enchantPacket = new PacketPlayOutEntityEquipment(getStandID(enchantStand), 4, CraftItemStack.asNMSCopy(new ItemStack(new ItemStack(Material.EMERALD_BLOCK))));
 		new BukkitRunnable() {
@@ -221,7 +230,36 @@ public class TaintedWell implements Listener {
 		
 		PacketPlayOutEntityTeleport tpRemovePacket = new PacketPlayOutEntityTeleport(((CraftEntity)enchantStand).getHandle());
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpRemovePacket);
-		
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(cost == -1) return;
+				World world = ((CraftWorld) (spawnLoc.getWorld())).getHandle();
+				EntityArmorStand costStand = new EntityArmorStand(world, spawnLoc.getX() + 2, spawnLoc.getY() + 0.3, spawnLoc.getZ());
+				costStand.setInvisible(true);
+				costStand.setGravity(false);
+				costStand.setCustomNameVisible(true);
+				costStand.setBasePlate(true);
+
+				if(enchantCostStands.containsKey(player.getUniqueId())) {
+					PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(enchantCostStands.get(player.getUniqueId()));
+					((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
+				}
+
+				enchantCostStands.put(player.getUniqueId(), costStand.getId());
+
+				PacketPlayOutSpawnEntityLiving costSpawn = new PacketPlayOutSpawnEntityLiving(costStand);
+				((CraftPlayer) player).getHandle().playerConnection.sendPacket(costSpawn);
+
+				DataWatcher dataWatcher = costStand.getDataWatcher();
+				String text = "&f" + cost + " Souls";
+				dataWatcher.watch(2, (Object) ChatColor.translateAlternateColorCodes('&', text));
+				PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(costStand.getId(), dataWatcher, true);
+				((CraftPlayer) player).getHandle().playerConnection.sendPacket(meta);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 5);
+
 		setText(player, "\u00A77", "\u00A77", "\u00A77", "\u00A77");
 		setItemText(player);
 	}
@@ -234,7 +272,13 @@ public class TaintedWell implements Listener {
 
 		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook tpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(removeStand), (byte)64, (byte)0, (byte)0, (byte)0, (byte)0, false);
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpPacket);
-		
+
+		if(enchantCostStands.containsKey(player.getUniqueId())) {
+			PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(enchantCostStands.get(player.getUniqueId()));
+			((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
+		}
+		enchantCostStands.remove(player.getUniqueId());
+
 		new BukkitRunnable() {
 			public void run() {
 				removeStands.remove(player);
@@ -267,18 +311,33 @@ public class TaintedWell implements Listener {
 		} else {
 			NBTItem nbtFreshItem = new NBTItem(playerItems.get(player));
 			int freshTier = nbtFreshItem.getInteger(NBTTag.TAINTED_TIER.getRef());
-			
-			if(freshTier == 3) {
+
+			if(freshTier >= getMaxTier(player)) {
 				setText(player, "\u00A77", ChatColor.RED + "Item is Max Tier!", ChatColor.RED + "Please remove", "\u00A77");
 				new BukkitRunnable() {
 					public void run() {
 						setText(player, "\u00A77", "\u00A77", "\u00A77", "\u00A77");
-						showButtons(player);
+						showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
 					}
 				}.runTaskLater(PitSim.INSTANCE, 40L);
 				return;
 			}
 
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			int cost = getEnchantCost(getTier(playerItems.get(player)), player);
+
+			if(cost > pitPlayer.taintedSouls) {
+				setText(player, "\u00A77", ChatColor.RED + "Not enough Souls!", ChatColor.WHITE + String.valueOf(cost) + " Souls" + ChatColor.RED + " Required", "\u00A77");
+				new BukkitRunnable() {
+					public void run() {
+						setText(player, "\u00A77", "\u00A77", "\u00A77", "\u00A77");
+						showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
+					}
+				}.runTaskLater(PitSim.INSTANCE, 40L);
+				return;
+			}
+
+			pitPlayer.taintedSouls -= cost;
 			ItemStack freshItem = playerItems.get(player);
 
 			try {
@@ -316,7 +375,7 @@ public class TaintedWell implements Listener {
 					TaintedWell.enchantingPlayers.remove(player);
 					player.playEffect(TaintedWell.wellLocation.clone().add(0.0, 1.0, 0.0), Effect.EXPLOSION_HUGE, 0);
 					Sounds.EXPLOSIVE_3.play(player);
-					TaintedWell.showButtons(player);
+					TaintedWell.showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
 				}
 			}.runTaskLater(PitSim.INSTANCE, sound.length);
 		}
@@ -452,6 +511,46 @@ public class TaintedWell implements Listener {
 			enchant3 = enchants.get(2).getDisplayName() + " " + AUtil.toRoman(enchantMap.get(enchants.get(2)));
 		}
 		setText(player, item.getItemMeta().getDisplayName(), enchant1, enchant2, enchant3);
+	}
+
+	public static int getEnchantCost(int tier, Player player) {
+		int cost;
+
+		switch(tier) {
+		case 0:
+			cost = 10;
+			break;
+		case 1:
+			cost = 20;
+			break;
+		case 2:
+			cost = 30;
+			break;
+		case 3:
+			cost = 40;
+			break;
+		default:
+			cost = -1;
+			break;
+		}
+
+		boolean reduce = ProgressionManager.isUnlocked(PitPlayer.getPitPlayer(player),
+				ProgressionManager.getSkillBranch(SoulBranch.class), SkillBranch.MajorUnlockPosition.SECOND_PATH);
+
+		if(cost != -1 && reduce) cost -= (cost * 0.3);
+
+		return cost;
+	}
+
+	public static int getTier(ItemStack itemStack) {
+		NBTItem nbtFreshItem = new NBTItem(itemStack);
+		return nbtFreshItem.getInteger(NBTTag.TAINTED_TIER.getRef());
+	}
+
+	public static int getMaxTier(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(!ProgressionManager.isUnlocked(pitPlayer, SoulBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST)) return 2;
+		return ProgressionManager.isUnlocked(pitPlayer, SoulBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST) ? 4 : 3;
 	}
 
 	@EventHandler

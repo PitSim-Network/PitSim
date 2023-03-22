@@ -73,6 +73,8 @@ public class Sounds {
 	public static final SoundEffect XP_GAIN = new SoundEffect(Sound.ORB_PICKUP, 1, 1);
 	public static final SoundEffect ALTAR_LEVEL_UP = new SoundEffect(Sound.WOLF_HOWL, 1, 0.8);
 	public static final SoundEffect ITEM_PICKUP = new SoundEffect(Sound.ITEM_PICKUP, 1, 1);
+	public static final SoundEffect HEARTBEAT1 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.6);
+	public static final SoundEffect HEARTBEAT2 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.8);
 
 	public static final SoundEffect SNAKE_ICE = new SoundEffect(Sound.GLASS, 1.3, 1.5);
 	public static final SoundEffect BONE_SNAKE = new SoundEffect(Sound.SKELETON_HURT, 1.3, 1.5);
@@ -91,6 +93,10 @@ public class Sounds {
 	public static final SoundEffect CHARGE = new SoundEffect(Sound.GHAST_FIREBALL, 1, 1.2);
 	public static final SoundEffect POPUP = new SoundEffect(Sound.FIZZ, 1, 1.2);
 	public static final SoundEffect TELEPORT = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1.4);
+	public static final SoundEffect SOUL_DROP = new SoundEffect(Sound.ITEM_PICKUP, 1, 1.4);
+	public static final SoundEffect BEAM_CONNECT = new SoundEffect(Sound.FIZZ, 1, 1.4);
+	public static final SoundEffect TURMOIL = new SoundEffect(Sound.NOTE_BASS_GUITAR, 1, 1.4);
+	public static final SoundEffect TURMOIL_BREAK = new SoundEffect(Sound.GLASS, 1, 0.8);
 
 	public static final SoundEffect CAGE = new SoundEffect()
 			.add(new SoundMoment(0).add(Sound.ANVIL_LAND, 1, 0.7))
@@ -284,17 +290,30 @@ public class Sounds {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(onlinePlayer.getWorld() != location.getWorld() || onlinePlayer.getLocation().distance(location) > radius)
 					continue;
-				play(onlinePlayer);
+				play(onlinePlayer, -1, -1);
+			}
+		}
+
+		public void play(Location location, double radius, float volume, float pitch) {
+			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				if(onlinePlayer.getWorld() != location.getWorld() || onlinePlayer.getLocation().distance(location) > radius)
+					continue;
+				play(onlinePlayer, volume, pitch);
 			}
 		}
 
 		public void play(LivingEntity checkPlayer) {
+			play(checkPlayer, -1, -1);
+		}
+
+		public void play(LivingEntity checkPlayer, float volume, float pitch) {
 			if(!(checkPlayer instanceof Player)) return;
 			Player player = (Player) checkPlayer;
 
 			if(!player.isOnline()) return;
 			if(soundMoment != null) {
-				soundMoment.play(player);
+				if(volume >= 0 && pitch >= 0) soundMoment.play(player, volume, pitch);
+				else soundMoment.play(player);
 				return;
 			}
 			List<SoundMoment> soundTimeList = new ArrayList<>(this.soundTimeList);
@@ -370,6 +389,17 @@ public class Sounds {
 					player.playSound(player.getLocation(), bukkitSound.sound, bukkitSound.volume, bukkitSound.pitch);
 				} else {
 					player.playSound(player.getLocation(), bukkitSound.soundString, bukkitSound.volume, bukkitSound.pitch);
+				}
+			}
+		}
+
+		public void play(Player player, float volume, float pitch) {
+			if(!player.isOnline()) return;
+			for(BukkitSound bukkitSound : bukkitSounds) {
+				if(bukkitSound.sound != null) {
+					player.playSound(player.getLocation(), bukkitSound.sound, volume, pitch);
+				} else {
+					player.playSound(player.getLocation(), bukkitSound.soundString, volume, pitch);
 				}
 			}
 		}
