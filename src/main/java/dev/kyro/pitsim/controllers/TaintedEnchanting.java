@@ -16,13 +16,13 @@ public class TaintedEnchanting {
 	public static final double TIER_1_TOKENS_1 = 1.0;
 	public static final double TIER_1_TOKENS_2 = 1.0;
 
-	public static final double TIER_2_TOKENS_1 = 0.3;
-	public static final double TIER_2_TOKENS_2 = 0.6;
-	public static final double TIER_2_TOKENS_3 = 0.1;
+	public static final double TIER_2_TOKENS_1 = 0.35;
+	public static final double TIER_2_TOKENS_2 = 0.65;
 
 	public static final double OTHER_TIERS_TOKENS_1 = 0.1;
 	public static final double OTHER_TIERS_TOKENS_2 = 0.4;
 	public static final double OTHER_TIERS_TOKENS_3 = 0.5;
+	public static final double OTHER_TIERS_TOKENS_4 = 0.2;
 
 	public static final double TIER_2_COMMON = 0.49;
 	public static final double TIER_2_UNCOMMON = 0.49;
@@ -77,7 +77,8 @@ public class TaintedEnchanting {
 			Map<Integer, Double> enchantRandom = new HashMap<>();
 			enchantRandom.put(1, previousTier == 1 ? TIER_2_TOKENS_1 : OTHER_TIERS_TOKENS_1);
 			enchantRandom.put(2, previousTier == 1 ? TIER_2_TOKENS_2 : OTHER_TIERS_TOKENS_2);
-			enchantRandom.put(3, previousTier == 1 ? TIER_2_TOKENS_3 : OTHER_TIERS_TOKENS_3);
+			enchantRandom.put(3, previousTier == 1 ? 0 : OTHER_TIERS_TOKENS_3);
+			enchantRandom.put(4, previousTier == 1 ? 0 : OTHER_TIERS_TOKENS_4);
 			newTokens = Misc.weightedRandom(enchantRandom);
 
 			for(int i = 0; i < newTokens; i++) {
