@@ -17,6 +17,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
 import dev.kyro.pitsim.adarkzone.altar.AltarManager;
+import dev.kyro.pitsim.adarkzone.altar.BiomeChanger;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
@@ -201,6 +202,7 @@ public class PitSim extends JavaPlugin {
 		if(luckpermsProvider != null) LUCKPERMS = luckpermsProvider.getProvider();
 
 		PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
+		new BiomeChanger(this);
 
 		new BukkitRunnable() {
 			@Override
@@ -326,6 +328,7 @@ public class PitSim extends JavaPlugin {
 			TaintedWell.onStop();
 			AltarManager.cleanUp();
 			FirestoreManager.AUCTION.save();
+			AuctionDisplays.onDisable();
 		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -718,8 +721,7 @@ public class PitSim extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 			getServer().getPluginManager().registerEvents(new MusicManager(), this);
 			getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
-//			TODO: FIX CODE IN OTHER TOOD
-			if(false) getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
+			getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
 			getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 
 			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);

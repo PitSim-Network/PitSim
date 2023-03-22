@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
+import dev.kyro.pitsim.adarkzone.altar.AltarRewards;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -47,13 +48,18 @@ public class AltarPanel extends AGUIPanel {
 		}
 
 		String costStatus = totalCost > pitPlayer.taintedSouls ? "&cYou do not have enough souls!" : "&aClick to confirm your selections!";
+		double multiplier = AltarRewards.getSoulMultiplier(player) * (AltarPedestal.getPedestal(WealthPedestal.class).isActivated(player) ? AltarPedestal.WEALTH_MULTIPLIER : 1);
+		String multiplierStatus = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player) ? "???" : multiplier + "x";
 
 		AItemStackBuilder confirm = new AItemStackBuilder(Material.STAINED_CLAY, 1, pitPlayer.taintedSouls < totalCost ? 14 : 5)
 				.setName((pitPlayer.taintedSouls < totalCost ? "&c" : "&a") + "Confirm Selections")
 				.setLore(new ALoreBuilder(
-						"&4Altar XP&7: &f+" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.ALTAR_XP) + "%",
-						"&eRenown&7: &f+" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.RENOWN) + "%",
-						"&4Vouchers&7: &f+" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.VOUCHERS) + "%",
+						"",
+						"&cAltar XP&7: &f" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.ALTAR_XP) + "%",
+						"&eRenown&7: &f" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.RENOWN) + "%",
+						"&4Vouchers&7: &f" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.VOUCHERS) + "%",
+						"",
+						"&2Reward Multiplier: &f" + multiplierStatus,
 						"",
 						"&7Total Cost: &f" + totalCost + " Souls",
 						"&7Your Souls: &f" + pitPlayer.taintedSouls + " Souls",

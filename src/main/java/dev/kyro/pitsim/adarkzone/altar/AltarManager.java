@@ -9,9 +9,12 @@ import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.DataWatcher;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
@@ -24,6 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
@@ -33,7 +37,11 @@ import java.util.List;
 public class AltarManager implements Listener {
 	public static final Location TEXT_LOCATION = new Location(MapManager.getDarkzone(), 192.5, 95, -104.5);
 	public static final Location CONFIRM_LOCATION = new Location(MapManager.getDarkzone(), 192.5, 89.5, -104.5);
+	public static final Location ALTAR_CENTER = new Location(MapManager.getDarkzone(), 192.5, 92, -104.5);
+	public static final int EFFECT_CHUNK_RADIUS = 5;
+	public static final int EFFECT_RADIUS = EFFECT_CHUNK_RADIUS + 3;
 
+	public static final List<AltarAnimation> animations = new ArrayList<>();
 	public static ArmorStand[] textStands = new ArmorStand[7];
 
 	static {
@@ -72,6 +80,17 @@ public class AltarManager implements Listener {
 
 			textStands[i] = stand;
 		}
+
+		List<Chunk> chunks = new ArrayList<>();
+		for(int x = -1 * EFFECT_CHUNK_RADIUS; x <= EFFECT_CHUNK_RADIUS; x++) {
+			for(int z = -1 * EFFECT_CHUNK_RADIUS; z <= EFFECT_CHUNK_RADIUS; z++) {
+				Chunk chunk = CONFIRM_LOCATION.clone().add(x, 0, z).getChunk();
+				if(!chunks.contains(chunk)) chunks.add(chunk);
+			}
+		}
+
+		BiomeChanger.chunkList.addAll(chunks);
+		Heartbeat.init();
 	}
 
 	public static void setText(Player player, String[] text) {
@@ -101,7 +120,7 @@ public class AltarManager implements Listener {
 				"&8&m----------------------",
 				"&4&lAltar Level",
 				"&4" + altarLevel + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
-						pitPlayer.altarXP / DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + (altarLevel + 1),
+						DarkzoneLeveling.getRemainingXP(pitPlayer.altarXP) / DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + (altarLevel + 1),
 				"&8&m----------------------",
 				"&7Level Difference: " + color + Math.abs(difference),
 				status
@@ -117,7 +136,7 @@ public class AltarManager implements Listener {
 
 	public static int getStandID(ArmorStand stand) {
 		for(Entity entity : Bukkit.getWorld("darkzone").getNearbyEntities(CONFIRM_LOCATION, 10.0, 10.0, 10.0)) {
-			if(!(entity instanceof ArmorStand)) {
+			if(!(entity instanceof ArmorStand) || !entity.isValid()) {
 				continue;
 			}
 			if(entity.getUniqueId().equals(stand.getUniqueId())) {
@@ -133,9 +152,19 @@ public class AltarManager implements Listener {
 		Player player = event.getPlayer();
 		Block block = CONFIRM_LOCATION.clone().add(0, 2, 0).getBlock();
 		if(!event.getClickedBlock().equals(block)) return;
+		if(isInAnimation(player)) return;
 
 		AltarGUI altarGUI = new AltarGUI(player);
 		altarGUI.open();
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		AltarPedestal.disableAll(event.getPlayer());
+
+		AltarAnimation altarAnimation = getAnimation(event.getPlayer());
+		if(altarAnimation == null) return;
+		altarAnimation.onQuit();
 	}
 
 	public static void activateAltar(Player player) {
@@ -149,13 +178,38 @@ public class AltarManager implements Listener {
 			}
 		}
 
-		Misc.strikeLightningForPlayers(CONFIRM_LOCATION, player);
+		disableText(player);
+		double multiplier = AltarRewards.getTurmoilMultiplier(player);
 
-		if(pedestals.isEmpty()) return;
+		BukkitRunnable callback = new BukkitRunnable() {
+			@Override
+			public void run() {
+				Misc.strikeLightningForPlayers(CONFIRM_LOCATION, player);
+				AltarRewards.rewardPlayer(player, multiplier);
+				AltarPedestal.disableAll(player);
+				enableText(player);
+			}
+		};
 
-		AltarRewards.rewardPlayer(player);
+		animations.add(new AltarAnimation(player, AltarPedestal.getTotalCost(player), pedestals, multiplier, callback));
+	}
 
-		AltarPedestal.disableAll(player);
+	public static void disableText(Player player) {
+		for(ArmorStand textStand : textStands) {
+			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textStand));
+			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
+		}
+	}
+
+	public static void enableText(Player player) {
+		for(ArmorStand textStand : textStands) {
+			PacketPlayOutSpawnEntity spawnPacket = new PacketPlayOutSpawnEntity(((CraftEntity) textStand).getHandle(), 78);
+			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawnPacket);
+
+			DataWatcher dw = ((CraftEntity)textStand).getHandle().getDataWatcher();
+			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStand), dw, true);
+			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
+		}
 	}
 
 	public static double getReduction(PitPlayer pitPlayer) {
@@ -174,5 +228,18 @@ public class AltarManager implements Listener {
 
 	public static double getReductionMultiplier(PitPlayer pitPlayer) {
 		return Misc.getReductionMultiplier(getReduction(pitPlayer));
+	}
+
+	public static AltarAnimation getAnimation(Player player) {
+		for(AltarAnimation animation : animations) {
+			if(animation.player.equals(player)) {
+				return animation;
+			}
+		}
+		return null;
+	}
+
+	public static boolean isInAnimation(Player player) {
+		return getAnimation(player) != null;
 	}
 }

@@ -18,16 +18,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class AltarRenownReward {
 
 	public Player player;
 	public int amount;
 	public List<BukkitTask> bukkitTaskList = new ArrayList<>();
-	public List<EntityItem> items = new ArrayList<>();
+	public Map<EntityItem, Integer> items = new HashMap<>();
 
 	public AltarRenownReward(Player player, int amount) {
 		this.player = player;
@@ -38,17 +36,27 @@ public class AltarRenownReward {
 		Random random = new Random();
 		World world = ((CraftWorld) location.getWorld()).getHandle();
 
-		for(int i = 0; i < amount; i++) {
+		int itemCount = (int) Math.pow(amount, 3.0 / 5.0);
+		Map<Integer, Integer> renownDistributionMap = new HashMap<>();
+		int renownToDistribute = amount - itemCount;
+		for(int i = 0; i < itemCount; i++) renownDistributionMap.put(i, 1);
+		for(int i = 0; i < renownToDistribute; i++) {
+			int randomStack = new Random().nextInt(itemCount);
+			renownDistributionMap.put(randomStack, renownDistributionMap.get(randomStack) + 1);
+		}
+
+		for(Map.Entry<Integer, Integer> entry : renownDistributionMap.entrySet()) {
 			double offsetX = (random.nextInt(20) - 10) * 0.1;
 			double offsetZ = (random.nextInt(20) - 10) * 0.1;
 
 			EntityItem entityItem = new EntityItem(world);
 			Location spawnLocation = new Location(location.getWorld(), location.getX() + offsetX, location.getY(), location.getZ() + offsetZ);
 			entityItem.setPosition(spawnLocation.getX(), spawnLocation.getY(), spawnLocation.getZ());
-			entityItem.setItemStack(CraftItemStack.asNMSCopy(new ItemStack(Material.QUARTZ)));
-			items.add(entityItem);
+			ItemStack itemStack = new ItemStack(Material.QUARTZ, entry.getValue(), (short) 0);
+			entityItem.setItemStack(CraftItemStack.asNMSCopy(new ItemStack(itemStack)));
+			items.put(entityItem, entry.getValue());
 
-			PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 2, 1);
+			PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 2, entry.getValue());
 			((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawn);
 
 			PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entityItem.getId(), entityItem.getDataWatcher(), true);
@@ -66,7 +74,8 @@ public class AltarRenownReward {
 
 						Sounds.ITEM_PICKUP.play(player);
 
-						reward();
+						reward(entry.getValue());
+						items.remove(entityItem);
 						cancel();
 					}
 				}
@@ -76,9 +85,12 @@ public class AltarRenownReward {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(EntityItem item : items) despawn(item);
+				for(Map.Entry<EntityItem, Integer> entry : items.entrySet()) {
+					reward(entry.getValue());
+					despawn(entry.getKey());
+				}
+
 				for(BukkitTask task : bukkitTaskList) task.cancel();
-				reward();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 30 * 20);
 	}
@@ -88,12 +100,11 @@ public class AltarRenownReward {
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
 	}
 
-	public void reward() {
+	public void reward(int amount) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer == null) return;
-		//TODO: Add Vouchers
-
-		AOutput.send(player, "&4&lALTAR! &7Gained &e+1 Renown");
+		pitPlayer.renown += amount;
+		AOutput.send(player, "&4&lALTAR! &7Gained &e+" + amount + " Renown");
 	}
 
 }

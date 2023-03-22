@@ -12,11 +12,16 @@ import com.comphenix.protocol.injector.packet.PacketInjector;
 import com.comphenix.protocol.injector.player.PlayerInjectionHandler;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.altar.AltarManager;
+import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
 import dev.kyro.pitsim.misc.effects.PacketBlock;
 import dev.kyro.pitsim.misc.packets.WrapperPlayClientBlockDig;
 import dev.kyro.pitsim.misc.packets.WrapperPlayServerBlockChange;
+import dev.kyro.pitsim.misc.packets.WrapperPlayServerEntityTeleport;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -85,6 +90,27 @@ public class PacketManager implements Listener {
 							if(!viewers.contains(event.getPlayer())) return;
 
 							event.setCancelled(true);
+						}
+					});
+
+			protocolManager.addPacketListener(
+					new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.ENTITY_TELEPORT) {
+						@Override
+						public void onPacketSending(PacketEvent event) {
+
+							boolean disable = AltarManager.isInAnimation(event.getPlayer());
+							if(!disable) return;
+
+							WrapperPlayServerEntityTeleport wrapper = new WrapperPlayServerEntityTeleport(event.getPacket());
+							Entity entity = wrapper.getEntity(event);
+							if(!(entity instanceof ArmorStand)) return;
+
+							for(AltarPedestal altarPedestal : AltarPedestal.altarPedestals) {
+								if(altarPedestal.stand.getUniqueId().equals(entity.getUniqueId())) {
+									event.setCancelled(true);
+									return;
+								}
+							}
 						}
 					});
 		}

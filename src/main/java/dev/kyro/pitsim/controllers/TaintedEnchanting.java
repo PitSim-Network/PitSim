@@ -22,7 +22,7 @@ public class TaintedEnchanting {
 //		if(type != MysticType.TAINTED_CHESTPLATE && type != MysticType.TAINTED_SCYTHE) return null;
 		NBTItem nbtItem = new NBTItem(itemStack, true);
 		int previousTier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
-		if(previousTier == 3) return null;
+		if(previousTier == 4) return null;
 
 		if(previousTier == 0) {
 			int tokens;
@@ -65,8 +65,8 @@ public class TaintedEnchanting {
 
 				Map<PitEnchant, Double> randomEnchantMap = new HashMap<>();
 				for(Map.Entry<PitEnchant, Integer> entry : enchantsOnItem.entrySet()) {
-					if(entry.getValue() < 3) {
-						if(previousTier == 2 || (previousTier == 1 && !entry.getKey().isRare)) randomEnchantMap.put(entry.getKey(), 1.0);
+					if(entry.getValue() < (previousTier == 3 ? 4 : 3)) {
+						if(previousTier >= 2 || (previousTier == 1 && !entry.getKey().isRare)) randomEnchantMap.put(entry.getKey(), 1.0);
 					}
 				}
 
@@ -95,8 +95,10 @@ public class TaintedEnchanting {
 			}
 		}
 
+		nbtItem = new NBTItem(itemStack, true);
 		nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), previousTier + 1);
 		int addedLives = EnchantManager.getTaintedMaxLifeIncrease(previousTier + 1, temporaryItem.getMaxLives(itemStack));
+		itemStack = nbtItem.getItem();
 		temporaryItem.addMaxLives(itemStack, addedLives);
 		return itemStack;
 	}

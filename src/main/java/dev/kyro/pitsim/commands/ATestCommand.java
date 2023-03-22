@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.ahelp.HelpManager;
+import dev.kyro.pitsim.market.MarketGUI;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,8 +29,21 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		HelpManager.HelperAgent helperAgent = HelpManager.getAgent(player);
-		helperAgent.detectIntent(String.join(" ", args));
+
+		MarketGUI marketGUI = new MarketGUI(player);
+		marketGUI.open();
+
+
+
+//		if(BiomeChanger.players.contains(player.getUniqueId())) {
+//			BiomeChanger.players.remove(player.getUniqueId());
+//		} else {
+//			BiomeChanger.players.add(player.getUniqueId());
+//		}
+
+
+//		HelpManager.HelperAgent helperAgent = HelpManager.getAgent(player);
+//		helperAgent.detectIntent(String.join(" ", args));
 
 //		PacketBlock packetBlock = new PacketBlock(Material.RED_ROSE, (byte) 1, player.getLocation());
 //		packetBlock.setViewers(Collections.singletonList(player));
@@ -105,12 +118,3 @@ public class ATestCommand implements CommandExecutor {
 
 
 
-
-//		ItemStack itemStack = player.getItemInHand();
-//		player.setItemInHand(TaintedEnchanting.enchantItem(itemStack));
-
-//		if(itemStack == null || !itemStack.hasItemMeta() || itemStack.getType() == Material.AIR) {
-//			MarketGUI marketGUI = new MarketGUI(player);
-//			marketGUI.open();
-//			return true;
-//		}
