@@ -260,7 +260,7 @@ public class KillEvent extends Event {
 			TemporaryItem.ItemDamageResult damageResult = temporaryItem.damage(itemStack, entry.getValue().livesToLose);
 			livesLost += damageResult.getLivesLost();
 
-			deadInventoryWrapper.putItem(entry.getKey(), itemStack);
+			deadInventoryWrapper.putItem(entry.getKey(), damageResult.getItemStack());
 			if(damageResult.wasRemoved()) temporaryItem.onItemRemove(itemStack);
 		}
 
