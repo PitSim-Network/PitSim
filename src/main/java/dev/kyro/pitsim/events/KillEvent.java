@@ -5,7 +5,7 @@ import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.aitems.misc.CorruptedFeather;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
-import dev.kyro.pitsim.controllers.BoosterManager;
+import dev.kyro.pitsim.boosters.PvPBooster;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
@@ -96,7 +96,7 @@ public class KillEvent extends Event {
 	private void checkLoseLives() {
 		if(!isDeadRealPlayer) return;
 
-		if(BoosterManager.getBooster("pvp").minutes > 0) return;
+		if(PvPBooster.INSTANCE.isActive()) return;
 		if(DivineIntervention.attemptDivine(getDeadPlayer())) return;
 
 		if(PitSim.status.isOverworld()) {
