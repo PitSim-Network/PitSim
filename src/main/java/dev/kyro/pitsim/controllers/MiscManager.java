@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 
 import java.time.LocalDate;
@@ -18,6 +19,11 @@ public class MiscManager implements Listener {
 		BlockIgniteEvent.IgniteCause cause = event.getCause();
 		if(cause == BlockIgniteEvent.IgniteCause.FIREBALL || cause == BlockIgniteEvent.IgniteCause.EXPLOSION)
 			event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onIgnite(BlockExplodeEvent event) {
+		event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
