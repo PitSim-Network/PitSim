@@ -75,7 +75,8 @@ public class WarpSpell extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Teleports you forward Grants &eSpeed IV &7(2s) &d&o-" + getManaCost(enchantLvl) + " Mana"
+				"&7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, " +
+						"&7teleporting you forward and granting &eSpeed IV &7(2s)"
 		).getLore();
 	}
 

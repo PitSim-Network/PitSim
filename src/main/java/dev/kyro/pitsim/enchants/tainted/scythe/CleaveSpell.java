@@ -116,7 +116,8 @@ public class CleaveSpell extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Throw your scythe, dealing damage to all entities it hits &d&o-" + getManaCost(enchantLvl) + " Mana"
+				"&7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, " +
+						"&7throwing your scythe and dealing damage to all entities it hits"
 		).getLore();
 	}
 

@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted.chestplate;
+package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
@@ -106,7 +106,8 @@ public class MeteorSpell extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Summon a meteor, causing large damage to a single target &d&o-" + getManaCost(enchantLvl) + " Mana"
+				"&7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, " +
+						"&7summoning a meteor that causes large damage to a single target"
 		).getLore();
 	}
 
