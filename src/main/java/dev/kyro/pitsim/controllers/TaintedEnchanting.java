@@ -12,6 +12,26 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class TaintedEnchanting {
+
+	public static final double TIER_1_TOKENS_1 = 1.0;
+	public static final double TIER_1_TOKENS_2 = 1.0;
+
+	public static final double TIER_2_TOKENS_1 = 0.3;
+	public static final double TIER_2_TOKENS_2 = 0.6;
+	public static final double TIER_2_TOKENS_3 = 0.1;
+
+	public static final double OTHER_TIERS_TOKENS_1 = 0.1;
+	public static final double OTHER_TIERS_TOKENS_2 = 0.4;
+	public static final double OTHER_TIERS_TOKENS_3 = 0.5;
+
+	public static final double TIER_2_COMMON = 0.49;
+	public static final double TIER_2_UNCOMMON = 0.49;
+	public static final double TIER_2_RARE = 0.02;
+
+	public static final double OTHER_TIERS_COMMON = 0.45;
+	public static final double OTHER_TIERS_UNCOMMON = 0.45;
+	public static final double OTHER_TIERS_RARE = 0.1;
+
 	public static ItemStack enchantItem(ItemStack itemStack) {
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.isMystic ||
@@ -28,8 +48,8 @@ public class TaintedEnchanting {
 			int tokens;
 
 			Map<Integer, Double> tokenChance = new HashMap<>();
-			tokenChance.put(1, 1.0);
-			tokenChance.put(2, 1.0);
+			tokenChance.put(1, TIER_1_TOKENS_1);
+			tokenChance.put(2, TIER_1_TOKENS_2);
 			tokens = Misc.weightedRandom(tokenChance);
 
 			for(int i = 0; i < tokens; i++) {
@@ -55,9 +75,9 @@ public class TaintedEnchanting {
 		} else {
 			int newTokens;
 			Map<Integer, Double> enchantRandom = new HashMap<>();
-			enchantRandom.put(1, previousTier == 1 ? 0.3 : 0.1);
-			enchantRandom.put(2, previousTier == 1 ? 0.6 : 0.4);
-			enchantRandom.put(3, previousTier == 1 ? 0.1 : 0.5);
+			enchantRandom.put(1, previousTier == 1 ? TIER_2_TOKENS_1 : OTHER_TIERS_TOKENS_1);
+			enchantRandom.put(2, previousTier == 1 ? TIER_2_TOKENS_2 : OTHER_TIERS_TOKENS_2);
+			enchantRandom.put(3, previousTier == 1 ? TIER_2_TOKENS_3 : OTHER_TIERS_TOKENS_3);
 			newTokens = Misc.weightedRandom(enchantRandom);
 
 			for(int i = 0; i < newTokens; i++) {
@@ -72,9 +92,9 @@ public class TaintedEnchanting {
 
 				if(randomEnchantMap.size() < 3) {
 					Map<Integer, Double> randomRarityMap = new HashMap<>();
-					randomRarityMap.put(2, previousTier == 1 ? 0.02 : 0.1);
-					randomRarityMap.put(1, previousTier == 1 ? 0.49 : 0.45);
-					randomRarityMap.put(0, previousTier == 1 ? 0.49 : 0.45);
+					randomRarityMap.put(2, previousTier == 1 ? TIER_2_RARE : OTHER_TIERS_RARE);
+					randomRarityMap.put(1, previousTier == 1 ? TIER_2_UNCOMMON : OTHER_TIERS_UNCOMMON);
+					randomRarityMap.put(0, previousTier == 1 ? TIER_2_COMMON : OTHER_TIERS_COMMON);
 
 					List<PitEnchant> usedEnchants = new ArrayList<>(enchantsOnItem.keySet());
 					for(PitEnchant enchant : randomEnchantMap.keySet()) {
