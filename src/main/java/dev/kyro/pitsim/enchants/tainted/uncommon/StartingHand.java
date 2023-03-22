@@ -59,7 +59,7 @@ public class StartingHand extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&e" + getGoodLuckChance(enchantLvl) + "% &7 chance for your first strike on a mob to deal &cdouble " +
+				"&e" + getGoodLuckChance(enchantLvl) + "% &7chance for your first strike on a mob to deal &cdouble " +
 						"damage &7instead of &chalf damage"
 		).getLore();
 	}

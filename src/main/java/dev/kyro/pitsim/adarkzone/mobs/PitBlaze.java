@@ -67,7 +67,6 @@ public class PitBlaze extends PitMob {
 	@EventHandler
 	public void onFireballExplode(EntityExplodeEvent event) {
 		if(event.getEntity() instanceof Fireball) event.setCancelled(true);
-
 		event.getLocation().getWorld().playEffect(event.getLocation(), Effect.EXPLOSION_LARGE, 1);
 		for(Entity entity : event.getLocation().getWorld().getNearbyEntities(event.getLocation(), 3, 3, 3)) {
 			if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;

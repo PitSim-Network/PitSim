@@ -42,12 +42,12 @@ public class MassEnchantPanel extends AGUIPanel {
 	}
 
 	public void setButtons() {
-		AItemStackBuilder tierUp = new AItemStackBuilder(Material.STAINED_CLAY, 1, tier < 3 ? 5 : 14)
-				.setName((tier < 3 ? "&a" : "&c") + "Tier Up")
+		AItemStackBuilder tierUp = new AItemStackBuilder(Material.STAINED_CLAY, 1, tier < 4 ? 5 : 14)
+				.setName((tier < 4 ? "&a" : "&c") + "Tier Up")
 				.setLore(new ALoreBuilder(
 								"&7Click to tier up items",
 								"",
-								tier < 3 ? "&aClick to tier up!" : "&cItems are max tier!"
+								tier < 4 ? "&aClick to tier up!" : "&cItems are max tier!"
 						)
 				);
 		getInventory().setItem(48, tierUp.getItemStack());
@@ -90,7 +90,7 @@ public class MassEnchantPanel extends AGUIPanel {
 
 		if(slot != 48) return;
 
-		if(tier >= 3) {
+		if(tier >= 4) {
 			Sounds.ERROR.play(player);
 			return;
 		}

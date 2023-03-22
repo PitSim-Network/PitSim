@@ -3,7 +3,6 @@ package dev.kyro.pitsim.commands.admin;
 import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.objects.Hopper;
 import org.bukkit.Bukkit;
@@ -22,9 +21,9 @@ public class HopperCommand extends ACommand {
 	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
 
 		if(!(sender instanceof Player)) return;
-		if(!sender.isOp()) return;
+//		if(!sender.isOp()) return;
 		Player player = (Player) sender;
-		if(!FirestoreManager.CONFIG.whitelistedIPs.contains(player.getAddress().getAddress().toString())) return;
+//		if(!FirestoreManager.CONFIG.whitelistedIPs.contains(player.getAddress().getAddress().toString())) return;
 
 		String concatHoppers = "";
 		for(Hopper.Type type : Hopper.Type.values())
