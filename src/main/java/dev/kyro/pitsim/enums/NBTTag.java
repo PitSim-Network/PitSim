@@ -11,8 +11,9 @@ public enum NBTTag {
 	ITEM_TOKENS("pr-token-num"),
 	ITEM_RTOKENS("pr-rare-token-num"),
 	ITEM_ENCHANT_NUM("pr-enchant-num"),
-	JEWEL_KILLS("pr-jewel-kills"),
+	ITEM_JEWEL_KILLS("pr-jewel-kills"),
 	ITEM_JEWEL_ENCHANT("pr-jewel-enchant"),
+	ITEM_LAST_SERVER("pr-last-server"),
 
 	IS_JEWEL("pr-isjewel"),
 	IS_GEMMED("pr-isgemmed"),

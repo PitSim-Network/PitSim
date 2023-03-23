@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.misc;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.ItemManager;
@@ -105,9 +106,11 @@ public class CustomSerializer {
 		if(pitItem != null) {
 			ItemStack oldStack = itemStack.clone();
 			pitItem.updateItem(itemStack);
-			if(informUUID != null && !oldStack.equals(itemStack)) {
-				ItemManager.updatedItems.putIfAbsent(informUUID, new ArrayList<>());
-				ItemManager.updatedItems.get(informUUID).add(itemStack);
+			if(!pitItem.hasLastServer || pitItem.getLastServer(itemStack) == PitSim.status) {
+				if(informUUID != null && !oldStack.equals(itemStack)) {
+					ItemManager.updatedItems.putIfAbsent(informUUID, new ArrayList<>());
+					ItemManager.updatedItems.get(informUUID).add(itemStack);
+				}
 			}
 		}
 		return itemStack;

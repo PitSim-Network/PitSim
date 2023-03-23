@@ -53,5 +53,4 @@ public class AltarXPReward {
 	public void reward() {
 		DarkzoneLeveling.giveXP(PitPlayer.getPitPlayer(player), xp);
 	}
-
 }

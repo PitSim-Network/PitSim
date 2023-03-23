@@ -69,7 +69,7 @@ public class JewelCommand extends ACommand {
 
 		PitEnchant jewelEnchant = EnchantManager.getEnchant(pitEnchant);
 		if(jewelEnchant != null) {
-			nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), Constant.JEWEL_KILLS);
+			nbtItem.setInteger(NBTTag.ITEM_JEWEL_KILLS.getRef(), Constant.JEWEL_KILLS);
 
 			if(maxLives <= 0) maxLives = EnchantManager.getRandomMaxLives();
 

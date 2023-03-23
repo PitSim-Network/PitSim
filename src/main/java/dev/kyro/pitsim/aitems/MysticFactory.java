@@ -84,7 +84,7 @@ public class MysticFactory {
 		if(!isMystic(itemStack)) return false;
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		if(onlyComplete && nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) < Constant.JEWEL_KILLS) return false;
+		if(onlyComplete && nbtItem.getInteger(NBTTag.ITEM_JEWEL_KILLS.getRef()) < Constant.JEWEL_KILLS) return false;
 		return nbtItem.hasKey(NBTTag.IS_JEWEL.getRef());
 	}
 

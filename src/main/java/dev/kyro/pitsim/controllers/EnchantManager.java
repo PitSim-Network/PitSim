@@ -348,7 +348,7 @@ public class EnchantManager implements Listener {
 		}
 
 		if(isJewel && !isJewelComplete) {
-			int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
+			int jewelKills = nbtItem.getInteger(NBTTag.ITEM_JEWEL_KILLS.getRef());
 
 			MysticType mysticType = MysticType.getMysticType(nbtItem.getItem());
 			if(mysticType == MysticType.PANTS) {
@@ -428,7 +428,7 @@ public class EnchantManager implements Listener {
 		if(Misc.isAirOrNull(itemStack) || !isJewel(itemStack) || !isJewelComplete(itemStack)) return null;
 		NBTItem nbtItem = new NBTItem(itemStack);
 		String jewelString = nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef());
-		int jewelKills = nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef());
+		int jewelKills = nbtItem.getInteger(NBTTag.ITEM_JEWEL_KILLS.getRef());
 		if(jewelKills < Constant.JEWEL_KILLS || !jewelString.isEmpty()) return null;
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
@@ -511,7 +511,7 @@ public class EnchantManager implements Listener {
 		if(Misc.isAirOrNull(itemStack) || !isJewel(itemStack) || isJewelComplete(itemStack)) return null;
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()) + 1);
+		nbtItem.setInteger(NBTTag.ITEM_JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.ITEM_JEWEL_KILLS.getRef()) + 1);
 
 		ItemStack jewelStack = completeJewel(player, nbtItem.getItem());
 		if(jewelStack == null) {

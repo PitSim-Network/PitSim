@@ -48,11 +48,6 @@ public class SoulPickup extends PitItem {
 		).getLore();
 	}
 
-	@Override
-	public void updateItem(ItemStack itemStack) {
-
-	}
-
 	public ItemStack getItem(int amount) {
 		ItemStack itemStack = new ItemStack(getMaterial(), Math.min(amount, 64));
 		itemStack = buildItem(itemStack);
