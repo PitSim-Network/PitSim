@@ -2,11 +2,13 @@ package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.ActionBarManager;
+import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.entity.Player;
 
-public class DarkzoneLeveling {
+public class DarkzoneLeveling	 {
 
 	public static int getLevel(double xp) {
 		int level = 1;
@@ -49,5 +51,16 @@ public class DarkzoneLeveling {
 		Sounds.ALTAR_LEVEL_UP.play(pitPlayer.player);
 		Misc.sendTitle(pitPlayer.player, "&4&lLEVEL UP!", 40);
 		Misc.sendSubTitle(pitPlayer.player, "&4 " + currentLevel + " &7\u279F &4" + newLevel, 40);
+	}
+
+	public static double getReduction(int altarLevel, int darkzoneLevel) {
+		int levelDifference = Math.max(darkzoneLevel - altarLevel, 0);
+		return 100 - 100 * Math.pow(0.99, levelDifference);
+	}
+
+	public static double getReductionModifier(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
+		return getReduction(getLevel(pitPlayer.altarXP), prestigeInfo.darkzoneLevel);
 	}
 }

@@ -112,8 +112,10 @@ public class AltarManager implements Listener {
 
 		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.altarXP);
 		int difference = info.darkzoneLevel - altarLevel;
+		double percent = DarkzoneLeveling.getReductionModifier(player);
+
 		String color = difference > 0 ? "&c" : "&a";
-		String status = difference > 0 ? "&7Taking &f" + Math.min(difference, 100) + "% &7of &bXP &7and &6Gold" : "&aYou are stronger than the Darkzone!";
+		String status = difference > 0 ? "&7Taking &f" + (int) Math.min(percent, 100) + "% &7of &bXP &7and &6Gold" : "&aYou are stronger than the Darkzone!";
 
 		setText(player, new String[] {
 				"&5Darkzone Level: " + info.darkzoneLevel,
