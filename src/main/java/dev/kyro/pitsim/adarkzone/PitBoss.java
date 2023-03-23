@@ -189,12 +189,12 @@ public abstract class PitBoss {
 	public void remove() {
 		for(PitBossAbility ability : abilities) ability.disable();
 		npcBoss.destroy();
+		bossBar.remove();
 		if(routineRunnable!= null) routineRunnable.cancel();
 		if(targetingRunnable != null) targetingRunnable.cancel();
 		onDeath();
 		getSubLevel().bossDeath();
 		BossManager.pitBosses.remove(this);
-		bossBar.remove();
 	}
 
 	public void onHealthChange() {

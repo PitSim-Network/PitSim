@@ -1,12 +1,15 @@
 package dev.kyro.pitsim.controllers;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.SoulPickup;
 import dev.kyro.pitsim.aitems.misc.VeryYummyBread;
 import dev.kyro.pitsim.aitems.misc.YummyBread;
+import dev.kyro.pitsim.controllers.objects.FakeItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
@@ -25,13 +28,35 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ItemManager implements Listener {
 	public static Map<UUID, List<ItemStack>> updatedItems = new HashMap<>();
+	public static List<FakeItem> fakeItems = new ArrayList<>();
+
+	static {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(FakeItem fakeItem : new ArrayList<>(fakeItems)) {
+					if(fakeItem.hasBeenRemoved()) {
+						fakeItem.remove();
+						continue;
+					}
+
+					for(Entity entity : fakeItem.getLocation().getWorld().getNearbyEntities(fakeItem.getLocation(), 1, 1, 1)) {
+						if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
+						Player player = (Player) entity;
+						if(!fakeItem.getViewers().contains(player) || VanishAPI.isInvisible(player) ||
+								!Misc.hasSpaceForItem(player, fakeItem.getItemStack())) continue;
+
+						fakeItem.pickup(player);
+						break;
+					}
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, 0, 3);
+	}
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
