@@ -35,9 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AltarManager implements Listener {
-	public static final Location TEXT_LOCATION = new Location(MapManager.getDarkzone(), 192.5, 95, -104.5);
-	public static final Location CONFIRM_LOCATION = new Location(MapManager.getDarkzone(), 192.5, 89.5, -104.5);
-	public static final Location ALTAR_CENTER = new Location(MapManager.getDarkzone(), 192.5, 92, -104.5);
+	public static final Location TEXT_LOCATION = new Location(MapManager.getDarkzone(), 221.5, 95, -83.5);
+	public static final Location CONFIRM_LOCATION = new Location(MapManager.getDarkzone(), 221.5, 89.5, -83.5);
+	public static final Location ALTAR_CENTER = new Location(MapManager.getDarkzone(), 221.5, 92, -83.5);
 	public static final int EFFECT_CHUNK_RADIUS = 5;
 	public static final int EFFECT_RADIUS = EFFECT_CHUNK_RADIUS + 3;
 
@@ -45,11 +45,11 @@ public class AltarManager implements Listener {
 	public static ArmorStand[] textStands = new ArmorStand[7];
 
 	static {
-		new KnowledgePedestal(new Location(MapManager.getDarkzone(), 189.5, 90.5, -102.5));
-		new RenownPedestal(new Location(MapManager.getDarkzone(), 189.5, 90.5, -105.5));
-		new HeresyPedestal(new Location(MapManager.getDarkzone(), 192.5, 90.5, -107.5));
-		new WealthPedestal(new Location(MapManager.getDarkzone(), 195.5, 90.5, -105.5));
-		new TurmoilPedestal(new Location(MapManager.getDarkzone(), 195.5, 90.5, -102.5));
+		new KnowledgePedestal(new Location(MapManager.getDarkzone(), 224.5, 90.5, -85.5));
+		new RenownPedestal(new Location(MapManager.getDarkzone(), 224.5, 90.5, -82.5));
+		new HeresyPedestal(new Location(MapManager.getDarkzone(), 221.5, 90.5, -80.5));
+		new WealthPedestal(new Location(MapManager.getDarkzone(), 218.5, 90.5, -82.5));
+		new TurmoilPedestal(new Location(MapManager.getDarkzone(), 218.5, 90.5, -85.5));
 
 		new BukkitRunnable() {
 			@Override
