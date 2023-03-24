@@ -7,6 +7,8 @@ import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.mystics.TaintedChestplate;
+import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -394,19 +396,19 @@ public class TaintedWell implements Listener {
 		if(playerItems.containsKey(event.getPlayer()) || Misc.isAirOrNull(player.getItemInHand())) return;
 
 		PitItem pitItem = ItemFactory.getItem(player.getItemInHand());
-//		if((!(pitItem instanceof TaintedScythe) && !(pitItem instanceof TaintedChestplate))) {
-//			setText(player, "\u00A77", ChatColor.RED + "Invalid Item!", ChatColor.RED + "Please try again!", "\u00A77");
-//
-//			new BukkitRunnable() {
-//				public void run() {
-//					if(!playerItems.containsKey(player)) {
-//						setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
-//					}
-//				}
-//			}.runTaskLater(PitSim.INSTANCE, 40L);
-//
-//			return;
-//		}
+		if((!(pitItem instanceof TaintedScythe) && !(pitItem instanceof TaintedChestplate))) {
+			setText(player, "\u00A77", ChatColor.RED + "Invalid Item!", ChatColor.RED + "Please try again!", "\u00A77");
+
+			new BukkitRunnable() {
+				public void run() {
+					if(!playerItems.containsKey(player)) {
+						setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
+					}
+				}
+			}.runTaskLater(PitSim.INSTANCE, 40L);
+
+			return;
+		}
 
 		placeItemInWell(player, player.getItemInHand());
 		Sounds.MYSTIC_WELL_OPEN_1.play(player);
