@@ -10,6 +10,8 @@ import dev.kyro.pitsim.aitems.prot.ProtBoots;
 import dev.kyro.pitsim.aitems.prot.ProtChestplate;
 import dev.kyro.pitsim.aitems.prot.ProtHelmet;
 import dev.kyro.pitsim.aitems.prot.ProtLeggings;
+import dev.kyro.pitsim.brewing.PotionManager;
+import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.enums.MysticType;
@@ -83,19 +85,20 @@ class GodPanel extends AGUIPanel {
 		addItem(ItemFactory.getItem(RottenFlesh.class).getItem(64));
 		addItem(ItemFactory.getItem(Bone.class).getItem(64));
 		addItem(ItemFactory.getItem(SpiderEye.class).getItem(64));
-		addItem(ItemFactory.getItem(Gunpowder.class).getItem(64));
-		addItem(ItemFactory.getItem(BlazeRod.class).getItem(64));
 		addItem(ItemFactory.getItem(Leather.class).getItem(64));
+		addItem(ItemFactory.getItem(BlazeRod.class).getItem(64));
+		addItem(ItemFactory.getItem(RawPork.class).getItem(64));
 		addItem(ItemFactory.getItem(Charcoal.class).getItem(64));
+		addItem(ItemFactory.getItem(Gunpowder.class).getItem(64));
 		addItem(ItemFactory.getItem(IronIngot.class).getItem(64));
 		addItem(ItemFactory.getItem(EnderPearl.class).getItem(64));
 
-//		BrewingIngredient enderPearl = BrewingIngredient.getIngredientFromTier(10);
-//		assert enderPearl != null;
-//		for(int i = 0; i < 10; i++) {
-//			addItem(PotionManager.createPotion(BrewingIngredient.getIngredientFromTier(i + 1), enderPearl, enderPearl));
-//			addItem(PotionManager.createSplashPotion(BrewingIngredient.getIngredientFromTier(i + 1), enderPearl, enderPearl));
-//		}
+		BrewingIngredient enderPearl = BrewingIngredient.getIngredientFromTier(10);
+		assert enderPearl != null;
+		for(int i = 0; i < 10; i++) {
+			addItem(PotionManager.createPotion(BrewingIngredient.getIngredientFromTier(i + 1), enderPearl, enderPearl));
+			addItem(PotionManager.createSplashPotion(BrewingIngredient.getIngredientFromTier(i + 1), enderPearl, enderPearl));
+		}
 	}
 
 	public void addItem(ItemStack itemStack) {

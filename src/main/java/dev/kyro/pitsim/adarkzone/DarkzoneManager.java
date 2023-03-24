@@ -71,13 +71,13 @@ public class DarkzoneManager implements Listener {
 
 		subLevel = new SubLevel(
 				SubLevelType.WOLF, PitWolfBoss.class, PitWolf.class, EntityType.WOLF, Leather.class,
-				new Location(MapManager.getDarkzone(), 419, 25, -27),
+				new Location(MapManager.getDarkzone(), 397, 28, -42),
 				15, 17, 1, 50);
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.BLAZE, PitBlazeBoss.class, PitBlaze.class, EntityType.BLAZE, BlazeRod.class,
-				new Location(MapManager.getDarkzone(), 342, 19, 15),
+				new Location(MapManager.getDarkzone(), 314, 22, -19),
 				15, 17, 1, -1);
 		registerSubLevel(subLevel);
 
@@ -95,7 +95,7 @@ public class DarkzoneManager implements Listener {
 
 		subLevel = new SubLevel(
 				SubLevelType.CREEPER, PitCreeperBoss.class, PitCreeper.class, EntityType.CREEPER, Gunpowder.class,
-				new Location(MapManager.getDarkzone(), 247, 20, -174),
+				new Location(MapManager.getDarkzone(), 256, 18, -172),
 				15, 17, 1, -1);
 		subLevel.mobTargetingSystem.persistenceWeight *= 2;
 		subLevel.mobTargetingSystem.otherMobsTargetingWeight *= 1.5;

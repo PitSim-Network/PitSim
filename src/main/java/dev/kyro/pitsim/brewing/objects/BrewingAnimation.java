@@ -2,6 +2,7 @@ package dev.kyro.pitsim.brewing.objects;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.mobdrops.SpiderEye;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.misc.Misc;
@@ -27,10 +28,7 @@ import org.bukkit.material.Cauldron;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BrewingAnimation {
 
@@ -103,28 +101,28 @@ public class BrewingAnimation {
 
 		strings[0] = ChatColor.YELLOW + "" + ChatColor.BOLD + "Brew Details";
 
-//		ItemStack identifier = ingredients.get(player)[0];
-//		if(BrewingIngredient.isIngredient(identifier))
-//			strings[1] = ChatColor.LIGHT_PURPLE + "Type: " + Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).color + Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).name;
-//		else strings[1] = ChatColor.LIGHT_PURPLE + "Type: " + ChatColor.YELLOW + "Place an Item!";
-//
-//		ItemStack potency = ingredients.get(player)[1];
-//		if(BrewingIngredient.isIngredient(potency))
-//			strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.DARK_PURPLE + "Tier " + AUtil.toRoman(Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(potency)).tier);
-//		else strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.YELLOW + "Place an Item!";
-//
-//		ItemStack duration = ingredients.get(player)[2];
-//		if(BrewingIngredient.isIngredient(duration) && BrewingIngredient.isIngredient(identifier) && (!(BrewingIngredient.getIngredientFromItemStack(identifier) instanceof SpiderEye)))
-//			strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " +
-//					ChatColor.DARK_PURPLE + Misc.ticksToTime(Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).getDuration(BrewingIngredient.getIngredientFromItemStack(duration)));
-//		else if(BrewingIngredient.getIngredientFromItemStack(identifier) instanceof SpiderEye) {
-//			strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.DARK_PURPLE + "INSTANT!";
-//		} else strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.YELLOW + "Decided by Type!";
-//
-//		ItemStack reduction = ingredients.get(player)[3];
-//		if(BrewingIngredient.isIngredient(reduction))
-//			strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.DARK_PURPLE + (105 - (Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(reduction)).tier * 10) + "m");
-//		else strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.YELLOW + "Place an Item!";
+		ItemStack identifier = ingredients.get(player)[0];
+		if(BrewingIngredient.isIngredient(identifier))
+			strings[1] = ChatColor.LIGHT_PURPLE + "Type: " + Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).color + Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).name;
+		else strings[1] = ChatColor.LIGHT_PURPLE + "Type: " + ChatColor.YELLOW + "Place an Item!";
+
+		ItemStack potency = ingredients.get(player)[1];
+		if(BrewingIngredient.isIngredient(potency))
+			strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.DARK_PURPLE + "Tier " + AUtil.toRoman(Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(potency)).tier);
+		else strings[2] = ChatColor.LIGHT_PURPLE + "Potency: " + ChatColor.YELLOW + "Place an Item!";
+
+		ItemStack duration = ingredients.get(player)[2];
+		if(BrewingIngredient.isIngredient(duration) && BrewingIngredient.isIngredient(identifier) && (!(BrewingIngredient.getIngredientFromItemStack(identifier) instanceof SpiderEye)))
+			strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " +
+					ChatColor.DARK_PURPLE + Misc.ticksToTime(Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(identifier)).getDuration(BrewingIngredient.getIngredientFromItemStack(duration)));
+		else if(BrewingIngredient.getIngredientFromItemStack(identifier) instanceof SpiderEye) {
+			strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.DARK_PURPLE + "INSTANT!";
+		} else strings[3] = ChatColor.LIGHT_PURPLE + "Duration: " + ChatColor.YELLOW + "Decided by Type!";
+
+		ItemStack reduction = ingredients.get(player)[3];
+		if(BrewingIngredient.isIngredient(reduction))
+			strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.DARK_PURPLE + (105 - (Objects.requireNonNull(BrewingIngredient.getIngredientFromItemStack(reduction)).tier * 10) + "m");
+		else strings[4] = ChatColor.LIGHT_PURPLE + "Brew Time: " + ChatColor.YELLOW + "Place an Item!";
 
 		setText(player, strings);
 	}
@@ -145,7 +143,7 @@ public class BrewingAnimation {
 	}
 
 	public void showButtons(Player player) {
-		ArmorStand identityStand = (ArmorStand) location.getWorld().spawnEntity(new Location(location.getWorld(), location.getX() + 0.5, location.getY(), location.getZ() + 0.5, 90, 0), EntityType.ARMOR_STAND);
+		ArmorStand identityStand = (ArmorStand) location.getWorld().spawnEntity(new Location(location.getWorld(), location.getX() + 0.5, location.getY(), location.getZ() - 0.5, -90, 0), EntityType.ARMOR_STAND);
 		identityStand.setCustomNameVisible(true);
 		identityStand.setCustomName(ChatColor.LIGHT_PURPLE + "Potion Type");
 		identityStand.setGravity(false);
@@ -156,7 +154,7 @@ public class BrewingAnimation {
 		BrewingManager.brewingStands.add(identityStand);
 		personalStands.add(identityStand);
 
-		ArmorStand potencyStand = (ArmorStand) location.getWorld().spawnEntity(new Location(location.getWorld(), location.getX() + 0.5, location.getY(), location.getZ() + 0.5, 90, 0), EntityType.ARMOR_STAND);
+		ArmorStand potencyStand = (ArmorStand) location.getWorld().spawnEntity(new Location(location.getWorld(), location.getX() + 0.5, location.getY(), location.getZ() - 0.5, -90, 0), EntityType.ARMOR_STAND);
 		potencyStand.setCustomNameVisible(true);
 		potencyStand.setCustomName(ChatColor.LIGHT_PURPLE + "Potency");
 		potencyStand.setGravity(false);
@@ -167,7 +165,7 @@ public class BrewingAnimation {
 		BrewingManager.brewingStands.add(potencyStand);
 		personalStands.add(potencyStand);
 
-		ArmorStand durationStand = (ArmorStand) location.getWorld().spawnEntity(new Location(location.getWorld(), location.getX() + 0.5, location.getY(), location.getZ() + 0.5, 90, 0), EntityType.ARMOR_STAND);
+		ArmorStand durationStand = (ArmorStand) location.getWorld().spawnEntity(new Location(location.getWorld(), location.getX() + 0.5, location.getY(), location.getZ() - 0.5, -90, 0), EntityType.ARMOR_STAND);
 		durationStand.setCustomNameVisible(true);
 		durationStand.setCustomName(ChatColor.LIGHT_PURPLE + "Duration");
 		durationStand.setGravity(false);
@@ -178,7 +176,7 @@ public class BrewingAnimation {
 		BrewingManager.brewingStands.add(durationStand);
 		personalStands.add(durationStand);
 
-		ArmorStand brewingTimeStand = (ArmorStand) location.getWorld().spawnEntity(new Location(location.getWorld(), location.getX() + 0.5, location.getY(), location.getZ() + 0.5, 90, 0), EntityType.ARMOR_STAND);
+		ArmorStand brewingTimeStand = (ArmorStand) location.getWorld().spawnEntity(new Location(location.getWorld(), location.getX() + 0.5, location.getY(), location.getZ() - 0.5, -90, 0), EntityType.ARMOR_STAND);
 		brewingTimeStand.setCustomNameVisible(true);
 		brewingTimeStand.setCustomName(ChatColor.LIGHT_PURPLE + "Brewing Time");
 		brewingTimeStand.setGravity(false);
@@ -211,13 +209,13 @@ public class BrewingAnimation {
 		BrewingManager.brewingStands.add(cancelStand);
 		personalStands.add(cancelStand);
 
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook identityTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(identityStand), (byte) 127, (byte) 0, (byte) 16, (byte) 64, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook identityTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(identityStand), (byte) 127, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(identityTpPacket);
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook potencyTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(potencyStand), (byte) 64, (byte) 0, (byte) 16, (byte) 64, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook potencyTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(potencyStand), (byte) 64, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(potencyTpPacket);
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook durationTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(durationStand), (byte) -64, (byte) 0, (byte) 16, (byte) 64, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook durationTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(durationStand), (byte) -64, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(durationTpPacket);
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) -127, (byte) 0, (byte) 16, (byte) 64, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) -127, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(brewingTimeTpPacket);
 
 		new BukkitRunnable() {

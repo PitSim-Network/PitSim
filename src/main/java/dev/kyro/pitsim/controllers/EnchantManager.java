@@ -257,13 +257,15 @@ public class EnchantManager implements Listener {
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		if(nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
-			if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef())) return true;
+			int tier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
+			int tokens = 0;
 			Map<PitEnchant, Integer> enchants = EnchantManager.getEnchantsOnItem(itemStack);
-			int tainted = 0;
-			for(PitEnchant pitEnchant : enchants.keySet()) {
-				if(pitEnchant.isTainted) tainted++;
+			for(Integer value : enchants.values()) {
+				tokens += value;
 			}
-			return tainted > 1;
+
+			if(tier < 4 && tokens > 8) return true;
+			else return tokens > 11;
 		} else {
 
 			NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef());
