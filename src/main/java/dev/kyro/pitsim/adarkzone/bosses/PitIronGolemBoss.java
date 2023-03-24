@@ -4,7 +4,10 @@ import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.adarkzone.abilities.ComboAbility;
+import dev.kyro.pitsim.adarkzone.abilities.WorldBorderAbility;
+import dev.kyro.pitsim.adarkzone.abilities.blockrain.AnvilRainAbility;
+import dev.kyro.pitsim.adarkzone.abilities.minion.IronGolemMinionAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -14,11 +17,11 @@ public class PitIronGolemBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new GenericMinionAbility(1, SubLevelType.IRON_GOLEM, 1, 1),
-				new WorldBorderAbility(),
 				new AnvilRainAbility(2, 40, 250, getDamage()),
-				new CollapseAbility(2, 5, 5, 10, getDamage()),
+//				new CollapseAbility(2, 5, 5, 10, getDamage()),
 
+				new WorldBorderAbility(),
+				new IronGolemMinionAbility(),
 				new ComboAbility(5, 20, 0)
 		);
 	}

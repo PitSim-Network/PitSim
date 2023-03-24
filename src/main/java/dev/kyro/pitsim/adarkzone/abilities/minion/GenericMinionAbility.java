@@ -1,7 +1,6 @@
-package dev.kyro.pitsim.adarkzone.abilities;
+package dev.kyro.pitsim.adarkzone.abilities.minion;
 
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.abilitytypes.MinionAbility;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -42,8 +41,6 @@ public class GenericMinionAbility extends MinionAbility {
 
 			location = getPitBoss().boss.getLocation().clone().add(randomX, 0, randomZ);
 		}
-
 		return location;
 	}
-
 }

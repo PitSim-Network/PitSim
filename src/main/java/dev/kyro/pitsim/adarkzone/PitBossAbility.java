@@ -70,4 +70,8 @@ public abstract class PitBossAbility implements Listener {
 	public double getRoutineWeight() {
 		return routineWeight;
 	}
+
+	public boolean isNearToBoss(Player player) {
+		return getPitBoss().boss.getWorld() == player.getWorld() && getPitBoss().boss.getLocation().distance(player.getLocation()) <= 50;
+	}
 }

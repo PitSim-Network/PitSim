@@ -1,6 +1,5 @@
-package dev.kyro.pitsim.adarkzone.abilities;
+package dev.kyro.pitsim.adarkzone.abilities.blockrain;
 
-import dev.kyro.pitsim.adarkzone.abilities.abilitytypes.BlockRainAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.misc.BlockData;
 import dev.kyro.pitsim.misc.Sounds;
@@ -18,7 +17,7 @@ public class AnvilRainAbility extends BlockRainAbility {
 
 	@Override
 	public void onBlockLand(FallingBlock fallingBlock, Location location) {
-		Sounds.ANVIL_RAIN.play(location, 20);
+		if(Math.random() < 0.2) Sounds.ANVIL_RAIN.play(location, 20);
 		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 1.5, 1.5, 1.5)) {
 			if(!(nearbyEntity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(nearbyEntity.getUniqueId());

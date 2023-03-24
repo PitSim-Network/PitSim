@@ -38,6 +38,8 @@ public class ComboAbility extends PitBossAbility {
 
 			@Override
 			public void run() {
+				if(!isEnabled() || !isNearToBoss(player)) return;
+
 				if(count >= comboDuration) {
 					comboMap.remove(player.getUniqueId());
 					cancel();

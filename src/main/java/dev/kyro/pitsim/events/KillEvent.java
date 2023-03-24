@@ -129,6 +129,7 @@ public class KillEvent extends Event {
 	}
 
 	public int getFinalXp() {
+		if(!isKillerRealPlayer) return 0;
 		double xpReward = this.xpReward;
 		int xpCap = this.xpCap;
 		for(Double xpMultiplier : xpMultipliers) xpReward *= xpMultiplier;
@@ -145,6 +146,7 @@ public class KillEvent extends Event {
 	}
 
 	public double getFinalGold() {
+		if(!isKillerRealPlayer) return 0;
 		double goldReward = this.goldReward;
 		for(Double goldMultiplier : goldMultipliers) goldReward *= goldMultiplier;
 
@@ -161,6 +163,7 @@ public class KillEvent extends Event {
 	}
 
 	public int getFinalSouls() {
+		if(!isKillerRealPlayer) return 0;
 		double soulsLost = this.soulsLost;
 		for(Double soulMultiplier : soulMultipliers) soulsLost *= soulMultiplier;
 		return (int) Math.min(Math.ceil(soulsLost), getDeadPitPlayer().taintedSouls);

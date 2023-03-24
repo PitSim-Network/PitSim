@@ -5,7 +5,7 @@ import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.ComboAbility;
-import dev.kyro.pitsim.adarkzone.abilities.GenericMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import dev.kyro.pitsim.adarkzone.abilities.PoundAbility;
 import dev.kyro.pitsim.adarkzone.abilities.PullAbility;
 import org.bukkit.ChatColor;

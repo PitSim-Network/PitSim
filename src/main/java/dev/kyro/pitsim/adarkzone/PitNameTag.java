@@ -118,7 +118,8 @@ public class PitNameTag {
 			return displayName;
 		} else if(nameTagType == NameTagType.NAME_AND_HEALTH) {
 			int maxHealth = (int) entity.getMaxHealth();
-			int length = (int) Math.ceil(Math.min(Math.sqrt(maxHealth), 20));
+			int length = (int) Math.ceil(Math.min(Math.pow(maxHealth, 1 / 2.2), 20));
+//			if(entity instanceof Enderman) System.out.println(length);
 			double percentFull = entity.getHealth() / entity.getMaxHealth();
 			String healthBar = AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, length, percentFull);
 			return displayName + "&8 [" + healthBar + "&8]";

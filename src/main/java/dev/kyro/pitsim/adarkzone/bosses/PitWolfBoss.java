@@ -3,7 +3,7 @@ package dev.kyro.pitsim.adarkzone.bosses;
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
 import dev.kyro.pitsim.adarkzone.abilities.ChargeAbility;
-import dev.kyro.pitsim.adarkzone.abilities.WolfMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.minion.WolfMinionAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

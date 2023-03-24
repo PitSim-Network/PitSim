@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.adarkzone.abilities.abilitytypes;
+package dev.kyro.pitsim.adarkzone.abilities.blockrain;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;

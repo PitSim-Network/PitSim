@@ -337,9 +337,8 @@ public class DamageManager implements Listener {
 		double damage = attackEvent.getFinalPitDamage();
 		if(attackEvent.isDefenderRealPlayer()) {
 			Shield defenderShield = attackEvent.getDefenderPitPlayer().shield;
-			double multiplier = 1;
+			double multiplier = 2;
 			multiplier *= ShieldBuster.getMultiplier(attackEvent.getAttackerPlayer());
-			if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer())) multiplier *= 2;
 			if(ProgressionManager.isUnlocked(attackEvent.getDefenderPitPlayer(), DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
 				multiplier *= Misc.getReductionMultiplier(DefenceBranch.getShieldDamageReduction());
 			if(attackEvent.isAttackerRealPlayer() && ProgressionManager.isUnlocked(attackEvent.getDefenderPitPlayer(),

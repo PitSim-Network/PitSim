@@ -79,7 +79,7 @@ public abstract class PitBoss {
 		for(PitBossAbility ability : abilities) {
 			ability.pitBoss(this);
 			ability.onEnable();
-			if(ability.getRoutineWeight() == -1) continue;
+			if(ability.getRoutineWeight() <= 0) continue;
 			routineAbilityMap.put(ability, ability.getRoutineWeight());
 		}
 		return this;

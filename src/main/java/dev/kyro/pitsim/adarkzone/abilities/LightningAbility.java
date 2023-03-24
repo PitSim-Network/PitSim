@@ -37,6 +37,7 @@ public class LightningAbility extends PitBossAbility {
 
 			@Override
 			public void run() {
+				if(!isEnabled() || !isNearToBoss(player)) return;
 				if(++count == strikes) cancel();
 				Misc.strikeLightningForPlayers(player.getLocation(), 40);
 				player.setHealth(Math.max(player.getHealth() - damage, 1));

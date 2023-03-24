@@ -35,7 +35,6 @@ public class RuptureAbility extends PitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-
 		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
 		List<Block> applicableBlocks = new ArrayList<>();
 
@@ -77,6 +76,7 @@ public class RuptureAbility extends PitBossAbility {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
+					if(!isEnabled() || !isNearToBoss(viewer)) return;
 					new GravitizedBlock(viewer, randomBlock);
 				}
 			}.runTaskLater(PitSim.INSTANCE, i * 2L);
