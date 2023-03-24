@@ -41,7 +41,7 @@ public class DropPool {
 	 */
 	public void bossDistribution(Player killer, PitBoss deadBoss, Map<UUID, Double> damageMap) {
 //		TODO: This whole method should have weighted chances to give drops configurable by the constructor of the drop pool prob
-		if(dropPool.isEmpty()) return;
+
 		double totalDamage = 0;
 		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {
 			UUID uuid = entry.getKey();
@@ -59,6 +59,8 @@ public class DropPool {
 				pitPlayer.unlockFastTravelDestination(deadBoss.getSubLevel());
 			}
 		}
+
+		if(dropPool.isEmpty()) return;
 
 //		if(topDamageDealer == null) return;
 //		Player player = Bukkit.getPlayer(topDamageDealer);

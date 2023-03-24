@@ -27,9 +27,9 @@ public class FastTravelPanel extends AGUIPanel {
 			while(slot % 9 == 0 || slot % 9 == 8) slot++;
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			boolean isUnlocked = pitPlayer.hasFastTravelUnlocked(destination.subLevel);
+			boolean isUnlocked = destination.subLevel == null || pitPlayer.hasFastTravelUnlocked(destination.subLevel);
 			boolean canAfford = pitPlayer.taintedSouls >= destination.cost;
-			String clickMessage = isUnlocked ? (canAfford ? "&eClick to travel!" : "&cNot enough souls!") : "&cKill Boss to unlock!";
+			String clickMessage = isUnlocked ? (canAfford ? "&eClick to Travel!" : "&cNot enough souls!") : "&cKill Boss to unlock!";
 
 			AItemStackBuilder builder = new AItemStackBuilder(destination.icon.getItemType(), 1, destination.icon.getData()
 					).setName(destination.displayName).setLore(new ALoreBuilder(
@@ -66,6 +66,12 @@ public class FastTravelPanel extends AGUIPanel {
 		FastTravelDestination destination = FastTravelManager.destinations.get(index);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(destination.subLevel != null && !pitPlayer.hasFastTravelUnlocked(destination.subLevel)) {
+			AOutput.error(event.getWhoClicked(), "&cYou must kill the Boss to unlock this location!");
+			Sounds.NO.play(player);
+			return;
+		}
+
 		if(pitPlayer.taintedSouls < destination.cost) {
 			AOutput.error(event.getWhoClicked(), "&cYou do not have enough souls to travel to this location!");
 			Sounds.NO.play(player);

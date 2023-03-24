@@ -173,7 +173,7 @@ public class PitPlayer {
 		public List<ParticleColor> unlockedColors;
 	}
 
-	public FastTravelData fastTravelData;
+	public FastTravelData fastTravelData = new FastTravelData();
 
 	public static class FastTravelData {
 		public List<Integer> unlockedLocations = new ArrayList<>();

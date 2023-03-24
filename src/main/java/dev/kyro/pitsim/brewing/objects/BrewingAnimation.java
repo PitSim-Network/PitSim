@@ -187,7 +187,7 @@ public class BrewingAnimation {
 		BrewingManager.brewingStands.add(brewingTimeStand);
 		personalStands.add(brewingTimeStand);
 
-		ArmorStand confirmStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(1.5, -0.8, 0.5), EntityType.ARMOR_STAND);
+		ArmorStand confirmStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(-0.5, -0.8, 0.5), EntityType.ARMOR_STAND);
 		confirmStand.setCustomNameVisible(true);
 		confirmStand.setCustomName(ChatColor.GREEN + "Confirm");
 		confirmStand.setGravity(false);
@@ -198,7 +198,7 @@ public class BrewingAnimation {
 		BrewingManager.brewingStands.add(confirmStand);
 		personalStands.add(confirmStand);
 
-		ArmorStand cancelStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(-0.5, -0.8, 0.5), EntityType.ARMOR_STAND);
+		ArmorStand cancelStand = (ArmorStand) location.getWorld().spawnEntity(location.clone().add(1.5, -0.8, 0.5), EntityType.ARMOR_STAND);
 		cancelStand.setCustomNameVisible(true);
 		cancelStand.setCustomName(ChatColor.RED + "Cancel");
 		cancelStand.setGravity(false);
@@ -209,23 +209,29 @@ public class BrewingAnimation {
 		BrewingManager.brewingStands.add(cancelStand);
 		personalStands.add(cancelStand);
 
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook identityTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(identityStand), (byte) 127, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook identityTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(identityStand), (byte) -127, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(identityTpPacket);
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook potencyTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(potencyStand), (byte) 64, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook potencyTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(potencyStand), (byte) -64, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(potencyTpPacket);
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook durationTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(durationStand), (byte) -64, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook durationTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(durationStand), (byte) 64, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(durationTpPacket);
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) -127, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) 127, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(brewingTimeTpPacket);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				identityStand.teleport(identityStand.getLocation().clone().add(3.97, 0, 0.5));
+//				identityStand.teleport(identityStand.getLocation().clone().add(3.97, 0, 0.5));
+//				identityStand.getLocation().setPitch(64);
+//				potencyStand.teleport(potencyStand.getLocation().clone().add(2, 0, 0.5));
+//				durationStand.teleport(durationStand.getLocation().clone().subtract(2, 0, -0.5));
+//				brewingTimeStand.teleport(brewingTimeStand.getLocation().clone().subtract(3.97, 0, -0.5));
+
+				identityStand.teleport(identityStand.getLocation().clone().subtract(3.97, 0, -0.5));
 				identityStand.getLocation().setPitch(64);
-				potencyStand.teleport(potencyStand.getLocation().clone().add(2, 0, 0.5));
-				durationStand.teleport(durationStand.getLocation().clone().subtract(2, 0, -0.5));
-				brewingTimeStand.teleport(brewingTimeStand.getLocation().clone().subtract(3.97, 0, -0.5));
+				potencyStand.teleport(potencyStand.getLocation().clone().subtract(2, 0, -0.5));
+				durationStand.teleport(durationStand.getLocation().clone().add(2, 0, 0.5));
+				brewingTimeStand.teleport(brewingTimeStand.getLocation().clone().add(3.97, 0, 0.5));
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
 
@@ -251,13 +257,13 @@ public class BrewingAnimation {
 		ArmorStand brewingTimeStand = brewingTimeStands.get(player);
 		ArmorStand confirmStand = confirmStands.get(player);
 		ArmorStand cancelStand = cancelStands.get(player);
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook identityTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(identityStand), (byte) -127, (byte) 0, (byte) -16, (byte) 64, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook identityTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(identityStand), (byte) 127, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(identityTpPacket);
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook potencyTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(potencyStand), (byte) -64, (byte) 0, (byte) -16, (byte) 64, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook potencyTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(potencyStand), (byte) 64, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(potencyTpPacket);
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook durationTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(durationStand), (byte) 64, (byte) 0, (byte) -16, (byte) 64, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook durationTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(durationStand), (byte) -64, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(durationTpPacket);
-		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) 127, (byte) 0, (byte) -16, (byte) 64, (byte) 0, false);
+		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook brewingTimeTpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(brewingTimeStand), (byte) -127, (byte) 0, (byte) 16, (byte) 192, (byte) 0, false);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(brewingTimeTpPacket);
 
 		new BukkitRunnable() {
