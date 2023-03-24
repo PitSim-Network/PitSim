@@ -97,10 +97,9 @@ public abstract class PitMob implements Listener {
 			}
 
 			if(pitKiller != null) {
-				double freshChance = 0.02;
+				double freshChance = (0.5 + (getSubLevel().getIndex() + 1) * 0.05) / 100.0;
 				freshChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
 						pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.SECOND_PATH, "fresh-chance") / 100.0);
-				freshChance = 1; // TODO: Remove after testing
 				if(Math.random() < freshChance) {
 					MysticType mysticType = Math.random() < 0.5 ? MysticType.TAINTED_SCYTHE : MysticType.TAINTED_CHESTPLATE;
 					ItemStack dropStack = MysticFactory.getFreshItem(mysticType, null);
@@ -119,7 +118,7 @@ public abstract class PitMob implements Listener {
 						public void run() {
 							fakeItem.showToAllPlayers();
 						}
-					}.runTaskLater(PitSim.INSTANCE, 20 * 5);
+					}.runTaskLater(PitSim.INSTANCE, 20 * 10);
 				}
 			}
 		}

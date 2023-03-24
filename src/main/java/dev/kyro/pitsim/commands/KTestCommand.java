@@ -2,7 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.objects.FakeItem;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionGUI;
 import dev.kyro.pitsim.enums.NBTTag;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -29,16 +29,8 @@ public class KTestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-		new FakeItem(player.getItemInHand().clone(), player.getLocation().add(player.getLocation().getDirection().multiply(3)))
-				.removeAfter(100)
-				.onPickup((pickupPlayer, itemStack) -> {
-					pickupPlayer.getInventory().addItem(itemStack);
-					pickupPlayer.updateInventory();
-				})
-				.addViewer(player);
-
-//		ProgressionGUI progressionGUI = new ProgressionGUI(player);
-//		progressionGUI.open();
+		ProgressionGUI progressionGUI = new ProgressionGUI(player);
+		progressionGUI.open();
 
 //		for(Block block : getNearbyBlocks(player.getLocation(), 100)) {
 //			Block blockBelow = block.getRelative(0, -1, 0);
