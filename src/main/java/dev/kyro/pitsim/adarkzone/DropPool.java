@@ -42,17 +42,11 @@ public class DropPool {
 	public void bossDistribution(Player killer, PitBoss deadBoss, Map<UUID, Double> damageMap) {
 //		TODO: This whole method should have weighted chances to give drops configurable by the constructor of the drop pool prob
 		if(dropPool.isEmpty()) return;
-		UUID topDamageDealer = null;
-		double topDamage = 0;
 		double totalDamage = 0;
 		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {
 			UUID uuid = entry.getKey();
 			double damage = entry.getValue();
 			totalDamage += damage;
-			if(damage > topDamage) {
-				topDamage = damage;
-				topDamageDealer = uuid;
-			}
 		}
 
 		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {
@@ -66,12 +60,12 @@ public class DropPool {
 			}
 		}
 
-		if(topDamageDealer == null) return;
-		Player player = Bukkit.getPlayer(topDamageDealer);
-		if(player == null) return;
-
-		ItemStack drop = getRandomDrop();
-		AUtil.giveItemSafely(player, drop);
+//		if(topDamageDealer == null) return;
+//		Player player = Bukkit.getPlayer(topDamageDealer);
+//		if(player == null) return;
+//
+//		ItemStack drop = getRandomDrop();
+//		AUtil.giveItemSafely(player, drop);
 	}
 
 	/**
