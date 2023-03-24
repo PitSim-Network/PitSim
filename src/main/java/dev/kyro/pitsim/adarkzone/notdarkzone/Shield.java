@@ -39,7 +39,7 @@ public class Shield {
 
 	@Exclude
 	public boolean isUnlocked() {
-		return ProgressionManager.isUnlocked(pitPlayer, DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.SECOND_PATH);
+		return ProgressionManager.isUnlocked(pitPlayer, DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST);
 	}
 
 	@Exclude
@@ -96,7 +96,7 @@ public class Shield {
 
 	@Exclude
 	public int getMaxShield() {
-		int maxShield = 200;
+		int maxShield = 100;
 		if(pitPlayer != null) maxShield += Fortify.getShieldIncrease(pitPlayer.player);
 		maxShield += ProgressionManager.getUnlockedEffectAsValue(pitPlayer, DefenceBranch.INSTANCE,
 				SkillBranch.PathPosition.SECOND_PATH, "shield");

@@ -1,15 +1,16 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,16 +22,16 @@ import java.util.List;
 public class TaintedManager implements Listener {
 	public static List<Player> players = new ArrayList<>();
 
-	@EventHandler(priority = EventPriority.LOW)
-	public void onAttack(EntityDamageByEntityEvent event) {
-		if(!(event.getDamager() instanceof Player)) return;
-		Player attacker = (Player) event.getDamager();
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.isAttackerRealPlayer() || attackEvent.getWrapperEvent().hasAttackInfo() ||
+				attackEvent.getFireball() != null) return;
 
-		ItemStack held = attacker.getItemInHand();
+		ItemStack held = attackEvent.getAttackerPlayer().getItemInHand();
 		PitItem pitItem = ItemFactory.getItem(TaintedScythe.class);
 		if(!pitItem.isThisItem(held)) return;
-		double multiplier = Misc.isCritical((Player) event.getDamager()) ? 1.5 : 1;
-		event.setDamage(TaintedScythe.BASE_DAMAGE * multiplier);
+		double multiplier = Misc.isCritical(attackEvent.getAttackerPlayer()) ? 1.5 : 1;
+		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(DarkzoneBalancing.SCYTHE_DAMAGE * multiplier);
 	}
 
 	@EventHandler

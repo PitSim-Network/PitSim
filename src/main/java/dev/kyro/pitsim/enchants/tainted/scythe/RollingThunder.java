@@ -166,7 +166,7 @@ public class RollingThunder extends PitEnchant {
 						boolean isRealPlayer = PlayerManager.isRealPlayer(livingEntity);
 						if(!isRealPlayer && pitBoss == null && pitMob == null) continue;
 						livingEntity.setVelocity(new Vector(0, 0.4 + segmentNum * 0.03, 0));
-						Misc.stunEntity(livingEntity, 100);
+						Misc.stunEntity(livingEntity, getStunTicks(enchantLvl));
 					}
 					Sounds.ANVIL_LAND.play(centerLoc);
 				}
@@ -259,8 +259,8 @@ public class RollingThunder extends PitEnchant {
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
 				"&6Off your feet! &7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, " +
-						"sending a cascading earthquake through the world. Anyone hit by the quake is stunned " +
-						"(" + getCooldownSeconds(enchantLvl) + " second" + (getCooldownSeconds(enchantLvl) == 1 ? "" : "s") + ")"
+						"sending a cascading earthquake through the world. Those hit by the quake are stunned " +
+						"(" + getCooldownSeconds(enchantLvl) + "	ws cooldown)"
 		).getLore();
 	}
 
@@ -271,11 +271,15 @@ public class RollingThunder extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return 1;
+		return Math.max(95 - enchantLvl * 15, 0);
 	}
 
 	public static int getCooldownSeconds(int enchantLvl) {
-		return 20;
+		return Math.max(32 - enchantLvl * 4, 0);
+	}
+
+	public static int getStunTicks(int enchantLvl) {
+		return 20 * 5;
 	}
 
 	public static class BlockBreakData {

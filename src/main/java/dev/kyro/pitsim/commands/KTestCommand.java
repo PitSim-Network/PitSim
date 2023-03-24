@@ -29,8 +29,6 @@ public class KTestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-//		new HypixelSound(player, player.getLocation()).play(HypixelSound.Sound.FRESH_DROP);
-
 		ProgressionGUI progressionGUI = new ProgressionGUI(player);
 		progressionGUI.open();
 

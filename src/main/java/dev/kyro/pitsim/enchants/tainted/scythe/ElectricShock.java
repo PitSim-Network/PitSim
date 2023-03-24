@@ -1,6 +1,9 @@
 package dev.kyro.pitsim.enchants.tainted.scythe;
 
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.controllers.Cooldown;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.particles.FireworkSparkParticle;
@@ -16,6 +19,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -39,14 +43,9 @@ public class ElectricShock extends PitEnchant {
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(player, 10);
+		Cooldown cooldown = getCooldown(player, 20);
 		if(cooldown.isOnCooldown()) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
-			Sounds.NO.play(event.getPlayer());
-			return;
-		}
-		cooldown.restart();
 
 //		pick initial target
 		Location testLocation = player.getLocation();
@@ -66,6 +65,12 @@ public class ElectricShock extends PitEnchant {
 			return;
 		}
 
+		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
+			Sounds.NO.play(event.getPlayer());
+			return;
+		}
+		cooldown.restart();
+
 		List<Entity> excluded = new ArrayList<>();
 		excluded.add(player);
 		excluded.add(target);
@@ -73,20 +78,11 @@ public class ElectricShock extends PitEnchant {
 		Sounds.ELECTRIC_SHOCK.play(player);
 	}
 
-	private static List<LivingEntity> getPossibleTargets(Location location, List<Entity> excluded) {
-		List<LivingEntity> possibleTargets = new ArrayList<>();
-		for(Entity entity : location.getWorld().getNearbyEntities(location, 7, 7, 7)) {
-			if(!Misc.isValidMobPlayerTarget(entity) || excluded.contains(entity)) continue;
-			LivingEntity livingEntity = (LivingEntity) entity;
-			possibleTargets.add(livingEntity);
-		}
-		return possibleTargets;
-	}
-
 	private static void chain(Player player, LivingEntity startingEntity, LivingEntity endingEntity, int bounceNumber, int maxBounces, List<Entity> excluded) {
 		Location startLocation = startingEntity.getLocation().add(0, startingEntity.getEyeHeight(), 0);
 		Location endLocation = endingEntity.getLocation().add(0, endingEntity.getEyeHeight(), 0);
 		double distance = startLocation.distance(endLocation);
+		if(distance > getBounceRange() && bounceNumber != 0) return;
 		int steps = (int) Math.ceil(distance * 4);
 		double stepSize = distance / steps;
 		Vector stepVector = endLocation.toVector().subtract(startLocation.toVector()).normalize().multiply(stepSize);
@@ -100,13 +96,32 @@ public class ElectricShock extends PitEnchant {
 			drawLocation.add(stepVector);
 		}
 
-		excluded.add(endingEntity);
-		endingEntity.damage(5, player);
+		double damageMultiplier = 1 + 0.5 * ((maxBounces - bounceNumber) / (double) maxBounces * 3);
+		DamageManager.createIndirectAttack(player, endingEntity, DarkzoneBalancing.SCYTHE_DAMAGE * damageMultiplier);
 
 		if(bounceNumber >= maxBounces) return;
 		bounceNumber++;
-		for(LivingEntity possibleTarget : getPossibleTargets(endLocation, excluded))
-			chain(player, endingEntity, possibleTarget, bounceNumber, maxBounces, excluded);
+		int finalBounceNumber = bounceNumber;
+		for(LivingEntity possibleTarget : getPossibleTargets(endLocation, excluded)) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					chain(player, endingEntity, possibleTarget, finalBounceNumber, maxBounces, excluded);
+				}
+			}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(9));
+		}
+	}
+
+	private static List<LivingEntity> getPossibleTargets(Location location, List<Entity> excluded) {
+		List<LivingEntity> possibleTargets = new ArrayList<>();
+		for(Entity entity : location.getWorld().getNearbyEntities(location, getBounceRange(), getBounceRange(), getBounceRange())) {
+			if(!Misc.isValidMobPlayerTarget(entity) || excluded.contains(entity) ||
+					entity.getLocation().distance(location) > getBounceRange()) continue;
+			LivingEntity livingEntity = (LivingEntity) entity;
+			possibleTargets.add(livingEntity);
+			excluded.add(livingEntity);
+		}
+		return possibleTargets;
 	}
 
 	private static void littleSpark(Location location) {
@@ -131,7 +146,7 @@ public class ElectricShock extends PitEnchant {
 		return new PitLoreBuilder(
 				"&7Right-Clicking while looking at a mob casts this spell for &b" + getManaCost(enchantLvl) +
 						" mana&7, shooting an electric beam that chains between mobs up to &e" +
-						getMaxBounces(enchantLvl) + " time" + (getMaxBounces(enchantLvl) == 1 ? "" : "s")
+						getMaxBounces(enchantLvl) + "[]time" + (getMaxBounces(enchantLvl) == 1 ? "" : "s")
 		).getLore();
 	}
 
@@ -142,10 +157,14 @@ public class ElectricShock extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return 1;
+		return 20;
 	}
 
 	public static int getMaxBounces(int enchantLvl) {
 		return enchantLvl;
+	}
+
+	public static double getBounceRange() {
+		return 10;
 	}
 }

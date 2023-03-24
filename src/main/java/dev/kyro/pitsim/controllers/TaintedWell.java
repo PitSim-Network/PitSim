@@ -368,7 +368,7 @@ public class TaintedWell implements Listener {
 
 			HypixelSound.Sound sound = HypixelSound.Sound.getTier(freshTier + 1);
 			assert sound != null;
-			new HypixelSound(player, player.getLocation()).play(sound, true);
+			HypixelSound.play(player, player.getLocation(), sound, true);
 
 			new BukkitRunnable() {
 				public void run() {

@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants.overworld;
 
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
@@ -22,10 +23,10 @@ public class GottaGoFast extends PitEnchant {
 		isUncommonEnchant = true;
 	}
 
-	public static float getWalkSpeedIncrease(Player player) {
+	public static float getWalkSpeedIncrease(PitPlayer pitPlayer) {
 		if(!INSTANCE.isEnabled()) return 0;
 
-		int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
+		int enchantLvl = EnchantManager.getEnchantLevel(pitPlayer.player, INSTANCE);
 		if(enchantLvl == 0) return 0;
 
 		return getWalkSpeedIncrease(enchantLvl);

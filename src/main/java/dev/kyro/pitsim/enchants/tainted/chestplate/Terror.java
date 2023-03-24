@@ -60,10 +60,10 @@ public class Terror extends PitEnchant {
 	}
 
 	public static double getAvoidanceMultiplier(int enchantLvl) {
-		return enchantLvl * 0.5 + 1.0;
+		return enchantLvl * 0.4 + 0.5;
 	}
 
 	public static int getManaReduction(int enchantLvl) {
-		return 50;
+		return 30;
 	}
 }

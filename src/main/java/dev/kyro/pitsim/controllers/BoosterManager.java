@@ -39,8 +39,6 @@ public class BoosterManager implements Listener {
 			@Override
 			public void run() {
 				DecimalFormat format = new DecimalFormat("0.#");
-				Booster xpBooster = BoosterManager.getBooster("xp");
-				Booster goldBooster = BoosterManager.getBooster("gold");
 				for(Map.Entry<UUID, List<BoosterReward>> entry : donatorMessages.entrySet()) {
 					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 						if(!onlinePlayer.getUniqueId().equals(entry.getKey())) continue;
@@ -52,11 +50,11 @@ public class BoosterManager implements Listener {
 						}
 						if(xp != 0) {
 							AOutput.send(onlinePlayer, "&6&lBOOSTER &7Received &b" +
-									format.format(xp) + " XP &7from your " + xpBooster.color + xpBooster.name);
+									format.format(xp) + " XP &7from your " + XPBooster.INSTANCE.color + XPBooster.INSTANCE.name);
 						}
 						if(gold != 0) {
 							AOutput.send(onlinePlayer, "&6&lBOOSTER &7Received &6" +
-									format.format(gold) + "g &7from your " + goldBooster.color + goldBooster.name);
+									format.format(gold) + "g &7from your " + GoldBooster.INSTANCE.color + GoldBooster.INSTANCE.name);
 						}
 					}
 				}
@@ -131,14 +129,12 @@ public class BoosterManager implements Listener {
 
 	public static Booster getBooster(String refName) {
 		for(Booster booster : boosterList) if(booster.refName.equalsIgnoreCase(refName)) return booster;
-		throw new RuntimeException();
+		return null;
 	}
 
 	public static int getActiveBoosters() {
 		int active = 0;
-		for(Booster booster : boosterList) {
-			if(booster.minutes > 0) active++;
-		}
+		for(Booster booster : boosterList) if(booster.isActive()) active++;
 		return active;
 	}
 }

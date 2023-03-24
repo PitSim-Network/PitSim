@@ -162,7 +162,10 @@ public class Sounds {
 	public static final SoundEffect WARP = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1.25);
 	public static final SoundEffect EXTRACT = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.8);
 
-	//	Darkzone Enchants
+	//	Darkzone
+	public static final SoundEffect MOB_KILL = new SoundEffect().add(new SoundMoment(0)
+					.add(Sound.LAVA_POP, 1, 1.3)
+					.add(Sound.DIG_STONE, 0.8, 0.7));
 	public static final SoundEffect DEVOUR = new SoundEffect(Sound.ORB_PICKUP, 1, 0.4);
 	public static final SoundEffect ELECTRIC_SHOCK = new SoundEffect(Sound.FIZZ, 1, 2);
 	public static final SoundEffect MEDIC = new SoundEffect()
@@ -179,7 +182,7 @@ public class Sounds {
 	public static final SoundEffect PITPOCKET = new SoundEffect(Sound.BURP, 1, 1);
 	public static final SoundEffect ADRENALINE = new SoundEffect(Sound.NOTE_PLING, 1, 1.65);
 	public static final SoundEffect HEMORRHAGE = new SoundEffect(Sound.DIG_STONE, 1, 0.8);
-	public static final SoundEffect METEOR = new SoundEffect(Sound.FIZZ, 0.5, 0.7);
+	public static final SoundEffect METEOR = new SoundEffect(Sound.FIZZ, 0.7, 0.7);
 	public static final SoundEffect METEOR_2 = new SoundEffect(Sound.EXPLODE, 0.75, 1.4);
 
 	//	Megastreaks
@@ -372,7 +375,7 @@ public class Sounds {
 		}
 
 		//			Add sound to time constructed with time constructor
-		public SoundMoment add(Sound sound, int volume, double pitch) {
+		public SoundMoment add(Sound sound, double volume, double pitch) {
 			bukkitSounds.add(new BukkitSound(sound, volume, pitch));
 			return this;
 		}

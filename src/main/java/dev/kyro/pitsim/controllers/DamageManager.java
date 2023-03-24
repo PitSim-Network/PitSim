@@ -483,7 +483,11 @@ public class DamageManager implements Listener {
 
 		if(killerIsRealPlayer) {
 			if(deadNon != null || deadIsRealPlayer) pitKiller.incrementKills();
-			Misc.playKillSound(pitKiller);
+			if(deadMob != null) {
+				Sounds.MOB_KILL.play(killerPlayer);
+			} else {
+				Misc.playKillSound(pitKiller);
+			}
 		}
 
 		if(PitSim.status.isOverworld()) {

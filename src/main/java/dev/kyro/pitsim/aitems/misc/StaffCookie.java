@@ -65,7 +65,7 @@ public class StaffCookie extends PitItem {
 
 	@Override
 	public void updateItem(ItemStack itemStack) {
-		if(!isThisItem(itemStack)) throw new RuntimeException();
+		defaultUpdateItem(itemStack);
 
 		itemStack.setType(getMaterial());
 		new AItemStackBuilder(itemStack)

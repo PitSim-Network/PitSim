@@ -87,6 +87,6 @@ public class WarpSpell extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return 30 * (4 - enchantLvl);
+		return Math.max(80 - enchantLvl * 20, 0);
 	}
 }

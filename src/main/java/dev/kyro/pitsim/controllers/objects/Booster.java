@@ -50,7 +50,7 @@ public abstract class Booster implements Listener {
 		ALoreBuilder loreBuilder = new ALoreBuilder(itemStack.getItemMeta().getLore());
 
 		loreBuilder.addLore("");
-		if(minutes > 0) {
+		if(isActive()) {
 			builder.setName("&a" + name);
 			loreBuilder.addLore(
 					"&7Status: &aActive!",
@@ -73,7 +73,7 @@ public abstract class Booster implements Listener {
 		builder.setLore(loreBuilder);
 		itemStack = builder.getItemStack();
 
-		if(minutes > 0) {
+		if(isActive()) {
 			Misc.addEnchantGlint(itemStack);
 			itemStack.setAmount(Math.min(minutes, 64));
 		}

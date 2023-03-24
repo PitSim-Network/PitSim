@@ -71,7 +71,7 @@ public class GoldenHelmet extends PitItem {
 
 	@Override
 	public void updateItem(ItemStack itemStack) {
-		if(!isThisItem(itemStack)) throw new RuntimeException();
+		defaultUpdateItem(itemStack);
 
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		loreBuilder.addLore("");

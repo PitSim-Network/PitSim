@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -51,7 +52,7 @@ public class CleaveSpell extends PitEnchant {
 							LivingEntity livingEntity = (LivingEntity) entity;
 							if(!Misc.isEntity(livingEntity, PitEntityType.REAL_PLAYER, PitEntityType.PIT_BOSS, PitEntityType.PIT_MOB)) continue;
 
-							DamageManager.createDirectAttack(cleaveEntity.attacker, livingEntity, 5, attackEvent -> {
+							DamageManager.createDirectAttack(cleaveEntity.attacker, livingEntity, DarkzoneBalancing.SCYTHE_DAMAGE, attackEvent -> {
 								if(!attackEvent.isCancelled()) Sounds.CLEAVE3.play(cleaveEntity.attacker);
 							});
 						}
@@ -128,8 +129,7 @@ public class CleaveSpell extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		if(true) return 1;
-		return 30 * (4 - enchantLvl);
+		return Math.max(20 - enchantLvl * 4, 0);
 	}
 
 	public static class CleaveEntity {

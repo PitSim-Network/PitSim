@@ -23,6 +23,7 @@ public class MysticBow extends StaticPitItem implements TemporaryItem {
 
 	public MysticBow() {
 		hasUUID = true;
+		hasLastServer = true;
 		hideExtra = true;
 		unbreakable = true;
 		hasEnchantGlint = true;
@@ -80,7 +81,7 @@ public class MysticBow extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public void updateItem(ItemStack itemStack) {
-		if(!isThisItem(itemStack)) throw new RuntimeException();
+		defaultUpdateItem(itemStack);
 		boolean isJewel = MysticFactory.isJewel(itemStack, false);
 		boolean isJewelComplete = MysticFactory.isJewel(itemStack, true);
 
@@ -127,8 +128,8 @@ public class MysticBow extends StaticPitItem implements TemporaryItem {
 			newNBTItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()));
 		if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef()))
 			newNBTItem.setInteger(NBTTag.MAX_LIVES.getRef(), nbtItem.getInteger(NBTTag.MAX_LIVES.getRef()));
-		if(nbtItem.hasKey(NBTTag.JEWEL_KILLS.getRef()))
-			newNBTItem.setInteger(NBTTag.JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.JEWEL_KILLS.getRef()));
+		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_KILLS.getRef()))
+			newNBTItem.setInteger(NBTTag.ITEM_JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.ITEM_JEWEL_KILLS.getRef()));
 
 		if(nbtItem.hasKey(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()))
 			newNBTItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()).addAll(nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()));

@@ -38,10 +38,10 @@ public class DamageIndicator implements Listener {
 		if(defenderMob != null || defenderBoss != null) {
 			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), finalDamage);
 //			TODO: Enable this to remove boss bar damage indicator
-//			return;
+			return;
 		}
 //		TODO: Remove this to remove boss bar damage indicator
-		if(defenderMob != null) return;
+//		if(defenderMob != null) return;
 
 		EntityPlayer entityPlayer = null;
 		if(attackEvent.isDefenderPlayer()) entityPlayer = ((CraftPlayer) attackEvent.getDefender()).getHandle();

@@ -348,6 +348,24 @@ public class Misc {
 		return "{" + string + "}";
 	}
 
+	public static boolean hasSpaceForItem(Player player, ItemStack itemStack) {
+		if(itemStack == null) return false;
+		if(itemStack.getType() == Material.AIR) return true;
+
+		int emptySlots = getEmptyInventorySlots(player);
+		if(emptySlots != 0) return true;
+
+		int itemsToFit = itemStack.getAmount();
+		int maxStackSize = itemStack.getType().getMaxStackSize();
+		for(ItemStack inventoryStack : player.getInventory()) {
+			if(Misc.isAirOrNull(inventoryStack) || !inventoryStack.isSimilar(itemStack)) continue;
+			int space = maxStackSize - inventoryStack.getAmount();
+			if(space >= itemsToFit) return true;
+			itemsToFit -= space;
+		}
+		return false;
+	}
+
 	public static int getEmptyInventorySlots(Player player) {
 		int emptySlots = 0;
 		for(int i = 0; i < 36; i++) if(Misc.isAirOrNull(player.getInventory().getItem(i))) emptySlots++;

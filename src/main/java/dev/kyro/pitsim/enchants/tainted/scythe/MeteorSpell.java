@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -36,7 +37,7 @@ public class MeteorSpell extends PitEnchant {
 		int enchantLvl = event.getEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(player, 10);
+		Cooldown cooldown = getCooldown(player, 20);
 		if(cooldown.isOnCooldown()) {
 			Sounds.NO.play(player);
 			return;
@@ -88,7 +89,7 @@ public class MeteorSpell extends PitEnchant {
 						double distance = livingEntity.getLocation().distance(effectLocation);
 						if(distance > 3) continue;
 
-						DamageManager.createIndirectAttack(player, livingEntity, 50);
+						DamageManager.createIndirectAttack(player, livingEntity, DarkzoneBalancing.SCYTHE_DAMAGE * 10);
 					}
 				} else {
 					effectLocation.getWorld().playEffect(effectLocation, Effect.EXPLOSION_LARGE, 1);
@@ -118,7 +119,6 @@ public class MeteorSpell extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		if(true) return 1;
-		return 120 - (30 * enchantLvl);
+		return Math.max(64 - enchantLvl * 8, 0);
 	}
 }

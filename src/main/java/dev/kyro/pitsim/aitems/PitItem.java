@@ -22,6 +22,7 @@ public abstract class PitItem implements Listener {
 	public short itemData = 0;
 	//	This is forced true if the item has drop confirm
 	public boolean hasUUID;
+	public boolean hasLastServer;
 	public boolean hasDropConfirm;
 	public boolean destroyIfDroppedInSpawn;
 
@@ -41,10 +42,21 @@ public abstract class PitItem implements Listener {
 
 	public abstract String getNBTID();
 	public abstract List<String> getRefNames();
-	public abstract void updateItem(ItemStack itemStack);
 
 	public abstract ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem);
 	public abstract boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem);
+
+	public void updateItem(ItemStack itemStack) {
+		defaultUpdateItem(itemStack);
+	}
+
+	public void defaultUpdateItem(ItemStack itemStack) {
+		if(!isThisItem(itemStack)) throw new RuntimeException();
+		if(hasLastServer) {
+			NBTItem nbtItem = new NBTItem(itemStack, true);
+			nbtItem.setString(NBTTag.ITEM_LAST_SERVER.getRef(), PitSim.status.name());
+		}
+	}
 
 	public ItemStack buildItem(ItemStack itemStack) {
 		ItemMeta itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
@@ -71,6 +83,7 @@ public abstract class PitItem implements Listener {
 		NBTItem nbtItem = new NBTItem(itemStack);
 		nbtItem.setString(NBTTag.CUSTOM_ITEM.getRef(), getNBTID());
 		if(hasUUID) nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
+		if(hasLastServer) nbtItem.setString(NBTTag.ITEM_LAST_SERVER.getRef(), PitSim.status.name());
 		return nbtItem.getItem();
 	}
 
@@ -87,6 +100,12 @@ public abstract class PitItem implements Listener {
 
 	public boolean isThisItem(ItemStack itemStack) {
 		return ItemFactory.getItem(itemStack) == this;
+	}
+
+	public PitSim.ServerStatus getLastServer(ItemStack itemStack) {
+		if(!isThisItem(itemStack) || !hasLastServer) throw new RuntimeException();
+		NBTItem nbtItem = new NBTItem(itemStack);
+		return PitSim.ServerStatus.valueOf(nbtItem.getString(NBTTag.ITEM_LAST_SERVER.getRef()));
 	}
 
 	public TemporaryItem.TemporaryType getTemporaryType(ItemStack itemStack) {

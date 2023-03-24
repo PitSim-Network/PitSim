@@ -15,7 +15,7 @@ public class SwarmParticle extends AIParticle {
 	public Vector stepVector;
 	public int cooldownTicks = 0;
 
-	public static final double DAMAGE = 5;
+	public static final double DAMAGE = 10;
 
 	public SwarmParticle(Player owner) {
 		super(owner, null, getIdleLocation(owner));

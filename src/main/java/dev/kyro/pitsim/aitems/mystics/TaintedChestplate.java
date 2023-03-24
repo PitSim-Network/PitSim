@@ -25,6 +25,7 @@ public class TaintedChestplate extends StaticPitItem implements TemporaryItem {
 
 	public TaintedChestplate() {
 		hasUUID = true;
+		hasLastServer = true;
 		hideExtra = true;
 		unbreakable = true;
 		hasEnchantGlint = true;
@@ -86,7 +87,7 @@ public class TaintedChestplate extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public void updateItem(ItemStack itemStack) {
-		if(!isThisItem(itemStack)) throw new RuntimeException();
+		defaultUpdateItem(itemStack);
 		boolean hasLives = MysticFactory.hasLives(itemStack);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
