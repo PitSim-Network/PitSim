@@ -17,7 +17,7 @@ public class PotionMasterNPC extends PitNPC {
 
 	@Override
 	public Location getRawLocation() {
-		return new Location(MapManager.getDarkzone(), 195.5, 91, -84.5, -147, 0);
+		return new Location(MapManager.getDarkzone(), 216.5, 91, -102.5, 25, 0);
 	}
 
 	@Override

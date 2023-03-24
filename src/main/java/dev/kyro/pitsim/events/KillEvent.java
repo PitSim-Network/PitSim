@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.events;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneLeveling;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.aitems.misc.CorruptedFeather;
@@ -14,6 +15,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.KillType;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
 import dev.kyro.pitsim.misc.wrappers.WrapperPlayerInventory;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
@@ -49,6 +51,7 @@ public class KillEvent extends Event {
 	public int xpReward;
 	public int bonusXpReward;
 	public int xpCap = 50;
+	public double goldCap = 2000;
 	public double goldReward = 20;
 	public List<Double> xpMultipliers = new ArrayList<>();
 	public List<Double> maxXPMultipliers = new ArrayList<>();
@@ -132,16 +135,25 @@ public class KillEvent extends Event {
 		for(Double maxXPMultiplier : maxXPMultipliers) xpCap *= maxXPMultiplier;
 		xpReward += bonusXpReward;
 
+		double cappedXP = Math.min(xpReward, xpCap);
+		double alarModifier = Misc.getReductionMultiplier(DarkzoneLeveling.getReductionModifier(getKillerPlayer()));
+		cappedXP *= alarModifier;
+
+
 		if(!(getDead() instanceof Player)) return 0;
-		else if(xpReward > xpCap) return xpCap;
-		else return (int) xpReward;
+		return (int) Math.floor(cappedXP);
 	}
 
 	public double getFinalGold() {
 		double goldReward = this.goldReward;
 		for(Double goldMultiplier : goldMultipliers) goldReward *= goldMultiplier;
+
+		double cappedGold = Math.min(goldReward, goldCap);
+		double alarModifier = Misc.getReductionMultiplier(DarkzoneLeveling.getReductionModifier(getKillerPlayer()));
+		cappedGold *= alarModifier;
+
 		if(!(getDead() instanceof Player)) return 0;
-		else return Math.min(goldReward, 2000);
+		else return cappedGold;
 	}
 
 	public static double getBaseSouls(PitPlayer deadPitPlayer) {

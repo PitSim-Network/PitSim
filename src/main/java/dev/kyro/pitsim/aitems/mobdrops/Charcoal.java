@@ -2,19 +2,28 @@ package dev.kyro.pitsim.aitems.mobdrops;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
+import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-public class Charcoal extends StaticPitItem implements TemporaryItem {
+public class Charcoal extends BrewingIngredient implements TemporaryItem {
+
+	public Map<Player, Integer> tickMap = new HashMap<>();
 
 	public Charcoal() {
+		super(7, "Wither", ChatColor.DARK_GRAY, PotionType.WEAKNESS);
 		hasDropConfirm = true;
 		itemData = 1;
 		auctionCategory = AuctionCategory.DARKZONE_DROPS;
@@ -59,5 +68,47 @@ public class Charcoal extends StaticPitItem implements TemporaryItem {
 	@Override
 	public TemporaryItem.TemporaryType getTemporaryType() {
 		return TemporaryType.LOST_ON_DEATH;
+	}
+
+	@Override
+	public void administerEffect(Player player, BrewingIngredient potency, int duration) {
+		Misc.applyPotionEffect(player, PotionEffectType.WITHER, duration, 0, false, false);
+		if(duration == 0) tickMap.remove(player);
+		else tickMap.putIfAbsent(player, 1);
+
+		for (Map.Entry<Player, Integer> entry : tickMap.entrySet()) {
+			if(entry.getValue() - 1 == 0) {
+				DamageManager.createIndirectAttack(null, player, (double) getPotency(potency) * 2);
+				tickMap.put(entry.getKey(), 5 * 20);
+			} else tickMap.put(entry.getKey(), entry.getValue() - 1);
+
+		}
+	}
+
+	@EventHandler
+	public void onDamage(EntityDamageEvent event) {
+		if(!(event.getEntity() instanceof Player)) return;
+		if(!tickMap.containsKey((Player) event.getEntity())) return;
+
+		if(event.getCause() == EntityDamageEvent.DamageCause.WITHER) event.setCancelled(true);
+	}
+
+	@Override
+	public Object getPotency(BrewingIngredient potencyIngredient) {
+		return 0.5 * potencyIngredient.tier;
+	}
+
+	@Override
+	public List<String> getPotencyLore(BrewingIngredient potency) {
+		List<String> lore = new ArrayList<>();
+
+		lore.add("");
+		lore.add(ChatColor.GRAY + "Lose " + color + "" + getPotency(potency) + "\u2764 " +  ChatColor.GRAY + "Every 5 seconds.");
+		return lore;
+	}
+
+	@Override
+	public int getDuration(BrewingIngredient durationIngredient) {
+		return 20 * durationIngredient.tier;
 	}
 }

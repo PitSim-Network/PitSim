@@ -30,7 +30,7 @@ public class AuctionManager implements Listener {
 	public static AuctionItem[] auctionItems = new AuctionItem[AUCTION_NUM];
 
 	public static Location spawnLoc = new Location(MapManager.getDarkzone(), 178.5, 52, -1004.5, 180, 0);
-	public static Location returnLoc = new Location(MapManager.getDarkzone(), 255.5, 91, -134.5, -45, 0);
+	public static Location returnLoc = new Location(MapManager.getDarkzone(), 244.5, 91, 8.5, 160, 0);
 
 	public List<Player> animationPlayers = new ArrayList<>();
 

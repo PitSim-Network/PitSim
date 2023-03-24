@@ -47,12 +47,12 @@ public class Heartbeat {
 
 			Misc.applyPotionEffect(player, PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 9, false, false);
 			Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 15, 0, false, false);
-			Sounds.HEARTBEAT1.play(player.getLocation());
+			Sounds.HEARTBEAT1.play(player);
 
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Sounds.HEARTBEAT2.play(player.getLocation());
+					Sounds.HEARTBEAT2.play(player);
 					Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 15, 0, false, false);
 				}
 			}.runTaskLater(PitSim.INSTANCE, delay);

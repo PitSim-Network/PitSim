@@ -97,7 +97,8 @@ public class MarketAsyncTask {
 		PLACE_BID("PLACE MARKET BID"),
 		BIN_ITEM("LISTING BIN"),
 		CLAIM_ITEM("CLAIM LISTING ITEM"),
-		CLAIM_SOULS("CLAIM LISTING SOULS");
+		CLAIM_SOULS("CLAIM LISTING SOULS"),
+		STAFF_REMOVE("STAFF REMOVE LISTING");
 
 		public final String proxyName;
 		MarketTask(String proxyName) {
