@@ -4,10 +4,14 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.boosters.SoulBooster;
+import dev.kyro.pitsim.controllers.objects.FakeItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Reaper;
 import dev.kyro.pitsim.enums.MobStatus;
+import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.misc.HypixelSound;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,8 +21,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class PitMob implements Listener {
 	private Creature mob;
@@ -88,6 +94,33 @@ public abstract class PitMob implements Listener {
 				if(SoulBooster.INSTANCE.isActive()) droppedSouls *= 1 + (SoulBooster.getSoulsIncrease() / 100.0);
 				DarkzoneManager.createSoulExplosion(killer,
 						getMob().getLocation().add(0, 0.5, 0), (int) droppedSouls, false);
+			}
+
+			if(pitKiller != null) {
+				double freshChance = 0.02;
+				freshChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
+						pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.SECOND_PATH, "fresh-chance") / 100.0);
+				freshChance = 1; // TODO: Remove after testing
+				if(Math.random() < freshChance) {
+					MysticType mysticType = Math.random() < 0.5 ? MysticType.TAINTED_SCYTHE : MysticType.TAINTED_CHESTPLATE;
+					ItemStack dropStack = MysticFactory.getFreshItem(mysticType, null);
+					HypixelSound.play(pitKiller.player, mob.getLocation(), HypixelSound.Sound.FRESH_DROP);
+
+					FakeItem fakeItem = new FakeItem(dropStack, mob.getLocation())
+							.removeAfter(20 * 60)
+							.onPickup((pickupPlayer, itemStack) -> {
+								pickupPlayer.getInventory().addItem(itemStack);
+								pickupPlayer.updateInventory();
+							})
+							.addViewer(pitKiller.player);
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							fakeItem.showToAllPlayers();
+						}
+					}.runTaskLater(PitSim.INSTANCE, 20 * 5);
+				}
 			}
 		}
 		remove();

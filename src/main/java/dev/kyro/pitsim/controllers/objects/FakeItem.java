@@ -52,7 +52,7 @@ public class FakeItem {
 	}
 
 	public FakeItem addViewer(Player player) {
-		if(viewers.contains(player)) return this;
+		if(viewers.contains(player) || hasBeenRemoved) return this;
 		viewers.add(player);
 
 		PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 2, itemStack.getAmount());

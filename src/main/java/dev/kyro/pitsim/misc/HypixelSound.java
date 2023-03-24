@@ -68,12 +68,20 @@ public class HypixelSound {
 		}
 	}
 
-	public void play(Sound sound) {
+	public static void play(Player player, Location location, Sound sound) {
+		new HypixelSound(player, location).play(sound);
+	}
+
+	public static void play(Player player, Location location, Sound sound, boolean rareSound) {
+		new HypixelSound(player, location).play(sound, rareSound);
+	}
+
+	private void play(Sound sound) {
 		play(sound, false);
 	}
 
 	//	The rare boolean is the same as artifact and other things worthy of displaying in chat message
-	public void play(Sound sound, boolean rareSound) {
+	private void play(Sound sound, boolean rareSound) {
 		int tick = 0;
 
 		if(sound == Sound.FRESH_DROP) {
