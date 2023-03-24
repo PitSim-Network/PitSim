@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.adarkzone.progression.DarkzoneData;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
@@ -170,6 +171,12 @@ public class PitPlayer {
 
 	public static class UnlockedCosmeticData {
 		public List<ParticleColor> unlockedColors;
+	}
+
+	public FastTravelData fastTravelData;
+
+	public static class FastTravelData {
+		public List<Integer> unlockedLocations = new ArrayList<>();
 	}
 
 	public Map<String, EquippedCosmeticData> equippedCosmeticMap = new HashMap<>();
@@ -725,5 +732,13 @@ public class PitPlayer {
 		newWalkSpeed *= 1 + (GottaGoFast.getWalkSpeedIncrease(this) / 100.0);
 
 		if(previousWalkSpeed != newWalkSpeed) player.setWalkSpeed(newWalkSpeed);
+	}
+
+	public boolean hasFastTravelUnlocked(SubLevel subLevel) {
+		if(subLevel == null) return false;
+		return fastTravelData.unlockedLocations.contains(subLevel.getIndex());
+	}
+
+	public void unlockFastTravelLocation(SubLevel subLevel) {
 	}
 }

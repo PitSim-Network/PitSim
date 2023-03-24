@@ -36,4 +36,8 @@ public class DarkzoneBalancing {
 			return scalar;
 		}
 	}
+
+	public static int getTravelCost(SubLevel subLevel) {
+		return subLevel.getIndex() + 1;
+	}
 }

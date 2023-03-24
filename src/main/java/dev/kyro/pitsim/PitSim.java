@@ -559,6 +559,7 @@ public class PitSim extends JavaPlugin {
 			NPCManager.registerNPC(new PotionMasterNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new MainProgressionNPC(Collections.singletonList(MapManager.getDarkzone())));
+			NPCManager.registerNPC(new FastTravelNPC(Collections.singletonList(MapManager.getDarkzone())));
 		}
 
 		if(status.isOverworld()) {

@@ -9,26 +9,25 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class AuctioneerNPC extends PitNPC {
+public class FastTravelNPC extends PitNPC {
 
-	public AuctioneerNPC(List<World> worlds) {
+	public FastTravelNPC(List<World> worlds) {
 		super(worlds);
 	}
 
 	@Override
 	public Location getRawLocation() {
-		return new Location(MapManager.getDarkzone(), 247.5, 91, 8.5, 145, 0);
+		return new Location(MapManager.getDarkzone(), 182.5, 91, -88.5, -145, 0);
 	}
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&8&lSHADY FIGURE", "Itz_Aethan", location, true);
+		spawnPlayerNPC("&f&lFAST TRAVEL", "Mailman", location, false);
 	}
 
 	@Override
 	public void onClick(Player player) {
 		FastTravelGUI gui = new FastTravelGUI(player);
 		gui.open();
-//		AOutput.send(player, "&8&lSHADY FIGURE&7: &ePsst. Visit the door behind me to spend your &fTainted Souls&e.");
 	}
 }

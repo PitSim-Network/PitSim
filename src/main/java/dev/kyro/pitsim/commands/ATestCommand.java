@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.market.MarketGUI;
+import dev.kyro.pitsim.adarkzone.FastTravelGUI;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,11 +29,11 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
+		FastTravelGUI fastTravelGUI = new FastTravelGUI(player);
+		fastTravelGUI.open();
 
-		MarketGUI marketGUI = new MarketGUI(player);
-		marketGUI.open();
-
-
+//		MarketGUI marketGUI = new MarketGUI(player);
+//		marketGUI.open();
 
 //		if(BiomeChanger.players.contains(player.getUniqueId())) {
 //			BiomeChanger.players.remove(player.getUniqueId());
