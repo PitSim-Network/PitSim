@@ -740,5 +740,7 @@ public class PitPlayer {
 	}
 
 	public void unlockFastTravelLocation(SubLevel subLevel) {
+		if(subLevel == null || fastTravelData.unlockedLocations.contains(subLevel.getIndex())) return;
+		fastTravelData.unlockedLocations.add(subLevel.getIndex());
 	}
 }
