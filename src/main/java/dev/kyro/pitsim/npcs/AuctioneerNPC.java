@@ -17,7 +17,7 @@ public class AuctioneerNPC extends PitNPC {
 
 	@Override
 	public Location getRawLocation() {
-		return new Location(MapManager.getDarkzone(), 254.5, 91, -128.5, -14, 0);
+		return new Location(MapManager.getDarkzone(), 247.5, 91, 8.5, 145, 0);
 	}
 
 	@Override
