@@ -14,6 +14,7 @@ public class PitZombiePigmanBoss extends PitBoss {
 
 		abilities(
 				new GenericMinionAbility(1, SubLevelType.ZOMBIE_PIGMAN, 3, 30),
+				new WorldBorderAbility(),
 				new PoundAbility(1, 15),
 				new LightningAbility(10, 1, 0.025),
 				new RuptureAbility(1, 25, getDamage(), 40),

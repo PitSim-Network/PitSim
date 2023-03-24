@@ -286,7 +286,7 @@ public class DarkzoneManager implements Listener {
 			if(subLevel.getCurrentDrops() < subLevel.getRequiredDropsToSpawn()) continue;
 
 			subLevel.getMiddle().getWorld().playEffect(subLevel.getMiddle(), Effect.EXPLOSION_HUGE, 100);
-			Sounds.PRESTIGE.play(subLevel.getMiddle());
+			Sounds.BOSS_SPAWN.play(subLevel.getMiddle());
 			subLevel.spawnBoss(player);
 
 			subLevel.setCurrentDrops(0);

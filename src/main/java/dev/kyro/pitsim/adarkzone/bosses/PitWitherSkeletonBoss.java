@@ -14,6 +14,7 @@ public class PitWitherSkeletonBoss extends PitBoss {
 
 		abilities(
 				new DefensiveMinionAbility(SubLevelType.WITHER_SKELETON, 2, 8, 5 * 20),
+				new WorldBorderAbility(),
 				new CageAbility(3, 60, 5),
 				new SlamAbility(2, 40, 50, getDamage()),
 				new ChargeAbility(3),

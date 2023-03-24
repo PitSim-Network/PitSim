@@ -184,6 +184,7 @@ public class Sounds {
 	public static final SoundEffect HEMORRHAGE = new SoundEffect(Sound.DIG_STONE, 1, 0.8);
 	public static final SoundEffect METEOR = new SoundEffect(Sound.FIZZ, 0.7, 0.7);
 	public static final SoundEffect METEOR_2 = new SoundEffect(Sound.EXPLODE, 0.75, 1.4);
+	public static final SoundEffect BOSS_SPAWN = new SoundEffect(Sound.ENDERDRAGON_GROWL, 1, 1);
 
 	//	Megastreaks
 	public static final SoundEffect MEGA_GENERAL = new SoundEffect(Sound.WITHER_SPAWN, 1000, 1);

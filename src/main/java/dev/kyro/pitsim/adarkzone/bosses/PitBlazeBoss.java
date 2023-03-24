@@ -18,6 +18,7 @@ public class PitBlazeBoss extends PitBoss {
 
 		abilities(
 				new GenericMinionAbility(1, SubLevelType.BLAZE, 1, 5),
+				new WorldBorderAbility(),
 				new FirestormAbility(2, 40, 200, getDamage()),
 				new PopupAbility(2, new BlockData(Material.FIRE, (byte) 0), getDamage(), 40, 150),
 				new ComboAbility(20, 12, 0),
