@@ -37,7 +37,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class TaintedWell implements Listener {
-	public static Location wellLocation = new Location(Bukkit.getWorld("darkzone"), 186.0, 92.0, -105.0);;
+	public static Location wellLocation = new Location(Bukkit.getWorld("darkzone"), 186.0, 92.0, -106.0);
 	public static ArmorStand wellStand;
 	public static ArmorStand[] textStands = new ArmorStand[4];
 	public static Map<Player, ArmorStand> removeStands;
