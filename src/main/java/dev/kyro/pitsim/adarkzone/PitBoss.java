@@ -177,7 +177,7 @@ public abstract class PitBoss {
 	}
 
 	public void kill(Player killer) {
-		dropPool.groupDistribution(killer, damageMap);
+		dropPool.bossDistribution(killer, this, damageMap);
 
 		double droppedSouls = getDroppedSouls();
 		if(SoulBooster.INSTANCE.isActive()) droppedSouls *= 1 + (SoulBooster.getSoulsIncrease() / 100.0);
