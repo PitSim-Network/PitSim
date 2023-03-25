@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.PlayerManager;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -36,22 +36,27 @@ public class Regularity extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Pre attackEvent) {
-		if(!attackEvent.isAttackerPlayer()) return;
+		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderRealPlayer()) return;
 
-		if(!attackEvent.getAttackerEnchantMap().containsKey(this) ||
-				!attackEvent.getAttackerEnchantMap().containsKey(Billionaire.INSTANCE)) return;
-		attackEvent.getAttackerEnchantMap().remove(this);
+		if(attackEvent.getAttackerEnchantMap().containsKey(this) && attackEvent.getAttackerEnchantMap().containsKey(Billionaire.INSTANCE)) {
+			attackEvent.getAttackerEnchantMap().remove(this);
+			Sounds.NO.play(attackEvent.getAttackerPlayer());
+			AOutput.error(attackEvent.getAttackerPlayer(), "&c&lERROR!&7 " + getDisplayName() + " &7is incompatible " +
+					"with " + Billionaire.INSTANCE.getDisplayName());
+		}
 
-		Sounds.NO.play(attackEvent.getAttackerPlayer());
-		AOutput.error(attackEvent.getAttackerPlayer(), "&c&lERROR!&7 " + getDisplayName() + " &7is incompatible " +
-				"with " + Billionaire.INSTANCE.getDisplayName());
+		if(attackEvent.getAttackerEnchantMap().containsKey(this) && MapManager.currentMap.world == attackEvent.getAttacker().getWorld() &&
+				MapManager.currentMap.getMid().distance(attackEvent.getAttacker().getLocation()) <= 8) {
+			attackEvent.getAttackerEnchantMap().remove(this);
+			AOutput.error(attackEvent.getAttackerPlayer(), "&c&lERROR!&7 " + getDisplayName() + " &7does not work in middle");
+		}
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Post attackEvent) {
 		HitCounter.setCharge(attackEvent.getDefenderPlayer(), this, 0);
 
-		if(!PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer())) return;
+		if(!attackEvent.isDefenderRealPlayer()) return;
 		if(!canApply(attackEvent)) return;
 		if(!fakeHits && attackEvent.isFakeHit()) return;
 
