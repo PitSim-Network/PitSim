@@ -28,14 +28,14 @@ public class BiomeChanger {
 	protected byte defaultBiomeId = 0;
 
 	public BiomeChanger(PitSim instance) {
-		biomes.put(Biome.TAIGA, (byte) 5);
+		biomes.put(Biome.FOREST, (byte) 4);
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(instance, PacketType.Play.Server.MAP_CHUNK,
 				PacketType.Play.Server.MAP_CHUNK_BULK) {
 
 			@Override
 			public void onPacketSending(PacketEvent event) {
-				Biome biome = Biome.TAIGA;
+				Biome biome = Biome.FOREST;
 				setDefaultBiome(biome);
 				Player player = event.getPlayer();
 				PacketContainer packet = event.getPacket();

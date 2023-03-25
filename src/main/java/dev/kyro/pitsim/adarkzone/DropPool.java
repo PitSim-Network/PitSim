@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -26,7 +27,7 @@ public class DropPool {
 		return Misc.weightedRandom(dropPool);
 	}
 
-	public void singleDistribution(Player killer) {
+	public void mobDistribution(Player killer, PitMob deadMob) {
 		if(killer == null) return;
 		if(dropPool.isEmpty()) return;
 		ItemStack drop = getRandomDrop();
@@ -38,25 +39,35 @@ public class DropPool {
 	 *
 	 * @param damageMap map of player UUIDs and the damage they did to a boss
 	 */
-	public void groupDistribution(Player killer, Map<UUID, Double> damageMap) {
+	public void bossDistribution(Player killer, PitBoss deadBoss, Map<UUID, Double> damageMap) {
 //		TODO: This whole method should have weighted chances to give drops configurable by the constructor of the drop pool prob
-		if(dropPool.isEmpty()) return;
-		UUID topDamageDealer = null;
-		double topDamage = 0;
-		for(UUID uuid : damageMap.keySet()) {
-			double damage = damageMap.get(uuid);
-			if(damage > topDamage) {
-				topDamage = damage;
-				topDamageDealer = uuid;
+
+		double totalDamage = 0;
+		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {
+			UUID uuid = entry.getKey();
+			double damage = entry.getValue();
+			totalDamage += damage;
+		}
+
+		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {
+			UUID uuid = entry.getKey();
+			double damage = entry.getValue();
+			if(damage / totalDamage >= 0.05) {
+				Player player = Bukkit.getPlayer(uuid);
+				if(player == null) continue;
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				pitPlayer.unlockFastTravelDestination(deadBoss.getSubLevel());
 			}
 		}
 
-		if(topDamageDealer == null) return;
-		Player player = Bukkit.getPlayer(topDamageDealer);
-		if(player == null) return;
+		if(dropPool.isEmpty()) return;
 
-		ItemStack drop = getRandomDrop();
-		AUtil.giveItemSafely(player, drop);
+//		if(topDamageDealer == null) return;
+//		Player player = Bukkit.getPlayer(topDamageDealer);
+//		if(player == null) return;
+//
+//		ItemStack drop = getRandomDrop();
+//		AUtil.giveItemSafely(player, drop);
 	}
 
 	/**

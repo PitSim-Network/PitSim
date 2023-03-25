@@ -45,7 +45,7 @@ public class MarketAdminPanel extends AGUIPanel {
 
 		AItemStackBuilder backBuilder = new AItemStackBuilder(Material.BARRIER)
 				.setName("&cBack");
-		getInventory().setItem(31, backBuilder.getItemStack());
+		getInventory().setItem(22, backBuilder.getItemStack());
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class MarketAdminPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		if(slot == 31) {
+		if(slot == 22) {
 			openPreviousGUI();
 			return;
 		}

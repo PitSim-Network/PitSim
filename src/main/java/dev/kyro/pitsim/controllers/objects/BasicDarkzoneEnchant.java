@@ -3,14 +3,11 @@ package dev.kyro.pitsim.controllers.objects;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.enums.MobStatus;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,14 +62,7 @@ public abstract class BasicDarkzoneEnchant extends PitEnchant {
 	public String getMobNames() {
 		List<String> mobNames = new ArrayList<>();
 		for(Class<? extends PitMob> mobClass : getApplicableMobs()) {
-			try {
-				Constructor<? extends PitMob> constructor = mobClass.getConstructor(Location.class, MobStatus.class);
-				PitMob pitMob = constructor.newInstance(null, MobStatus.STANDARD);
-				mobNames.add(pitMob.getDisplayNamePlural().replaceAll("\u00A70", "\u00A78"));
-			} catch(Exception exception) {
-				exception.printStackTrace();
-				throw new RuntimeException();
-			}
+			mobNames.add(DarkzoneManager.getDummyMob(mobClass).getDisplayNamePlural().replaceAll("\u00A70", "\u00A78"));
 		}
 		if(mobNames.size() == 1) {
 			return mobNames.get(0);

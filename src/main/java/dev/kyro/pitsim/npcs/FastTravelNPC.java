@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.npcs;
 
-import dev.kyro.pitsim.adarkzone.progression.ProgressionGUI;
+import dev.kyro.pitsim.adarkzone.FastTravelGUI;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
 import org.bukkit.Location;
@@ -9,25 +9,25 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class MainProgressionNPC extends PitNPC {
+public class FastTravelNPC extends PitNPC {
 
-	public MainProgressionNPC(List<World> worlds) {
+	public FastTravelNPC(List<World> worlds) {
 		super(worlds);
 	}
 
 	@Override
 	public Location getRawLocation() {
-		return new Location(MapManager.getDarkzone(), 188.5, 91, -84.7, 180F, 0);
+		return new Location(MapManager.getDarkzone(), 182.5, 91, -88.5, -145, 0);
 	}
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("", "debrided", location, false);
+		spawnPlayerNPC("&f&lFAST TRAVEL", "Mailman", location, false);
 	}
 
 	@Override
 	public void onClick(Player player) {
-		ProgressionGUI progressionGUI = new ProgressionGUI(player);
-		progressionGUI.open();
+		FastTravelGUI gui = new FastTravelGUI(player);
+		gui.open();
 	}
 }

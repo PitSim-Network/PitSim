@@ -1,33 +1,33 @@
 package dev.kyro.pitsim.npcs;
 
-import dev.kyro.pitsim.adarkzone.progression.ProgressionGUI;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
+import dev.kyro.pitsim.market.MarketGUI;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class MainProgressionNPC extends PitNPC {
+public class PlayerMarketNPC extends PitNPC {
 
-	public MainProgressionNPC(List<World> worlds) {
+	public PlayerMarketNPC(List<World> worlds) {
 		super(worlds);
 	}
 
 	@Override
 	public Location getRawLocation() {
-		return new Location(MapManager.getDarkzone(), 188.5, 91, -84.7, 180F, 0);
+		return new Location(MapManager.getDarkzone(), 204, 91, -84.7, 180, 0);
 	}
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("", "debrided", location, false);
+		spawnPlayerNPC("", "Banker", location, false);
 	}
 
 	@Override
 	public void onClick(Player player) {
-		ProgressionGUI progressionGUI = new ProgressionGUI(player);
-		progressionGUI.open();
+		MarketGUI marketGUI = new MarketGUI(player);
+		marketGUI.open();
 	}
 }

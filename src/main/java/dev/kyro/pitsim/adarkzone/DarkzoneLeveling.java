@@ -36,6 +36,16 @@ public class DarkzoneLeveling	 {
 		return currentXP;
 	}
 
+	public static double getXPToLevel(int level) {
+		double xp = 0;
+
+		for(int i = 0; i < level; i++) {
+			xp += getXPForLevel(i);
+		}
+
+		return xp;
+	}
+
 	public static void giveXP(PitPlayer pitPlayer, double amount) {
 		int currentLevel = getLevel(pitPlayer.altarXP);
 		pitPlayer.altarXP += amount;

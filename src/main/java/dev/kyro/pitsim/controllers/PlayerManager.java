@@ -674,7 +674,7 @@ public class PlayerManager implements Listener {
 				player.teleport(finalSpawnLoc1);
 
 				if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) {
-					player.setVelocity(new Vector(1.5, 1, 0).multiply(0.5));
+					player.setVelocity(new Vector(1.5, 1, 0).multiply(0.3));
 					Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
 					Misc.sendSubTitle(player, "", 40);
 					AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");

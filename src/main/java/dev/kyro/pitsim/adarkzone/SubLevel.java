@@ -27,6 +27,7 @@ public class SubLevel {
 	public SubLevelType subLevelType;
 
 	private Location middle;
+	private Location spawnLocation;
 	private List<Location> spawnableLocations = new ArrayList<>();
 
 //	Boss related fields
@@ -48,7 +49,8 @@ public class SubLevel {
 
 	public SubLevel(SubLevelType subLevelType, Class<? extends PitBoss> bossClass, Class<? extends PitMob> mobClass,
 					EntityType spawnerMob, Class<? extends StaticPitItem> spawnItemClass,
-					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn, int maxMinionsPerPlayer) {
+					Location middle, int maxMobs, int spawnRadius, int requiredDropsToSpawn, int maxMinionsPerPlayer,
+					Location spawnLocation) {
 		this.subLevelType = subLevelType;
 		this.bossClass = bossClass;
 		this.spawnerMob = spawnerMob;
@@ -59,6 +61,7 @@ public class SubLevel {
 		this.spawnRadius = spawnRadius;
 		this.requiredDropsToSpawn = requiredDropsToSpawn;
 		this.maxMinionsPerPlayer = maxMinionsPerPlayer;
+		this.spawnLocation = spawnLocation;
 
 //		Visualize spawnable spaces
 //		new BukkitRunnable() {
@@ -229,6 +232,10 @@ public class SubLevel {
 
 	public Location getMiddle() {
 		return middle;
+	}
+
+	public Location getSpawnLocation() {
+		return spawnLocation;
 	}
 
 	public String getIdentifier() {

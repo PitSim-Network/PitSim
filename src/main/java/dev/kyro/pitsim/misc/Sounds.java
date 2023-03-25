@@ -96,7 +96,7 @@ public class Sounds {
 	public static final SoundEffect SOUL_DROP = new SoundEffect(Sound.ITEM_PICKUP, 1, 1.4);
 	public static final SoundEffect BEAM_CONNECT = new SoundEffect(Sound.FIZZ, 1, 1.4);
 	public static final SoundEffect TURMOIL = new SoundEffect(Sound.NOTE_BASS_GUITAR, 1, 1.4);
-	public static final SoundEffect TURMOIL_BREAK = new SoundEffect(Sound.GLASS, 1, 0.8);
+	public static final SoundEffect FAST_TRAVEL = new SoundEffect(Sound.ENDERMAN_TELEPORT, 2, 1.4);
 
 	public static final SoundEffect CAGE = new SoundEffect()
 			.add(new SoundMoment(0).add(Sound.ANVIL_LAND, 1, 0.7))

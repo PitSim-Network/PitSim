@@ -94,7 +94,7 @@ public class AuctionDisplays implements Listener {
 	}
 
 	public static void onStart() {
-		ArmorStand timerStand = (ArmorStand) MapManager.getDarkzone().spawnEntity(new Location(MapManager.getDarkzone(), 178.5, 50, -1011.5), EntityType.ARMOR_STAND);
+		ArmorStand timerStand = (ArmorStand) MapManager.getDarkzone().spawnEntity(new Location(MapManager.getDarkzone(), 178.5, 50, -1009.5), EntityType.ARMOR_STAND);
 		timerStand.setGravity(false);
 		timerStand.setVisible(false);
 		timerStand.setCustomNameVisible(true);
@@ -138,9 +138,9 @@ public class AuctionDisplays implements Listener {
 	}
 
 	public static void showItems() {
-		pedestalLocations[0] = new Location(MapManager.getDarkzone(), 172.5, 52, -1013.5);
-		pedestalLocations[1] = new Location(MapManager.getDarkzone(), 178.5, 52, -1017.5);
-		pedestalLocations[2] = new Location(MapManager.getDarkzone(), 184.5, 52, -1013.5);
+		pedestalLocations[0] = new Location(MapManager.getDarkzone(), 172.5, 52, -1012.5);
+		pedestalLocations[1] = new Location(MapManager.getDarkzone(), 178.5, 52, -1016.5);
+		pedestalLocations[2] = new Location(MapManager.getDarkzone(), 184.5, 52, -1012.5);
 		for(Location pedestalLocation : pedestalLocations) {
 			pedestalLocation.getChunk().load();
 		}

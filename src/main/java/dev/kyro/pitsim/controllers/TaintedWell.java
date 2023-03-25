@@ -7,6 +7,8 @@ import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.mystics.TaintedChestplate;
+import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -268,6 +270,8 @@ public class TaintedWell implements Listener {
 		ArmorStand removeStand = removeStands.get(player);
 		ArmorStand enchantStand = enchantStands.get(player);
 
+		int previousRares = 0;
+
 		if(enchantStand == null || removeStand == null) return;
 
 		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook tpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(removeStand), (byte)64, (byte)0, (byte)0, (byte)0, (byte)0, false);
@@ -339,6 +343,9 @@ public class TaintedWell implements Listener {
 
 			pitPlayer.taintedSouls -= cost;
 			ItemStack freshItem = playerItems.get(player);
+			for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(freshItem).keySet()) {
+				if(pitEnchant.isRare) previousRares++;
+			}
 
 			try {
 				ItemStack newItem;
@@ -358,26 +365,38 @@ public class TaintedWell implements Listener {
 				}
 
 				playerItems.put(player, newItem);
-			}
-			catch (Exception e) {
+				int rares = 0;
+				for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(newItem).keySet()) {
+					if(pitEnchant.isRare) rares++;
+				}
+
+				int finalRares = rares;
+				int finalPreviousRares = previousRares;
+
+				HypixelSound.Sound sound = HypixelSound.Sound.getTier(freshTier + 1);
+				assert sound != null;
+
+				HypixelSound.play(player, player.getLocation(), sound, rares > previousRares);
+
+				Bukkit.broadcastMessage("Rares: " + rares + " PreviousRares: " + previousRares);
+
+				enchantingPlayers.add(player);
+				setText(player, "\u00A77", "\u00A77", "\u00A77", ChatColor.YELLOW + "Its rolling...");
+
+				new BukkitRunnable() {
+					public void run() {
+						TaintedWell.enchantingPlayers.remove(player);
+						TaintedWell.showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
+						if(finalRares <= finalPreviousRares) return;
+						player.playEffect(TaintedWell.wellLocation.clone().add(0.0, 1.0, 0.0), Effect.EXPLOSION_HUGE, 0);
+						Sounds.EXPLOSIVE_3.play(player);
+
+					}
+				}.runTaskLater(PitSim.INSTANCE, sound.length);
+			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			
-			enchantingPlayers.add(player);
-			setText(player, "\u00A77", "\u00A77", "\u00A77", ChatColor.YELLOW + "Its rolling...");
 
-			HypixelSound.Sound sound = HypixelSound.Sound.getTier(freshTier + 1);
-			assert sound != null;
-			HypixelSound.play(player, player.getLocation(), sound, true);
-
-			new BukkitRunnable() {
-				public void run() {
-					TaintedWell.enchantingPlayers.remove(player);
-					player.playEffect(TaintedWell.wellLocation.clone().add(0.0, 1.0, 0.0), Effect.EXPLOSION_HUGE, 0);
-					Sounds.EXPLOSIVE_3.play(player);
-					TaintedWell.showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
-				}
-			}.runTaskLater(PitSim.INSTANCE, sound.length);
 		}
 	}
 
@@ -394,19 +413,19 @@ public class TaintedWell implements Listener {
 		if(playerItems.containsKey(event.getPlayer()) || Misc.isAirOrNull(player.getItemInHand())) return;
 
 		PitItem pitItem = ItemFactory.getItem(player.getItemInHand());
-//		if((!(pitItem instanceof TaintedScythe) && !(pitItem instanceof TaintedChestplate))) {
-//			setText(player, "\u00A77", ChatColor.RED + "Invalid Item!", ChatColor.RED + "Please try again!", "\u00A77");
-//
-//			new BukkitRunnable() {
-//				public void run() {
-//					if(!playerItems.containsKey(player)) {
-//						setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
-//					}
-//				}
-//			}.runTaskLater(PitSim.INSTANCE, 40L);
-//
-//			return;
-//		}
+		if((!(pitItem instanceof TaintedScythe) && !(pitItem instanceof TaintedChestplate))) {
+			setText(player, "\u00A77", ChatColor.RED + "Invalid Item!", ChatColor.RED + "Please try again!", "\u00A77");
+
+			new BukkitRunnable() {
+				public void run() {
+					if(!playerItems.containsKey(player)) {
+						setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
+					}
+				}
+			}.runTaskLater(PitSim.INSTANCE, 40L);
+
+			return;
+		}
 
 		placeItemInWell(player, player.getItemInHand());
 		Sounds.MYSTIC_WELL_OPEN_1.play(player);

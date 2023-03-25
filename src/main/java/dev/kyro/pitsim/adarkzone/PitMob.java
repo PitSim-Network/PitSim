@@ -83,7 +83,7 @@ public abstract class PitMob implements Listener {
 	public void kill(PitPlayer pitKiller) {
 		Player killer = pitKiller == null ? null : pitKiller.player;
 		if(mobStatus == MobStatus.STANDARD) {
-			dropPool.singleDistribution(killer);
+			dropPool.mobDistribution(killer, this);
 
 			double soulChance = 0.05;
 			soulChance *= 1 + (Reaper.getSoulChanceIncrease(killer) / 100.0);

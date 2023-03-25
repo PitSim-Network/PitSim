@@ -8,17 +8,21 @@ import java.util.List;
 
 public class Durable extends PitEnchant {
 
+	public static Durable INSTANCE;
+
 	public Durable() {
 		super("Durable", false, ApplyType.TAINTED,
 				"durable", "dura");
 		isUncommonEnchant = true;
 		isTainted = true;
+
+		INSTANCE = this;
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Can't be asked to code this"
+				"&7This item has " + getExtraLives(enchantLvl) + " extra lives"
 		).getLore();
 	}
 
@@ -29,6 +33,6 @@ public class Durable extends PitEnchant {
 	}
 
 	public static int getExtraLives(int enchantLvl) {
-		return enchantLvl * 10;
+		return enchantLvl * 15;
 	}
 }

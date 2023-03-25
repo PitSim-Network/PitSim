@@ -93,7 +93,7 @@ public class KillEvent extends Event {
 	}
 
 	public boolean hasKillModifier(KillModifier killModifier) {
-		return Arrays.asList(killModifiers).contains(killModifier);
+		return new ArrayList<>(killModifiers).contains(killModifier);
 	}
 
 	private void checkLoseLives() {

@@ -17,12 +17,12 @@ public class TaintedShopNPC extends PitNPC {
 
 	@Override
 	public Location getRawLocation() {
-		return new Location(MapManager.getDarkzone(), 214, 91, -113, 25, 0);
+		return new Location(MapManager.getDarkzone(), 201, 91, -84.7, 180, 0);
 	}
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("", "debrided", location, false);
+		spawnPlayerNPC("", "merchant", location, false);
 	}
 
 	@Override

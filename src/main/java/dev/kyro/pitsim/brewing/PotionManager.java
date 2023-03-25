@@ -116,13 +116,15 @@ public class PotionManager implements Listener {
 		lore.add(identifier.color + "Tainted Potion");
 		meta.setLore(lore);
 		potionStack.setItemMeta(meta);
-		NBTItem nbtItem = new NBTItem(potionStack);
+		NBTItem nbtItem = new NBTItem(potionStack, true);
 		nbtItem.setInteger(NBTTag.POTION_IDENTIFIER.getRef(), identifier.tier);
 		nbtItem.setInteger(NBTTag.POTION_POTENCY.getRef(), potency.tier);
 		nbtItem.setInteger(NBTTag.POTION_DURATION.getRef(), duration.tier);
 //		nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
-		return nbtItem.getItem();
+		dev.kyro.pitsim.aitems.misc.Potion potion = new dev.kyro.pitsim.aitems.misc.Potion();
+		potion.updateItem(nbtItem.getItem());
 //		return potionStack; //temp
+		return potion.getItem(nbtItem.getItem());
 	}
 
 	public static ItemStack createSplashPotion(BrewingIngredient identifier, BrewingIngredient potency, BrewingIngredient duration) {

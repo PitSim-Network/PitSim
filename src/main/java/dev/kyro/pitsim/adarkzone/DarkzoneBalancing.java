@@ -1,5 +1,9 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.mystics.*;
+import dev.kyro.pitsim.controllers.ItemFactory;
+
 public class DarkzoneBalancing {
 	public static double SCYTHE_DAMAGE = 7.5;
 
@@ -35,5 +39,41 @@ public class DarkzoneBalancing {
 		public double getScalar() {
 			return scalar;
 		}
+	}
+
+	public enum ShredValue {
+		JEWEL_PANTS(50, MysticPants.class),
+		JEWEL_SWORD(50, MysticSword.class),
+		JEWEL_BOW(50, MysticBow.class),
+		TAINTED_SCYTHE(25, TaintedScythe.class),
+		TAINTED_CHESTPLATE(25, TaintedChestplate.class),
+		;
+
+		private final int souls;
+		private final Class<? extends PitItem> item;
+
+		ShredValue(int souls, Class<? extends PitItem> item) {
+			this.souls = souls;
+			this.item = item;
+		}
+
+		public static ShredValue getShredValue(PitItem item) {
+			for(ShredValue shredValue : values()) {
+				if(shredValue.getItem().getClass().equals(item.getClass())) return shredValue;
+			}
+			return null;
+		}
+
+		public int getSouls() {
+			return souls;
+		}
+
+		public PitItem getItem() {
+			return ItemFactory.getItem(item);
+		}
+	}
+
+	public static int getTravelCost(SubLevel subLevel) {
+		return subLevel.getIndex() + 1;
 	}
 }

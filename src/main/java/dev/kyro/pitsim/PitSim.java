@@ -65,6 +65,7 @@ import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
+import dev.kyro.pitsim.enchants.tainted.Durable;
 import dev.kyro.pitsim.enchants.tainted.chestplate.*;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.scythe.*;
@@ -559,6 +560,8 @@ public class PitSim extends JavaPlugin {
 			NPCManager.registerNPC(new PotionMasterNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new AuctioneerNPC(Collections.singletonList(MapManager.getDarkzone())));
 			NPCManager.registerNPC(new MainProgressionNPC(Collections.singletonList(MapManager.getDarkzone())));
+			NPCManager.registerNPC(new FastTravelNPC(Collections.singletonList(MapManager.getDarkzone())));
+			NPCManager.registerNPC(new PlayerMarketNPC(Collections.singletonList(MapManager.getDarkzone())));
 		}
 
 		if(status.isOverworld()) {
@@ -923,6 +926,8 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new Charcoal());
 		ItemFactory.registerItem(new IronIngot());
 		ItemFactory.registerItem(new EnderPearl());
+
+		ItemFactory.registerItem(new Potion());
 	}
 
 	private void loadConfig() {
@@ -1063,6 +1068,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Guard());
 		EnchantManager.registerEnchant(new Shield());
 		EnchantManager.registerEnchant(new Barricade());
+		EnchantManager.registerEnchant(new Durable());
 
 		EnchantManager.registerEnchant(new Adrenaline());
 		EnchantManager.registerEnchant(new Barbaric());
