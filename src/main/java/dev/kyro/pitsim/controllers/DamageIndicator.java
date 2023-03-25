@@ -64,9 +64,9 @@ public class DamageIndicator implements Listener {
 		Non defendingNon = NonManager.getNon(attackEvent.getDefender());
 		StringBuilder output = new StringBuilder();
 
-		String playername = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
+		String playerName = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
 		if(attackEvent.isDefenderPlayer())
-			output.append(PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), playername));
+			output.append(PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), playerName));
 		else if(DarkzoneManager.isPitMob(attackEvent.getDefender())) output.append(defenderMob.getDisplayName()).append(" ");
 		else output.append(attackEvent.getDefender().getCustomName() + " ");
 
