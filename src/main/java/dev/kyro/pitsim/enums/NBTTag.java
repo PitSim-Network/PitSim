@@ -59,7 +59,7 @@ public enum NBTTag {
 	WITHER_SKELETON_SKULL("pr-wither-skull"),
 	GOLEM_INGOT("pr-golem-ingot"),
 	ENDERMAN_PEARL("pr-enderman-pearl"),
-	FAST_TRAVEL_INDEX("pr-fast-travel-index"),
+	INVENTORY_INDEX("pr-inventory-index"),
 	;
 
 	private final String ref;

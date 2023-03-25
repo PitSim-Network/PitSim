@@ -270,6 +270,8 @@ public class TaintedWell implements Listener {
 		ArmorStand removeStand = removeStands.get(player);
 		ArmorStand enchantStand = enchantStands.get(player);
 
+		int previousRares = 0;
+
 		if(enchantStand == null || removeStand == null) return;
 
 		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook tpPacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(removeStand), (byte)64, (byte)0, (byte)0, (byte)0, (byte)0, false);
@@ -341,6 +343,9 @@ public class TaintedWell implements Listener {
 
 			pitPlayer.taintedSouls -= cost;
 			ItemStack freshItem = playerItems.get(player);
+			for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(freshItem).keySet()) {
+				if(pitEnchant.isRare) previousRares++;
+			}
 
 			try {
 				ItemStack newItem;
@@ -360,26 +365,38 @@ public class TaintedWell implements Listener {
 				}
 
 				playerItems.put(player, newItem);
-			}
-			catch (Exception e) {
+				int rares = 0;
+				for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(newItem).keySet()) {
+					if(pitEnchant.isRare) rares++;
+				}
+
+				int finalRares = rares;
+				int finalPreviousRares = previousRares;
+
+				HypixelSound.Sound sound = HypixelSound.Sound.getTier(freshTier + 1);
+				assert sound != null;
+
+				HypixelSound.play(player, player.getLocation(), sound, rares > previousRares);
+
+				Bukkit.broadcastMessage("Rares: " + rares + " PreviousRares: " + previousRares);
+
+				enchantingPlayers.add(player);
+				setText(player, "\u00A77", "\u00A77", "\u00A77", ChatColor.YELLOW + "Its rolling...");
+
+				new BukkitRunnable() {
+					public void run() {
+						TaintedWell.enchantingPlayers.remove(player);
+						TaintedWell.showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
+						if(finalRares <= finalPreviousRares) return;
+						player.playEffect(TaintedWell.wellLocation.clone().add(0.0, 1.0, 0.0), Effect.EXPLOSION_HUGE, 0);
+						Sounds.EXPLOSIVE_3.play(player);
+
+					}
+				}.runTaskLater(PitSim.INSTANCE, sound.length);
+			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			
-			enchantingPlayers.add(player);
-			setText(player, "\u00A77", "\u00A77", "\u00A77", ChatColor.YELLOW + "Its rolling...");
 
-			HypixelSound.Sound sound = HypixelSound.Sound.getTier(freshTier + 1);
-			assert sound != null;
-			HypixelSound.play(player, player.getLocation(), sound, true);
-
-			new BukkitRunnable() {
-				public void run() {
-					TaintedWell.enchantingPlayers.remove(player);
-					player.playEffect(TaintedWell.wellLocation.clone().add(0.0, 1.0, 0.0), Effect.EXPLOSION_HUGE, 0);
-					Sounds.EXPLOSIVE_3.play(player);
-					TaintedWell.showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
-				}
-			}.runTaskLater(PitSim.INSTANCE, sound.length);
 		}
 	}
 

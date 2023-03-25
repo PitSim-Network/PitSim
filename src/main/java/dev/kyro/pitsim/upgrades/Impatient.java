@@ -54,10 +54,10 @@ public class Impatient extends RenownUpgrade {
 			@Override
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(UpgradeManager.hasUpgrade(player, INSTANCE) && SpawnManager.isInSpawn(player)) continue;
+					if(!UpgradeManager.hasUpgrade(player, INSTANCE) || !SpawnManager.isInSpawn(player)) continue;
 					if(MapManager.inDarkzone(player)) {
 						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 40, 3, false, false);
-					} {
+					} else {
 						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 40, 1, false, false);
 					}
 				}

@@ -459,6 +459,7 @@ public class DarkzoneManager implements Listener {
 
 		for(Entity entity : MapManager.getDarkzone().getEntities()) {
 			if(entity instanceof Player) continue;
+			if(entity instanceof ItemFrame) continue;
 			entity.remove();
 		}
 	}

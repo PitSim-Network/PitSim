@@ -156,6 +156,7 @@ public class PitPlayer {
 
 	public double altarXP = 0;
 	public int taintedSouls = 200;
+	public int preDarkzoneUpdatePrestige = -1;
 
 	public List<String> potionStrings = new ArrayList<>();
 

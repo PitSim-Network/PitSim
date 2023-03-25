@@ -260,7 +260,7 @@ public class RollingThunder extends PitEnchant {
 		return new PitLoreBuilder(
 				"&6Off your feet! &7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, " +
 						"sending a cascading earthquake through the world. Those hit by the quake are stunned " +
-						"(" + getCooldownSeconds(enchantLvl) + "	ws cooldown)"
+						"(" + getCooldownSeconds(enchantLvl) + "s cooldown)"
 		).getLore();
 	}
 

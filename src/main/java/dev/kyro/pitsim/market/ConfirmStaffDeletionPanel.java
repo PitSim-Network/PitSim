@@ -74,7 +74,7 @@ public class ConfirmStaffDeletionPanel extends AGUIPanel {
 							return;
 						}
 
-						AUtil.giveItemSafely(player, listing.getItemStack());
+						AUtil.giveItemSafely(player, listing.itemData);
 						player.closeInventory();
 					}
 				}.runTask(PitSim.INSTANCE);

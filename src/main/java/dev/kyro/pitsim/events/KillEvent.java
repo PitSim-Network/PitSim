@@ -93,7 +93,7 @@ public class KillEvent extends Event {
 	}
 
 	public boolean hasKillModifier(KillModifier killModifier) {
-		return Arrays.asList(killModifiers).contains(killModifier);
+		return new ArrayList<>(killModifiers).contains(killModifier);
 	}
 
 	private void checkLoseLives() {
@@ -129,6 +129,8 @@ public class KillEvent extends Event {
 	}
 
 	public int getFinalXp() {
+		if(!isKillerPlayer) return 0;
+
 		double xpReward = this.xpReward;
 		int xpCap = this.xpCap;
 		for(Double xpMultiplier : xpMultipliers) xpReward *= xpMultiplier;
@@ -145,6 +147,8 @@ public class KillEvent extends Event {
 	}
 
 	public double getFinalGold() {
+		if(!isKillerPlayer) return 0;
+
 		double goldReward = this.goldReward;
 		for(Double goldMultiplier : goldMultipliers) goldReward *= goldMultiplier;
 

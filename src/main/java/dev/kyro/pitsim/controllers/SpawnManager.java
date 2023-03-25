@@ -166,7 +166,7 @@ public class SpawnManager implements Listener {
 		ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(location)));
 
 		for(ProtectedRegion region : set) {
-			if(region.getId().contains("spawn") || region.getId().contains("auction")) {
+			if(region.getId().contains("spawn") || region.getId().contains("auction") || region.getId().contains("darkzonespawn")) {
 				return true;
 			}
 		}

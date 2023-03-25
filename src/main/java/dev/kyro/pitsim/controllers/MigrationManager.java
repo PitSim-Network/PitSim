@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import com.google.cloud.firestore.DocumentSnapshot;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.adarkzone.DarkzoneLeveling;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -20,6 +21,8 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class MigrationManager implements Listener {
+
+	public static final int COMPENSATION_SOULS = 50;
 
 	@EventHandler
 	public void onMessage(MessageEvent event) throws ExecutionException, InterruptedException {
@@ -46,45 +49,50 @@ public class MigrationManager implements Listener {
 			return;
 		}
 		pitPlayer.uuid = uuid;
+		pitPlayer.preDarkzoneUpdatePrestige = pitPlayer.prestige;
+
+		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
+		pitPlayer.altarXP = DarkzoneLeveling.getXPToLevel(prestigeInfo.darkzoneLevel);
 
 		for(int i = 0; i < profile.getCachedInventory().length; i++) {
 			ItemStack itemStack = profile.getCachedInventory()[i];
-			if(Misc.isAirOrNull(itemStack)) continue;
-			NBTItem nbtItem = new NBTItem(itemStack);
-			PitItem pitItem = ItemFactory.getItem(itemStack);
-			if(pitItem == null || !pitItem.isLegacyItem(itemStack, nbtItem)) continue;
 
-			ItemStack replacementItem = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
-			pitItem.updateItem(replacementItem);
-			profile.getCachedInventory()[i] = replacementItem;
+			if(!shouldConvert(itemStack)) continue;
+			profile.getCachedInventory()[i] = convertItem(pitPlayer, itemStack);
 		}
 
 		for(int i = 0; i < profile.getArmor().length; i++) {
 			ItemStack itemStack = profile.getArmor()[i];
-			if(Misc.isAirOrNull(itemStack)) continue;
-			NBTItem nbtItem = new NBTItem(itemStack);
-			PitItem pitItem = ItemFactory.getItem(itemStack);
-			if(pitItem == null || !pitItem.isLegacyItem(itemStack, nbtItem)) continue;
 
-			ItemStack replacementItem = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
-			pitItem.updateItem(replacementItem);
-			profile.getArmor()[i] = replacementItem;
+			if(!shouldConvert(itemStack)) continue;
+			profile.getArmor()[i] = convertItem(pitPlayer, itemStack);
 		}
 
 		for(Inventory page : profile.getEnderChest()) {
 			for(int i = 0; i < page.getContents().length; i++) {
 				ItemStack itemStack = page.getContents()[i];
-				if(Misc.isAirOrNull(itemStack)) continue;
-				NBTItem nbtItem = new NBTItem(itemStack);
-				PitItem pitItem = ItemFactory.getItem(itemStack);
-				if(pitItem == null || !pitItem.isLegacyItem(itemStack, nbtItem)) continue;
 
-				ItemStack replacementItem = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
-				pitItem.updateItem(replacementItem);
-				page.getContents()[i] = replacementItem;
+				if(!shouldConvert(itemStack)) continue;
+				page.getContents()[i] = convertItem(pitPlayer, itemStack);
 			}
 		}
 
 		pitPlayer.save(true, true);
+	}
+
+	public static boolean shouldConvert(ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack)) return false;
+		NBTItem nbtItem = new NBTItem(itemStack);
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		return pitItem != null && pitItem.isLegacyItem(itemStack, nbtItem);
+	}
+
+	public static ItemStack convertItem(PitPlayer pitPlayer, ItemStack itemStack) {
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		NBTItem nbtItem = new NBTItem(itemStack);
+		assert pitItem != null;
+		ItemStack replacementItem = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
+		pitItem.updateItem(replacementItem);
+		return replacementItem;
 	}
 }

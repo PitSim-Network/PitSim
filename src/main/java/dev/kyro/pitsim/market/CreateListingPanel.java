@@ -413,6 +413,6 @@ public class CreateListingPanel extends AGUIPanel {
 	}
 
 	public int getMaxDurationDays() {
-		return 3;
+		return player.hasPermission("group.unthinkable") ? 7 : 3;
 	}
 }

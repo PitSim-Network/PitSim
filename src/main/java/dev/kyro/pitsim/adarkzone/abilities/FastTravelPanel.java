@@ -40,7 +40,7 @@ public class FastTravelPanel extends AGUIPanel {
 			));
 
 			NBTItem nbtItem = new NBTItem(builder.getItemStack(), true);
-			nbtItem.setInteger(NBTTag.FAST_TRAVEL_INDEX.getRef(), FastTravelManager.destinations.indexOf(destination));
+			nbtItem.setInteger(NBTTag.INVENTORY_INDEX.getRef(), FastTravelManager.destinations.indexOf(destination));
 			getInventory().setItem(slot, builder.getItemStack());
 
 			slot++;
@@ -63,7 +63,7 @@ public class FastTravelPanel extends AGUIPanel {
 
 		if(Misc.isAirOrNull(event.getCurrentItem())) return;
 		NBTItem nbtItem = new NBTItem(event.getCurrentItem(), true);
-		int index = nbtItem.getInteger(NBTTag.FAST_TRAVEL_INDEX.getRef());
+		int index = nbtItem.getInteger(NBTTag.INVENTORY_INDEX.getRef());
 		FastTravelDestination destination = FastTravelManager.destinations.get(index);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
