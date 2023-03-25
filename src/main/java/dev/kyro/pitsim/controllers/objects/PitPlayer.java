@@ -7,6 +7,8 @@ import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.FastTravelDestination;
+import dev.kyro.pitsim.adarkzone.FastTravelManager;
 import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.adarkzone.progression.DarkzoneData;
@@ -37,6 +39,7 @@ import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.settings.scoreboard.ScoreboardData;
 import dev.kyro.pitsim.storage.StorageManager;
@@ -742,5 +745,9 @@ public class PitPlayer {
 	public void unlockFastTravelDestination(SubLevel subLevel) {
 		if(subLevel == null || fastTravelData.unlockedLocations.contains(subLevel.getIndex())) return;
 		fastTravelData.unlockedLocations.add(subLevel.getIndex());
+		FastTravelDestination destination = FastTravelManager.getDestination(subLevel);
+		if(destination == null) return;
+		AOutput.send(player, "&f&lFAST TRAVEL! &7Unlocked access to " + destination.displayName + "&7!");
+		Sounds.RENOWN_SHOP_PURCHASE.play(player);
 	}
 }

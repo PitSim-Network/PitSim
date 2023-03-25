@@ -24,4 +24,13 @@ public class FastTravelManager {
 		MaterialData spawnIcon = new MaterialData(Material.BED, (byte) 0);
 		destinations.add(new FastTravelDestination("&aSpawn", spawn, 2, spawnIcon));
 	}
+
+	public static FastTravelDestination getDestination(SubLevel subLevel) {
+		for(FastTravelDestination destination : destinations) {
+			if(destination.subLevel == subLevel) {
+				return destination;
+			}
+		}
+		return null;
+	}
 }

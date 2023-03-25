@@ -1,12 +1,9 @@
 package dev.kyro.pitsim.market;
 
-import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.storage.EnderchestGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -52,11 +49,11 @@ public class MarketManager implements Listener {
 
 	public enum ListingLimit {
 		MEMBER("&7Member", 3, "group.default"),
-		LEGENDARY("&eLegendary", 3, "group.legendary"),
-		OVERPOWERED("&5Overpowered", 6, "group.overpowered"),
+		LEGENDARY("&eLegendary", 4, "group.legendary"),
+		OVERPOWERED("&5Overpowered", 5, "group.overpowered"),
 		EXTRAORDINARY("&3Extraordinary", 6, "group.extraordinary"),
-		MIRACULOUS("&bMiraculous", 9, "group.miraculous"),
-		UNTHINKABLE("&6Unthinkable", 9, "group.unthinkable"),
+		MIRACULOUS("&bMiraculous", 8, "group.miraculous"),
+		UNTHINKABLE("&6Unthinkable", 10, "group.unthinkable"),
 		ETERNAL("&4Eternal", 12, "group.eternal"),
 		DEVELOPER("&9Developer", 12, "group.developer");
 

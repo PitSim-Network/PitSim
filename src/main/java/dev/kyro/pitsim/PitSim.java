@@ -65,6 +65,7 @@ import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
+import dev.kyro.pitsim.enchants.tainted.Durable;
 import dev.kyro.pitsim.enchants.tainted.chestplate.*;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.scythe.*;
@@ -1065,6 +1066,7 @@ public class PitSim extends JavaPlugin {
 		EnchantManager.registerEnchant(new Guard());
 		EnchantManager.registerEnchant(new Shield());
 		EnchantManager.registerEnchant(new Barricade());
+		EnchantManager.registerEnchant(new Durable());
 
 		EnchantManager.registerEnchant(new Adrenaline());
 		EnchantManager.registerEnchant(new Barbaric());

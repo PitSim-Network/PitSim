@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.enchants.tainted.Durable;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -52,6 +53,9 @@ public class TaintedEnchanting {
 		NBTItem nbtItem = new NBTItem(itemStack, true);
 		int previousTier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
 		if(previousTier == 4) return null;
+
+		int previousDurableTier = -1;
+		int durableTier = 0;
 
 		if(previousTier == 0) {
 			int tokens;
@@ -164,6 +168,11 @@ public class TaintedEnchanting {
 				}
 
 				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
+				if(selectedEnchant instanceof Durable) {
+					if(previousDurableTier == -1) previousDurableTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
+					durableTier++;
+				}
+
 				int newTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
 				try {
 					itemStack = EnchantManager.addEnchant(itemStack, selectedEnchant, newTier + 1, false);
@@ -176,6 +185,14 @@ public class TaintedEnchanting {
 		nbtItem = new NBTItem(itemStack, true);
 		nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), previousTier + 1);
 		int addedLives = EnchantManager.getTaintedMaxLifeIncrease(previousTier + 1, temporaryItem.getMaxLives(itemStack));
+
+		if(durableTier > 0) {
+			int previousDurableLives = Durable.getExtraLives(previousDurableTier);
+			int newDurableLives = Durable.getExtraLives(durableTier);
+
+			addedLives += newDurableLives - previousDurableLives;
+		}
+
 		itemStack = nbtItem.getItem();
 		temporaryItem.addMaxLives(itemStack, addedLives);
 		return itemStack;
