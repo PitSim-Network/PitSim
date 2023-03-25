@@ -55,56 +55,56 @@ public class DarkzoneManager implements Listener {
 		subLevel = new SubLevel(
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class, EntityType.ZOMBIE, RottenFlesh.class,
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
-				20, 21, 1, -1,
+				20, 21, 10, -1,
 				new Location(MapManager.getDarkzone(), 302.5, 74, -133.5, -120, 0));
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.SKELETON, PitSkeletonBoss.class, PitSkeleton.class, EntityType.SKELETON, Bone.class,
 				new Location(MapManager.getDarkzone(), 424, 52, -128),
-				19, 21, 1, -1,
+				19, 21, 10, -1,
 				new Location(MapManager.getDarkzone(), 398.5, 54, -125.5, -90, 0));
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.SPIDER, PitSpiderBoss.class, PitSpider.class, EntityType.SPIDER, SpiderEye.class,
 				new Location(MapManager.getDarkzone(), 463, 37, -72),
-				18, 19, 1, -1,
+				18, 19, 10, -1,
 				new Location(MapManager.getDarkzone(), 453.5, 40, -94.5, -30, 0));
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.WOLF, PitWolfBoss.class, PitWolf.class, EntityType.WOLF, Leather.class,
 				new Location(MapManager.getDarkzone(), 397, 28, -42),
-				17, 22, 1, 50,
+				17, 22, 10, 50,
 				new Location(MapManager.getDarkzone(), 421.5, 28, -32.5, 90, 0));
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.BLAZE, PitBlazeBoss.class, PitBlaze.class, EntityType.BLAZE, BlazeRod.class,
 				new Location(MapManager.getDarkzone(), 314, 22, -19),
-				16, 20, 1, -1,
+				16, 20, 10, -1,
 				new Location(MapManager.getDarkzone(), 336.5, 22, -25.5, 70, 0));
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.ZOMBIE_PIGMAN, PitZombiePigmanBoss.class, PitZombiePigman.class, EntityType.PIG_ZOMBIE, RawPork.class,
 				new Location(MapManager.getDarkzone(), 235, 19, -23),
-				15, 21, 1, 10,
+				15, 21, 10, 10,
 				new Location(MapManager.getDarkzone(), 260.5, 19, -13.5, 110, 0));
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.WITHER_SKELETON, PitWitherSkeletonBoss.class, PitWitherSkeleton.class, EntityType.SKELETON, Charcoal.class,
 				new Location(MapManager.getDarkzone(), 210, 19, -115),
-				15, 21, 1, -1,
+				15, 21, 10, -1,
 				new Location(MapManager.getDarkzone(), 219.5, 18, -90.5, 180, 0));
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.CREEPER, PitCreeperBoss.class, PitCreeper.class, EntityType.CREEPER, Gunpowder.class,
 				new Location(MapManager.getDarkzone(), 256, 18, -172),
-				15, 20, 1, -1,
+				15, 20, 10, -1,
 				new Location(MapManager.getDarkzone(), 239.5, 19, -151.5, -145, 0));
 		subLevel.mobTargetingSystem.persistenceWeight *= 2;
 		subLevel.mobTargetingSystem.otherMobsTargetingWeight *= 1.5;
@@ -113,14 +113,14 @@ public class DarkzoneManager implements Listener {
 		subLevel = new SubLevel(
 				SubLevelType.IRON_GOLEM, PitIronGolemBoss.class, PitIronGolem.class, EntityType.IRON_GOLEM, IronIngot.class,
 				new Location(MapManager.getDarkzone(), 313, 19, -217),
-				15, 20, 1, -1,
+				15, 20, 10, -1,
 				new Location(MapManager.getDarkzone(), 291.5, 19, -96.5, -130, 0));
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(
 				SubLevelType.ENDERMAN, PitEndermanBoss.class, PitEnderman.class, EntityType.ENDERMAN, EnderPearl.class,
 				new Location(MapManager.getDarkzone(), 388, 19, -226),
-				15, 21, 1, -1,
+				15, 21, 10, -1,
 				new Location(MapManager.getDarkzone(), 361.5, 19, -225.5, -90, 0));
 		registerSubLevel(subLevel);
 

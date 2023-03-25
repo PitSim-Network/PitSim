@@ -18,7 +18,6 @@ public class GodCommand extends ACommand {
 	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
 		if(!(sender instanceof Player)) return;
 		Player player = (Player) sender;
-		if(!player.isOp()) return;
 
 		GodGUI godGUI = new GodGUI(player);
 		godGUI.open();

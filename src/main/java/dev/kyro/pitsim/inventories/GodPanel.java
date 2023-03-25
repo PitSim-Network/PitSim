@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.inventories;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.aitems.MysticFactory;
@@ -18,14 +19,20 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.misc.Base64;
 import dev.kyro.pitsim.misc.Constant;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public
 class GodPanel extends AGUIPanel {
 	public GodGUI godGUI;
+	public List<ItemStack> items = new ArrayList<>();
+	public int page = 1;
 
 	public GodPanel(AGUI gui) {
 		super(gui);
@@ -99,10 +106,46 @@ class GodPanel extends AGUIPanel {
 			addItem(PotionManager.createPotion(BrewingIngredient.getIngredientFromTier(i + 1), enderPearl, enderPearl));
 			addItem(PotionManager.createSplashPotion(BrewingIngredient.getIngredientFromTier(i + 1), enderPearl, enderPearl));
 		}
+
+		setInventory();
 	}
 
 	public void addItem(ItemStack itemStack) {
-		getInventory().addItem(itemStack);
+		items.add(itemStack);
+	}
+
+	public int getMaxPages() {
+		return (items.size() - 1) / 45 + 1;
+	}
+
+	public void setInventory() {
+		getInventory().clear();
+
+		for(int i = (page - 1) * 45; i < page * 45; i++) {
+			if(i == items.size()) break;
+			ItemStack itemStack = items.get(i);
+			getInventory().addItem(itemStack);
+		}
+
+		for(int i = 45; i < 54; i++) {
+			ItemStack paneStack = new AItemStackBuilder(Material.STAINED_GLASS_PANE, 1, 7)
+					.getItemStack();
+			getInventory().setItem(i, paneStack);
+		}
+
+		if(page != 1) {
+			ItemStack previousStack = new AItemStackBuilder(Material.ARROW)
+					.setName("&cPrevious Page")
+					.getItemStack();
+			getInventory().setItem(45, previousStack);
+		}
+		if(page != getMaxPages()) {
+			ItemStack nextStack = new AItemStackBuilder(Material.ARROW)
+					.setName("&cNext Page")
+					.getItemStack();
+			getInventory().setItem(53, nextStack);
+		}
+		updateInventory();
 	}
 
 	@Override
@@ -116,7 +159,22 @@ class GodPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onClick(InventoryClickEvent event) {}
+	public void onClick(InventoryClickEvent event) {
+		if(event.getClickedInventory().getHolder() != this) return;
+
+		int slot = event.getSlot();
+		if(slot >= 45) event.setCancelled(true);
+
+		if(slot == 45) {
+			if(page == 1) return;
+			page--;
+			setInventory();
+		} else if(slot == 53) {
+			if(page == getMaxPages()) return;
+			page++;
+			setInventory();
+		}
+	}
 
 	@Override
 	public void onOpen(InventoryOpenEvent event) {}

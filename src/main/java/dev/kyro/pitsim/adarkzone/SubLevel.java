@@ -227,6 +227,7 @@ public class SubLevel {
 	}
 
 	public int getRequiredDropsToSpawn() {
+		if(PitSim.isDev()) return 1;
 		return requiredDropsToSpawn;
 	}
 
