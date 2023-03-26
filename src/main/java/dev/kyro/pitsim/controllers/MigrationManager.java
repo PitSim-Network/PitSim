@@ -78,7 +78,6 @@ public class MigrationManager implements Listener {
 				if(pitItem == null) continue;
 				page.setItem(i, convertItem(pitPlayer, pitItem, itemStack));
 			}
-			break;
 		}
 
 		pitPlayer.save(true, true);
