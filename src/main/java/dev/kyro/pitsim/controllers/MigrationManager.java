@@ -72,11 +72,13 @@ public class MigrationManager implements Listener {
 			for(int i = 9; i < page.getSize() - 9; i++) {
 				ItemStack itemStack = page.getContents()[i];
 				if(Misc.isAirOrNull(itemStack)) continue;
+				System.out.println(itemStack.getType());
 
 				PitItem pitItem = getPitItemFromLegacy(itemStack);
 				if(pitItem == null) continue;
-				page.getContents()[i] = convertItem(pitPlayer, pitItem, itemStack);
+				page.setItem(i, convertItem(pitPlayer, pitItem, itemStack));
 			}
+			break;
 		}
 
 		pitPlayer.save(true, true);
@@ -92,6 +94,7 @@ public class MigrationManager implements Listener {
 	public static ItemStack convertItem(PitPlayer pitPlayer, PitItem pitItem, ItemStack itemStack) {
 		NBTItem nbtItem = new NBTItem(itemStack);
 		ItemStack replacementItem = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
+		if(replacementItem == null) return null;
 		pitItem.updateItem(replacementItem);
 		return replacementItem;
 	}

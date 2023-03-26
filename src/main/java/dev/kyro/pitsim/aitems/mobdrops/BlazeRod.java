@@ -4,11 +4,13 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
@@ -55,7 +57,15 @@ public class BlazeRod extends BrewingIngredient implements TemporaryItem {
 
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
-		return false;
+		if(!itemStack.hasItemMeta()) return false;
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		if(!itemMeta.hasLore()) return false;
+		return itemMeta.getLore().contains(ChatColor.translateAlternateColorCodes('&', "&5Tainted Item"));
+	}
+
+	@Override
+	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
+		return null;
 	}
 
 	@Override

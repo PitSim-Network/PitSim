@@ -68,7 +68,8 @@ public class ItemManager implements Listener {
 				List<ItemStack> itemList = updatedItems.remove(player.getUniqueId());
 				for(ItemStack itemStack : itemList) {
 					String itemName = itemStack.getItemMeta().getDisplayName();
-					AOutput.send(player, "&a&lITEM UPDATED!&7 Your " + itemName + "&7 has been updated");
+					String haveHas = itemName.endsWith("s") ? "have" : "has";
+					AOutput.send(player, "&a&lITEM UPDATED!&7 Your " + itemName + "&7 " + haveHas + " been updated");
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10L);
