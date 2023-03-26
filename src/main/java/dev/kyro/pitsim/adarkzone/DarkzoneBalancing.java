@@ -5,7 +5,12 @@ import dev.kyro.pitsim.aitems.mystics.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
 
 public class DarkzoneBalancing {
-	public static double SCYTHE_DAMAGE = 7.5;
+	public static final double SCYTHE_DAMAGE = 7.5;
+
+	public static final int TIER_1_ENCHANT_COST = 5;
+	public static final int TIER_2_ENCHANT_COST = 10;
+	public static final int TIER_3_ENCHANT_COST = 25;
+	public static final int TIER_4_ENCHANT_COST = 1_000;
 
 	public static int getAttributeAsInt(SubLevelType type, Attribute attribute) {
 		return (int) getAttribute(type, attribute);
