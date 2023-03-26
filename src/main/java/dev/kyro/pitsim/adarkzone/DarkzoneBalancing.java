@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.aitems.diamond.DiamondLeggings;
 import dev.kyro.pitsim.aitems.mystics.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.inventory.ItemStack;

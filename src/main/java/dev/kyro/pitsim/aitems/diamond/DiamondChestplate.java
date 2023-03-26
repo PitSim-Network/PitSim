@@ -30,12 +30,12 @@ public class DiamondChestplate extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public Material getMaterial() {
-		return Material.DIAMOND_BOOTS;
+		return Material.DIAMOND_CHESTPLATE;
 	}
 
 	@Override
 	public String getName() {
-		return "&7Diamond Chestplate";
+		return "&8Diamond Chestplate";
 	}
 
 	@Override

@@ -30,12 +30,12 @@ public class DiamondLeggings extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public Material getMaterial() {
-		return Material.DIAMOND_BOOTS;
+		return Material.DIAMOND_LEGGINGS;
 	}
 
 	@Override
 	public String getName() {
-		return "&7Diamond Leggings";
+		return "&8Diamond Leggings";
 	}
 
 	@Override

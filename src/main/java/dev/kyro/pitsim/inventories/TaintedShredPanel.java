@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.inventories;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
@@ -54,6 +55,14 @@ public class TaintedShredPanel extends AGUIPanel {
 			getInventory().setItem(slot, itemStack);
 			slot++;
 		}
+
+		getInventory().setItem(49, new AItemStackBuilder(Material.ARROW)
+				.setName("&eBack")
+				.setLore(new ALoreBuilder(
+						"&7to home menu"
+				))
+				.getItemStack());
+
 	}
 
 	@Override
@@ -71,6 +80,11 @@ public class TaintedShredPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		ItemStack clicked = event.getCurrentItem();
 		if(Misc.isAirOrNull(clicked)) return;
+
+		if(event.getSlot() == 49) {
+			openPreviousGUI();
+			return;
+		}
 
 		NBTItem nbtItem = new NBTItem(clicked, true);
 		int inventoryIndex = nbtItem.getInteger(NBTTag.INVENTORY_INDEX.getRef());

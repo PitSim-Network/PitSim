@@ -23,14 +23,17 @@ public class TaintedShopPanel extends AGUIPanel {
 		super(gui);
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 
-		getInventory().setItem(15, new AItemStackBuilder(Material.ARROW)
-				.setName("&e&lQuests")
+		getInventory().setItem(31, new AItemStackBuilder(Material.ARROW)
+				.setName("&eBack")
 				.setLore(new ALoreBuilder(
-						"&7Back to home menu"
+						"&7to home menu"
 				))
 				.getItemStack());
 
+		placeItems();
+	}
 
+	public void placeItems() {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		int slot = 9;
 
@@ -42,6 +45,9 @@ public class TaintedShopPanel extends AGUIPanel {
 			int cost = value.getSoulCost();
 			ALoreBuilder lore = new ALoreBuilder(itemMeta.getLore());
 			lore.addLore("",
+					"&7Cost: &f" + cost + " Soul" + Misc.s(cost),
+					"&7You have: &f" + pitPlayer.taintedSouls + " Soul" + Misc.s(pitPlayer.taintedSouls),
+					"",
 					pitPlayer.taintedSouls < cost ? "&cNot enough souls!" : "&eClick to purchase!"
 			);
 			itemMeta.setLore(lore.getLore());
@@ -70,6 +76,11 @@ public class TaintedShopPanel extends AGUIPanel {
 	public void onClick(InventoryClickEvent event) {
 		if(event.getClickedInventory().getHolder() != this) return;
 
+		if(event.getSlot() == 31) {
+			openPreviousGUI();
+			return;
+		}
+
 		ItemStack itemStack = event.getCurrentItem();
 		if(Misc.isAirOrNull(itemStack)) return;
 
@@ -85,8 +96,12 @@ public class TaintedShopPanel extends AGUIPanel {
 			return;
 		}
 
+		Sounds.RENOWN_SHOP_PURCHASE.play(player);
+
 		pitPlayer.taintedSouls -= shopItem.getSoulCost();
 		AUtil.giveItemSafely(player, shopItem.getItem());
+
+		placeItems();
 	}
 
 	@Override
