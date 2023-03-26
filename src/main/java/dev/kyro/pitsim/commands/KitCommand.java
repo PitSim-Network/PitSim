@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.inventories.help.HelpGUI;
 import org.bukkit.command.Command;
@@ -15,7 +16,7 @@ public class KitCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		if(!player.isOp()) {
+		if(!player.isOp() && !PitSim.isDev()) {
 			if(!SpawnManager.isInSpawn(player)) {
 				AOutput.error(player, "You can only use this command in spawn!");
 				return false;
