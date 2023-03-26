@@ -1,8 +1,10 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.mystics.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
@@ -89,6 +91,28 @@ public class DarkzoneBalancing {
 
 		public PitItem getItem() {
 			return ItemFactory.getItem(item);
+		}
+	}
+
+	public enum ShopItem {
+
+		DIAMOND_LEGGINGS(DiamondLeggings.class, 10),
+		;
+
+		private Class<? extends StaticPitItem> item;
+		private int soulCost;
+
+		ShopItem(Class<? extends StaticPitItem> item, int soulCost) {
+			this.item = item;
+			this.soulCost = soulCost;
+		}
+
+		public ItemStack getItem() {
+			return ItemFactory.getItem(item).getItem();
+		}
+
+		public int getSoulCost() {
+			return soulCost;
 		}
 	}
 }

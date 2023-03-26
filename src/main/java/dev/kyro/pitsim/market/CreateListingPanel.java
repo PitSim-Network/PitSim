@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -144,8 +145,9 @@ public class CreateListingPanel extends AGUIPanel {
 
 		if(event.getClickedInventory().equals(player.getInventory())) {
 			ItemStack item = event.getCurrentItem();
+			PitItem pitItem = ItemFactory.getItem(item);
 
-			if(ItemFactory.getItem(item) == null) {
+			if(pitItem == null || pitItem.auctionCategory == null) {
 				Sounds.NO.play(player);
 			} else {
 
