@@ -33,6 +33,6 @@ public class Durable extends PitEnchant {
 	}
 
 	public static int getExtraLives(int enchantLvl) {
-		return enchantLvl * 15;
+		return enchantLvl * 30;
 	}
 }
