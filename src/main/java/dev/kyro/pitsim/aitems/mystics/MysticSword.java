@@ -131,8 +131,14 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_KILLS.getRef()))
 			newNBTItem.setInteger(NBTTag.ITEM_JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.ITEM_JEWEL_KILLS.getRef()));
 
-		if(nbtItem.hasKey(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()))
-			newNBTItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()).addAll(nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()));
+		if(nbtItem.hasKey(NBTTag.MYSTIC_ENCHANT_ORDER.getRef())) {
+			List<String> enchantOrder = nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef());
+			for(String refName : enchantOrder) {
+				if(refName.equals("comoswift")) refName = "comboswift";
+				newNBTItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()).add(refName);
+			}
+		}
+
 		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()))
 			newNBTItem.setString(NBTTag.ITEM_JEWEL_ENCHANT.getRef(), nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));
 
@@ -152,7 +158,8 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
-		return nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && itemStack.getType() == Material.GOLD_SWORD;
+		return nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) &&
+				(itemStack.getType() == Material.GOLD_SWORD || itemStack.getType() == Material.STONE_SWORD);
 	}
 
 	@Override

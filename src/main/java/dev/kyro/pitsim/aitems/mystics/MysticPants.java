@@ -149,8 +149,13 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 
 		if(nbtItem.hasKey(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()))
 			newNBTItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()).addAll(nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()));
+
 		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()))
 			newNBTItem.setString(NBTTag.ITEM_JEWEL_ENCHANT.getRef(), nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));
+		if(nbtItem.hasKey(NBTTag.SAVED_PANTS_COLOR.getRef()))
+			newNBTItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), nbtItem.getString(NBTTag.SAVED_PANTS_COLOR.getRef()));
+		if(nbtItem.hasKey(NBTTag.ORIGINAL_PANTS_COLOR.getRef()))
+			newNBTItem.setString(NBTTag.ORIGINAL_PANTS_COLOR.getRef(), nbtItem.getString(NBTTag.ORIGINAL_PANTS_COLOR.getRef()));
 
 		if(nbtItem.hasKey(NBTTag.IS_GEMMED.getRef()))
 			newNBTItem.setBoolean(NBTTag.IS_GEMMED.getRef(), nbtItem.getBoolean(NBTTag.IS_GEMMED.getRef()));
@@ -168,7 +173,8 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
-		return nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) && itemStack.getType() == Material.LEATHER_LEGGINGS;
+		return nbtItem.hasKey(NBTTag.ITEM_UUID.getRef()) &&
+				(itemStack.getType() == Material.LEATHER_LEGGINGS || itemStack.getType() == Material.CHAINMAIL_LEGGINGS);
 	}
 
 	@Override
