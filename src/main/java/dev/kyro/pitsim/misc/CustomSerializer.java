@@ -106,7 +106,7 @@ public class CustomSerializer {
 		if(pitItem != null) {
 			ItemStack oldStack = itemStack.clone();
 			pitItem.updateItem(itemStack);
-			if(!pitItem.hasLastServer || pitItem.getLastServer(itemStack) == PitSim.status) {
+			if(!pitItem.hasLastServer || pitItem.getLastServer(oldStack) == PitSim.status) {
 				if(informUUID != null && !oldStack.equals(itemStack)) {
 					ItemManager.updatedItems.putIfAbsent(informUUID, new ArrayList<>());
 					ItemManager.updatedItems.get(informUUID).add(itemStack);

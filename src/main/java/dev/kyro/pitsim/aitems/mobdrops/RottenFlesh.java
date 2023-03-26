@@ -53,7 +53,7 @@ public class RottenFlesh extends BrewingIngredient implements TemporaryItem {
 				"&7Flesh gathered from the zombies",
 				"&7of the Zombie Caves",
 				"",
-				"&5Tainted Item"
+				"&cLost on death"
 		).getLore();
 	}
 

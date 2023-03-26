@@ -53,7 +53,7 @@ public class Gunpowder extends BrewingIngredient implements TemporaryItem {
 				"&7Gunpowder gathered from the Creepers",
 				"&7of the Creeper Caves",
 				"",
-				"&5Tainted Item"
+				"&cLost on death"
 		).getLore();
 	}
 

@@ -276,10 +276,13 @@ public class KillEvent extends Event {
 			livesLost += damageResult.getLivesLost();
 
 			deadInventoryWrapper.putItem(entry.getKey(), damageResult.getItemStack());
-			if(damageResult.wasRemoved()) temporaryItem.onItemRemove(itemStack);
+			if(damageResult.wasRemoved()) {
+				temporaryItem.onItemRemove(itemStack);
+				PlayerManager.sendItemLossMessage(deadPlayer, itemStack);
+			}
 		}
 
-		if(livesLost != 0) PlayerManager.sendLivesLostMessage(getDeadPlayer(), livesLost);
+		if(livesLost != 0) PlayerManager.sendLivesLostMessage(deadPlayer, livesLost);
 
 		deadInventoryWrapper.setInventory();
 	}

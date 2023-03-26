@@ -13,6 +13,8 @@ import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.objects.*;
@@ -37,6 +39,7 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeEqualityPredicate;
 import net.luckperms.api.node.types.PermissionNode;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -239,20 +242,19 @@ public class PlayerManager implements Listener {
 		killEvent.xpCap += pitPlayer.moonBonus;
 	}
 
-//	public static void sendItemBreakMessage(Player player, ItemStack itemStack) {
-//		PitItem pitItem = ItemFactory.getItem(itemStack);
-//		assert pitItem != null;
-//		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
-//
-//		itemStack = temporaryItem.setLives(itemStack, 0);
-//		pitItem.updateItem(itemStack);
-//
-//		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&cRIP!&7 Your "));
-//		message.addExtra(Misc.createItemHover(itemStack));
-//		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7 broke")));
-//
-//		player.sendMessage(message);
-//	}
+	public static void sendItemLossMessage(Player player, ItemStack itemStack) {
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		assert pitItem != null;
+		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
+		temporaryItem.setLives(itemStack, 0);
+
+		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&cRIP!&7 You lost " +
+				(itemStack.getAmount() == 1 ? "" : itemStack.getAmount() + "x ")));
+		message.addExtra(Misc.createItemHover(itemStack));
+//		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "")));
+
+		player.sendMessage(message);
+	}
 
 	public static void sendLivesLostMessage(Player player, int livesLost) {
 		if(livesLost == 0) return;

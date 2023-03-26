@@ -50,7 +50,7 @@ public class RawPork extends BrewingIngredient implements TemporaryItem {
 				"&7Pork gathered from the Pigmen",
 				"&7of the Pigmen Caves",
 				"",
-				"&5Tainted Item"
+				"&cLost on death"
 		).getLore();
 	}
 

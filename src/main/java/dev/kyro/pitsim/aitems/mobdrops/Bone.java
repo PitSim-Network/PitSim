@@ -53,7 +53,7 @@ public class Bone extends BrewingIngredient implements TemporaryItem {
 				"&7Flesh gathered from the skeletons",
 				"&7of the Skeleton Caves",
 				"",
-				"&5Tainted Item"
+				"&cLost on death"
 		).getLore();
 	}
 

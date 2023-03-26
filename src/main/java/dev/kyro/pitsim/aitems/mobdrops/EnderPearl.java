@@ -58,7 +58,7 @@ public class EnderPearl extends BrewingIngredient implements TemporaryItem {
 				"&7Pearl gathered from the endermen",
 				"&7of the End Caves",
 				"",
-				"&5Tainted Item"
+				"&cLost on death"
 		).getLore();
 	}
 

@@ -34,7 +34,7 @@ public class UpgradeManager implements Listener {
 	}
 
 	public static int getTier(Player player, RenownUpgrade upgrade) {
-		if(NonManager.getNon(player) != null) return 0;
+		if(upgrade == null || NonManager.getNon(player) != null) return 0;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(upgrade.prestigeReq > pitPlayer.prestige) return 0;
 

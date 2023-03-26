@@ -378,8 +378,6 @@ public class TaintedWell implements Listener {
 
 				HypixelSound.play(player, player.getLocation(), sound, rares > previousRares);
 
-				Bukkit.broadcastMessage("Rares: " + rares + " PreviousRares: " + previousRares);
-
 				enchantingPlayers.add(player);
 				setText(player, "\u00A77", "\u00A77", "\u00A77", ChatColor.YELLOW + "Its rolling...");
 

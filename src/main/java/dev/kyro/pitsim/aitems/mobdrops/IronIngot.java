@@ -53,7 +53,7 @@ public class IronIngot extends BrewingIngredient implements TemporaryItem {
 				"&7Ingot gathered from the Golems",
 				"&7of the Golem Caves",
 				"",
-				"&5Tainted Item"
+				"&cLost on death"
 		).getLore();
 	}
 

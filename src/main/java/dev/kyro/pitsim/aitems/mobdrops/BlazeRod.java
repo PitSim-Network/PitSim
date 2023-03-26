@@ -49,7 +49,7 @@ public class BlazeRod extends BrewingIngredient implements TemporaryItem {
 				"&7Blaze rods gathered from the",
 				"&7Blazes of the Blaze Caves",
 				"",
-				"&5Tainted Item"
+				"&cLost on death"
 		).getLore();
 	}
 
