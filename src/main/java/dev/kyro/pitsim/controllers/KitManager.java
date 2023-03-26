@@ -5,13 +5,15 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.diamond.DiamondBoots;
+import dev.kyro.pitsim.aitems.diamond.DiamondChestplate;
+import dev.kyro.pitsim.aitems.diamond.DiamondHelmet;
 import dev.kyro.pitsim.controllers.objects.Kit;
 import dev.kyro.pitsim.enums.KitItem;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -44,7 +46,7 @@ public class KitManager implements Listener {
 	public static ItemStack getItem(KitItem kitItem) {
 		ItemStack itemStack = kitItemMap.get(kitItem);
 		PitItem pitItem = ItemFactory.getItem(itemStack);
-		if(pitItem != null) itemStack = pitItem.randomizeUUID(itemStack);
+		if(pitItem != null && pitItem.hasUUID) itemStack = pitItem.randomizeUUID(itemStack);
 		return itemStack;
 	}
 
@@ -52,17 +54,9 @@ public class KitManager implements Listener {
 		try {
 			ItemStack itemStack;
 
-			itemStack = new AItemStackBuilder(Material.DIAMOND_HELMET)
-					.getItemStack();
-			kitItemMap.put(KitItem.DIAMOND_HELMET, itemStack);
-
-			itemStack = new AItemStackBuilder(Material.DIAMOND_CHESTPLATE)
-					.getItemStack();
-			kitItemMap.put(KitItem.DIAMOND_CHESTPLATE, itemStack);
-
-			itemStack = new AItemStackBuilder(Material.DIAMOND_BOOTS)
-					.getItemStack();
-			kitItemMap.put(KitItem.DIAMOND_BOOTS, itemStack);
+			kitItemMap.put(KitItem.DIAMOND_HELMET, ItemFactory.getItem(DiamondHelmet.class).getItem());
+			kitItemMap.put(KitItem.DIAMOND_CHESTPLATE, ItemFactory.getItem(DiamondChestplate.class).getItem());
+			kitItemMap.put(KitItem.DIAMOND_BOOTS, ItemFactory.getItem(DiamondBoots.class).getItem());
 
 			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
 			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("exe"), 3, false);

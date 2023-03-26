@@ -2,7 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.SpawnManager;
-import dev.kyro.pitsim.inventories.help.HelpGUI;
+import dev.kyro.pitsim.inventories.help.KitGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,8 +22,8 @@ public class KitCommand implements CommandExecutor {
 			}
 		}
 
-		HelpGUI helpGUI = new HelpGUI(player);
-		helpGUI.kitPanel.openPanel(helpGUI.kitPanel);
+		KitGUI kitGUI = new KitGUI(player);
+		kitGUI.kitPanel.openPanel(kitGUI.kitPanel);
 
 		return false;
 	}
