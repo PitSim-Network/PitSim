@@ -59,6 +59,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.text.DecimalFormat;
@@ -667,12 +668,11 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 
-		Location finalSpawnLoc1 = spawnLoc;
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				if(!player.isOnline()) return;
-				player.teleport(finalSpawnLoc1);
+				player.teleport(finalSpawnLoc);
 
 				if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) {
 //					player.setVelocity(new Vector(1.5, 1, 0).multiply(0.3));
@@ -687,7 +687,7 @@ public class PlayerManager implements Listener {
 
 				} else if(PitSim.getStatus() == PitSim.ServerStatus.OVERWORLD && LobbySwitchManager.joinedFromDarkzone.contains(player.getUniqueId()) &&
 						!ProxyMessaging.joinTeleportMap.containsKey(player.getUniqueId())) {
-//					player.setVelocity(new Vector(1.5, 1, 0));
+					player.setVelocity(new Vector(1.5, 1, 0));
 					Misc.sendTitle(player, "&a&lOverworld", 40);
 					Misc.sendSubTitle(player, "", 40);
 					AOutput.send(player, "&7You have been sent to the &a&lOverworld&7.");

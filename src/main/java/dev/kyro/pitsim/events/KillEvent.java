@@ -129,33 +129,30 @@ public class KillEvent extends Event {
 	}
 
 	public int getFinalXp() {
-		if(!isKillerRealPlayer) return 0;
+		if(!isKillerRealPlayer || !isDeadPlayer) return 0;
 		double xpReward = this.xpReward;
 		int xpCap = this.xpCap;
 		for(Double xpMultiplier : xpMultipliers) xpReward *= xpMultiplier;
 		for(Double maxXPMultiplier : maxXPMultipliers) xpCap *= maxXPMultiplier;
 		xpReward += bonusXpReward;
 
-		double cappedXP = Math.min(xpReward, xpCap);
+		double postXPCap = Math.min(xpReward, xpCap);
 		double alarModifier = Misc.getReductionMultiplier(DarkzoneLeveling.getReductionModifier(getKillerPlayer()));
-		cappedXP *= alarModifier;
+		postXPCap *= alarModifier;
 
-
-		if(!(getDead() instanceof Player)) return 0;
-		return (int) Math.floor(cappedXP);
+		return (int) Math.floor(postXPCap);
 	}
 
 	public double getFinalGold() {
-		if(!isKillerRealPlayer) return 0;
+		if(!isKillerRealPlayer || !isDeadPlayer) return 0;
 		double goldReward = this.goldReward;
 		for(Double goldMultiplier : goldMultipliers) goldReward *= goldMultiplier;
 
-		double cappedGold = Math.min(goldReward, goldCap);
+		double postGoldCap = Math.min(goldReward, goldCap);
 		double alarModifier = Misc.getReductionMultiplier(DarkzoneLeveling.getReductionModifier(getKillerPlayer()));
-		cappedGold *= alarModifier;
+		postGoldCap *= alarModifier;
 
-		if(!(getDead() instanceof Player)) return 0;
-		else return cappedGold;
+		return postGoldCap;
 	}
 
 	public static double getBaseSouls(PitPlayer deadPitPlayer) {
