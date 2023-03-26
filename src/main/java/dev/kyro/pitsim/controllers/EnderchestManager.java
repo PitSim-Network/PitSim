@@ -22,7 +22,6 @@ public class EnderchestManager implements Listener {
 
 	@EventHandler
 	public void onOpen(InventoryOpenEvent event) {
-		if(MapManager.inDarkzone(event.getPlayer())) return;
 		if(event.getInventory().getType().equals(InventoryType.ENDER_CHEST) && !event.getPlayer().isOp()) {
 			event.getPlayer().closeInventory();
 			if(ShutdownManager.enderchestDisabled) {
@@ -49,7 +48,6 @@ public class EnderchestManager implements Listener {
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
-		if(MapManager.inDarkzone(event.getPlayer())) return;
 		try {
 			Block block = event.getPlayer().getTargetBlock((HashSet<Byte>) null, 5);
 			if(block.getType().equals(Material.ENDER_CHEST)) {
@@ -80,7 +78,7 @@ public class EnderchestManager implements Listener {
 				ChatColor.stripColor(message).toLowerCase().startsWith("/playervault") ||
 				ChatColor.stripColor(message).toLowerCase().startsWith("/vault")) {
 			Block block = player.getTargetBlock((HashSet<Byte>) null, 5);
-			if(!block.getType().equals(Material.ENDER_CHEST) || ShutdownManager.enderchestDisabled || MapManager.inDarkzone(player)) {
+			if(!block.getType().equals(Material.ENDER_CHEST) || ShutdownManager.enderchestDisabled) {
 				event.setCancelled(true);
 				AOutput.error(player, "&c&lERROR!&7 You cannot do this right now!");
 			}

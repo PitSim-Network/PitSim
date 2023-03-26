@@ -157,9 +157,7 @@ public class PitPlayer {
 
 	public List<String> brewingSessions = Arrays.asList(null, null, null);
 
-	public double altarXP = 0;
 	public int taintedSouls = 200;
-	public int preDarkzoneUpdatePrestige = -1;
 
 	public List<String> potionStrings = new ArrayList<>();
 
@@ -178,12 +176,6 @@ public class PitPlayer {
 
 	public static class UnlockedCosmeticData {
 		public List<ParticleColor> unlockedColors;
-	}
-
-	public FastTravelData fastTravelData = new FastTravelData();
-
-	public static class FastTravelData {
-		public List<Integer> unlockedLocations = new ArrayList<>();
 	}
 
 	public Map<String, EquippedCosmeticData> equippedCosmeticMap = new HashMap<>();
@@ -747,12 +739,12 @@ public class PitPlayer {
 
 	public boolean hasFastTravelUnlocked(SubLevel subLevel) {
 		if(subLevel == null) return false;
-		return fastTravelData.unlockedLocations.contains(subLevel.getIndex());
+		return darkzoneData.fastTravelData.unlockedLocations.contains(subLevel.getIndex());
 	}
 
 	public void unlockFastTravelDestination(SubLevel subLevel) {
-		if(subLevel == null || fastTravelData.unlockedLocations.contains(subLevel.getIndex())) return;
-		fastTravelData.unlockedLocations.add(subLevel.getIndex());
+		if(subLevel == null || darkzoneData.fastTravelData.unlockedLocations.contains(subLevel.getIndex())) return;
+		darkzoneData.fastTravelData.unlockedLocations.add(subLevel.getIndex());
 		FastTravelDestination destination = FastTravelManager.getDestination(subLevel);
 		if(destination == null) return;
 		AOutput.send(player, "&f&lFAST TRAVEL! &7Unlocked access to " + destination.displayName + "&7!");

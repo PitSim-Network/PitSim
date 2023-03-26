@@ -20,7 +20,7 @@ public class DiamondHelmet extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public String getNBTID() {
-		return "diamond-boots";
+		return "diamond-helmet";
 	}
 
 	@Override
@@ -30,12 +30,12 @@ public class DiamondHelmet extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public Material getMaterial() {
-		return Material.DIAMOND_BOOTS;
+		return Material.DIAMOND_HELMET;
 	}
 
 	@Override
 	public String getName() {
-		return "&7Diamond Helmet";
+		return "&8Diamond Helmet";
 	}
 
 	@Override

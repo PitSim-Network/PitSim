@@ -51,21 +51,23 @@ public class AltarPanel extends AGUIPanel {
 		double multiplier = AltarRewards.getSoulMultiplier(player) * (AltarPedestal.getPedestal(WealthPedestal.class).isActivated(player) ? AltarPedestal.WEALTH_MULTIPLIER : 1);
 		String multiplierStatus = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player) ? "???" : multiplier + "x";
 
+		ALoreBuilder loreBuilder = new ALoreBuilder("");
+		for(AltarPedestal altarPedestal : AltarPedestal.altarPedestals) {
+			loreBuilder.addLore(altarPedestal.getDisplayName() + "&7: " + (altarPedestal.isActivated(player) ?
+					"&a&lACTIVE" : "&c&lINACTIVE"));
+		}
+		loreBuilder.addLore(
+				"",
+				"&7Total Cost: &f" + totalCost + " Souls",
+				"&7Your Souls: &f" + pitPlayer.taintedSouls + " Souls",
+				"",
+				costStatus
+		);
+
+
 		AItemStackBuilder confirm = new AItemStackBuilder(Material.STAINED_CLAY, 1, pitPlayer.taintedSouls < totalCost ? 14 : 5)
 				.setName((pitPlayer.taintedSouls < totalCost ? "&c" : "&a") + "Confirm Selections")
-				.setLore(new ALoreBuilder(
-						"",
-						"&cAltar XP&7: &f" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.ALTAR_XP) + "%",
-						"&eRenown&7: &f" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.RENOWN) + "%",
-						"&4Vouchers&7: &f" + AltarPedestal.getRewardChance(player, AltarPedestal.ALTAR_REWARD.VOUCHERS) + "%",
-						"",
-						"&2Reward Multiplier: &f" + multiplierStatus,
-						"",
-						"&7Total Cost: &f" + totalCost + " Souls",
-						"&7Your Souls: &f" + pitPlayer.taintedSouls + " Souls",
-						"",
-						costStatus
-				));
+				.setLore(loreBuilder);
 
 		getInventory().setItem(22, confirm.getItemStack());
 	}

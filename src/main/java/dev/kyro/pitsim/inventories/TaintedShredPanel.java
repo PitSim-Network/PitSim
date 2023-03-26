@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.inventories;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
@@ -11,15 +13,12 @@ import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
 
 public class TaintedShredPanel extends AGUIPanel {
 	public TaintedShredPanel(AGUI gui) {
@@ -41,13 +40,13 @@ public class TaintedShredPanel extends AGUIPanel {
 			DarkzoneBalancing.ShredValue shredValue = DarkzoneBalancing.ShredValue.getShredValue(pitItem);
 			if(shredValue == null) continue;
 
-			int amount = shredValue.getSouls();
+			ALoreBuilder lore = new ALoreBuilder(itemStack.getItemMeta().getLore());
+			lore.addLore("",
+					"&eClick to Shred for &f" + shredValue.getLowSouls() + "&7-&f" + shredValue.getHighSouls() + " Souls"
+					);
 
-			List<String> lore = itemStack.getItemMeta().getLore();
-			lore.add("");
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&eClick to Shred for &f" + amount + " Souls"));
 			ItemMeta itemMeta = itemStack.getItemMeta();
-			itemMeta.setLore(lore);
+			itemMeta.setLore(lore.getLore());
 			itemStack.setItemMeta(itemMeta);
 
 			NBTItem nbtItem = new NBTItem(itemStack, true);
@@ -56,6 +55,14 @@ public class TaintedShredPanel extends AGUIPanel {
 			getInventory().setItem(slot, itemStack);
 			slot++;
 		}
+
+		getInventory().setItem(49, new AItemStackBuilder(Material.ARROW)
+				.setName("&eBack")
+				.setLore(new ALoreBuilder(
+						"&7to home menu"
+				))
+				.getItemStack());
+
 	}
 
 	@Override
@@ -74,6 +81,11 @@ public class TaintedShredPanel extends AGUIPanel {
 		ItemStack clicked = event.getCurrentItem();
 		if(Misc.isAirOrNull(clicked)) return;
 
+		if(event.getSlot() == 49) {
+			openPreviousGUI();
+			return;
+		}
+
 		NBTItem nbtItem = new NBTItem(clicked, true);
 		int inventoryIndex = nbtItem.getInteger(NBTTag.INVENTORY_INDEX.getRef());
 		ItemStack realItem = player.getInventory().getItem(inventoryIndex).clone();
@@ -81,9 +93,7 @@ public class TaintedShredPanel extends AGUIPanel {
 		DarkzoneBalancing.ShredValue shredValue = DarkzoneBalancing.ShredValue.getShredValue(ItemFactory.getItem(realItem));
 		if(shredValue == null) return;
 
-		openPanel(new ConfirmShredPanel(gui, realItem, shredValue.getSouls()));
-
-
+		openPanel(new ConfirmShredPanel(gui, realItem, shredValue));
 	}
 
 	@Override

@@ -85,6 +85,9 @@ public abstract class AltarPedestal implements Listener {
 			stand.remove();
 		}
 
+		location.getChunk().load();
+		System.out.println("Spawned altar pedestal at " + location.toString());
+
 		stand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 		stand.setVisible(false);
 		stand.setCustomNameVisible(true);

@@ -38,7 +38,7 @@ public class Sounds {
 	public static final SoundEffect GEM_CRAFT = new SoundEffect(Sound.ORB_PICKUP, 2, 1.5F);
 	public static final SoundEffect GEM_USE = new SoundEffect(Sound.GLASS, 1, 2);
 	public static final SoundEffect JEWEL_SHRED1 = new SoundEffect(Sound.HORSE_ARMOR, 1, 0.8);
-	public static final SoundEffect JEWEL_SHRED2 = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 0.75);
+	public static final SoundEffect JEWEL_SHRED2 = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 0.5, 0.75);
 	public static final SoundEffect SHARD_FIND = new SoundEffect(Sound.GLASS, 1, 2);
 	public static final SoundEffect WITHERCRAFT_1 = new SoundEffect(Sound.ENDERMAN_IDLE, 2F, 1.2F);
 	public static final SoundEffect WITHERCRAFT_2 = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 1.5F);
@@ -72,6 +72,7 @@ public class Sounds {
 	public static final SoundEffect PEDESTAL_DEACTIVATE = new SoundEffect(Sound.DIG_STONE, 2, 0.2);
 	public static final SoundEffect XP_GAIN = new SoundEffect(Sound.ORB_PICKUP, 1, 1);
 	public static final SoundEffect ALTAR_LEVEL_UP = new SoundEffect(Sound.WOLF_HOWL, 1, 0.8);
+	public static final SoundEffect VOUCHER_USE = new SoundEffect(Sound.IRONGOLEM_DEATH, 1, 0.8);
 	public static final SoundEffect ITEM_PICKUP = new SoundEffect(Sound.ITEM_PICKUP, 1, 1);
 	public static final SoundEffect HEARTBEAT1 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.6);
 	public static final SoundEffect HEARTBEAT2 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.8);

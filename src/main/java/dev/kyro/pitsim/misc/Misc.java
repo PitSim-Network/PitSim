@@ -855,4 +855,8 @@ public class Misc {
 
 		return ticks;
 	}
+
+	public static String s(double value) {
+		return value == 1 ? "" : "s";
+	}
 }

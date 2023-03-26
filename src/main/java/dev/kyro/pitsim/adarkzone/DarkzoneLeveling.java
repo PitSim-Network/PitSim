@@ -47,9 +47,9 @@ public class DarkzoneLeveling	 {
 	}
 
 	public static void giveXP(PitPlayer pitPlayer, double amount) {
-		int currentLevel = getLevel(pitPlayer.altarXP);
-		pitPlayer.altarXP += amount;
-		int newLevel = getLevel(pitPlayer.altarXP);
+		int currentLevel = getLevel(pitPlayer.darkzoneData.altarXP);
+		pitPlayer.darkzoneData.altarXP += amount;
+		int newLevel = getLevel(pitPlayer.darkzoneData.altarXP);
 
 		ActionBarManager.sendActionBar(pitPlayer.player, "&4&l+" + (int) amount + " ALTAR XP");
 		Sounds.XP_GAIN.play(pitPlayer.player);
@@ -71,6 +71,6 @@ public class DarkzoneLeveling	 {
 	public static double getReductionModifier(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		return getReduction(getLevel(pitPlayer.altarXP), prestigeInfo.darkzoneLevel);
+		return getReduction(getLevel(pitPlayer.darkzoneData.altarXP), prestigeInfo.darkzoneLevel);
 	}
 }

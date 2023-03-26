@@ -35,7 +35,7 @@ public class DiamondBoots extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public String getName() {
-		return "&7Diamond Boots";
+		return "&8Diamond Boots";
 	}
 
 	@Override

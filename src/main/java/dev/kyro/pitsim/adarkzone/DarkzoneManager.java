@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.bosses.*;
 import dev.kyro.pitsim.adarkzone.mobs.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
@@ -452,6 +453,9 @@ public class DarkzoneManager implements Listener {
 
 		List<Chunk> chunksToLoad = new ArrayList<>();
 		chunksToLoad.add(world.getChunkAt(TaintedWell.wellLocation));
+		chunksToLoad.add(world.getChunkAt(AltarManager.ALTAR_CENTER));
+		chunksToLoad.add(world.getChunkAt(AltarManager.ALTAR_CENTER.clone().add(5, 0, 0)));
+
 
 		for(Chunk chunk : chunksToLoad) {
 			chunk.load();

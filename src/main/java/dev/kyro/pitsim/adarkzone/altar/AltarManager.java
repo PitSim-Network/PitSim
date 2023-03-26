@@ -45,12 +45,6 @@ public class AltarManager implements Listener {
 	public static ArmorStand[] textStands = new ArmorStand[7];
 
 	static {
-		new KnowledgePedestal(new Location(MapManager.getDarkzone(), 224.5, 91.5, -85.5));
-		new RenownPedestal(new Location(MapManager.getDarkzone(), 224.5, 91.5, -82.5));
-		new HeresyPedestal(new Location(MapManager.getDarkzone(), 221.5, 91.5, -80.5));
-		new WealthPedestal(new Location(MapManager.getDarkzone(), 218.5, 91.5, -82.5));
-		new TurmoilPedestal(new Location(MapManager.getDarkzone(), 218.5, 91.5, -85.5));
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -64,7 +58,7 @@ public class AltarManager implements Listener {
 					setDefaultText(onlinePlayer);
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0, 20);
+		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
 	}
 
 
@@ -80,6 +74,12 @@ public class AltarManager implements Listener {
 
 			textStands[i] = stand;
 		}
+
+		new KnowledgePedestal(new Location(MapManager.getDarkzone(), 224.5, 91.5, -85.5));
+		new RenownPedestal(new Location(MapManager.getDarkzone(), 224.5, 91.5, -82.5));
+		new HeresyPedestal(new Location(MapManager.getDarkzone(), 221.5, 91.5, -80.5));
+		new WealthPedestal(new Location(MapManager.getDarkzone(), 218.5, 91.5, -82.5));
+		new TurmoilPedestal(new Location(MapManager.getDarkzone(), 218.5, 91.5, -85.5));
 
 		List<Chunk> chunks = new ArrayList<>();
 		for(int x = -1 * EFFECT_CHUNK_RADIUS; x <= EFFECT_CHUNK_RADIUS; x++) {
@@ -110,7 +110,7 @@ public class AltarManager implements Listener {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 
-		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.altarXP);
+		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.darkzoneData.altarXP);
 		int difference = info.darkzoneLevel - altarLevel;
 		double percent = DarkzoneLeveling.getReductionModifier(player);
 		DecimalFormat df = new DecimalFormat("#.#");
@@ -123,7 +123,7 @@ public class AltarManager implements Listener {
 				"&8&m----------------------",
 				"&4&lAltar Level",
 				"&4" + altarLevel + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
-						DarkzoneLeveling.getRemainingXP(pitPlayer.altarXP) / DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + (altarLevel + 1),
+						DarkzoneLeveling.getRemainingXP(pitPlayer.darkzoneData.altarXP) / DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + (altarLevel + 1),
 				"&8&m----------------------",
 				"&7Level Difference: " + color + Math.abs(difference),
 				status
@@ -218,7 +218,7 @@ public class AltarManager implements Listener {
 	public static double getReduction(PitPlayer pitPlayer) {
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 
-		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.altarXP);
+		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.darkzoneData.altarXP);
 		int difference = prestigeInfo.darkzoneLevel - altarLevel;
 		if(difference <= 0) return 0;
 		return 100 - 100 * Math.pow(0.99, difference);

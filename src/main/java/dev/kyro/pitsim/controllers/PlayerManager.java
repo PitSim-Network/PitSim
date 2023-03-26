@@ -17,6 +17,7 @@ import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
+import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.EquipmentChangeEvent;
 import dev.kyro.pitsim.events.IncrementKillsEvent;
@@ -40,6 +41,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,6 +50,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -782,6 +785,17 @@ public class PlayerManager implements Listener {
 		if(toggledPlayers.contains(event.getPlayer())) return;
 		event.setCancelled(true);
 		AOutput.error(event.getPlayer(), "&CBlock placing disabled, run /pitsim bypass to toggle");
+	}
+
+	@EventHandler
+	public void onItemFrameBreak(EntityDamageByEntityEvent event) {
+		if(!Misc.isEntity(event.getDamager(), PitEntityType.REAL_PLAYER)) return;
+		Player player = (Player) event.getDamager();
+		if(!player.isOp()) return;
+		if(toggledPlayers.contains(player)) return;
+		if(!(event.getEntity() instanceof ItemFrame)) return;
+		event.setCancelled(true);
+		AOutput.error(player, "&CBlock interactions disabled, run /pitsim bypass to toggle");
 	}
 
 	@EventHandler

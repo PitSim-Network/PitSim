@@ -1,8 +1,13 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.aitems.diamond.DiamondLeggings;
 import dev.kyro.pitsim.aitems.mystics.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Random;
 
 public class DarkzoneBalancing {
 	public static final double SCYTHE_DAMAGE = 7.5;
@@ -11,6 +16,10 @@ public class DarkzoneBalancing {
 	public static final int TIER_2_ENCHANT_COST = 10;
 	public static final int TIER_3_ENCHANT_COST = 25;
 	public static final int TIER_4_ENCHANT_COST = 1_000;
+
+	public static int getTravelCost(SubLevel subLevel) {
+		return subLevel.getIndex() + 1;
+	}
 
 	public static int getAttributeAsInt(SubLevelType type, Attribute attribute) {
 		return (int) getAttribute(type, attribute);
@@ -50,8 +59,8 @@ public class DarkzoneBalancing {
 		JEWEL_PANTS(50, MysticPants.class),
 		JEWEL_SWORD(50, MysticSword.class),
 		JEWEL_BOW(50, MysticBow.class),
-		TAINTED_SCYTHE(25, TaintedScythe.class),
-		TAINTED_CHESTPLATE(25, TaintedChestplate.class),
+		TAINTED_SCYTHE(10, TaintedScythe.class),
+		TAINTED_CHESTPLATE(10, TaintedChestplate.class),
 		;
 
 		private final int souls;
@@ -69,8 +78,16 @@ public class DarkzoneBalancing {
 			return null;
 		}
 
-		public int getSouls() {
-			return souls;
+		public int getLowSouls() {
+			return (int) (souls * 0.5);
+		}
+
+		public int getHighSouls() {
+			return (int) (souls * 1.5);
+		}
+
+		public int getRandomSouls() {
+			return (int) (souls * 0.5 + new Random().nextInt(souls + 1));
 		}
 
 		public PitItem getItem() {
@@ -78,7 +95,25 @@ public class DarkzoneBalancing {
 		}
 	}
 
-	public static int getTravelCost(SubLevel subLevel) {
-		return subLevel.getIndex() + 1;
+	public enum ShopItem {
+
+		DIAMOND_LEGGINGS(DiamondLeggings.class, 10),
+		;
+
+		private Class<? extends StaticPitItem> item;
+		private int soulCost;
+
+		ShopItem(Class<? extends StaticPitItem> item, int soulCost) {
+			this.item = item;
+			this.soulCost = soulCost;
+		}
+
+		public ItemStack getItem() {
+			return ItemFactory.getItem(item).getItem();
+		}
+
+		public int getSoulCost() {
+			return soulCost;
+		}
 	}
 }

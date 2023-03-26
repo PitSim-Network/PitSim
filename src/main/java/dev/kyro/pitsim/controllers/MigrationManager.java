@@ -47,10 +47,10 @@ public class MigrationManager implements Listener {
 			return;
 		}
 		pitPlayer.uuid = uuid;
-		pitPlayer.preDarkzoneUpdatePrestige = pitPlayer.prestige;
+		pitPlayer.darkzoneData.preDarkzoneUpdatePrestige = pitPlayer.prestige;
 
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		pitPlayer.altarXP = DarkzoneLeveling.getXPToLevel(prestigeInfo.darkzoneLevel);
+		pitPlayer.darkzoneData.altarXP = DarkzoneLeveling.getXPToLevel(prestigeInfo.darkzoneLevel);
 
 		for(int i = 0; i < profile.getCachedInventory().length; i++) {
 			ItemStack itemStack = profile.getCachedInventory()[i];
