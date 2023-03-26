@@ -64,7 +64,7 @@ public class KillEvent extends Event {
 
 	private boolean shouldLoseItems = false;
 	private WrapperPlayerInventory deadInventoryWrapper;
-	private final Map<PlayerItemLocation, ItemInfo> deadVulnerableItems = new HashMap<>();
+	private final Map<PlayerItemLocation, ItemInfo> deadVulnerableItems = new LinkedHashMap<>();
 
 	public KillEvent(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillType killType, KillModifier... killModifiers) {
 		this.attackEvent = attackEvent;
