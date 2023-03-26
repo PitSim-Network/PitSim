@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -17,13 +18,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class ConfirmShredPanel extends AGUIPanel {
 	public ItemStack item;
-	public int price;
+	public DarkzoneBalancing.ShredValue shredValue;
 
-	public ConfirmShredPanel(AGUI gui, ItemStack item, int price) {
+	public ConfirmShredPanel(AGUI gui, ItemStack item, DarkzoneBalancing.ShredValue shredValue) {
 		super(gui);
-
 		this.item = item;
-		this.price = price;
+		this.shredValue = shredValue;
 
 		ALoreBuilder loreBuilder = new ALoreBuilder(
 				"&7Shredding the following Item: ",
@@ -33,7 +33,7 @@ public class ConfirmShredPanel extends AGUIPanel {
 		loreBuilder.addLore(item.getItemMeta().getLore());
 		loreBuilder.addLore("&8&m------------------------",
 				"",
-				"&7Gaining: &f" + price + " Souls", "",
+				"&7Gaining: &f" + shredValue.getLowSouls() + "&7-&f" + shredValue.getHighSouls() + " Souls", "",
 				"&eClick to confirm Shred!"
 		);
 
@@ -46,7 +46,7 @@ public class ConfirmShredPanel extends AGUIPanel {
 				.setName("&c&lCANCEL")
 				.setLore(new ALoreBuilder(
 						"&7Shredding: " + item.getItemMeta().getDisplayName(),
-						"&7Gaining: &f" + price + " Souls", "",
+						"&7Gaining: &f" + shredValue.getLowSouls() + "&7-&f" + shredValue.getHighSouls() + " Souls", "",
 						"&eClick to cancel purchase!"
 				));
 		getInventory().setItem(15, cancelBuilder.getItemStack());
@@ -65,6 +65,8 @@ public class ConfirmShredPanel extends AGUIPanel {
 	@Override
 	public void onClick(InventoryClickEvent event) {
 		if(event.getSlot() == 11) {
+			int soulsGained = shredValue.getRandomSouls();
+
 			player.getInventory().remove(item);
 			player.updateInventory();
 
@@ -77,9 +79,9 @@ public class ConfirmShredPanel extends AGUIPanel {
 			}.runTaskLater(PitSim.INSTANCE, 10);
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			pitPlayer.taintedSouls += price;
+			pitPlayer.taintedSouls += soulsGained;
 
-			AOutput.send(player, "&b&lSHOP! &7Shredded &f" + item.getItemMeta().getDisplayName() + " &7for &f" + price + " Souls&7!");
+			AOutput.send(player, "&b&lSHOP! &7Shredded &f" + item.getItemMeta().getDisplayName() + " &7for &f" + soulsGained + " Souls&7!");
 			player.closeInventory();
 		}
 

@@ -4,8 +4,14 @@ import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.mystics.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
 
+import java.util.Random;
+
 public class DarkzoneBalancing {
 	public static double SCYTHE_DAMAGE = 7.5;
+
+	public static int getTravelCost(SubLevel subLevel) {
+		return subLevel.getIndex() + 1;
+	}
 
 	public static int getAttributeAsInt(SubLevelType type, Attribute attribute) {
 		return (int) getAttribute(type, attribute);
@@ -45,8 +51,8 @@ public class DarkzoneBalancing {
 		JEWEL_PANTS(50, MysticPants.class),
 		JEWEL_SWORD(50, MysticSword.class),
 		JEWEL_BOW(50, MysticBow.class),
-		TAINTED_SCYTHE(25, TaintedScythe.class),
-		TAINTED_CHESTPLATE(25, TaintedChestplate.class),
+		TAINTED_SCYTHE(10, TaintedScythe.class),
+		TAINTED_CHESTPLATE(10, TaintedChestplate.class),
 		;
 
 		private final int souls;
@@ -64,16 +70,20 @@ public class DarkzoneBalancing {
 			return null;
 		}
 
-		public int getSouls() {
-			return souls;
+		public int getLowSouls() {
+			return (int) (souls * 0.5);
+		}
+
+		public int getHighSouls() {
+			return (int) (souls * 1.5);
+		}
+
+		public int getRandomSouls() {
+			return (int) (souls * 0.5 + new Random().nextInt(souls + 1));
 		}
 
 		public PitItem getItem() {
 			return ItemFactory.getItem(item);
 		}
-	}
-
-	public static int getTravelCost(SubLevel subLevel) {
-		return subLevel.getIndex() + 1;
 	}
 }
