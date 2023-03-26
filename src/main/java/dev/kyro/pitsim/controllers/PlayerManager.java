@@ -7,15 +7,11 @@ import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.arcticguilds.BuffManager;
-import dev.kyro.arcticguilds.GuildBuff;
-import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
-import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
@@ -102,30 +98,6 @@ public class PlayerManager implements Listener {
 					((CraftPlayer) onlinePlayer).getHandle().getDataWatcher().watch(9, (byte) 0);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					if(AFKManager.AFKPlayers.contains(onlinePlayer) || Math.random() > (1.0 / 3.0)) continue;
-
-					GuildData guild = GuildData.getGuildData(onlinePlayer);
-					GuildBuff renownBuff = BuffManager.getBuff("renown");
-					double buff = 0;
-					if(guild != null) {
-						for(Map.Entry<GuildBuff.SubBuff, Double> entry : renownBuff.getBuffs(guild.getBuffLevel(renownBuff)).entrySet()) {
-							if(entry.getKey().refName.equals("renown")) buff = entry.getValue();
-						}
-					}
-					if(Math.random() * 2 > 1 + buff / 100.0) continue;
-
-					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-					pitPlayer.renown++;
-					EarnRenownQuest.INSTANCE.gainRenown(pitPlayer, 1);
-					AOutput.send(onlinePlayer, "&7You have been given &e1 renown &7for being active");
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(5), 20 * 60 * 5);
 
 		if(PitSim.getStatus().isOverworld()) {
 			new BukkitRunnable() {
