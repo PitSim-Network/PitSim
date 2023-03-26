@@ -196,6 +196,7 @@ public class PitSim extends JavaPlugin {
 		adventure = BukkitAudiences.create(this);
 		if(getStatus().isDarkzone()) TaintedWell.onStart();
 		if(getStatus().isDarkzone()) AltarManager.init();
+		if(getStatus().isDarkzone()) SpawnBlocker.init();
 		if(getStatus().isDarkzone()) BrewingManager.onStart();
 		ScoreboardManager.init();
 
