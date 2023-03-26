@@ -20,7 +20,7 @@ public class DiamondLeggings extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public String getNBTID() {
-		return "diamond-boots";
+		return "diamond-leggings";
 	}
 
 	@Override
