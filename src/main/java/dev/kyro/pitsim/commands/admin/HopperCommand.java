@@ -19,9 +19,7 @@ public class HopperCommand extends ACommand {
 
 	@Override
 	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
-
 		if(!(sender instanceof Player)) return;
-//		if(!sender.isOp()) return;
 		Player player = (Player) sender;
 //		if(!FirestoreManager.CONFIG.whitelistedIPs.contains(player.getAddress().getAddress().toString())) return;
 
