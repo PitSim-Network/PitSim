@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.adarkzone.abilities.abilitytypes;
+package dev.kyro.pitsim.adarkzone.abilities.minion;
 
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.adarkzone.SubLevel;

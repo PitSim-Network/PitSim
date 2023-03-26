@@ -603,6 +603,7 @@ public class PitSim extends JavaPlugin {
 		AMultiCommand betaCommand = new BaseBetaCommand("beta");
 		new SoulsCommand(betaCommand, "souls");
 		new ResetCommand(betaCommand, "reset");
+		new GodCommand(betaCommand, "god");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());
@@ -755,7 +756,6 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new DoubleDeath());
 		UpgradeManager.registerUpgrade(new UnlockFirstStrike());
 		UpgradeManager.registerUpgrade(new UnlockCounterJanitor());
-		UpgradeManager.registerUpgrade(new Chemist());
 		UpgradeManager.registerUpgrade(new UberInsurance());
 		UpgradeManager.registerUpgrade(new Helmetry());
 		UpgradeManager.registerUpgrade(new DivineIntervention());

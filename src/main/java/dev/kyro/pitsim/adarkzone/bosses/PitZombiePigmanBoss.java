@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.bosses;
 
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import dev.kyro.pitsim.misc.BlockData;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,7 +18,9 @@ public class PitZombiePigmanBoss extends PitBoss {
 				new PoundAbility(1, 15),
 				new LightningAbility(10, 1, 0.025),
 				new RuptureAbility(1, 25, getDamage(), 40),
-				new PopupAbility(1, new BlockData(Material.FIRE, (byte) 0), 3, 40, 150)
+				new PopupAbility(1, new BlockData(Material.FIRE, (byte) 0), 3, 40, 150),
+
+				new WorldBorderAbility()
 		);
 	}
 

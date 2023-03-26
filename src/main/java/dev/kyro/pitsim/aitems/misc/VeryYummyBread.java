@@ -72,7 +72,9 @@ public class VeryYummyBread extends StaticPitItem {
 	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7Heals &c" + Misc.getHearts(getHealing()),
-				"&7Grants &6" + Misc.getHearts(getAbsorption())
+				"&7Grants &6" + Misc.getHearts(getAbsorption()),
+				"",
+				"&cLost on death"
 		).getLore();
 	}
 

@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.bosses;
 
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.adarkzone.abilities.minion.DefensiveMinionAbility;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,7 +18,9 @@ public class PitWitherSkeletonBoss extends PitBoss {
 				new CageAbility(3, 60, 5),
 				new SlamAbility(2, 40, 50, getDamage()),
 				new ChargeAbility(3),
-				new SnakeAbility(3, 25, getDamage(), Material.BEDROCK, (byte) 0, Sounds.WITHER_SNAKE)
+				new SnakeAbility(3, 25, getDamage(), Material.BEDROCK, (byte) 0, Sounds.WITHER_SNAKE),
+
+				new WorldBorderAbility()
 		);
 	}
 

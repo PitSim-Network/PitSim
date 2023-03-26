@@ -1,6 +1,5 @@
-package dev.kyro.pitsim.adarkzone.abilities;
+package dev.kyro.pitsim.adarkzone.abilities.blockrain;
 
-import dev.kyro.pitsim.adarkzone.abilities.abilitytypes.BlockRainAbility;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.misc.BlockData;
 import dev.kyro.pitsim.misc.Misc;

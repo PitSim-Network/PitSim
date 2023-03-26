@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.bosses;
 
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -15,7 +16,9 @@ public class PitEndermanBoss extends PitBoss {
 				new DisorderAbility(1, 2),
 				new ReincarnationAbility(5),
 				new RuptureAbility(1, 30, getDamage(), 40),
-				new TeleportAbility(5, 17)
+				new TeleportAbility(5, 17),
+
+				new WorldBorderAbility()
 		);
 	}
 

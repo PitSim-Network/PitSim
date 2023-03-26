@@ -8,9 +8,9 @@ import java.util.function.Consumer;
 public class AttackInfo {
 	private AttackType attackType;
 	private LivingEntity fakeAttacker;
-	private Consumer<AttackEvent> callback;
+	private Consumer<AttackEvent.Apply> callback;
 
-	public AttackInfo(AttackType attackType, LivingEntity fakeAttacker, Consumer<AttackEvent> callback) {
+	public AttackInfo(AttackType attackType, LivingEntity fakeAttacker, Consumer<AttackEvent.Apply> callback) {
 		this.attackType = attackType;
 		this.fakeAttacker = fakeAttacker;
 		this.callback = callback;
@@ -24,7 +24,7 @@ public class AttackInfo {
 		return fakeAttacker;
 	}
 
-	public Consumer<AttackEvent> getCallback() {
+	public Consumer<AttackEvent.Apply> getCallback() {
 		return callback;
 	}
 

@@ -4,15 +4,23 @@ import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.aitems.mobdrops.IronIngot;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MobStatus;
+import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.event.EventHandler;
 
 public class PitIronGolem extends PitMob {
 
 	public PitIronGolem(Location spawnLocation, MobStatus mobStatus) {
 		super(spawnLocation, mobStatus);
+	}
+
+	@EventHandler
+	public void onFireballLaunch(AttackEvent.Apply attackEvent) {
+		if(!isMinion() || !isThisMob(attackEvent.getDefender())) return;
+		attackEvent.multipliers.add(0.5);
 	}
 
 	@Override
@@ -43,7 +51,7 @@ public class PitIronGolem extends PitMob {
 	@Override
 	public int getMaxHealth() {
 		int maxHealth = DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_HEALTH);
-		return isMinion() ? maxHealth * 4 : maxHealth;
+		return isMinion() ? maxHealth * 2 : maxHealth;
 	}
 
 	@Override

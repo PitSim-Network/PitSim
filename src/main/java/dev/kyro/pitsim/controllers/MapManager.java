@@ -18,8 +18,7 @@ public class MapManager implements Listener {
 	public static List<PitMap> mapList = new ArrayList<>();
 	public static PitMap currentMap;
 
-	public static Location darkzoneSpawn = new Location(getDarkzone(), 178.5, 91, -93.5, -90, 0);
-	public static Location initialDarkzoneSpawn = new Location(getDarkzone(), 177.5, 92, -93.5, -90, 0);
+	public static Location darkzoneSpawn = new Location(getDarkzone(), 180.5, 91, -93.5, -90, 0);
 	public static Location kyroDarkzoneSpawn = new Location(getDarkzone(), 310, 69, -136, -90, 0);
 //	public static Location kyroDarkzoneSpawn = new Location(getDarkzone(), 353, 18, 10, 78, 6);
 
@@ -65,10 +64,6 @@ public class MapManager implements Listener {
 
 	public static Location getDarkzoneSpawn() {
 		return darkzoneSpawn;
-	}
-
-	public static Location getInitialDarkzoneSpawn() {
-		return initialDarkzoneSpawn;
 	}
 
 	public static boolean inDarkzone(LivingEntity player) {

@@ -187,6 +187,7 @@ public class SubLevel {
 
 	public void spawnBoss(Player summoner) {
 		if(isBossSpawned) throw new RuntimeException();
+		removeMobs();
 		try {
 			Constructor<? extends PitBoss> constructor = bossClass.getConstructor(Player.class);
 			pitBoss = constructor.newInstance(summoner);
@@ -194,7 +195,6 @@ public class SubLevel {
 			throw new RuntimeException(exception);
 		}
 		isBossSpawned = true;
-		removeMobs();
 	}
 
 	public void bossDeath() {
@@ -227,6 +227,7 @@ public class SubLevel {
 	}
 
 	public int getRequiredDropsToSpawn() {
+		if(PitSim.isDev()) return 1;
 		return requiredDropsToSpawn;
 	}
 

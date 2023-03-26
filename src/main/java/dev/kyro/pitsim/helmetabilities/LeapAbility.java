@@ -13,8 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class LeapAbility extends HelmetAbility {
 	public LeapAbility(Player player) {
@@ -48,9 +47,11 @@ public class LeapAbility extends HelmetAbility {
 			return;
 		}
 
-		Cooldown cooldown = getCooldown(player, 40);
+		Cooldown cooldown = getCooldown(player, 20 * 15);
 		if(cooldown.isOnCooldown()) {
-			AOutput.error(player, "&cAbility on cooldown!");
+			DecimalFormat decimalFormat = new DecimalFormat("0.#");
+			AOutput.error(player, "&c&lCOOLDOWN!&7 Leap is on cooldown for " +
+					decimalFormat.format(cooldown.getTicksLeft() / 20.0) + "s!");
 			Sounds.NO.play(player);
 			return;
 		} else cooldown.restart();
@@ -58,14 +59,13 @@ public class LeapAbility extends HelmetAbility {
 		AOutput.send(player, "&6&lGOLDEN HELMET!&7 Used &9Leap&7! (&6-10,000g&7)");
 		Sounds.LEAP.play(player);
 		Vector vector = player.getLocation().getDirection().setY(0).normalize().multiply(3).setY(1);
-//		if(vector.getY() < 0) vector.setY(-vector.getY());
 		player.setVelocity(vector);
 	}
 
 	@Override
 	public List<String> getDescription() {
 		DecimalFormat formatter = new DecimalFormat("#,###.#");
-		return Arrays.asList("&7Double-Sneak to launch", "&7yourself forwards (5s cooldown)", "", "&7Cost: &6" + formatter.format(10000) + "g");
+		return Arrays.asList("&7Double-Sneak to launch", "&7yourself forwards (15s cooldown)", "", "&7Cost: &6" + formatter.format(10000) + "g");
 	}
 
 	@Override

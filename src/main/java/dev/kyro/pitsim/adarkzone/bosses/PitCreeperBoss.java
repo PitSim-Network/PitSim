@@ -2,7 +2,7 @@ package dev.kyro.pitsim.adarkzone.bosses;
 
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.*;
-import dev.kyro.pitsim.adarkzone.abilities.GenericMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import dev.kyro.pitsim.adarkzone.abilities.LandMineAbility;
 import dev.kyro.pitsim.adarkzone.abilities.TNTAbility;
 import org.bukkit.ChatColor;
@@ -17,7 +17,9 @@ public class PitCreeperBoss extends PitBoss {
 				new GenericMinionAbility(1, SubLevelType.CREEPER, 1, 2),
 				new TNTAbility(2, getDamage() * 0.1),
 				new LandMineAbility(2, 3, 20, 20 * 45, getDamage()),
-				new LightningAbility(3, 1, 0.05)
+				new LightningAbility(3, 1, 0.05),
+
+				new WorldBorderAbility()
 		);
 	}
 

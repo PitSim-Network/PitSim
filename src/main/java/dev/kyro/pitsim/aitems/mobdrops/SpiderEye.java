@@ -53,7 +53,7 @@ public class SpiderEye extends BrewingIngredient implements TemporaryItem {
 				"&7Eye gathered from the Spiders",
 				"&7of the Spider Caves",
 				"",
-				"&5Tainted Item"
+				"&cLost on death"
 		).getLore();
 	}
 

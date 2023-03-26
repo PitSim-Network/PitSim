@@ -55,7 +55,7 @@ public class Leather extends BrewingIngredient implements TemporaryItem {
 				"&7Hide gathered from the Wolves",
 				"&7of the Wolf Caves",
 				"",
-				"&5Tainted Item"
+				"&cLost on death"
 		).getLore();
 	}
 

@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
@@ -533,29 +534,24 @@ public class TaintedWell implements Listener {
 	public static int getEnchantCost(int tier, Player player) {
 		int cost;
 
-		switch(tier) {
-		case 0:
-			cost = 10;
-			break;
+		switch(tier + 1) {
 		case 1:
-			cost = 20;
+			cost = DarkzoneBalancing.TIER_1_ENCHANT_COST;
 			break;
 		case 2:
-			cost = 30;
+			cost = DarkzoneBalancing.TIER_2_ENCHANT_COST;
 			break;
 		case 3:
-			cost = 40;
+			cost = DarkzoneBalancing.TIER_3_ENCHANT_COST;
+			break;
+		case 4:
+			cost = DarkzoneBalancing.TIER_4_ENCHANT_COST;
 			break;
 		default:
-			cost = -1;
-			break;
+			throw new RuntimeException();
 		}
 
-		boolean reduce = ProgressionManager.isUnlocked(PitPlayer.getPitPlayer(player),
-				ProgressionManager.getSkillBranch(SoulBranch.class), SkillBranch.MajorUnlockPosition.SECOND_PATH);
-
-		if(cost != -1 && reduce) cost -= (cost * 0.3);
-
+		if(ProgressionManager.isUnlocked(PitPlayer.getPitPlayer(player), SoulBranch.INSTANCE, SkillBranch.MajorUnlockPosition.SECOND_PATH)) cost *= 0.7;
 		return cost;
 	}
 

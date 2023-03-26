@@ -56,7 +56,7 @@ public class Charcoal extends BrewingIngredient implements TemporaryItem {
 				"&7Skeletons of the Wither Skeleton",
 				"&7Caves",
 				"",
-				"&5Tainted Item"
+				"&cLost on death"
 		).getLore();
 	}
 

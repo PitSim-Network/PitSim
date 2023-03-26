@@ -1,9 +1,8 @@
-package dev.kyro.pitsim.adarkzone.abilities;
+package dev.kyro.pitsim.adarkzone.abilities.minion;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.abilitytypes.MinionAbility;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;

@@ -46,10 +46,10 @@ public class DamageIndicator implements Listener {
 		EntityPlayer entityPlayer = null;
 		if(attackEvent.isDefenderPlayer()) entityPlayer = ((CraftPlayer) attackEvent.getDefender()).getHandle();
 
-		int roundedDamageTaken = ((int) finalDamage) / getNum(attackEvent.getDefender());
+		int roundedDamageTaken = ((int) finalDamage) / getDivisor(attackEvent.getDefender());
 
-		int originalHealth = ((int) attackEvent.getDefender().getHealth()) / getNum(attackEvent.getDefender());
-		int maxHealth = ((int) attackEvent.getDefender().getMaxHealth()) / getNum(attackEvent.getDefender());
+		int originalHealth = ((int) attackEvent.getDefender().getHealth()) / getDivisor(attackEvent.getDefender());
+		int maxHealth = ((int) attackEvent.getDefender().getMaxHealth()) / getDivisor(attackEvent.getDefender());
 
 		int result = Math.max(originalHealth - roundedDamageTaken, 0);
 
@@ -64,9 +64,9 @@ public class DamageIndicator implements Listener {
 		Non defendingNon = NonManager.getNon(attackEvent.getDefender());
 		StringBuilder output = new StringBuilder();
 
-		String playername = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
+		String playerName = "&7%luckperms_prefix%" + (defendingNon == null ? "%player_name%" : defendingNon.displayName) + " ";
 		if(attackEvent.isDefenderPlayer())
-			output.append(PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), playername));
+			output.append(PlaceholderAPI.setPlaceholders(attackEvent.getDefenderPlayer(), playerName));
 		else if(DarkzoneManager.isPitMob(attackEvent.getDefender())) output.append(defenderMob.getDisplayName()).append(" ");
 		else output.append(attackEvent.getDefender().getCustomName() + " ");
 
@@ -75,7 +75,7 @@ public class DamageIndicator implements Listener {
 		}
 
 		if(attackEvent.isDefenderPlayer()) {
-			for(int i = 0; i < roundedDamageTaken - (int) entityPlayer.getAbsorptionHearts() / getNum(attackEvent.getDefender()); i++) {
+			for(int i = 0; i < roundedDamageTaken - (int) entityPlayer.getAbsorptionHearts() / getDivisor(attackEvent.getDefender()); i++) {
 				output.append(ChatColor.RED).append("\u2764");
 			}
 		} else {
@@ -90,7 +90,7 @@ public class DamageIndicator implements Listener {
 
 		if(attackEvent.isDefenderPlayer()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getDefender());
-			for(int i = 0; i < (int) entityPlayer.getAbsorptionHearts() / getNum(attackEvent.getDefender()); i++) {
+			for(int i = 0; i < (int) entityPlayer.getAbsorptionHearts() / getDivisor(attackEvent.getDefender()); i++) {
 				output.append(ChatColor.YELLOW).append("\u2764");
 			}
 			if(pitPlayer.shield.isActive()) {
@@ -138,7 +138,8 @@ public class DamageIndicator implements Listener {
 		}.runTaskLater(PitSim.INSTANCE, 20 + new Random().nextInt(11));
 	}
 
-	public static int getNum(LivingEntity entity) {
+	public static int getDivisor(LivingEntity entity) {
+		if(PlayerManager.isRealPlayer(entity)) return 2;
 		return Math.max(1, (int) (2 * (entity.getMaxHealth() / 20)));
 	}
 

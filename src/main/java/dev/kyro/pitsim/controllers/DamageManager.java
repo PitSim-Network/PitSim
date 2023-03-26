@@ -79,7 +79,7 @@ public class DamageManager implements Listener {
 		createIndirectAttack(fakeAttacker, defender, damage, null);
 	}
 
-	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
+	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage, Consumer<AttackEvent.Apply> callback) {
 		assert defender != null;
 		if(!Misc.isValidMobPlayerTarget(defender)) return;
 
@@ -93,7 +93,7 @@ public class DamageManager implements Listener {
 		createDirectAttack(attacker, defender, damage, null);
 	}
 
-	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent> callback) {
+	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent.Apply> callback) {
 		assert attacker != null && defender != null;
 		if(!Misc.isValidMobPlayerTarget(defender)) return;
 
@@ -329,12 +329,16 @@ public class DamageManager implements Listener {
 			}
 		}
 
+		if(attackEvent.getWrapperEvent().getAttackInfo() != null) {
+			AttackInfo attackInfo = attackEvent.getWrapperEvent().getAttackInfo();
+			if(attackInfo.getCallback() != null) attackInfo.getCallback().accept(attackEvent);
+		}
+
 		double damage = attackEvent.getFinalPitDamage();
 		if(attackEvent.isDefenderRealPlayer()) {
 			Shield defenderShield = attackEvent.getDefenderPitPlayer().shield;
-			double multiplier = 1;
+			double multiplier = 2;
 			multiplier *= ShieldBuster.getMultiplier(attackEvent.getAttackerPlayer());
-			if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer())) multiplier *= 2;
 			if(ProgressionManager.isUnlocked(attackEvent.getDefenderPitPlayer(), DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
 				multiplier *= Misc.getReductionMultiplier(DefenceBranch.getShieldDamageReduction());
 			if(attackEvent.isAttackerRealPlayer() && ProgressionManager.isUnlocked(attackEvent.getDefenderPitPlayer(),
@@ -412,11 +416,6 @@ public class DamageManager implements Listener {
 			}
 		} else {
 			attackEvent.getDefender().setHealth(Math.min(attackEvent.getDefender().getHealth() - finalDamage, attackEvent.getDefender().getMaxHealth()));
-		}
-
-		if(attackEvent.getWrapperEvent().getAttackInfo() != null) {
-			AttackInfo attackInfo = attackEvent.getWrapperEvent().getAttackInfo();
-			if(attackInfo.getCallback() != null) attackInfo.getCallback().accept(attackEvent);
 		}
 		return finalDamage;
 	}

@@ -57,7 +57,7 @@ public class ScoreboardOptionsPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return ChatColor.DARK_GREEN + "";
+		return ChatColor.DARK_GREEN + "Custom Scoreboard Line";
 	}
 
 	@Override

@@ -64,7 +64,7 @@ public class KillEvent extends Event {
 
 	private boolean shouldLoseItems = false;
 	private WrapperPlayerInventory deadInventoryWrapper;
-	private final Map<PlayerItemLocation, ItemInfo> deadVulnerableItems = new HashMap<>();
+	private final Map<PlayerItemLocation, ItemInfo> deadVulnerableItems = new LinkedHashMap<>();
 
 	public KillEvent(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillType killType, KillModifier... killModifiers) {
 		this.attackEvent = attackEvent;
@@ -129,35 +129,30 @@ public class KillEvent extends Event {
 	}
 
 	public int getFinalXp() {
-		if(!isKillerPlayer) return 0;
-
+		if(!isKillerRealPlayer || !isDeadPlayer) return 0;
 		double xpReward = this.xpReward;
 		int xpCap = this.xpCap;
 		for(Double xpMultiplier : xpMultipliers) xpReward *= xpMultiplier;
 		for(Double maxXPMultiplier : maxXPMultipliers) xpCap *= maxXPMultiplier;
 		xpReward += bonusXpReward;
 
-		double cappedXP = Math.min(xpReward, xpCap);
+		double postXPCap = Math.min(xpReward, xpCap);
 		double alarModifier = Misc.getReductionMultiplier(DarkzoneLeveling.getReductionModifier(getKillerPlayer()));
-		cappedXP *= alarModifier;
+		postXPCap *= alarModifier;
 
-
-		if(!(getDead() instanceof Player)) return 0;
-		return (int) Math.floor(cappedXP);
+		return (int) Math.floor(postXPCap);
 	}
 
 	public double getFinalGold() {
-		if(!isKillerPlayer) return 0;
-
+		if(!isKillerRealPlayer || !isDeadPlayer) return 0;
 		double goldReward = this.goldReward;
 		for(Double goldMultiplier : goldMultipliers) goldReward *= goldMultiplier;
 
-		double cappedGold = Math.min(goldReward, goldCap);
+		double postGoldCap = Math.min(goldReward, goldCap);
 		double alarModifier = Misc.getReductionMultiplier(DarkzoneLeveling.getReductionModifier(getKillerPlayer()));
-		cappedGold *= alarModifier;
+		postGoldCap *= alarModifier;
 
-		if(!(getDead() instanceof Player)) return 0;
-		else return cappedGold;
+		return postGoldCap;
 	}
 
 	public static double getBaseSouls(PitPlayer deadPitPlayer) {
@@ -165,6 +160,7 @@ public class KillEvent extends Event {
 	}
 
 	public int getFinalSouls() {
+		if(!isKillerRealPlayer) return 0;
 		double soulsLost = this.soulsLost;
 		for(Double soulMultiplier : soulMultipliers) soulsLost *= soulMultiplier;
 		return (int) Math.min(Math.ceil(soulsLost), getDeadPitPlayer().taintedSouls);
@@ -277,10 +273,13 @@ public class KillEvent extends Event {
 			livesLost += damageResult.getLivesLost();
 
 			deadInventoryWrapper.putItem(entry.getKey(), damageResult.getItemStack());
-			if(damageResult.wasRemoved()) temporaryItem.onItemRemove(itemStack);
+			if(damageResult.wasRemoved()) {
+				temporaryItem.onItemRemove(itemStack);
+				PlayerManager.sendItemLossMessage(deadPlayer, itemStack);
+			}
 		}
 
-		if(livesLost != 0) PlayerManager.sendLivesLostMessage(getDeadPlayer(), livesLost);
+		if(livesLost != 0) PlayerManager.sendLivesLostMessage(deadPlayer, livesLost);
 
 		deadInventoryWrapper.setInventory();
 	}

@@ -2,7 +2,7 @@ package dev.kyro.pitsim.adarkzone.bosses;
 
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.CollapseAbility;
-import dev.kyro.pitsim.adarkzone.abilities.GenericMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import dev.kyro.pitsim.adarkzone.abilities.SlamAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

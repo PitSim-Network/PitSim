@@ -7,7 +7,12 @@ import dev.kyro.pitsim.controllers.ItemFactory;
 import java.util.Random;
 
 public class DarkzoneBalancing {
-	public static double SCYTHE_DAMAGE = 7.5;
+	public static final double SCYTHE_DAMAGE = 7.5;
+
+	public static final int TIER_1_ENCHANT_COST = 5;
+	public static final int TIER_2_ENCHANT_COST = 10;
+	public static final int TIER_3_ENCHANT_COST = 25;
+	public static final int TIER_4_ENCHANT_COST = 1_000;
 
 	public static int getTravelCost(SubLevel subLevel) {
 		return subLevel.getIndex() + 1;
@@ -22,8 +27,8 @@ public class DarkzoneBalancing {
 	}
 
 	public enum Attribute {
-		BOSS_DAMAGE(8, 1.3),
-		BOSS_HEALTH(70, 1.3),
+		BOSS_DAMAGE(4, 1.3),
+		BOSS_HEALTH(80, 1.3),
 		BOSS_SOULS(10, 1.4),
 		MOB_DAMAGE(8, 1.3),
 		MOB_HEALTH(40, 1.3),

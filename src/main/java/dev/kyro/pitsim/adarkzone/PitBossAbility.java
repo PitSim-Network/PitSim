@@ -30,6 +30,8 @@ public abstract class PitBossAbility implements Listener {
 	public boolean shouldExecuteRoutine() {
 		return true;
 	}
+	public void onEnable() {}
+	public void onDisable() {}
 
 	public PitBossAbility pitBoss(PitBoss pitBoss) {
 		this.pitBoss = pitBoss;
@@ -41,8 +43,10 @@ public abstract class PitBossAbility implements Listener {
 	}
 
 	public void disable() {
+		if(!enabled) return;
 		enabled = false;
 		HandlerList.unregisterAll(this);
+		onDisable();
 	}
 
 	public List<Player> getViewers() {
@@ -65,5 +69,9 @@ public abstract class PitBossAbility implements Listener {
 
 	public double getRoutineWeight() {
 		return routineWeight;
+	}
+
+	public boolean isNearToBoss(Player player) {
+		return getPitBoss().boss.getWorld() == player.getWorld() && getPitBoss().boss.getLocation().distance(player.getLocation()) <= 50;
 	}
 }

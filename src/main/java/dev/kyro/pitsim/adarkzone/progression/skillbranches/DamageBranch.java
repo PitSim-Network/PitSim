@@ -6,6 +6,7 @@ import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -19,11 +20,14 @@ public class DamageBranch extends SkillBranch {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
-		boolean hasFirstPath = ProgressionManager.isUnlocked(attackEvent.getAttackerPitPlayer(), this, MajorUnlockPosition.FIRST_PATH);
-		if(hasFirstPath && Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB))
-			attackEvent.getAttackerPitPlayer().heal(getMobKillHealing());
+	public void onKill(KillEvent killEvent) {
+		boolean hasFirstPath = ProgressionManager.isUnlocked(killEvent.getKillerPitPlayer(), this, MajorUnlockPosition.FIRST_PATH);
+		if(hasFirstPath && Misc.isEntity(killEvent.getDead(), PitEntityType.PIT_MOB))
+			killEvent.getKillerPitPlayer().heal(getMobKillHealing());
+	}
 
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
 		boolean hasLast = ProgressionManager.isUnlocked(attackEvent.getAttackerPitPlayer(), this, MajorUnlockPosition.LAST);
 		if(hasLast && Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS))
 			attackEvent.multipliers.add(getMobBossDamageIncrease());
@@ -184,7 +188,7 @@ public class DamageBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("damage", "&c%value%x &7damage vs mobs",
-						1.25, 1.25, 1.25, 1.25, 1.25, 1.25));
+						1.30, 1.30, 1.30, 1.30, 1.30, 1.30));
 			}
 		};
 	}
@@ -205,7 +209,7 @@ public class DamageBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("damage", "&c%value%x &7damage vs bosses",
-						1.25, 1.25, 1.25, 1.25, 1.25, 1.25));
+						1.30, 1.30, 1.30, 1.30, 1.30, 1.30));
 			}
 		};
 	}

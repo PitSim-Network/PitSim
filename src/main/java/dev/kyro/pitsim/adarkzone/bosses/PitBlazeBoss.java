@@ -5,6 +5,8 @@ import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.adarkzone.abilities.blockrain.FirestormAbility;
+import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import dev.kyro.pitsim.misc.BlockData;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,7 +23,9 @@ public class PitBlazeBoss extends PitBoss {
 				new FirestormAbility(2, 40, 200, getDamage()),
 				new PopupAbility(2, new BlockData(Material.FIRE, (byte) 0), getDamage(), 40, 150),
 				new ComboAbility(20, 12, 0),
-				new PullAbility(2, 20, 1, new MaterialData(Material.GLOWSTONE, (byte) 0))
+				new PullAbility(2, 20, 1, new MaterialData(Material.GLOWSTONE, (byte) 0)),
+
+				new WorldBorderAbility()
 		);
 	}
 

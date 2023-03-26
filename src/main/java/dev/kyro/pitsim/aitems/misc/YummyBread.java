@@ -49,7 +49,9 @@ public class YummyBread extends StaticPitItem {
 	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&7Deal &c+" + getDamageIncrease() + "% &7damage to bots",
-				"&7for " + getSeconds() + " seconds. (Stacking)"
+				"&7for " + getSeconds() + " seconds. (Stacking)",
+				"",
+				"&cLost on death"
 		).getLore();
 	}
 

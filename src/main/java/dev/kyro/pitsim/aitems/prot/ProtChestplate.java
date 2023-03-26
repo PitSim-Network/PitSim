@@ -3,6 +3,7 @@ package dev.kyro.pitsim.aitems.prot;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ProtChestplate extends StaticPitItem {
+public class ProtChestplate extends StaticPitItem implements TemporaryItem {
 
 	public ProtChestplate() {
 		hasDropConfirm = true;
@@ -56,5 +57,10 @@ public class ProtChestplate extends StaticPitItem {
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
 		return itemStack.getType() == Material.DIAMOND_CHESTPLATE && itemStack.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) != 0;
+	}
+
+	@Override
+	public TemporaryItem.TemporaryType getTemporaryType() {
+		return TemporaryType.LOST_ON_DEATH;
 	}
 }

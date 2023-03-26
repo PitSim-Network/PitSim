@@ -7,13 +7,11 @@ import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.arcticguilds.BuffManager;
-import dev.kyro.arcticguilds.GuildBuff;
-import dev.kyro.arcticguilds.GuildData;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
-import dev.kyro.pitsim.battlepass.quests.EarnRenownQuest;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
@@ -38,6 +36,7 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeEqualityPredicate;
 import net.luckperms.api.node.types.PermissionNode;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -102,30 +101,6 @@ public class PlayerManager implements Listener {
 					((CraftPlayer) onlinePlayer).getHandle().getDataWatcher().watch(9, (byte) 0);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					if(AFKManager.AFKPlayers.contains(onlinePlayer) || Math.random() > (1.0 / 3.0)) continue;
-
-					GuildData guild = GuildData.getGuildData(onlinePlayer);
-					GuildBuff renownBuff = BuffManager.getBuff("renown");
-					double buff = 0;
-					if(guild != null) {
-						for(Map.Entry<GuildBuff.SubBuff, Double> entry : renownBuff.getBuffs(guild.getBuffLevel(renownBuff)).entrySet()) {
-							if(entry.getKey().refName.equals("renown")) buff = entry.getValue();
-						}
-					}
-					if(Math.random() * 2 > 1 + buff / 100.0) continue;
-
-					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-					pitPlayer.renown++;
-					EarnRenownQuest.INSTANCE.gainRenown(pitPlayer, 1);
-					AOutput.send(onlinePlayer, "&7You have been given &e1 renown &7for being active");
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(5), 20 * 60 * 5);
 
 		if(PitSim.getStatus().isOverworld()) {
 			new BukkitRunnable() {
@@ -242,20 +217,19 @@ public class PlayerManager implements Listener {
 		killEvent.xpCap += pitPlayer.moonBonus;
 	}
 
-//	public static void sendItemBreakMessage(Player player, ItemStack itemStack) {
-//		PitItem pitItem = ItemFactory.getItem(itemStack);
-//		assert pitItem != null;
-//		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
-//
-//		itemStack = temporaryItem.setLives(itemStack, 0);
-//		pitItem.updateItem(itemStack);
-//
-//		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&cRIP!&7 Your "));
-//		message.addExtra(Misc.createItemHover(itemStack));
-//		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7 broke")));
-//
-//		player.sendMessage(message);
-//	}
+	public static void sendItemLossMessage(Player player, ItemStack itemStack) {
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		assert pitItem != null;
+		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
+		temporaryItem.setLives(itemStack, 0);
+
+		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&cRIP!&7 You lost " +
+				(itemStack.getAmount() == 1 ? "" : itemStack.getAmount() + "x ")));
+		message.addExtra(Misc.createItemHover(itemStack));
+//		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "")));
+
+		player.sendMessage(message);
+	}
 
 	public static void sendLivesLostMessage(Player player, int livesLost) {
 		if(livesLost == 0) return;
@@ -669,15 +643,14 @@ public class PlayerManager implements Listener {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 
-		Location finalSpawnLoc1 = spawnLoc;
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				if(!player.isOnline()) return;
-				player.teleport(finalSpawnLoc1);
+				player.teleport(finalSpawnLoc);
 
 				if(PitSim.getStatus() == PitSim.ServerStatus.DARKZONE) {
-					player.setVelocity(new Vector(1.5, 1, 0).multiply(0.2));
+//					player.setVelocity(new Vector(1.5, 1, 0).multiply(0.3));
 					Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
 					Misc.sendSubTitle(player, "", 40);
 					AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");

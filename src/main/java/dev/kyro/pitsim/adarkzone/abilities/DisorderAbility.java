@@ -30,6 +30,8 @@ public class DisorderAbility extends PitBossAbility {
 
 				@Override
 				public void run() {
+					if(!isEnabled() || !isNearToBoss(viewer)) return;
+
 					if(i <= 20) {
 						viewer.spigot().playEffect(viewer.getLocation(), Effect.POTION_SWIRL, 0, 0, 10, 10, 10, 20, 128, 100);
 						i++;
