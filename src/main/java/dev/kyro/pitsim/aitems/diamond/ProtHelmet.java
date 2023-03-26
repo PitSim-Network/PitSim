@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.aitems.prot;
+package dev.kyro.pitsim.aitems.diamond;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ProtChestplate extends StaticPitItem implements TemporaryItem {
+public class ProtHelmet extends StaticPitItem implements TemporaryItem {
 
-	public ProtChestplate() {
+	public ProtHelmet() {
 		hasDropConfirm = true;
 		hideExtra = true;
-		isProt = true;
+		isProtDiamond = true;
 		auctionCategory = AuctionCategory.MISC;
 
 		itemEnchants.put(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
@@ -26,22 +26,22 @@ public class ProtChestplate extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public String getNBTID() {
-		return "protection-chestplate";
+		return "protection-helmet";
 	}
 
 	@Override
 	public List<String> getRefNames() {
-		return new ArrayList<>(Arrays.asList("p1chestplate", "chestplate"));
+		return new ArrayList<>(Arrays.asList("p1helmet", "helmet"));
 	}
 
 	@Override
 	public Material getMaterial() {
-		return Material.DIAMOND_CHESTPLATE;
+		return Material.DIAMOND_HELMET;
 	}
 
 	@Override
 	public String getName() {
-		return "&bProtection I Chestplate";
+		return "&bProtection I Helmet";
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class ProtChestplate extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
-		return itemStack.getType() == Material.DIAMOND_CHESTPLATE && itemStack.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) != 0;
+		return itemStack.getType() == Material.DIAMOND_HELMET && itemStack.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) != 0;
 	}
 
 	@Override

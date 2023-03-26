@@ -26,10 +26,7 @@ import dev.kyro.pitsim.ahelp.HelpManager;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.aitems.mystics.*;
-import dev.kyro.pitsim.aitems.prot.ProtBoots;
-import dev.kyro.pitsim.aitems.prot.ProtChestplate;
-import dev.kyro.pitsim.aitems.prot.ProtHelmet;
-import dev.kyro.pitsim.aitems.prot.ProtLeggings;
+import dev.kyro.pitsim.aitems.diamond.*;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -913,6 +910,10 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new StaffCookie());
 		ItemFactory.registerItem(new TokenOfAppreciation());
 
+		ItemFactory.registerItem(new DiamondHelmet());
+		ItemFactory.registerItem(new DiamondChestplate());
+		ItemFactory.registerItem(new DiamondLeggings());
+		ItemFactory.registerItem(new DiamondBoots());
 		ItemFactory.registerItem(new ProtHelmet());
 		ItemFactory.registerItem(new ProtChestplate());
 		ItemFactory.registerItem(new ProtLeggings());

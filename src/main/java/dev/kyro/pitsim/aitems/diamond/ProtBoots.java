@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.aitems.prot;
+package dev.kyro.pitsim.aitems.diamond;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ProtLeggings extends StaticPitItem implements TemporaryItem {
+public class ProtBoots extends StaticPitItem implements TemporaryItem {
 
-	public ProtLeggings() {
+	public ProtBoots() {
 		hasDropConfirm = true;
 		hideExtra = true;
-		isProt = true;
+		isProtDiamond = true;
 		auctionCategory = AuctionCategory.MISC;
 
 		itemEnchants.put(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
@@ -26,22 +26,22 @@ public class ProtLeggings extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public String getNBTID() {
-		return "protection-leggings";
+		return "protection-boots";
 	}
 
 	@Override
 	public List<String> getRefNames() {
-		return new ArrayList<>(Arrays.asList("p1leggings", "leggings"));
+		return new ArrayList<>(Arrays.asList("p1boots", "boots"));
 	}
 
 	@Override
 	public Material getMaterial() {
-		return Material.DIAMOND_LEGGINGS;
+		return Material.DIAMOND_BOOTS;
 	}
 
 	@Override
 	public String getName() {
-		return "&bProtection I Leggings";
+		return "&bProtection I Boots";
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class ProtLeggings extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
-		return itemStack.getType() == Material.DIAMOND_LEGGINGS && itemStack.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) != 0;
+		return itemStack.getType() == Material.DIAMOND_BOOTS && itemStack.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) != 0;
 	}
 
 	@Override
