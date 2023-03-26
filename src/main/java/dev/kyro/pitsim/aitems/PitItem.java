@@ -31,7 +31,8 @@ public abstract class PitItem implements Listener {
 	public boolean hasEnchantGlint;
 	public Map<Enchantment, Integer> itemEnchants = new HashMap<>();
 
-	public boolean isProt;
+	public boolean isProtDiamond;
+	public boolean isShopDiamond;
 	public boolean isMystic;
 
 	public AuctionCategory auctionCategory;
