@@ -43,7 +43,8 @@ public class TaintedShredPanel extends AGUIPanel {
 
 			ALoreBuilder lore = new ALoreBuilder(itemStack.getItemMeta().getLore());
 			lore.addLore("",
-					"&eClick to Shred for &f" + amount + " Souls"
+					"&eClick to Shred for &f" + amount + shredValue.getLowSouls() + "&7-&f" + shredValue.getHighSouls() + " Souls"
+
 					);
 
 			ItemMeta itemMeta = itemStack.getItemMeta();
@@ -81,9 +82,7 @@ public class TaintedShredPanel extends AGUIPanel {
 		DarkzoneBalancing.ShredValue shredValue = DarkzoneBalancing.ShredValue.getShredValue(ItemFactory.getItem(realItem));
 		if(shredValue == null) return;
 
-		openPanel(new ConfirmShredPanel(gui, realItem, shredValue.getSouls()));
-
-
+		openPanel(new ConfirmShredPanel(gui, realItem, shredValue));
 	}
 
 	@Override
