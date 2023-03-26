@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.inventories;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
@@ -11,15 +12,12 @@ import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
 
 public class TaintedShredPanel extends AGUIPanel {
 	public TaintedShredPanel(AGUI gui) {
@@ -43,11 +41,13 @@ public class TaintedShredPanel extends AGUIPanel {
 
 			int amount = shredValue.getSouls();
 
-			List<String> lore = itemStack.getItemMeta().getLore();
-			lore.add("");
-			lore.add(ChatColor.translateAlternateColorCodes('&', "&eClick to Shred for &f" + amount + " Souls"));
+			ALoreBuilder lore = new ALoreBuilder(itemStack.getItemMeta().getLore());
+			lore.addLore("",
+					"&eClick to Shred for &f" + amount + " Souls"
+					);
+
 			ItemMeta itemMeta = itemStack.getItemMeta();
-			itemMeta.setLore(lore);
+			itemMeta.setLore(lore.getLore());
 			itemStack.setItemMeta(itemMeta);
 
 			NBTItem nbtItem = new NBTItem(itemStack, true);

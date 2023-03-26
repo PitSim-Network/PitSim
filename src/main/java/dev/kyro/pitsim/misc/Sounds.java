@@ -72,6 +72,7 @@ public class Sounds {
 	public static final SoundEffect PEDESTAL_DEACTIVATE = new SoundEffect(Sound.DIG_STONE, 2, 0.2);
 	public static final SoundEffect XP_GAIN = new SoundEffect(Sound.ORB_PICKUP, 1, 1);
 	public static final SoundEffect ALTAR_LEVEL_UP = new SoundEffect(Sound.WOLF_HOWL, 1, 0.8);
+	public static final SoundEffect VOUCHER_USE = new SoundEffect(Sound.IRONGOLEM_DEATH, 1, 0.8);
 	public static final SoundEffect ITEM_PICKUP = new SoundEffect(Sound.ITEM_PICKUP, 1, 1);
 	public static final SoundEffect HEARTBEAT1 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.6);
 	public static final SoundEffect HEARTBEAT2 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.8);
