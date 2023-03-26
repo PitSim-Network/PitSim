@@ -80,6 +80,6 @@ public class Necrotic extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return Math.max(22 - enchantLvl * 4, 0);
+		return Math.max(30 - enchantLvl * 4, 0);
 	}
 }
