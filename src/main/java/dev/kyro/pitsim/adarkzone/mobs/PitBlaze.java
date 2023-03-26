@@ -6,7 +6,6 @@ import dev.kyro.pitsim.aitems.mobdrops.BlazeRod;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MobStatus;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -45,15 +44,7 @@ public class PitBlaze extends PitMob {
 		Location mobLocation = getMob().getLocation().add(0, 1.5, 0);
 		Location targetLocation = target.getLocation().add(0, 1, 0);
 		Location source = mobLocation.add(mobLocation.getDirection().normalize().multiply(1.5));
-
 		Vector direction = targetLocation.clone().subtract(mobLocation).toVector().normalize();
-
-		Location stepLocation = source.clone();
-		Vector stepVector = direction.clone().multiply(0.5);
-		for(int i = 0; i < 20; i++) {
-			stepLocation.getWorld().playEffect(stepLocation, Effect.HAPPY_VILLAGER, 1);
-			stepLocation.add(stepVector);
-		}
 
 		Fireball fireball = source.getWorld().spawn(source, Fireball.class);
 		fireball.setShooter(getMob());

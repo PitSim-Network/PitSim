@@ -5,7 +5,6 @@ import dev.kyro.pitsim.enchants.tainted.chestplate.Terror;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fearmonger;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -81,8 +80,8 @@ public class MobTargetingSystem {
 			}
 		}
 
-		if(bestTarget != null)
-			pitMob.getMob().getWorld().playEffect(pitMob.getMob().getLocation().add(0, 2, 0), Effect.VILLAGER_THUNDERCLOUD, 1);
+//		if(bestTarget != null)
+//			pitMob.getMob().getWorld().playEffect(pitMob.getMob().getLocation().add(0, 2, 0), Effect.VILLAGER_THUNDERCLOUD, 1);
 		if(bestTarget == null) {
 			if(changeTargetCooldown.getOrDefault(pitMob, 0L) + 60 > PitSim.currentTick) return;
 			changeTargetCooldown.put(pitMob, PitSim.currentTick);
