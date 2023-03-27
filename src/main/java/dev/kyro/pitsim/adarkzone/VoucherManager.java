@@ -34,7 +34,7 @@ public class VoucherManager implements Listener {
 					int vouchers = pitPlayer.darkzoneData.demonicVouchers;
 					if(vouchers <= 0) continue;
 
-					int mystics = Misc.getItemCount(player, (pitItem, itemStack) -> MysticFactory.isJewel(itemStack, true));
+					int mystics = Misc.getItemCount(player, true, (pitItem, itemStack) -> MysticFactory.isJewel(itemStack, true));
 
 					String voucherText = vouchers != 1 ? "Vouchers" : "Voucher";
 					String mysticText = mystics != 1 ? "Jewels" : "Jewel";

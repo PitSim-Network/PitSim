@@ -114,7 +114,7 @@ public class ShardHunterPanel extends AGUIPanel {
 			if(renownUpgrade.refName.equals("SHARDHUNTER")) upgrade = renownUpgrade;
 		}
 
-		int shards = Misc.getItemCount(player, (pitItem, itemStack) -> pitItem instanceof AncientGemShard);
+		int shards = Misc.getItemCount(player, false, (pitItem, itemStack) -> pitItem instanceof AncientGemShard);
 		double percent = shards / 64.0;
 		String progressBar = AUtil.createProgressBar("|", ChatColor.GREEN, ChatColor.GRAY, 25, percent);
 

@@ -106,6 +106,7 @@ public abstract class PitItem implements Listener {
 	public PitSim.ServerStatus getLastServer(ItemStack itemStack) {
 		if(!isThisItem(itemStack) || !hasLastServer) throw new RuntimeException();
 		NBTItem nbtItem = new NBTItem(itemStack);
+		if(!nbtItem.hasKey(NBTTag.ITEM_LAST_SERVER.getRef())) return PitSim.ServerStatus.OVERWORLD;
 		return PitSim.ServerStatus.valueOf(nbtItem.getString(NBTTag.ITEM_LAST_SERVER.getRef()));
 	}
 

@@ -372,27 +372,27 @@ public class Persephone extends PitEnchant {
 			DecimalFormat decimalFormat = new DecimalFormat("0.#");
 			switch(this) {
 				case POPPY:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &cpoppies&7, granting &c" +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &cpoppies&7, granting &c" +
 							Misc.getHearts(getHealing()) + " &7every second when near them");
 					break;
 				case BLUE_ORCHID:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &bblue orchids&7, granting &9" +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &bblue orchids&7, granting &9" +
 							decimalFormat.format(getShieldRegenMultiplier()) + "x &7faster shield regeneration when near them");
 					break;
 				case ALLIUM:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &5allium&7, granting &b+" +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &5allium&7, granting &b+" +
 							decimalFormat.format(getManaIncreasePercent()) + "% &7faster mana regeneration when near them");
 					break;
 				case AZURE_BLUET:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &fazure bluets&7, creating a " +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &fazure bluets&7, creating a " +
 							"mini thunderstorm that will vanquish your enemies");
 					break;
 				case ORANGE_TULIP:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &6orange tulips&7, granting &c+" +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &6orange tulips&7, granting &c+" +
 							getDamageIncreasePercent() + "% &7damage when near them");
 					break;
 				case DANDELION:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &edandelions&7, making it so you " +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &edandelions&7, making it so you " +
 							"&ecannot die &7when near them");
 					break;
 			}
