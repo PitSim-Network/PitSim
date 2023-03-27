@@ -136,7 +136,7 @@ public class FreezeSpell extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return Math.max(30 - enchantLvl * 5, 0);
+		return Math.max(35 - enchantLvl * 5, 0);
 	}
 
 	public static int getDuration(int enchantLvl) {

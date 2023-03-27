@@ -225,7 +225,7 @@ public class Persephone extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return Math.max(25 - enchantLvl * 5, 0);
+		return Math.max(30 - enchantLvl * 5, 0);
 	}
 
 	public static double getHealing() {
