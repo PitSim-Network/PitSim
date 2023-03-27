@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.notdarkzone.UnlockState;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.*;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -157,8 +158,8 @@ public class ProgressionManager implements Listener {
 
 	public static int getUnlockCost(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
 		int unlocks = pitPlayer.darkzoneData.mainProgressionUnlocks.size();
-		int cost = (unlocks + 1) * 10;
-		if(unlock instanceof MainProgressionMajorUnlock) cost *= 1.5;
+		int cost = (unlocks + 1) * DarkzoneBalancing.MAIN_PROGRESSION_COST_PER;
+		if(unlock instanceof MainProgressionMajorUnlock) cost *= DarkzoneBalancing.MAIN_PROGRESSION_MAJOR_MULTIPLIER;
 		return cost;
 	}
 
@@ -318,54 +319,54 @@ public class ProgressionManager implements Listener {
 
 	public static int getInitialSoulCost(SkillBranch.MajorProgressionUnlock unlock) {
 		double multiplier = getMultiplier(unlock.skillBranch.index);
-		double baseValue;
+		DarkzoneBalancing.SkillUnlockCost unlockCost;
 		switch(unlock.position) {
 			case FIRST:
-				baseValue = 100;
+				unlockCost = DarkzoneBalancing.SkillUnlockCost.FIRST;
 				break;
 			case LAST:
-				baseValue = 50_000;
+				unlockCost = DarkzoneBalancing.SkillUnlockCost.LAST;
 				break;
 			case FIRST_PATH:
 			case SECOND_PATH:
-				baseValue = 3_000;
+				unlockCost = DarkzoneBalancing.SkillUnlockCost.MIDDLE;
 				break;
 			default:
 				throw new RuntimeException();
 		}
-		return (int) (baseValue * multiplier);
+		return (int) (unlockCost.getCost() * multiplier);
 	}
 
 	public static int getInitialSoulCost(SkillBranch.Path path, int level) {
 		double multiplier = getMultiplier(path.skillBranch.index);
-		double baseValue;
+		DarkzoneBalancing.SkillUnlockCost unlockCost;
 		switch(level) {
 			case 1:
-				baseValue = 500;
+				unlockCost = DarkzoneBalancing.SkillUnlockCost.PATH_1;
 				break;
 			case 2:
-				baseValue = 1_000;
+				unlockCost = DarkzoneBalancing.SkillUnlockCost.PATH_2;
 				break;
 			case 3:
-				baseValue = 1_500;
+				unlockCost = DarkzoneBalancing.SkillUnlockCost.PATH_3;
 				break;
 			case 4:
-				baseValue = 5_000;
+				unlockCost = DarkzoneBalancing.SkillUnlockCost.PATH_4;
 				break;
 			case 5:
-				baseValue = 10_000;
+				unlockCost = DarkzoneBalancing.SkillUnlockCost.PATH_5;
 				break;
 			case 6:
-				baseValue = 20_000;
+				unlockCost = DarkzoneBalancing.SkillUnlockCost.PATH_6;
 				break;
 			default:
 				throw new RuntimeException();
 		}
-		return (int) (baseValue * multiplier);
+		return (int) (unlockCost.getCost() * multiplier);
 	}
 
 	public static double getMultiplier(int index) {
-		return 0.2 * index + 1;
+		return DarkzoneBalancing.BRANCH_DIFFICULTY_MULTIPLIER_INCREASE * index + 1;
 	}
 
 	public static class PathGUILocation {

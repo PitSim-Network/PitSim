@@ -72,7 +72,7 @@ public class PitIronGolem extends PitMob {
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(IronIngot.class).getItem(), 1);
+				.addRareItem(() -> ItemFactory.getItem(IronIngot.class).getItem(), DarkzoneBalancing.MOB_ITEM_DROP_PERCENT);
 	}
 
 	@Override

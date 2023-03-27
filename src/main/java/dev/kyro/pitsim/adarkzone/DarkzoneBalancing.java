@@ -17,6 +17,12 @@ public class DarkzoneBalancing {
 	public static final int TIER_3_ENCHANT_COST = 25;
 	public static final int TIER_4_ENCHANT_COST = 1_000;
 
+	public static final int MAIN_PROGRESSION_COST_PER = 10;
+	public static final double MAIN_PROGRESSION_MAJOR_MULTIPLIER = 1.5;
+	public static final double BRANCH_DIFFICULTY_MULTIPLIER_INCREASE = 0.2;
+
+	public static final double MOB_ITEM_DROP_PERCENT = 10;
+
 	public static int getTravelCost(SubLevel subLevel) {
 		return subLevel.getIndex() + 1;
 	}
@@ -30,12 +36,12 @@ public class DarkzoneBalancing {
 	}
 
 	public enum Attribute {
-		BOSS_DAMAGE(4, 1.3),
+		BOSS_DAMAGE(5, 1.3),
 		BOSS_HEALTH(80, 1.3),
-		BOSS_SOULS(10, 1.4),
+		BOSS_SOULS(15, 1.4),
 		MOB_DAMAGE(8, 1.3),
 		MOB_HEALTH(40, 1.3),
-		MOB_SOULS(5, 1.4),
+		MOB_SOULS(5, 1.3),
 		;
 
 		private final double baseValue;
@@ -96,7 +102,6 @@ public class DarkzoneBalancing {
 	}
 
 	public enum ShopItem {
-
 		DIAMOND_LEGGINGS(DiamondLeggings.class, 10),
 		;
 
@@ -114,6 +119,29 @@ public class DarkzoneBalancing {
 
 		public int getSoulCost() {
 			return soulCost;
+		}
+	}
+
+	public enum SkillUnlockCost {
+		FIRST(100),
+		PATH_1(500),
+		PATH_2(1_000),
+		PATH_3(1_500),
+		MIDDLE(3_000),
+		PATH_4(5_000),
+		PATH_5(10_000),
+		PATH_6(20_000),
+		LAST(50_000),
+		;
+
+		private int cost;
+
+		SkillUnlockCost(int cost) {
+			this.cost = cost;
+		}
+
+		public int getCost() {
+			return cost;
 		}
 	}
 }

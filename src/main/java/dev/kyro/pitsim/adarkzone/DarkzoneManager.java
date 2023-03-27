@@ -141,7 +141,7 @@ public class DarkzoneManager implements Listener {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					if(!pitPlayer.hasManaUnlocked()) continue;
 
-					ManaRegenEvent event = new ManaRegenEvent(player, 0.1);
+					ManaRegenEvent event = new ManaRegenEvent(player, 0.07);
 					Bukkit.getPluginManager().callEvent(event);
 					if(!event.isCancelled()) {
 						double mana = event.getFinalMana();

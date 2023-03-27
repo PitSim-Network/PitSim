@@ -75,7 +75,7 @@ public class PitWitherSkeleton extends PitMob {
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(Charcoal.class).getItem(), 1);
+				.addRareItem(() -> ItemFactory.getItem(Charcoal.class).getItem(), DarkzoneBalancing.MOB_ITEM_DROP_PERCENT);
 	}
 
 	@Override

@@ -483,6 +483,16 @@ public class Misc {
 				return "fourth";
 			case 5:
 				return "fifth";
+			case 6:
+				return "sixth";
+			case 7:
+				return "seventh";
+			case 8:
+				return "eighth";
+			case 9:
+				return "ninth";
+			case 10:
+				return "tenth";
 		}
 		return "";
 	}

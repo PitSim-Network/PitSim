@@ -27,6 +27,7 @@ public class ComboMana extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
+		if(attackEvent.getAttacker() != attackEvent.getRealDamager() || attackEvent.isFakeHit()) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
@@ -53,7 +54,7 @@ public class ComboMana extends PitEnchant {
 	@Override
 	public String getSummary() {
 		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
-				"gives you &bmana &7every few strikes";
+				"gives you &bmana &7every few melee strikes";
 	}
 
 	public int getMana(int enchantLvl) {
