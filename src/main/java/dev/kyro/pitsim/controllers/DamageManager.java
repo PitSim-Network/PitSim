@@ -539,7 +539,6 @@ public class DamageManager implements Listener {
 			double percent = DarkzoneLeveling.getReductionModifier(killerPlayer);
 			DecimalFormat percentFormat = new DecimalFormat("#.#");
 
-			//Create a hoverable bungeecord text component
 			TextComponent hover = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6" +
 					df.format(killEvent.getFinalGold()) + "g &8(&5-" + percentFormat.format(percent) + "%&8)"));
 			hover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(
