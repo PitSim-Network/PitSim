@@ -4,7 +4,6 @@ import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
@@ -20,7 +19,7 @@ public class BossManager implements Listener {
 	 * @param attackEvent
 	 */
 	@EventHandler
-	public void onAttack(AttackEvent.Pre attackEvent) {
+	public static void onAttack(AttackEvent.Pre attackEvent) {
 		if(attackEvent.getWrapperEvent().getSpigotEvent().getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK ||
 				attackEvent.getWrapperEvent().hasAttackInfo()) return;
 		PitBoss attackerBoss = getPitBoss(attackEvent.getAttacker());
@@ -33,8 +32,8 @@ public class BossManager implements Listener {
 	 * Called when the boss is attacked, saves the damage each player does to the boss in damageMap
 	 * @param attackEvent
 	 */
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onBossAttacked(AttackEvent.Apply attackEvent) {
+//	No handler necessary
+	public static void onAttack(AttackEvent.Apply attackEvent, double finalDamage) {
 
 		PitBoss defenderBoss = getPitBoss(attackEvent.getDefender());
 		if(defenderBoss == null) return;
@@ -43,7 +42,7 @@ public class BossManager implements Listener {
 		if(!attackEvent.isAttackerPlayer()) return;
 
 		UUID uuid = player.getUniqueId();
-		defenderBoss.damageMap.put(uuid, defenderBoss.damageMap.getOrDefault(uuid, 0.0) + attackEvent.getWrapperEvent().getDamage());
+		defenderBoss.damageMap.put(uuid, defenderBoss.damageMap.getOrDefault(uuid, 0.0) + finalDamage);
 	}
 
 	/**

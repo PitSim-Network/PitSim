@@ -212,7 +212,7 @@ public abstract class PitBoss {
 
 	public UUID getDamagerInPosition(int position) {
 		if(damageMap.size() < position) return null;
-		return damageMap.keySet().toArray(new UUID[0])[position - 1];
+		return damageMap.keySet().toArray(new UUID[0])[position];
 	}
 
 	public int getPositionOfDamager(UUID damager) {
@@ -225,9 +225,29 @@ public abstract class PitBoss {
 	}
 
 	public String getDamageString(UUID damager) {
+		int position = getPositionOfDamager(damager);
+
+		Player player = Bukkit.getPlayer(damager);
 		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(damager);
+		String displayName = player != null ? Misc.getDisplayName(player) : offlinePlayer.getName();
+
 		double damage = damageMap.get(damager);
-		return "&4 * &7" + offlinePlayer.getName() + "&7 - &c" + Misc.getHearts(damage);
+		String positionColor;
+		switch(position + 1) {
+			case 1:
+				positionColor = "&e";
+				break;
+			case 2:
+				positionColor = "&f";
+				break;
+			case 3:
+				positionColor = "&6";
+				break;
+			default:
+				positionColor = "&7";
+				break;
+		}
+		return "&4 * &7" + positionColor + (position + 1) + ". &7" + displayName + "&7 - &c" + Misc.getHearts(damage);
 	}
 
 	public void remove() {

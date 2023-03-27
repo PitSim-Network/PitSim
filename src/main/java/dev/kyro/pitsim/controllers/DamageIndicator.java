@@ -28,7 +28,7 @@ import java.util.Random;
 public class DamageIndicator implements Listener {
 	public static DecimalFormat decimalFormat = new DecimalFormat("0");
 
-	//    @EventHandler(priority = EventPriority.MONITOR)
+	//	No handler necessary
 	public static void onAttack(AttackEvent.Apply attackEvent, double finalDamage) {
 		if(!attackEvent.isAttackerPlayer() || attackEvent.isFakeHit() || attackEvent.getDefender().isDead() ||
 				attackEvent.isCancelled()) return;

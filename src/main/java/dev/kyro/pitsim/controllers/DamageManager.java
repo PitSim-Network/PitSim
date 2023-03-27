@@ -2,10 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.BossManager;
-import dev.kyro.pitsim.adarkzone.DarkzoneManager;
-import dev.kyro.pitsim.adarkzone.PitMob;
-import dev.kyro.pitsim.adarkzone.SubLevel;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
@@ -356,6 +353,7 @@ public class DamageManager implements Listener {
 		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(0);
 
 		DamageIndicator.onAttack(attackEvent, finalDamage);
+		BossManager.onAttack(attackEvent, finalDamage);
 
 		if(absorption != 0) {
 			if(absorption > finalDamage) {

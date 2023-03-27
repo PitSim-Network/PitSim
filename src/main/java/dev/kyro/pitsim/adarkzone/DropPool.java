@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -42,6 +43,7 @@ public class DropPool {
 	}
 
 	public void distributeRewards(Map<UUID, Double> weightedMap) {
+		List<Player> playersGivenItems = new ArrayList<>();
 		List<ItemStack> rewards = new ArrayList<>();
 		for(Map.Entry<ItemStack, Range> entry : commonItems.entrySet()) {
 			Range range = entry.getValue();
@@ -49,14 +51,16 @@ public class DropPool {
 		}
 		for(Map.Entry<Supplier<ItemStack>, Double> entry : rareItems.entrySet()) {
 			double chance = entry.getValue();
-			if(Math.random() <= chance) rewards.add(entry.getKey().get());
+			if(Math.random() * 100 <= chance) rewards.add(entry.getKey().get());
 		}
 		for(ItemStack reward : rewards) {
 			UUID choice = Misc.weightedRandom(weightedMap);
 			Player player = Bukkit.getPlayer(choice);
 			if(player == null) continue;
 			AUtil.giveItemSafely(player, reward, true);
+			if(!playersGivenItems.contains(player)) playersGivenItems.add(player);
 		}
+		for(Player player : playersGivenItems) Sounds.ITEM_PICKUP.play(player);
 	}
 
 	public DropPool addCommonItem(ItemStack item, int low, int high) {
