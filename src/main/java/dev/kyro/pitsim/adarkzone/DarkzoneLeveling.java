@@ -71,6 +71,6 @@ public class DarkzoneLeveling	 {
 	public static double getReductionModifier(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		return getReduction(getLevel(pitPlayer.darkzoneData.altarXP), prestigeInfo.darkzoneLevel);
+		return getReduction(getLevel(pitPlayer.darkzoneData.altarXP), prestigeInfo.darkzoneLevelIncrease);
 	}
 }
