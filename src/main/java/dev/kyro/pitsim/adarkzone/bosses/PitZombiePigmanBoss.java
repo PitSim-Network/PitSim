@@ -18,7 +18,7 @@ public class PitZombiePigmanBoss extends PitBoss {
 				new PoundAbility(1, 15),
 				new LightningAbility(10, 1, 0.025),
 				new RuptureAbility(1, 25, getDamage(), 40),
-				new PopupAbility(1, new BlockData(Material.FIRE, (byte) 0), 3, 40, 150),
+				new PopupAbility(1, new BlockData(Material.FIRE, (byte) 0), getDamage() * 0.25, 40, 150),
 
 				new WorldBorderAbility()
 		);

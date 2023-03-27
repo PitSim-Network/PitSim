@@ -22,15 +22,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CageAbility extends PitBossAbility {
 	public static Map<Location, EditSession> sessionMap = new HashMap<>();
 	public int captureTicks;
 	public int schemSize;
+	public List<UUID> capturedPlayers = new ArrayList<>();
 
 	public CageAbility(double routineWeight, int captureTicks, int schemSize) {
 		super(routineWeight);

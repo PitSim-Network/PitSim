@@ -115,7 +115,7 @@ public class DarkzoneManager implements Listener {
 				SubLevelType.IRON_GOLEM, PitIronGolemBoss.class, PitIronGolem.class, EntityType.IRON_GOLEM, IronIngot.class,
 				new Location(MapManager.getDarkzone(), 313, 19, -217),
 				15, 20, 10, -1,
-				new Location(MapManager.getDarkzone(), 291.5, 19, -96.5, -130, 0));
+				new Location(MapManager.getDarkzone(), 291.5, 19, -196.5, -130, 0));
 		registerSubLevel(subLevel);
 
 		subLevel = new SubLevel(

@@ -76,6 +76,7 @@ public class WorldBorderAbility extends PitBossAbility {
 
 		PitBoss pitBoss = BossManager.getPitBoss(attackEvent.getDefender());
 		if(pitBoss == null) return;
+		if(pitBoss != super.getPitBoss()) return;
 
 		trapPlayer(attackEvent.getAttackerPlayer());
 	}

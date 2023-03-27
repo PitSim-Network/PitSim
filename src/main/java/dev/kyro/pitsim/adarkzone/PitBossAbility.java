@@ -51,7 +51,7 @@ public abstract class PitBossAbility implements Listener {
 
 	public List<Player> getViewers() {
 		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(50, 50, 50)) {
+		for(Entity entity : pitBoss.boss.getNearbyEntities(40, 40, 40)) {
 			if(!(entity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(entity.getUniqueId());
 			if(player != null) viewers.add(player);

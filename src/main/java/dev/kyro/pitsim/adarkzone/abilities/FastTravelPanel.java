@@ -63,6 +63,7 @@ public class FastTravelPanel extends AGUIPanel {
 
 		if(Misc.isAirOrNull(event.getCurrentItem())) return;
 		NBTItem nbtItem = new NBTItem(event.getCurrentItem(), true);
+		if(!nbtItem.hasKey(NBTTag.INVENTORY_INDEX.getRef())) return;
 		int index = nbtItem.getInteger(NBTTag.INVENTORY_INDEX.getRef());
 		FastTravelDestination destination = FastTravelManager.destinations.get(index);
 

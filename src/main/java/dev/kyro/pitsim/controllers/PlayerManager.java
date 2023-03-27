@@ -223,7 +223,7 @@ public class PlayerManager implements Listener {
 		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
 		temporaryItem.setLives(itemStack, 0);
 
-		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&cRIP!&7 You lost " +
+		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&c&lRIP!&7 You lost " +
 				(itemStack.getAmount() == 1 ? "" : itemStack.getAmount() + "x ")));
 		message.addExtra(Misc.createItemHover(itemStack));
 //		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "")));
@@ -541,7 +541,7 @@ public class PlayerManager implements Listener {
 	public void onMove(PlayerMoveEvent event) {
 		if(event.getPlayer().getLocation().getY() < 10 && event.getPlayer().getWorld() == Bukkit.getWorld("tutorial"))
 			DamageManager.death(event.getPlayer());
-		else if(event.getPlayer().getLocation().getY() < 10 && MapManager.currentMap.world == event.getPlayer().getWorld()) {
+		else if(event.getPlayer().getLocation().getY() < 10 && (MapManager.getDarkzone() == event.getPlayer().getWorld() || MapManager.currentMap.world == event.getPlayer().getWorld())) {
 			DamageManager.death(event.getPlayer());
 		} else if(event.getPlayer().getLocation().getY() < 10) DamageManager.death(event.getPlayer());
 	}
@@ -789,11 +789,19 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onItemFrameBreak(EntityDamageByEntityEvent event) {
-		if(!Misc.isEntity(event.getDamager(), PitEntityType.REAL_PLAYER)) return;
+		if(!Misc.isEntity(event.getDamager(), PitEntityType.REAL_PLAYER)) {
+			if(!(event.getEntity() instanceof ItemFrame)) event.setCancelled(true);
+			return;
+		}
+
 		Player player = (Player) event.getDamager();
-		if(!player.isOp()) return;
-		if(toggledPlayers.contains(player)) return;
 		if(!(event.getEntity() instanceof ItemFrame)) return;
+		if(!player.isOp()) {
+			event.setCancelled(true);
+			return;
+		}
+		if(toggledPlayers.contains(player)) return;
+
 		event.setCancelled(true);
 		AOutput.error(player, "&CBlock interactions disabled, run /pitsim bypass to toggle");
 	}

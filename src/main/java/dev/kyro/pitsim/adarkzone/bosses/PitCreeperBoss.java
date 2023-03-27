@@ -16,7 +16,7 @@ public class PitCreeperBoss extends PitBoss {
 		abilities(
 				new GenericMinionAbility(1, SubLevelType.CREEPER, 1, 2),
 				new TNTAbility(2, getDamage() * 0.1),
-				new LandMineAbility(2, 3, 20, 20 * 45, getDamage()),
+				new LandMineAbility(2, 3, 20, 20 * 45, getDamage() * 3),
 				new LightningAbility(3, 1, 0.05),
 
 				new WorldBorderAbility()

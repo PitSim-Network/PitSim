@@ -20,7 +20,7 @@ public class PitSkeletonBoss extends PitBoss {
 
 		abilities(
 				new RuptureAbility(1, 15, 1, 40),
-				new SnakeAbility(2, 20, getDamage() * 0.5, Material.QUARTZ_BLOCK, (byte) 0, Sounds.BONE_SNAKE),
+				new SnakeAbility(2, 20, getDamage() * 0.25, Material.QUARTZ_BLOCK, (byte) 0, Sounds.BONE_SNAKE),
 				new HailAbility(2, 25, 100, getDamage() * 0.5),
 				new DefensiveMinionAbility(SubLevelType.SKELETON, 1, 3, 5 * 20)
 		);

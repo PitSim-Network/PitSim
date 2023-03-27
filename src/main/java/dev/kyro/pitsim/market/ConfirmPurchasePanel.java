@@ -38,11 +38,13 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 				));
 		getInventory().setItem(11, confirmBuilder.getItemStack());
 
+		int soulsToTake = price - listing.bidMap.getOrDefault(player.getUniqueId(), 0);
+
 		AItemStackBuilder cancelBuilder = new AItemStackBuilder(Material.STAINED_CLAY, 1, 14)
 				.setName("&c&lCANCEL")
 				.setLore(new ALoreBuilder(
 						"&7Purchasing: " + listing.itemData.getItemMeta().getDisplayName() + (bin ? " &8x" + amount : ""),
-						"&7Price: &f" + price + " Souls", "",
+						"&7Price: &f" + soulsToTake + " Souls", "",
 						"&eClick to cancel purchase!"
 				));
 		getInventory().setItem(15, cancelBuilder.getItemStack());
@@ -67,7 +69,9 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 			public void run() {
 				AOutput.send(player, "&a&lMARKET &7Bid successfully placed!");
 				Sounds.SUCCESS.play(player);
-				PitPlayer.getPitPlayer(player).taintedSouls -= price;
+				int soulsToTake = price - listing.bidMap.getOrDefault(player.getUniqueId(), 0);
+
+				PitPlayer.getPitPlayer(player).taintedSouls -= soulsToTake;
 				player.closeInventory();
 			}
 		};

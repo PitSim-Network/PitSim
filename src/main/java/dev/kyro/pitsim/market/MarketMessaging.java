@@ -2,7 +2,6 @@ package dev.kyro.pitsim.market;
 
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
-import dev.kyro.pitsim.storage.StorageProfile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -32,7 +31,7 @@ public class MarketMessaging implements Listener {
 
 			listing = new MarketListing(message);
 			MarketManager.listings.add(listing);
-
+			MarketGUI.updateGUIS();
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("MARKET REMOVAL")) {

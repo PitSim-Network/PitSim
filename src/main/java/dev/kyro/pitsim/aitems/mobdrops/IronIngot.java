@@ -8,6 +8,7 @@ import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -78,12 +79,12 @@ public class IronIngot extends BrewingIngredient implements TemporaryItem {
 		if(effect == null) return;
 
 		double defense = (double) getPotency(effect.potency);
-		event.multipliers.add(defense);
+		event.multipliers.add(Misc.getReductionMultiplier(defense));
 	}
 
 	@Override
 	public Object getPotency(BrewingIngredient potencyIngredient) {
-		return (1 - 0.5 * potencyIngredient.tier);
+		return (5 * potencyIngredient.tier);
 	}
 
 	@Override
@@ -91,7 +92,7 @@ public class IronIngot extends BrewingIngredient implements TemporaryItem {
 		List<String> lore = new ArrayList<>();
 
 		lore.add("");
-		lore.add(ChatColor.GRAY + "Receive " + color + "-" + (potency.tier * 10) + "% Damage" +  ChatColor.GRAY + ".");
+		lore.add(ChatColor.GRAY + "Receive " + color + "-" + (potency.tier * 5) + "% Damage" +  ChatColor.GRAY + ".");
 		return lore;
 	}
 

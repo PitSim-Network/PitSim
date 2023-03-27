@@ -29,7 +29,6 @@ public class ListingInspectPanel extends AGUIPanel {
 	public int bid;
 	public int purchasing;
 	public BukkitTask runnable;
-	int soulsToTake;
 	public boolean marketPanel;
 
 	public ListingInspectPanel(AGUI gui, MarketListing listing, boolean marketPanel) {
@@ -57,7 +56,7 @@ public class ListingInspectPanel extends AGUIPanel {
 
 		ALoreBuilder loreBuilder = new ALoreBuilder();
 		if(listing.startingBid != -1) {
-			soulsToTake = bid - listing.bidMap.getOrDefault(player.getUniqueId(), 0);
+			int soulsToTake = bid - listing.bidMap.getOrDefault(player.getUniqueId(), 0);
 
 			loreBuilder.addLore((listing.bidMap.isEmpty() ? "&7Starting Bid: &f" : "&7Minimum Bid: &f") + listing.getMinimumBid() + " Souls");
 			loreBuilder.addLore("");
@@ -170,7 +169,9 @@ public class ListingInspectPanel extends AGUIPanel {
 
 		if(slot == 11) {
 			if(listing.startingBid != -1) {
-				if(listing.ownerUUID.equals(player.getUniqueId()) || (listing.getHighestBidder() != null && listing.getHighestBidder().equals(player.getUniqueId())) || PitPlayer.getPitPlayer(player).taintedSouls < soulsToTake) {
+				int soulsToTake = bid - listing.bidMap.getOrDefault(player.getUniqueId(), 0);
+				if(listing.ownerUUID.equals(player.getUniqueId()) || (listing.getHighestBidder() != null &&
+						listing.getHighestBidder().equals(player.getUniqueId())) || PitPlayer.getPitPlayer(player).taintedSouls < soulsToTake) {
 					Sounds.NO.play(player);
 				} else {
 					if(event.isRightClick()) {
@@ -178,7 +179,7 @@ public class ListingInspectPanel extends AGUIPanel {
 						return;
 					}
 
-					ConfirmPurchasePanel panel = new ConfirmPurchasePanel(gui, listing, soulsToTake, false, 1);
+					ConfirmPurchasePanel panel = new ConfirmPurchasePanel(gui, listing, bid, false, 1);
 					openPanel(panel);
 				}
 			}
@@ -272,9 +273,7 @@ public class ListingInspectPanel extends AGUIPanel {
 
 			bid = amount;
 
-			soulsToTake = bid - listing.bidMap.getOrDefault(player.getUniqueId(), 0);
-
-			ConfirmPurchasePanel panel = new ConfirmPurchasePanel(gui, listing, soulsToTake, false, 1);
+			ConfirmPurchasePanel panel = new ConfirmPurchasePanel(gui, listing, bid, false, 1);
 			openPanel(panel);
 		});
 	}

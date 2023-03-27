@@ -10,7 +10,6 @@ import dev.kyro.pitsim.misc.HeadLib;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -42,6 +41,10 @@ public class MarketPanel extends AGUIPanel {
 			getInventory().setItem(glassSlot, new AItemStackBuilder(Material.STAINED_GLASS_PANE,1, 15).setName(" ").getItemStack());
 		}
 
+		createInventory();
+	}
+
+	public void createInventory() {
 		calculateListings();
 		calculateArrows();
 

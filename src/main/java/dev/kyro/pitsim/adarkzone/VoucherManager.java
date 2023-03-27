@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class VoucherManager implements Listener {
@@ -54,7 +55,7 @@ public class VoucherManager implements Listener {
 		PitPlayer deadPitPlayer = event.getDeadPitPlayer();
 		int totalVouchersUsed = 0;
 
-		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : event.getVulnerableItems().entrySet()) {
+		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : new ArrayList<>(event.getVulnerableItems().entrySet())) {
 			KillEvent.ItemInfo info = entry.getValue();
 			ItemStack itemStack = info.itemStack;
 

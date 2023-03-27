@@ -548,10 +548,10 @@ public class TaintedWell implements Listener {
 			cost = DarkzoneBalancing.TIER_4_ENCHANT_COST;
 			break;
 		default:
-			throw new RuntimeException();
+			cost = -1;
 		}
 
-		if(ProgressionManager.isUnlocked(PitPlayer.getPitPlayer(player), SoulBranch.INSTANCE, SkillBranch.MajorUnlockPosition.SECOND_PATH)) cost *= 0.7;
+		if(cost != -1 && ProgressionManager.isUnlocked(PitPlayer.getPitPlayer(player), SoulBranch.INSTANCE, SkillBranch.MajorUnlockPosition.SECOND_PATH)) cost *= 0.7;
 		return cost;
 	}
 
