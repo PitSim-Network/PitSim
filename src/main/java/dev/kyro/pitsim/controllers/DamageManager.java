@@ -2,10 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.BossManager;
-import dev.kyro.pitsim.adarkzone.DarkzoneManager;
-import dev.kyro.pitsim.adarkzone.PitMob;
-import dev.kyro.pitsim.adarkzone.SubLevel;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.Shield;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
@@ -535,9 +532,12 @@ public class DamageManager implements Listener {
 		if(deadMob != null) {
 			kill = "&a&lKILL!&7 on " + deadMob.getDisplayName();
 		} else if(killType != KillType.DEATH) {
+			double percent = DarkzoneLeveling.getReductionModifier(killerPlayer);
+			DecimalFormat percentFormat = new DecimalFormat("#.#");
+
 			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" +
 					(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + killEvent.getFinalXp() + "XP" +
-					" &6+" + df.format(killEvent.getFinalGold()) + "g");
+					" &6+" + df.format(killEvent.getFinalGold()) + "g" + (percent > 0 ? " &8(&5-" + percentFormat.format(percent) + "%&8)" : ""));
 		}
 
 		String death;

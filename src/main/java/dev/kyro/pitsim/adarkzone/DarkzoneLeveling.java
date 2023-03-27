@@ -8,7 +8,7 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Player;
 
-public class DarkzoneLeveling	 {
+public class DarkzoneLeveling {
 
 	public static int getLevel(double xp) {
 		int level = 1;
@@ -65,6 +65,7 @@ public class DarkzoneLeveling	 {
 
 	public static double getReduction(int altarLevel, int darkzoneLevel) {
 		int levelDifference = Math.max(darkzoneLevel - altarLevel, 0);
+
 		return 100 - 100 * Math.pow(0.99, levelDifference);
 	}
 
