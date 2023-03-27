@@ -346,12 +346,12 @@ public class Persephone extends PitEnchant {
 	}
 
 	private enum FlowerType {
-		POPPY(Material.RED_ROSE, 0, ParticleColor.RED), // healing
-		BLUE_ORCHID(Material.RED_ROSE, 1, ParticleColor.AQUA), // shield regeneration
-		ALLIUM(Material.RED_ROSE, 2, ParticleColor.DARK_PURPLE), // mana regeneration
-		AZURE_BLUET(Material.RED_ROSE, 3, ParticleColor.WHITE), // strikes entities with lightning
-		ORANGE_TULIP(Material.RED_ROSE, 5, ParticleColor.GOLD), // damage increase
-		DANDELION(Material.YELLOW_FLOWER, 0, ParticleColor.YELLOW); // cannot die
+		POPPY(Material.RED_ROSE, 1, 0, ParticleColor.RED), // healing
+		BLUE_ORCHID(Material.RED_ROSE, 1, 1, ParticleColor.AQUA), // shield regeneration
+		ALLIUM(Material.RED_ROSE, 1, 2, ParticleColor.DARK_PURPLE), // mana regeneration
+		AZURE_BLUET(Material.RED_ROSE, 1, 3, ParticleColor.WHITE), // strikes entities with lightning
+		ORANGE_TULIP(Material.RED_ROSE, 1, 5, ParticleColor.GOLD), // damage increase
+		DANDELION(Material.YELLOW_FLOWER, 0.5, 0, ParticleColor.YELLOW); // cannot die
 
 //		RED_TULIP(Material.RED_ROSE, 4, ParticleColor.RED),
 //		WHITE_TULIP(Material.RED_ROSE, 6, ParticleColor.WHITE),
@@ -359,11 +359,13 @@ public class Persephone extends PitEnchant {
 //		OXEYE_DAISY(Material.RED_ROSE, 8, ParticleColor.AQUA),
 
 		public final Material material;
+		public double weight;
 		public final byte data;
 		public final ParticleColor particleColor;
 
-		FlowerType(Material material, int data, ParticleColor particleColor) {
+		FlowerType(Material material, double weight, int data, ParticleColor particleColor) {
 			this.material = material;
+			this.weight = weight;
 			this.data = (byte) data;
 			this.particleColor = particleColor;
 		}
@@ -399,7 +401,9 @@ public class Persephone extends PitEnchant {
 		}
 
 		public static FlowerType random() {
-			return values()[new Random().nextInt(values().length)];
+			Map<FlowerType, Double> weightedMap = new HashMap<>();
+			for(FlowerType value : values()) weightedMap.put(value, value.weight);
+			return Misc.weightedRandom(weightedMap);
 		}
 	}
 }
