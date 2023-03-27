@@ -790,7 +790,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onItemFrameBreak(EntityDamageByEntityEvent event) {
 		if(!Misc.isEntity(event.getDamager(), PitEntityType.REAL_PLAYER)) {
-			if(!(event.getEntity() instanceof ItemFrame)) event.setCancelled(true);
+			if(event.getEntity() instanceof ItemFrame) event.setCancelled(true);
 			return;
 		}
 

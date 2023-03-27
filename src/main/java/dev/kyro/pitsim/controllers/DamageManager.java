@@ -28,9 +28,13 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
@@ -535,9 +539,21 @@ public class DamageManager implements Listener {
 			double percent = DarkzoneLeveling.getReductionModifier(killerPlayer);
 			DecimalFormat percentFormat = new DecimalFormat("#.#");
 
+			//Create a hoverable bungeecord text component
+			TextComponent hover = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6" +
+					df.format(killEvent.getFinalGold()) + "g &8(&5-" + percentFormat.format(percent) + "%&8)"));
+			hover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(
+					ChatColor.translateAlternateColorCodes('&', "&7Go to the &5Darkzone &7to remove this debuff")).create()));
+
 			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" +
 					(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + killEvent.getFinalXp() + "XP" +
-					" &6+" + df.format(killEvent.getFinalGold()) + "g" + (percent > 0 ? " &8(&5-" + percentFormat.format(percent) + "%&8)" : ""));
+					" &6+" + (percent == 0 ? df.format(killEvent.getFinalGold()) + "g " : ""));
+
+			TextComponent killComponent = new TextComponent(kill);
+			killComponent.addExtra(hover);
+			if(killerPlayer != null) killerPlayer.sendMessage(killComponent);
+			kill = null;
+
 		}
 
 		String death;
@@ -559,7 +575,7 @@ public class DamageManager implements Listener {
 		}
 
 		if(killerIsPlayer && !CitizensAPI.getNPCRegistry().isNPC(killer) && !pitKiller.killFeedDisabled && killType != KillType.DEATH) {
-			AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));
+			if(kill != null) AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), kill));
 			pitKiller.stats.mobsKilled++; // TODO: this is definitely the wrong spot
 		}
 		if(deadIsPlayer && !pitDead.killFeedDisabled && killType != KillType.FAKE_KILL && killEvent != null)
