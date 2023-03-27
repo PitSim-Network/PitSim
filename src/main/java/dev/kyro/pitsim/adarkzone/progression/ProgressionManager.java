@@ -185,12 +185,20 @@ public class ProgressionManager implements Listener {
 
 	public static void addPurchaseCostLore(Object object, ALoreBuilder loreBuilder, UnlockState unlockState,
 										   int currentSouls, int cost, boolean alwaysDisplayCost) {
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
 		String costString = formatSouls(cost);
 		if(unlockState == UnlockState.LOCKED) {
-			if(alwaysDisplayCost) loreBuilder.addLore("&7Unlock Cost: " + costString, "");
+			if(alwaysDisplayCost) loreBuilder.addLore(
+					"&7Unlock Cost: " + costString,
+					"&7Current Souls: &f" + decimalFormat.format(currentSouls),
+					"");
 			loreBuilder.addLore("&cCannot be unlocked yet");
 		} else if(unlockState == UnlockState.NEXT_TO_UNLOCK) {
-			loreBuilder.addLore("&7Unlock Cost: " + costString, "");
+			loreBuilder.addLore(
+					"&7Unlock Cost: " + costString,
+					"&7Current Souls: &f" + decimalFormat.format(currentSouls),
+					""
+			);
 			if(currentSouls < cost) {
 				loreBuilder.addLore("&cNot enough souls");
 			} else {

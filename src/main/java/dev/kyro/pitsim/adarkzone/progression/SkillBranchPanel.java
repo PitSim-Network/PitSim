@@ -104,6 +104,7 @@ public class SkillBranchPanel extends AGUIPanel {
 		getInventory().setItem(17, skillBranch.lastUnlock.getDisplayStack(pitPlayer));
 		getInventory().setItem(4, skillBranch.firstPathUnlock.getDisplayStack(pitPlayer));
 		getInventory().setItem(22, skillBranch.secondPathUnlock.getDisplayStack(pitPlayer));
+		getInventory().setItem(43, progressionGUI.createSoulsDisplay());
 		for(int i = 0; i < 6; i++) {
 			int firstPathSlot = i + 1;
 			int secondPathSlot = i + 19;
