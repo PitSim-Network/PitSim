@@ -129,7 +129,7 @@ public class CleaveSpell extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return Math.max(20 - enchantLvl * 4, 0);
+		return Math.max(24 - enchantLvl * 4, 0);
 	}
 
 	public static class CleaveEntity {

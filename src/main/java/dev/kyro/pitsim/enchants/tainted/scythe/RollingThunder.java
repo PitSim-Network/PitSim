@@ -70,7 +70,6 @@ public class RollingThunder extends PitEnchant {
 		}
 		cooldown.restart();
 
-
 		World world = player.getWorld();
 		Location mainLocation = player.getLocation();
 		Vector mainDirection = mainLocation.getDirection().setY(0).normalize();

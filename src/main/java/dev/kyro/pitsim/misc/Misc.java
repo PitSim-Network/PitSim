@@ -205,9 +205,11 @@ public class Misc {
 		}.runTaskAsynchronously(PitSim.INSTANCE);
 	}
 
-	public static int getItemCount(Player player, BiPredicate<PitItem, ItemStack> condition) {
+	public static int getItemCount(Player player, boolean checkArmor, BiPredicate<PitItem, ItemStack> condition) {
 		int count = 0;
-		for(ItemStack itemStack : player.getInventory().getContents()) {
+		List<ItemStack> items = new ArrayList<>(Arrays.asList(player.getInventory().getContents()));
+		if(checkArmor) items.addAll(Arrays.asList(player.getInventory().getArmorContents()));
+		for(ItemStack itemStack : items) {
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			if(pitItem == null || !condition.test(pitItem, itemStack)) continue;
 			count += itemStack.getAmount();
@@ -216,7 +218,7 @@ public class Misc {
 	}
 
 	public static boolean removeItems(Player player, int amount, BiPredicate<PitItem, ItemStack> condition) {
-		if(getItemCount(player, condition) < amount) return false;
+		if(getItemCount(player, false, condition) < amount) return false;
 		for(int i = 0; i < player.getInventory().getSize(); i++) {
 			ItemStack itemStack = player.getInventory().getItem(i);
 			PitItem pitItem = ItemFactory.getItem(itemStack);

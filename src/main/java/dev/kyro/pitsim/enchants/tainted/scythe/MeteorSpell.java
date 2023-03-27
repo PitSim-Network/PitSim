@@ -119,6 +119,6 @@ public class MeteorSpell extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return Math.max(64 - enchantLvl * 8, 0);
+		return Math.max(72 - enchantLvl * 8, 0);
 	}
 }

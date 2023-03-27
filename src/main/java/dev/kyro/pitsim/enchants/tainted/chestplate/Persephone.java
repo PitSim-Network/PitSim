@@ -225,7 +225,7 @@ public class Persephone extends PitEnchant {
 	}
 
 	public static int getManaCost(int enchantLvl) {
-		return Math.max(25 - enchantLvl * 5, 0);
+		return Math.max(30 - enchantLvl * 5, 0);
 	}
 
 	public static double getHealing() {
@@ -346,12 +346,12 @@ public class Persephone extends PitEnchant {
 	}
 
 	private enum FlowerType {
-		POPPY(Material.RED_ROSE, 0, ParticleColor.RED), // healing
-		BLUE_ORCHID(Material.RED_ROSE, 1, ParticleColor.AQUA), // shield regeneration
-		ALLIUM(Material.RED_ROSE, 2, ParticleColor.DARK_PURPLE), // mana regeneration
-		AZURE_BLUET(Material.RED_ROSE, 3, ParticleColor.WHITE), // strikes entities with lightning
-		ORANGE_TULIP(Material.RED_ROSE, 5, ParticleColor.GOLD), // damage increase
-		DANDELION(Material.YELLOW_FLOWER, 0, ParticleColor.YELLOW); // cannot die
+		POPPY(Material.RED_ROSE, 1, 0, ParticleColor.RED), // healing
+		BLUE_ORCHID(Material.RED_ROSE, 1, 1, ParticleColor.AQUA), // shield regeneration
+		ALLIUM(Material.RED_ROSE, 1, 2, ParticleColor.DARK_PURPLE), // mana regeneration
+		AZURE_BLUET(Material.RED_ROSE, 1, 3, ParticleColor.WHITE), // strikes entities with lightning
+		ORANGE_TULIP(Material.RED_ROSE, 1, 5, ParticleColor.GOLD), // damage increase
+		DANDELION(Material.YELLOW_FLOWER, 0.5, 0, ParticleColor.YELLOW); // cannot die
 
 //		RED_TULIP(Material.RED_ROSE, 4, ParticleColor.RED),
 //		WHITE_TULIP(Material.RED_ROSE, 6, ParticleColor.WHITE),
@@ -359,11 +359,13 @@ public class Persephone extends PitEnchant {
 //		OXEYE_DAISY(Material.RED_ROSE, 8, ParticleColor.AQUA),
 
 		public final Material material;
+		public double weight;
 		public final byte data;
 		public final ParticleColor particleColor;
 
-		FlowerType(Material material, int data, ParticleColor particleColor) {
+		FlowerType(Material material, double weight, int data, ParticleColor particleColor) {
 			this.material = material;
+			this.weight = weight;
 			this.data = (byte) data;
 			this.particleColor = particleColor;
 		}
@@ -372,34 +374,36 @@ public class Persephone extends PitEnchant {
 			DecimalFormat decimalFormat = new DecimalFormat("0.#");
 			switch(this) {
 				case POPPY:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &cpoppies&7, granting &c" +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &cpoppies&7, granting &c" +
 							Misc.getHearts(getHealing()) + " &7every second when near them");
 					break;
 				case BLUE_ORCHID:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &bblue orchids&7, granting &9" +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &bblue orchids&7, granting &9" +
 							decimalFormat.format(getShieldRegenMultiplier()) + "x &7faster shield regeneration when near them");
 					break;
 				case ALLIUM:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &5allium&7, granting &b+" +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &5allium&7, granting &b+" +
 							decimalFormat.format(getManaIncreasePercent()) + "% &7faster mana regeneration when near them");
 					break;
 				case AZURE_BLUET:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &fazure bluets&7, creating a " +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &fazure bluets&7, creating a " +
 							"mini thunderstorm that will vanquish your enemies");
 					break;
 				case ORANGE_TULIP:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &6orange tulips&7, granting &c+" +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &6orange tulips&7, granting &c+" +
 							getDamageIncreasePercent() + "% &7damage when near them");
 					break;
 				case DANDELION:
-					AOutput.send(player, "&5&lPURPLE THUMB!&7 You planted &edandelions&7, making it so you " +
+					AOutput.send(player, "&5&lPERSEPHONE!&7 You planted &edandelions&7, making it so you " +
 							"&ecannot die &7when near them");
 					break;
 			}
 		}
 
 		public static FlowerType random() {
-			return values()[new Random().nextInt(values().length)];
+			Map<FlowerType, Double> weightedMap = new HashMap<>();
+			for(FlowerType value : values()) weightedMap.put(value, value.weight);
+			return Misc.weightedRandom(weightedMap);
 		}
 	}
 }

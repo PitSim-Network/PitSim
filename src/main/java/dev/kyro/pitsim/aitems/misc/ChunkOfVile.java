@@ -83,7 +83,7 @@ public class ChunkOfVile extends StaticPitItem {
 			return;
 		}
 
-		if(Misc.getItemCount(player, (pitItem, itemStack) -> {
+		if(Misc.getItemCount(player, false, (pitItem, itemStack) -> {
 			if(!MysticFactory.hasLives(itemStack)) return false;
 			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
 			return !temporaryItem.isAtMaxLives(itemStack) && temporaryItem.getLives(itemStack) != 0;

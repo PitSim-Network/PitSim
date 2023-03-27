@@ -58,6 +58,6 @@ class Sonic extends PitEnchant {
 	}
 
 	public static int getManaReduction(int enchantLvl) {
-		return Math.max(140 - enchantLvl * 40, 0);
+		return Math.max(130 - enchantLvl * 30, 0);
 	}
 }
