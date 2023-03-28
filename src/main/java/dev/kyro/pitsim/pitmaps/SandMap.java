@@ -18,14 +18,14 @@ public class SandMap extends PitMap {
 
 	@Override
 	public Location getNonSpawn() {
-		Location spawn = new Location(world, 0, 72  , 0);
+		Location spawn = new Location(world, 0, 70, 0);
 		spawn.setX(spawn.getX() + (Math.random() * 4 - 2));
 		spawn.setZ(spawn.getZ() + (Math.random() * 4 - 2));
 
 		if(ChaosBooster.INSTANCE.isActive()) {
-			spawn.add(0, -10, 0);
+			spawn.add(0, -34, 0);
 		} else if(Math.random() < 0.5) {
-			spawn.add(0, -5, 0);
+			spawn.add(0, -29, 0);
 		}
 		return spawn;
 	}
