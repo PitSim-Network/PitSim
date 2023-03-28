@@ -4,8 +4,10 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.inventories.ChatColorPanel;
 import dev.kyro.pitsim.misc.ItemRename;
@@ -62,7 +64,7 @@ public class SettingsPanel extends AGUIPanel {
 		getInventory().setItem(14, particleItem);
 		getInventory().setItem(19, scoreboardItem);
 
-		ItemStack pants = new ItemStack(Material.LEATHER_LEGGINGS);
+		ItemStack pants = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.PURE_RED);
 		ItemMeta pantsmeta = pants.getItemMeta();
 		List<String> pantslore = new ArrayList<>();
 		pantslore.add(ChatColor.GRAY + "Choose from a selection of premium");

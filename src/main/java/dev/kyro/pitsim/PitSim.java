@@ -86,6 +86,7 @@ import dev.kyro.pitsim.megastreaks.*;
 import dev.kyro.pitsim.misc.ItemRename;
 import dev.kyro.pitsim.misc.PrivateInfo;
 import dev.kyro.pitsim.misc.ReloadManager;
+import dev.kyro.pitsim.misc.effects.PacketBlock;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
 import dev.kyro.pitsim.npcs.*;
 import dev.kyro.pitsim.perks.*;
@@ -394,8 +395,10 @@ public class PitSim extends JavaPlugin {
 		}
 
 		try {
-			for(EditSession session : CageAbility.sessionMap.values()) {
-				session.undo(session);
+			for(List<PacketBlock> blocks : CageAbility.packetBlockMap.values()) {
+				for(PacketBlock block : blocks) {
+					block.removeBlock();
+				}
 			}
 		} catch(NoClassDefFoundError ignored) { }
 

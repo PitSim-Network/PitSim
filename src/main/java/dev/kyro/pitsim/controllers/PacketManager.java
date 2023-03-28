@@ -12,6 +12,7 @@ import com.comphenix.protocol.injector.packet.PacketInjector;
 import com.comphenix.protocol.injector.player.PlayerInjectionHandler;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
 import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
 import dev.kyro.pitsim.misc.effects.PacketBlock;
@@ -134,6 +135,13 @@ public class PacketManager implements Listener {
 						}
 
 						if(viewers == null || packetBlock == null) return;
+						if(packetBlock.isRemoved()) return;
+
+						for(List<PacketBlock> value : CageAbility.packetBlockMap.values()) {
+							for(PacketBlock block : value) {
+								if(block == packetBlock) return;
+							}
+						}
 
 						if(!viewers.contains(event.getPlayer())) return;
 

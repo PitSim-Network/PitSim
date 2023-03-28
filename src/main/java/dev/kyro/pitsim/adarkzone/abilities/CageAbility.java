@@ -1,12 +1,5 @@
 package dev.kyro.pitsim.adarkzone.abilities;
 
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
-import com.sk89q.worldedit.world.DataException;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
 import dev.kyro.pitsim.misc.BlockData;
@@ -14,18 +7,17 @@ import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.SchematicPaste;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
-import org.bukkit.Bukkit;
+import dev.kyro.pitsim.misc.effects.PacketBlock;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class CageAbility extends PitBossAbility {
-	public static Map<Location, EditSession> sessionMap = new HashMap<>();
+	public static Map<Player, List<PacketBlock>> packetBlockMap = new HashMap<>();
 	public int captureTicks;
 	public int schemSize;
 	public List<UUID> capturedPlayers = new ArrayList<>();
@@ -46,24 +38,25 @@ public class CageAbility extends PitBossAbility {
 			Location entryLocation = viewer.getLocation().add(-1, 0, -1);
 			Sounds.CAGE.play(viewer);
 
-			for(Location location : sessionMap.keySet()) {
-				if(location.distance(viewer.getLocation()) < schemSize) continue viewers;
+			for(Player player : packetBlockMap.keySet()) {
+				if(player.getLocation().distance(viewer.getLocation()) < schemSize) continue viewers;
 			}
 
 			Misc.applyPotionEffect(viewer, PotionEffectType.SLOW, 20, 10, false, false);
 
-			WorldEditPlugin worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
-			EditSession session = worldEditPlugin.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(viewer.getWorld()), 100000);
-			sessionMap.put(entryLocation, session);
+			Location trueSpawnLoc = viewer.getLocation();
+			for(int i = 0; i < 2; i++) {
+				if(trueSpawnLoc.clone().subtract(0, i, 0).getBlock().getType().isSolid()) {
+					trueSpawnLoc = trueSpawnLoc.clone().subtract(0, i - 1, 0);
+					break;
+				}
+			}
 
-
-			Location location = viewer.getLocation().add(-1, 5, -1);
+			Location location = trueSpawnLoc.clone().add(-1, 5, -1);
 
 			Map<Location, BlockData> blockDataMap = SchematicPaste.getBlockMap(schematic, location);
 			if(blockDataMap == null) continue;
 
-			List<Location> locations = new ArrayList<>(blockDataMap.keySet());
-			Location bottom = locations.get(locations.size() - 1);
 
 			int height = 3;
 			int ticks = Misc.getFallTime(height);
@@ -75,24 +68,54 @@ public class CageAbility extends PitBossAbility {
 				fallingBlock.removeAfter(ticks);
 			}
 
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					try {
-						Location paste = viewer.getLocation();
-						CuboidClipboard clipboard = MCEditSchematicFormat.getFormat(schematic).load(schematic);
-						clipboard.paste(session, new com.sk89q.worldedit.Vector(paste.getX(), paste.getY(), paste.getZ()), true);
-					} catch(MaxChangedBlocksException | DataException | IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}.runTaskLater(PitSim.INSTANCE, ticks);
+
+
+			Location cageLoc = trueSpawnLoc.subtract(1, 0, 1);
 
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					session.undo(session);
-					sessionMap.remove(entryLocation);
+
+					List<PacketBlock> packetBlocks = new ArrayList<>();
+					Map<Location, BlockData> blockDataMap = SchematicPaste.getBlockMap(schematic, cageLoc);
+
+					for(Map.Entry<Location, BlockData> entry : blockDataMap.entrySet()) {
+						Location location = entry.getKey();
+						BlockData blockData = entry.getValue();
+
+						PacketBlock packetBlock = new PacketBlock(blockData.material, blockData.data, location);
+						packetBlock.setViewers(getViewers());
+						packetBlock.spawnBlock();
+						packetBlocks.add(packetBlock);
+					}
+
+					packetBlockMap.put(viewer, packetBlocks);
+
+				}
+			}.runTaskLater(PitSim.INSTANCE, ticks);
+
+			new BukkitRunnable() {
+				int runnableTicks = 0;
+				@Override
+				public void run() {
+					Location tpLoc = cageLoc.clone().add(1, 0, 1);
+					if(viewer.getLocation().distance(tpLoc) > 1.5) viewer.teleport(tpLoc);
+
+					if(runnableTicks >= captureTicks) {
+						cancel();
+						return;
+					}
+					runnableTicks += 10;
+				}
+			}.runTaskTimer(PitSim.INSTANCE, 0, 10);
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					for(PacketBlock packetBlock : packetBlockMap.get(viewer)) {
+						packetBlock.removeBlock();
+					}
+					packetBlockMap.remove(viewer);
 				}
 			}.runTaskLater(PitSim.INSTANCE, ticks + captureTicks);
 		}

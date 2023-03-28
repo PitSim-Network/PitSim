@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class PantsColorPanel extends AGUIPanel {
+public  class PantsColorPanel extends AGUIPanel {
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 	public SettingsGUI settingsGUI;
@@ -98,10 +99,11 @@ public class PantsColorPanel extends AGUIPanel {
 
 		for(PantColor pantColor : PantColor.values()) {
 			if(pantColor.displayName.equals("Blue") || pantColor.displayName.equals("Red") || pantColor.displayName.equals("Orange")
-					|| pantColor.displayName.equals("Yellow") || pantColor.displayName.equals("Green") || pantColor.displayName.equals("Jewel") || pantColor.displayName.equals("Dark"))
+					|| pantColor.displayName.equals("Yellow") || pantColor.displayName.equals("Green") || pantColor.displayName.equals("Jewel")
+					|| pantColor.displayName.equals("Dark") || pantColor.displayName.equals(""))
 				continue;
 
-			ItemStack pants = new ItemStack(Material.LEATHER_LEGGINGS);
+			ItemStack pants = MysticFactory.getFreshItem(MysticType.PANTS, pantColor);
 			ItemMeta meta = pants.getItemMeta();
 			meta.setDisplayName(ChatColor.GOLD + "Premium Color");
 			List<String> pantslore = new ArrayList<>();
@@ -129,7 +131,7 @@ public class PantsColorPanel extends AGUIPanel {
 
 		if(originalColor != null) {
 
-			ItemStack original = new ItemStack(Material.LEATHER_LEGGINGS);
+			ItemStack original = MysticFactory.getFreshItem(MysticType.PANTS, originalColor);
 			ItemMeta originalMeta = original.getItemMeta();
 			originalMeta.setDisplayName(ChatColor.GOLD + "Original Color");
 			List<String> originalLore = new ArrayList<>();
