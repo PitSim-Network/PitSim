@@ -16,9 +16,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Random;
 
 public class AltarXPReward {
-
 	public Player player;
 	public double xp;
+	public int orbCount = new Random().nextInt(5 - 3) + 3;
 
 	public AltarXPReward(Player player, double xp) {
 		this.player = player;
@@ -26,9 +26,6 @@ public class AltarXPReward {
 	}
 
 	public void spawn(Location location) {
-		Random random = new Random();
-		int orbCount = random.nextInt(5 - 3) + 3;
-
 		for(int i = 0; i < orbCount; i++) {
 			World world = ((CraftWorld) location.getWorld()).getHandle();
 			EntityExperienceOrb orb = new EntityExperienceOrb(world, location.getX(), location.getY(), location.getZ(), (int) xp);
@@ -51,6 +48,6 @@ public class AltarXPReward {
 	}
 
 	public void reward() {
-		DarkzoneLeveling.giveXP(PitPlayer.getPitPlayer(player), xp);
+		DarkzoneLeveling.giveXP(PitPlayer.getPitPlayer(player), xp / orbCount);
 	}
 }

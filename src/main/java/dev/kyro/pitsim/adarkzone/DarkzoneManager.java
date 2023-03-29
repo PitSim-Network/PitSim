@@ -151,7 +151,7 @@ public class DarkzoneManager implements Listener {
 						}
 					}
 
-					pitPlayer.updateManaBar();
+					if(!SpawnManager.isInSpawn(player)) pitPlayer.updateManaBar();
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);

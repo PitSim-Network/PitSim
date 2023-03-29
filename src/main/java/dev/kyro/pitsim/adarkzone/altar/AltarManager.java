@@ -185,7 +185,7 @@ public class AltarManager implements Listener {
 
 		disableText(player);
 		int ticks = AltarRewards.getTurmoilTicks(player);
-		double turmoilMultiplier = ticks * 0.1;
+		double turmoilMultiplier = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player) ? ticks * 0.1 : 1;
 
 		BukkitRunnable callback = new BukkitRunnable() {
 			@Override

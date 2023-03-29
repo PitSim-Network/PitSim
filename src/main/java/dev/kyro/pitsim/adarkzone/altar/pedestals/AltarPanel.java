@@ -6,7 +6,6 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
-import dev.kyro.pitsim.adarkzone.altar.AltarRewards;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -48,8 +47,6 @@ public class AltarPanel extends AGUIPanel {
 		}
 
 		String costStatus = totalCost > pitPlayer.taintedSouls ? "&cYou do not have enough souls!" : "&aClick to confirm your selections!";
-		double multiplier = AltarRewards.getSoulMultiplier(player) * (AltarPedestal.getPedestal(WealthPedestal.class).isActivated(player) ? AltarPedestal.WEALTH_MULTIPLIER : 1);
-		String multiplierStatus = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player) ? "???" : multiplier + "x";
 
 		ALoreBuilder loreBuilder = new ALoreBuilder("");
 		for(AltarPedestal altarPedestal : AltarPedestal.altarPedestals) {

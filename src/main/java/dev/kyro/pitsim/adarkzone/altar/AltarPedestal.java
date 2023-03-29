@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone.altar;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.HeresyPedestal;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.KnowledgePedestal;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.RenownPedestal;
@@ -32,12 +33,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 public abstract class AltarPedestal implements Listener {
 	public static final int BASE_COST = 100;
-	public static final double WEALTH_MULTIPLIER = 1.5;
 
 	public static List<AltarPedestal> altarPedestals = new ArrayList<>();
 	public Location location;
@@ -57,7 +56,6 @@ public abstract class AltarPedestal implements Listener {
 	public abstract int getActivationCost();
 	public abstract ItemStack getItem(Player player);
 	public abstract ParticleColor getParticleColor();
-
 
 	public boolean isUnlocked(Player player) {
 
@@ -182,8 +180,7 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public static int getRewardChance(Player player, ALTAR_REWARD reward) {
-		//TODO: Change these values
-		return reward.pedestal.isActivated(player) ? 100 : 25;
+		return reward.pedestal.isActivated(player) ? DarkzoneBalancing.PEDESTAL_INCREASE_PERCENT : 0;
 	}
 
 	public static int getTotalCost(Player player) {
@@ -196,36 +193,25 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public enum ALTAR_REWARD {
-		ALTAR_XP(getPedestal(KnowledgePedestal.class), 50),
-		RENOWN(getPedestal(RenownPedestal.class), 50),
-		VOUCHERS(getPedestal(HeresyPedestal.class), 50);
+		ALTAR_XP(getPedestal(KnowledgePedestal.class), DarkzoneBalancing.AVERAGE_XP_PER_100_SOULS),
+		RENOWN(getPedestal(RenownPedestal.class), DarkzoneBalancing.AVERAGE_RENOWN_PER_100_SOULS),
+		VOUCHERS(getPedestal(HeresyPedestal.class), DarkzoneBalancing.AVERAGE_VOUCHERS_PER_100_SOULS);
 
 		public final AltarPedestal pedestal;
-		public final int increase;
+		public final double base;
 
-		ALTAR_REWARD(AltarPedestal pedestal, int increase) {
+		ALTAR_REWARD(AltarPedestal pedestal, double base) {
 			this.pedestal = pedestal;
-			this.increase = increase;
+			this.base = base;
 		}
 
 		public double getRewardCount(RewardSize size) {
-			Random random = new Random();
-
-			int count = 0;
-
-			switch(size) {
-				case MEDIUM:
-					count = random.nextInt(2) + 2;
-					break;
-				case LARGE:
-					count = random.nextInt(2) + 5;
-					break;
-			}
-
-			return count;
+			double preRandomReward = this.base * size.multiplier;
+			return preRandomReward * 0.75 + preRandomReward * Math.random() * 0.5;
 		}
 
 		public void rewardPlayer(Player player, int amount) {
+			if(amount == 0) return;
 			switch(this) {
 				case ALTAR_XP:
 					AltarXPReward reward = new AltarXPReward(player, amount);
@@ -244,24 +230,30 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public enum RewardSize {
-		SMALL(30),
-		MEDIUM(60),
-		LARGE(100);
+		NONE(DarkzoneBalancing.PEDESTAL_NONE_THRESHOLD, DarkzoneBalancing.NONE_REWARD_MULTIPLIER),
+		LOW(DarkzoneBalancing.PEDESTAL_LOW_THRESHOLD, DarkzoneBalancing.LOW_REWARD_MULTIPLIER),
+		HIGH(100, DarkzoneBalancing.HIGH_REWARD_MULTIPLIER);
 
-		private final int base;
+		private final int threshold;
+		private final double multiplier;
 
-		RewardSize(int base) {
-			this.base = base;
+		RewardSize(int threshold, double multiplier) {
+			this.threshold = threshold;
+			this.multiplier = multiplier;
 		}
 
-		public int getBase() {
-			return base;
+		public int getThreshold() {
+			return threshold;
+		}
+
+		public double getMultiplier() {
+			return multiplier;
 		}
 
 		public static RewardSize getFromChance(double chance) {
 			chance = Math.min(chance, 100);
 			for(RewardSize rewardSize : values()) {
-				if(chance <= rewardSize.base) return rewardSize;
+				if(chance <= rewardSize.threshold) return rewardSize;
 			}
 			throw new RuntimeException();
 		}

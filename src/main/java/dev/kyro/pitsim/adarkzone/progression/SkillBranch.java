@@ -144,7 +144,9 @@ public abstract class SkillBranch implements Listener {
 
 			DecimalFormat decimalFormat = new DecimalFormat("#,##0.##");
 			for(EffectData data : effectData) {
-				loreBuilder.addLore(data.formatting.replaceAll("%value%", decimalFormat.format(data.values[level - 1])));
+				double value = data.values[level - 1];
+				if(value == 0) continue;
+				loreBuilder.addLore(data.formatting.replaceAll("%value%", decimalFormat.format(value)));
 			}
 			loreBuilder.addLore("");
 

@@ -23,6 +23,18 @@ public class DarkzoneBalancing {
 
 	public static final double MOB_ITEM_DROP_PERCENT = 10;
 
+	public static final double AVERAGE_XP_PER_100_SOULS = 8.0;
+	public static final double AVERAGE_RENOWN_PER_100_SOULS = 1.2;
+	public static final double AVERAGE_VOUCHERS_PER_100_SOULS = 3.0;
+	public static final double NONE_REWARD_MULTIPLIER = 0.0;
+	public static final double LOW_REWARD_MULTIPLIER = 1.0;
+	public static final double HIGH_REWARD_MULTIPLIER = 1.5;
+
+	public static final int PEDESTAL_NONE_THRESHOLD = 30;
+	public static final int PEDESTAL_LOW_THRESHOLD = 80;
+	public static final int PEDESTAL_INCREASE_PERCENT = 30;
+	public static final double PEDESTAL_WEALTH_MULTIPLIER = 1.2;
+
 	public static int getTravelCost(SubLevel subLevel) {
 		return subLevel.getIndex() + 1;
 	}

@@ -1,12 +1,13 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.controllers.ActionBarManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Player;
+
+import java.text.DecimalFormat;
 
 public class DarkzoneLeveling	 {
 
@@ -51,7 +52,8 @@ public class DarkzoneLeveling	 {
 		pitPlayer.darkzoneData.altarXP += amount;
 		int newLevel = getLevel(pitPlayer.darkzoneData.altarXP);
 
-		ActionBarManager.sendActionBar(pitPlayer.player, "&4&l+" + (int) amount + " ALTAR XP");
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		AOutput.send(pitPlayer.player, "&4&lALTAR!&7 Gained &c+" + decimalFormat.format(amount) + " Altar XP");
 		Sounds.XP_GAIN.play(pitPlayer.player);
 
 		if(newLevel == currentLevel) return;
