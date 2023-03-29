@@ -70,6 +70,9 @@ public class PitPlayer {
 	public boolean isNPC;
 
 	@Exclude
+	public boolean isInitialized;
+
+	@Exclude
 	public Player player;
 	@Exclude
 	public String prefix = "";
@@ -267,18 +270,20 @@ public class PitPlayer {
 			profile.saveData(finalSave);
 		}
 
-		PotionManager.savePotions(this, finalSave);
+		if(isInitialized) {
+			PotionManager.savePotions(this, finalSave);
 
-		megastreakRef = megastreak.getRefNames().get(0);
+			megastreakRef = megastreak.getRefNames().get(0);
 
-		for(int i = 0; i < pitPerks.size(); i++) {
-			PitPerk pitPerk = pitPerks.get(i);
-			pitPerksRef.set(i, pitPerk.refName);
-		}
+			for(int i = 0; i < pitPerks.size(); i++) {
+				PitPerk pitPerk = pitPerks.get(i);
+				pitPerksRef.set(i, pitPerk.refName);
+			}
 
-		for(int i = 0; i < killstreaks.size(); i++) {
-			Killstreak killstreak = killstreaks.get(i);
-			killstreaksRef.set(i, killstreak.refName);
+			for(int i = 0; i < killstreaks.size(); i++) {
+				Killstreak killstreak = killstreaks.get(i);
+				killstreaksRef.set(i, killstreak.refName);
+			}
 		}
 
 		if(finalSave && callback != null) {
@@ -443,11 +448,13 @@ public class PitPlayer {
 			}
 		}
 
-		stats.init(this);
-		tutorial.init(this);
-		scoreboardData.init(this);
-		shield.init(this);
+		this.stats.init(this);
+		this.tutorial.init(this);
+		this.scoreboardData.init(this);
+		this.shield.init(this);
 		updateXPBar();
+
+		this.isInitialized = true;
 	}
 
 	public static boolean loadPitPlayer(UUID playerUUID) {
@@ -637,7 +644,7 @@ public class PitPlayer {
 	@Exclude
 	public boolean useMana(int amount) {
 		if(!hasManaUnlocked() || amount > mana) return false;
-		mana -= amount;
+		mana = Math.max(mana - amount, 0);
 		return true;
 	}
 

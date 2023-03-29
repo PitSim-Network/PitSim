@@ -28,7 +28,7 @@ import java.util.Random;
 public class DamageIndicator implements Listener {
 	public static DecimalFormat decimalFormat = new DecimalFormat("0");
 
-	//    @EventHandler(priority = EventPriority.MONITOR)
+	//	No handler necessary
 	public static void onAttack(AttackEvent.Apply attackEvent, double finalDamage) {
 		if(!attackEvent.isAttackerPlayer() || attackEvent.isFakeHit() || attackEvent.getDefender().isDead() ||
 				attackEvent.isCancelled()) return;
@@ -42,6 +42,9 @@ public class DamageIndicator implements Listener {
 		}
 //		TODO: Remove this to remove boss bar damage indicator
 //		if(defenderMob != null) return;
+
+//		TODO: Damage indicators for players
+//		if(attackEvent.isDefenderRealPlayer()) createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), finalDamage);
 
 		EntityPlayer entityPlayer = null;
 		if(attackEvent.isDefenderPlayer()) entityPlayer = ((CraftPlayer) attackEvent.getDefender()).getHandle();

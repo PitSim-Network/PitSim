@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.pitmaps;
 
+import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.controllers.objects.PitMap;
 import org.bukkit.Location;
 
@@ -13,12 +14,17 @@ public class DimensionsMap extends PitMap {
 		return new Location(world, 0.5, 55, 10.5, 180, 0);
 	}
 
-	//	TODO: chaos
 	@Override
 	public Location getNonSpawn() {
 		Location spawn = new Location(world, 0.5, 53, 0.5);
-		spawn.setX(spawn.getX() + (Math.random() * 8 - 3));
-		spawn.setZ(spawn.getZ() + (Math.random() * 8 - 3));
+		spawn.setX(spawn.getX() + (Math.random() * 8 - 4));
+		spawn.setZ(spawn.getZ() + (Math.random() * 8 - 4));
+
+		if(ChaosBooster.INSTANCE.isActive()) {
+			spawn.add(0, -15, 0);
+		} else if(Math.random() < 0.5) {
+			spawn.add(0, -10, 0);
+		}
 		return spawn;
 	}
 

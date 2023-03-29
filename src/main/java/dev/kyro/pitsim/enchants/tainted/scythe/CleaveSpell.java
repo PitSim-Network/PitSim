@@ -2,13 +2,10 @@ package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
-import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.enums.PitEntityType;
-import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.events.SpellUseEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
@@ -24,7 +21,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class CleaveSpell extends PitEnchant {
+public class CleaveSpell extends PitEnchantSpell {
 	public static Map<Player, List<CleaveEntity>> standMap = new HashMap<>();
 
 	static {
@@ -63,25 +60,15 @@ public class CleaveSpell extends PitEnchant {
 	}
 
 	public CleaveSpell() {
-		super("Cleave", true, ApplyType.SCYTHES, "cleave", "cleaver");
+		super("Cleave", "cleave", "cleaver");
 		isTainted = true;
 	}
 
-	@EventHandler
-	public void onUse(PitPlayerAttemptAbilityEvent event) {
-		int enchantLvl = event.getEnchantLevel(this);
-		if(enchantLvl == 0) return;
-
-		Cooldown cooldown = getCooldown(event.getPlayer(), 4);
-		if(cooldown.isOnCooldown()) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
-			Sounds.NO.play(event.getPlayer());
-			return;
-		}
-		cooldown.restart();
-
+	@EventHandler(ignoreCancelled = true)
+	public void onUse(SpellUseEvent event) {
+		if(!isThisSpell(event.getSpell())) return;
 		Player player = event.getPlayer();
+
 		Location standLocation = player.getLocation().add(0, player.getEyeHeight() - 1.1, 0).subtract(player.getLocation().getDirection());
 		Vector velocity = player.getTargetBlock((Set<Material>) null, 30).getLocation().add(0.5, 0.5, 0.5).toVector()
 				.subtract(standLocation.toVector()).normalize().multiply(1.0);
@@ -128,8 +115,14 @@ public class CleaveSpell extends PitEnchant {
 				"throws your scythe when used, dealing damage to all the enemies it hits";
 	}
 
-	public static int getManaCost(int enchantLvl) {
+	@Override
+	public int getManaCost(int enchantLvl) {
 		return Math.max(24 - enchantLvl * 4, 0);
+	}
+
+	@Override
+	public int getCooldownTicks(int enchantLvl) {
+		return 4;
 	}
 
 	public static class CleaveEntity {

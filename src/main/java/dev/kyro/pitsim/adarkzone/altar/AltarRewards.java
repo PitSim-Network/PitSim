@@ -8,19 +8,17 @@ import dev.kyro.pitsim.adarkzone.progression.skillbranches.AltarBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
 
-import java.util.Random;
-
 public class AltarRewards {
 
 	//Primary 3 pedestals only determine chance.
 	//Base amount is based on LOW/MEDIUM/HIGH system (All base numbers should be doubles)
 	//Multipliers are Wealth, Turmoil, and Souls/Base roll cost
 
-	public static final double MAX_TURMOIL_MULTIPLIER = 10.0;
+	public static final int MAX_TURMOIL_TICKS = 60;
 
 	public static void rewardPlayer(Player player, double turmoilMultiplier) {
 
-		for(AltarPedestal.ALTAR_REWARD reward : AltarPedestal.ALTAR_REWARD.values()) {;
+		for(AltarPedestal.ALTAR_REWARD reward : AltarPedestal.ALTAR_REWARD.values()) {
 
 			double chance = Math.random() * 100 + AltarPedestal.getRewardChance(player, reward);
 			AltarPedestal.RewardSize size = AltarPedestal.RewardSize.getFromChance(chance);
@@ -72,20 +70,15 @@ public class AltarRewards {
 
 	}
 
-	public static double getTurmoilMultiplier(Player player) {
+	public static int getTurmoilTicks(Player player) {
 		TurmoilPedestal pedestal = AltarPedestal.getPedestal(TurmoilPedestal.class);
-		if(!pedestal.isActivated(player)) return 1.0;
+		if(!pedestal.isActivated(player)) return 1;
 
-		boolean positiveTurmoil = new Random().nextBoolean();
+		double breakChance = Math.random() < 0.2 ? 0.025 : 0.14;
 
-		double breakChance = positiveTurmoil ? 0.03 : 0.1;
-
-		double multiplier = 1;
-		while(Math.random() > breakChance) {
-			multiplier += 0.1;
-			if(multiplier >= MAX_TURMOIL_MULTIPLIER) break;
-		}
-		return multiplier;
+		int ticks = 1;
+		while(Math.random() > breakChance && ticks < MAX_TURMOIL_TICKS) ticks++;
+		return ticks;
 	}
 
 	public static double getSoulMultiplier(Player player) {

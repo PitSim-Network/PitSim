@@ -19,8 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class AltarAnimation {
@@ -31,18 +30,18 @@ public class AltarAnimation {
 
 	public List<AltarPedestal> activatedPedestals;
 	public BukkitRunnable onComplete;
-	public double turmoilMultiplier;
+	public double turmoilTicks;
 
 	public final Map<AltarPedestal, BukkitTask> streamRunnables = new HashMap<>();
 	public final List<EntityItem> soulItems = new ArrayList<>();
 	public final List<PedestalSpin> pedestalSpins = new ArrayList<>();
 	public boolean activeTurmoil = false;
 
-	public AltarAnimation(Player player, int totalSouls, List<AltarPedestal> activatedPedestals, double turmoil, BukkitRunnable onComplete) {
+	public AltarAnimation(Player player, int totalSouls, List<AltarPedestal> activatedPedestals, int turmoilTicks, BukkitRunnable onComplete) {
 		this.player = player;
 		this.totalSouls = totalSouls;
 		this.activatedPedestals = activatedPedestals;
-		this.turmoilMultiplier = turmoil;
+		this.turmoilTicks = turmoilTicks;
 		this.onComplete = onComplete;
 
 		playSoulAnimation();
@@ -176,11 +175,10 @@ public class AltarAnimation {
 		DataWatcher dataWatcher = stand.getDataWatcher();
 
 		int rotations = 0;
-		for(double i = 0; i < turmoilMultiplier; i += 0.1) {
-			BigDecimal bd = new BigDecimal(Double.toString(i));
-			bd = bd.setScale(1, RoundingMode.HALF_UP);
-
-			String text = "&2&lTURMOIL " + (1 + bd.doubleValue()) + "x";
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		for(int i = 0; i <= turmoilTicks; i += 1) {
+			double multiplier = 0.1 * i;
+			String text = "&2&lTURMOIL " + decimalFormat.format(multiplier) + "x";
 
 			int finalRotations = rotations;
 			new BukkitRunnable() {
@@ -189,12 +187,19 @@ public class AltarAnimation {
 					dataWatcher.watch(2, (Object) ChatColor.translateAlternateColorCodes('&', text));
 					PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(stand.getId(), dataWatcher, true);
 					((CraftPlayer) player).getHandle().playerConnection.sendPacket(meta);
-
-					Sounds.TURMOIL.play(player, 1.5f, Math.min(2f, 0.025F * finalRotations));
 				}
-			}.runTaskLater(PitSim.INSTANCE, 2L * rotations);
+			}.runTaskLater(PitSim.INSTANCE, 8L * rotations);
 
-			if(i >= turmoilMultiplier - 0.1) {
+			for(int j = 0; j < 4; j++) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						Sounds.TURMOIL.play(player, 1.5F, Math.min(2F, 0.5F + 0.025F * finalRotations));
+					}
+				}.runTaskLater(PitSim.INSTANCE, 8L * rotations + j * 2);
+			}
+
+			if(i == turmoilTicks) {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
@@ -202,7 +207,7 @@ public class AltarAnimation {
 						((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
 						activeTurmoil = false;
 					}
-				}.runTaskLater(PitSim.INSTANCE, (rotations * 2L) + 60);
+				}.runTaskLater(PitSim.INSTANCE, (rotations * 8L) + 60);
 			}
 
 			rotations++;

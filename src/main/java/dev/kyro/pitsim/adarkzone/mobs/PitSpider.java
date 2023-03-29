@@ -65,7 +65,7 @@ public class PitSpider extends PitMob {
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(SpiderEye.class).getItem(), 1);
+				.addRareItem(() -> ItemFactory.getItem(SpiderEye.class).getItem(), DarkzoneBalancing.MOB_ITEM_DROP_PERCENT);
 	}
 
 	@Override

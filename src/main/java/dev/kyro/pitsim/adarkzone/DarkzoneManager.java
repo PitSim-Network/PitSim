@@ -14,10 +14,9 @@ import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.SoulPickup;
 import dev.kyro.pitsim.aitems.mobdrops.EnderPearl;
 import dev.kyro.pitsim.aitems.mobdrops.*;
-import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.controllers.SpawnManager;
-import dev.kyro.pitsim.controllers.TaintedWell;
+import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.chestplate.Resilient;
 import dev.kyro.pitsim.enums.MobStatus;
@@ -25,7 +24,7 @@ import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
-import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.events.SpellUseEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.*;
@@ -141,7 +140,7 @@ public class DarkzoneManager implements Listener {
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					if(!pitPlayer.hasManaUnlocked()) continue;
 
-					ManaRegenEvent event = new ManaRegenEvent(player, 0.1);
+					ManaRegenEvent event = new ManaRegenEvent(player, 0.07);
 					Bukkit.getPluginManager().callEvent(event);
 					if(!event.isCancelled()) {
 						double mana = event.getFinalMana();
@@ -186,14 +185,59 @@ public class DarkzoneManager implements Listener {
 	public void onClick2(PlayerInteractEvent event) {
 		if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		Player player = event.getPlayer();
-		if(!MapManager.inDarkzone(player) || SpawnManager.isInSpawn(player)) return;
+		if(!MapManager.inDarkzone(player)) return;
 		ItemStack itemStack = player.getItemInHand();
 		if(Misc.isAirOrNull(itemStack)) return;
 		MysticType mysticType = MysticType.getMysticType(itemStack);
 		if(mysticType != MysticType.TAINTED_SCYTHE) return;
 
-		PitPlayerAttemptAbilityEvent newEvent = new PitPlayerAttemptAbilityEvent(player);
-		Bukkit.getPluginManager().callEvent(newEvent);
+		if(SpawnManager.isInSpawn(player)) {
+			AOutput.send(player, "&c&c&lERROR!&7 You cannot use spells in the spawn area!");
+			Sounds.NO.play(player);
+			return;
+		}
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		for(Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(player).entrySet()) {
+			PitEnchant pitEnchant = entry.getKey();
+			int enchantLvl = entry.getValue();
+			if(!(pitEnchant instanceof PitEnchantSpell)) continue;
+			PitEnchantSpell pitSpell = (PitEnchantSpell) pitEnchant;
+			int manaCost = pitSpell.getManaCost(enchantLvl);
+
+			Cooldown cooldown = pitSpell.getCooldown(player, pitSpell.getCooldownTicks(enchantLvl));
+			if(cooldown.isOnCooldown()) continue;
+			if(pitPlayer.mana < manaCost) {
+				Sounds.NO.play(player);
+				continue;
+			}
+
+			if(pitSpell.onlyInSubLevels) {
+				SubLevel subLevel = null;
+				for(SubLevel testLevel : DarkzoneManager.subLevels) {
+					double distance = testLevel.getMiddle().distance(player.getLocation());
+					if(distance > testLevel.spawnRadius) continue;
+					subLevel = testLevel;
+					break;
+				}
+				if(subLevel == null) {
+					AOutput.error(player, "&c&lERROR!&7 You have to be in a sub level to use " +
+							pitSpell.getDisplayName(false, true));
+					continue;
+				}
+			}
+
+			SpellUseEvent spellUseEvent = new SpellUseEvent(player, pitSpell, enchantLvl);
+			Bukkit.getPluginManager().callEvent(spellUseEvent);
+
+			if(spellUseEvent.isCancelled()) {
+				Sounds.NO.play(player);
+				continue;
+			}
+
+			pitPlayer.useManaForSpell(manaCost);
+			cooldown.restart();
+		}
 	}
 
 	@EventHandler
@@ -275,11 +319,6 @@ public class DarkzoneManager implements Listener {
 
 		for(SubLevel subLevel : subLevels) {
 			if(subLevel.getSpawnItemClass() != pitItem.getClass() || !subLevel.getMiddle().equals(location)) continue;
-
-			if(!ProgressionManager.isUnlocked(pitPlayer, DamageBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST) && !player.isOp()) {
-				AOutput.error(player, "&c&lERROR!&7 You do have not unlocked the ability to spawn bosses");
-				return;
-			}
 
 			if(subLevel.isBossSpawned()) {
 				AOutput.error(player, "&c&lERROR!&7 You cannot do that while a boss is spawned");

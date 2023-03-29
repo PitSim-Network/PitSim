@@ -68,7 +68,8 @@ public class ItemManager implements Listener {
 				List<ItemStack> itemList = updatedItems.remove(player.getUniqueId());
 				for(ItemStack itemStack : itemList) {
 					String itemName = itemStack.getItemMeta().getDisplayName();
-					AOutput.send(player, "&a&lITEM UPDATED!&7 Your " + itemName + "&7 has been updated");
+					String haveHas = itemName.endsWith("s") ? "have" : "has";
+					AOutput.send(player, "&a&lITEM UPDATED!&7 Your " + itemName + "&7 " + haveHas + " been updated");
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10L);
@@ -119,7 +120,7 @@ public class ItemManager implements Listener {
 			droppedItem.remove();
 			pitPlayer.taintedSouls += souls;
 
-			Sounds.PICKUP.play(player);
+			Sounds.SOUL_PICKUP.play(player);
 			AOutput.send(player, "&5&lHARVEST!&7 You harvested &f" + souls + " soul" + (souls == 1 ? "" : "s"));
 		}
 	}

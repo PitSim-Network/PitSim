@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.enums;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.mystics.MysticPants;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.ChatColor;
@@ -93,7 +94,7 @@ public enum PantColor {
 
 		LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
 		leatherArmorMeta.setColor(Color.fromRGB(pantColor.hexColor));
-		leatherArmorMeta.setDisplayName(pantColor.chatColor + (ChatColor.RESET + leatherArmorMeta.getDisplayName()));
+		if(MysticFactory.isFresh(itemStack)) leatherArmorMeta.setDisplayName(pantColor.chatColor + ChatColor.stripColor(leatherArmorMeta.getDisplayName()));
 		itemStack.setItemMeta(leatherArmorMeta);
 	}
 }

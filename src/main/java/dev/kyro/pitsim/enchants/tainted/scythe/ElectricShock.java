@@ -2,13 +2,10 @@ package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
-import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.cosmetics.particles.FireworkSparkParticle;
-import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.events.SpellUseEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
@@ -26,26 +23,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ElectricShock extends PitEnchant {
+public class ElectricShock extends PitEnchantSpell {
 	public static ElectricShock INSTANCE;
 
 	public ElectricShock() {
-		super("Electric Shock", true, ApplyType.SCYTHES,
-				"electricshock", "shock", "electric");
+		super("Electric Shock", "electricshock", "shock", "electric");
 		isTainted = true;
 		INSTANCE = this;
 	}
 
-	@EventHandler
-	public void onUse(PitPlayerAttemptAbilityEvent event) {
+	@EventHandler(ignoreCancelled = true)
+	public void onUse(SpellUseEvent event) {
+		if(!isThisSpell(event.getSpell())) return;
 		Player player = event.getPlayer();
-
-		int enchantLvl = event.getEnchantLevel(this);
-		if(enchantLvl == 0) return;
-
-		Cooldown cooldown = getCooldown(player, 20);
-		if(cooldown.isOnCooldown()) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 //		pick initial target
 		Location testLocation = player.getLocation();
@@ -61,20 +51,14 @@ public class ElectricShock extends PitEnchant {
 		}
 
 		if(target == null) {
-			Sounds.NO.play(player);
+			event.setCancelled(true);
 			return;
 		}
-
-		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
-			Sounds.NO.play(event.getPlayer());
-			return;
-		}
-		cooldown.restart();
 
 		List<Entity> excluded = new ArrayList<>();
 		excluded.add(player);
 		excluded.add(target);
-		chain(player, player, target, 0, getMaxBounces(enchantLvl), excluded);
+		chain(player, player, target, 0, getMaxBounces(event.getSpellLevel()), excluded);
 		Sounds.ELECTRIC_SHOCK.play(player);
 	}
 
@@ -156,7 +140,13 @@ public class ElectricShock extends PitEnchant {
 				"shoots an electric beam that can chain between targets";
 	}
 
-	public static int getManaCost(int enchantLvl) {
+	@Override
+	public int getManaCost(int enchantLvl) {
+		return 20;
+	}
+
+	@Override
+	public int getCooldownTicks(int enchantLvl) {
 		return 20;
 	}
 

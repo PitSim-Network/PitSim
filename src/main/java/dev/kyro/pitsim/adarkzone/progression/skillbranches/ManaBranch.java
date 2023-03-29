@@ -6,7 +6,7 @@ import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.PitEntityType;
-import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
@@ -35,10 +35,10 @@ public class ManaBranch extends SkillBranch {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
-		boolean hasFirstPath = ProgressionManager.isUnlocked(attackEvent.getAttackerPitPlayer(), this, MajorUnlockPosition.FIRST_PATH);
-		if(hasFirstPath && Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_MOB))
-			attackEvent.getAttackerPitPlayer().mana += getMobKillMana();
+	public void onAttack(KillEvent killEvent) {
+		boolean hasFirstPath = ProgressionManager.isUnlocked(killEvent.getKillerPitPlayer(), this, MajorUnlockPosition.FIRST_PATH);
+		if(hasFirstPath && Misc.isEntity(killEvent.getDead(), PitEntityType.PIT_MOB))
+			killEvent.getKillerPitPlayer().mana += getMobKillMana();
 	}
 
 	public static int getSpellManaReduction() {

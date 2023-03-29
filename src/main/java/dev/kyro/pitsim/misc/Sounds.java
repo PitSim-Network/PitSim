@@ -14,7 +14,8 @@ import java.util.List;
 public class Sounds {
 
 	//	General
-	public static final SoundEffect PICKUP = new SoundEffect(Sound.ORB_PICKUP, 1, 1.7936507);
+	public static final SoundEffect ITEM_PICKUP = new SoundEffect(Sound.ITEM_PICKUP, 1, 1);
+	public static final SoundEffect SOUL_PICKUP = new SoundEffect(Sound.ORB_PICKUP, 1, 1.7936507);
 	public static final SoundEffect SUCCESS = new SoundEffect(Sound.NOTE_PLING, 1, 2);
 	public static final SoundEffect ERROR = new SoundEffect(Sound.ENDERMAN_TELEPORT, 1, 0.5);
 	public static final SoundEffect NO = new SoundEffect(Sound.VILLAGER_NO, 1, 1);
@@ -73,7 +74,6 @@ public class Sounds {
 	public static final SoundEffect XP_GAIN = new SoundEffect(Sound.ORB_PICKUP, 1, 1);
 	public static final SoundEffect ALTAR_LEVEL_UP = new SoundEffect(Sound.WOLF_HOWL, 1, 0.8);
 	public static final SoundEffect VOUCHER_USE = new SoundEffect(Sound.IRONGOLEM_DEATH, 1, 0.8);
-	public static final SoundEffect ITEM_PICKUP = new SoundEffect(Sound.ITEM_PICKUP, 1, 1);
 	public static final SoundEffect HEARTBEAT1 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.6);
 	public static final SoundEffect HEARTBEAT2 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.8);
 

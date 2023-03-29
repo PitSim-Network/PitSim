@@ -111,7 +111,7 @@ public class TaintedScythe extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
-		return nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef()) && itemStack.getType() == Material.GOLD_HOE;
+		return nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef()) && (itemStack.getType() == Material.GOLD_HOE || itemStack.getType() == Material.STONE_HOE);
 	}
 
 	@Override

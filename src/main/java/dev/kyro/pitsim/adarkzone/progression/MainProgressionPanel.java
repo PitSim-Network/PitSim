@@ -89,6 +89,7 @@ public class MainProgressionPanel extends AGUIPanel {
 	public void onClose(InventoryCloseEvent event) {}
 
 	public void setInventory() {
+		getInventory().setItem(52, progressionGUI.createSoulsDisplay());
 		for(MainProgressionUnlock unlock : ProgressionManager.mainProgressionUnlocks) {
 			UnlockState state = ProgressionManager.getUnlockState(pitPlayer, unlock);
 			getInventory().setItem(unlock.getSlot(), unlock.getDisplayStack(pitPlayer, state));

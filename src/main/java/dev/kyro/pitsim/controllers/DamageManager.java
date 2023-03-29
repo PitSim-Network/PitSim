@@ -313,6 +313,12 @@ public class DamageManager implements Listener {
 
 //		As strong as iron
 		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
+//		Armor for fake indirect attacks
+		if(attackEvent.getWrapperEvent().hasAttackInfo() &&
+				attackEvent.getWrapperEvent().getAttackInfo().getAttackType() == AttackInfo.AttackType.FAKE_INDIRECT) {
+			attackEvent.multipliers.add(1 - (ArmorReduction.getArmorPoints(attackEvent.getDefender()) * 0.04));
+			AOutput.send(attackEvent.getAttacker(), "modified defender armor artificially");
+		}
 
 //		New player defence
 		if(PitSim.status.isOverworld() && attackEvent.isDefenderRealPlayer() && attackEvent.isAttackerRealPlayer() &&
@@ -353,6 +359,7 @@ public class DamageManager implements Listener {
 		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(0);
 
 		DamageIndicator.onAttack(attackEvent, finalDamage);
+		BossManager.onAttack(attackEvent, finalDamage);
 
 		if(absorption != 0) {
 			if(absorption > finalDamage) {

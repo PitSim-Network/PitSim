@@ -86,7 +86,7 @@ public class Bone extends BrewingIngredient implements TemporaryItem {
 	public Object getPotency(BrewingIngredient potencyIngredient) {
 		int tier = potencyIngredient.tier;
 
-		return 10 * tier + "," + 50 * tier;
+		return 10 * tier + "," + 30 * tier;
 	}
 
 	@Override

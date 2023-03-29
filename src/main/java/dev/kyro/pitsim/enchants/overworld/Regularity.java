@@ -30,7 +30,7 @@ public class Regularity extends PitEnchant {
 		super("Regularity", true, ApplyType.PANTS,
 				"regularity", "reg");
 
-		meleOnly = true;
+		meleeOnly = true;
 		INSTANCE = this;
 	}
 

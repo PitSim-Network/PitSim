@@ -3,12 +3,9 @@ package dev.kyro.pitsim.enchants.tainted.scythe;
 import com.sk89q.worldedit.EditSession;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.Cooldown;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.enums.PitEntityType;
-import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.events.SpellUseEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.SchematicPaste;
@@ -18,7 +15,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,45 +28,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FreezeSpell extends PitEnchant {
+public class FreezeSpell extends PitEnchantSpell {
 	public static Map<EditSession, Location> sessionMap = new HashMap<>();
 	public static Map<Location, Material> blockMap = new HashMap<>();
 
 	public FreezeSpell() {
-		super("Freeze", true, ApplyType.SCYTHES, "freeze", "cold");
+		super("Freeze", "freeze", "cold");
 		isTainted = true;
 	}
 
 	@EventHandler
-	public void onUse(PitPlayerAttemptAbilityEvent event) {
-		int enchantLvl = event.getEnchantLevel(this);
-		if(enchantLvl == 0) return;
+	public void onUse(SpellUseEvent event) {
+		if(!isThisSpell(event.getSpell())) return;
+		Player player = event.getPlayer();
 
-		Block block = event.getPlayer().getLocation().subtract(0, 1, 0).getBlock();
-		if(block.getType().equals(Material.AIR) && event.getPlayer().getLocation().subtract(0, 2, 0).getBlock().getType() == Material.AIR) {
-			AOutput.send(event.getPlayer(), "&c&lERROR!&7 Must be standing on a block!");
-			Sounds.NO.play(event.getPlayer());
+		Block block = player.getLocation().subtract(0, 1, 0).getBlock();
+		if(block.getType().equals(Material.AIR) && player.getLocation().subtract(0, 2, 0).getBlock().getType() == Material.AIR) {
+			AOutput.send(player, "&c&lERROR!&7 Must be standing on a block!");
+			Sounds.NO.play(player);
 			return;
 		}
-
-		Cooldown cooldown = getCooldown(event.getPlayer(), 40);
-		if(cooldown.isOnCooldown()) return;
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
-			Sounds.NO.play(event.getPlayer());
-			return;
-		}
-		cooldown.restart();
 
 		for(Location value : sessionMap.values()) {
-			if(value.distance(event.getPlayer().getLocation()) < 12) {
-				AOutput.error(event.getPlayer(), "&c&lERROR!&7 Too close to another spell!");
-				Sounds.NO.play(event.getPlayer());
+			if(value.distance(player.getLocation()) < 12) {
+				AOutput.error(player, "&c&lERROR!&7 Too close to another spell!");
+				Sounds.NO.play(player);
 				return;
 			}
 		}
 
-		Player player = event.getPlayer();
 		Location location;
 		if(player.getLocation().subtract(0, 1, 0).getBlock().getType() == Material.AIR)
 			location = player.getLocation().subtract(0, 1, 0);
@@ -79,7 +68,7 @@ public class FreezeSpell extends PitEnchant {
 				Effect.STEP_SOUND, 174, 1, 2F, 2F, 2F, 0.2F, 250, 6);
 		Sounds.FREEZE1.play(player);
 
-		for(Entity nearbyEntity : event.getPlayer().getNearbyEntities(6, 6, 6)) {
+		for(Entity nearbyEntity : player.getNearbyEntities(6, 6, 6)) {
 			if(!Misc.isEntity(nearbyEntity, PitEntityType.PIT_MOB, PitEntityType.PIT_BOSS)) continue;
 
 			Misc.applyPotionEffect((LivingEntity) nearbyEntity, PotionEffectType.SLOW, 40, 100, false, false);
@@ -135,8 +124,14 @@ public class FreezeSpell extends PitEnchant {
 				"freezes all nearby mobs and bosses";
 	}
 
+	@Override
 	public static int getManaCost(int enchantLvl) {
 		return Math.max(35 - enchantLvl * 5, 0);
+	}
+
+	@Override
+	public int getCooldownTicks(int enchantLvl) {
+		return 40;
 	}
 
 	public static int getDuration(int enchantLvl) {

@@ -5,12 +5,9 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.aitems.MysticFactory;
+import dev.kyro.pitsim.aitems.diamond.*;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
-import dev.kyro.pitsim.aitems.diamond.ProtBoots;
-import dev.kyro.pitsim.aitems.diamond.ProtChestplate;
-import dev.kyro.pitsim.aitems.diamond.ProtHelmet;
-import dev.kyro.pitsim.aitems.diamond.ProtLeggings;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.ItemFactory;
@@ -76,6 +73,7 @@ class GodPanel extends AGUIPanel {
 		itemStack = HelmetManager.depositGold(itemStack, 2_000_000_000);
 		addItem(itemStack);
 
+		addItem(ItemFactory.getItem(DiamondLeggings.class).getItem(1));
 		addItem(ItemFactory.getItem(ProtHelmet.class).getItem(1));
 		addItem(ItemFactory.getItem(ProtChestplate.class).getItem(1));
 		addItem(ItemFactory.getItem(ProtLeggings.class).getItem(1));
