@@ -125,7 +125,7 @@ public class FreezeSpell extends PitEnchantSpell {
 	}
 
 	@Override
-	public static int getManaCost(int enchantLvl) {
+	public int getManaCost(int enchantLvl) {
 		return Math.max(35 - enchantLvl * 5, 0);
 	}
 
