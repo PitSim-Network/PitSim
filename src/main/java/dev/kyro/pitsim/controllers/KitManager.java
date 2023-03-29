@@ -24,9 +24,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class KitManager implements Listener {
-	private static final Map<KitItem, ItemStack> kitItemMap = new HashMap<>();
+	private static final Map<KitItem, Supplier<ItemStack>> kitItemMap = new HashMap<>();
 	public static List<Kit> kits = new ArrayList<>();
 
 	public static void registerKit(Kit kit) {
@@ -44,7 +45,7 @@ public class KitManager implements Listener {
 	}
 
 	public static ItemStack getItem(KitItem kitItem) {
-		ItemStack itemStack = kitItemMap.get(kitItem);
+		ItemStack itemStack = kitItemMap.get(kitItem).get();
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem != null && pitItem.hasUUID) itemStack = pitItem.randomizeUUID(itemStack);
 		return itemStack;
@@ -52,170 +53,283 @@ public class KitManager implements Listener {
 
 	static {
 		try {
-			ItemStack itemStack;
+			kitItemMap.put(KitItem.DIAMOND_HELMET, () -> ItemFactory.getItem(DiamondHelmet.class).getItem());
+			kitItemMap.put(KitItem.DIAMOND_CHESTPLATE, () -> ItemFactory.getItem(DiamondChestplate.class).getItem());
+			kitItemMap.put(KitItem.DIAMOND_BOOTS, () -> ItemFactory.getItem(DiamondBoots.class).getItem());
 
-			kitItemMap.put(KitItem.DIAMOND_HELMET, ItemFactory.getItem(DiamondHelmet.class).getItem());
-			kitItemMap.put(KitItem.DIAMOND_CHESTPLATE, ItemFactory.getItem(DiamondChestplate.class).getItem());
-			kitItemMap.put(KitItem.DIAMOND_BOOTS, ItemFactory.getItem(DiamondBoots.class).getItem());
+			kitItemMap.put(KitItem.EXE_SWEATY, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("exe"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("sweaty"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("shark"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&bXP Sword").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("exe"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("sweaty"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("shark"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&bXP Sword");
-			kitItemMap.put(KitItem.EXE_SWEATY, itemStack);
+			kitItemMap.put(KitItem.SWEATY_GHEART, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.BLUE);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("sweaty"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gheart"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ng"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&bXP Pants &7(Defence)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.BLUE);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("sweaty"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gheart"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ng"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&bXP Pants &7(Defence)");
-			kitItemMap.put(KitItem.SWEATY_GHEART, itemStack);
+			kitItemMap.put(KitItem.SWEATY_ELEC, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.GREEN);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("sweaty"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("elec"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ng"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&bXP Pants &7(Mobility)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.GREEN);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("sweaty"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("elec"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ng"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&bXP Pants &7(Mobility)");
-			kitItemMap.put(KitItem.SWEATY_ELEC, itemStack);
+			kitItemMap.put(KitItem.EXE_MOCT_BOOST, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("exe"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("moct"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("boost"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&6Gold Sword &7(Efficiency)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("exe"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("moct"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("boost"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&6Gold Sword &7(Efficiency)");
-			kitItemMap.put(KitItem.EXE_MOCT_BOOST, itemStack);
+			kitItemMap.put(KitItem.EXE_MOCT_SHARK, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("exe"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("moct"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("shark"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&6Gold Sword &7(Damage)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("exe"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("moct"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("shark"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&6Gold Sword &7(Damage)");
-			kitItemMap.put(KitItem.EXE_MOCT_SHARK, itemStack);
+			kitItemMap.put(KitItem.MOCT_BOOST_BUMP, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.ORANGE);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("moct"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("boost"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bump"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&6Gold Pants &7(Efficiency)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.ORANGE);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("moct"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("boost"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bump"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&6Gold Pants &7(Efficiency)");
-			kitItemMap.put(KitItem.MOCT_BOOST_BUMP, itemStack);
+			kitItemMap.put(KitItem.MOCT_BOOST_ELEC, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.YELLOW);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("moct"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("boost"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("elec"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&6Gold Pants &7(Mobility)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.YELLOW);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("moct"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("boost"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("elec"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&6Gold Pants &7(Mobility)");
-			kitItemMap.put(KitItem.MOCT_BOOST_ELEC, itemStack);
+			kitItemMap.put(KitItem.BILL_STOMP_PUN, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("stomp"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pun"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&cDamage Billionaire &7(w/RGM)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("stomp"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pun"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&cDamage Billionaire &7(w/RGM)");
-			kitItemMap.put(KitItem.BILL_STOMP_LS, itemStack);
+			kitItemMap.put(KitItem.BILL_LS_CD, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cd"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&cPvP Lifesteal &7(w/RGM)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cd"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&cPvP Lifesteal &7(w/RGM)");
-			kitItemMap.put(KitItem.BILL_LS_PF, itemStack);
+			kitItemMap.put(KitItem.CH_LS_GAB, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ch"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gab"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&cPvP Lifesteal &7(w/Regularity)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ch"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gab"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&cPvP Lifesteal &7(w/Regularity)");
-			kitItemMap.put(KitItem.CH_LS, itemStack);
+			kitItemMap.put(KitItem.PERUN_GAMBLE_PUN, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("perun"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gamble"), 1, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pun"), 3, false);
+					return new AItemStackBuilder(itemStack).setName("&bTrue Damage &7(w/Regularity)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("perun"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gamble"), 1, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pun"), 3, false);
-			new AItemStackBuilder(itemStack).setName("&bTrue Damage &7(w/Regularity)");
-			kitItemMap.put(KitItem.PERUN_GAMBLE_STOMP, itemStack);
+			kitItemMap.put(KitItem.PERUN_CHEAL_GAB, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("perun"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ch"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gab"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&bTrue Damage &7(w/Regularity)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("perun"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ch"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("gab"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&bTrue Damage &7(w/Regularity)");
-			kitItemMap.put(KitItem.PERUN_CHEAL_CD, itemStack);
+			kitItemMap.put(KitItem.RGM_MIRROR_PROT, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.BLUE);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("rgm"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mirror"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("prot"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&9RGM Mirror &7(w/Billionaire)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.BLUE);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("rgm"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mirror"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("prot"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&9RGM Mirror &7(w/Billionaire)");
-			kitItemMap.put(KitItem.RGM_MIRROR_PROT, itemStack);
+			kitItemMap.put(KitItem.RGM_CF_PROT, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.RED);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("rgm"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cf"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("prot"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&9RGM CF &7(w/Billionaire)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.RED);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("rgm"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("cf"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("prot"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&9RGM CF &7(w/Billionaire)");
-			kitItemMap.put(KitItem.RGM_CF_PROT, itemStack);
+			kitItemMap.put(KitItem.REG_MIRROR_PROT, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.GREEN);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("reg"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mirror"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("prot"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&aRegularity Mirror &7(w/Perun)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.GREEN);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("reg"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mirror"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("prot"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&aRegularity Mirror &7(w/Perun)");
-			kitItemMap.put(KitItem.REG_MIRROR_PROT, itemStack);
+			kitItemMap.put(KitItem.REG_SOLI_PROT, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.ORANGE);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("reg"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("soli"), 1, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("prot"), 3, false);
+					return new AItemStackBuilder(itemStack).setName("&aRegularity Solitude &7(w/Perun)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.ORANGE);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("reg"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("soli"), 1, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("prot"), 3, false);
-			new AItemStackBuilder(itemStack).setName("&aRegularity Solitude &7(w/Perun)");
-			kitItemMap.put(KitItem.REG_SOLI_LASTSTAND, itemStack);
+			kitItemMap.put(KitItem.MLB_DRAIN, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.BOW, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mlb"), 1, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("drain"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("fletching"), 3, false);
+					return new AItemStackBuilder(itemStack).setName("&2MLB Drain &7(Combos)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.BOW, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mlb"), 1, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("drain"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("fletching"), 3, false);
-			new AItemStackBuilder(itemStack).setName("&2MLB Drain &7(Combos)");
-			kitItemMap.put(KitItem.MLB_DRAIN, itemStack);
+			kitItemMap.put(KitItem.MLB_PIN, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.BOW, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mlb"), 1, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pin"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("fletching"), 3, false);
+					return new AItemStackBuilder(itemStack).setName("&2MLB Pin &7(Anti-Combos)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.BOW, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mlb"), 1, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("pin"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("fletching"), 3, false);
-			new AItemStackBuilder(itemStack).setName("&2MLB Pin &7(Anti-Combos)");
-			kitItemMap.put(KitItem.MLB_PIN, itemStack);
+			kitItemMap.put(KitItem.MLB_WASP, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.BOW, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mlb"), 1, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("wasp"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("fletching"), 3, false);
+					return new AItemStackBuilder(itemStack).setName("&2MLB Wasp &7(Tanking)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.BOW, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mlb"), 1, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("wasp"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("fletching"), 3, false);
-			new AItemStackBuilder(itemStack).setName("&2MLB Wasp &7(Tanking)");
-			kitItemMap.put(KitItem.MLB_WASP, itemStack);
+			kitItemMap.put(KitItem.MLB_TELE, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.BOW, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mlb"), 1, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("tele"), 3, false);
+					return new AItemStackBuilder(itemStack).setName("&eMLB Telebow &7(Mobility)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.BOW, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("mlb"), 1, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("tele"), 3, false);
-			new AItemStackBuilder(itemStack).setName("&eMLB Telebow &7(Mobility)");
-			kitItemMap.put(KitItem.MLB_TELE, itemStack);
+			kitItemMap.put(KitItem.STREAKING_BILL_LS, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 2, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("shark"), 3, false);
+					return new AItemStackBuilder(itemStack).setName("&cStreaking Lifesteal &7(Costs Gold)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("bill"), 2, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("shark"), 3, false);
-			new AItemStackBuilder(itemStack).setName("&cStreaking Lifesteal &7(Costs Gold)");
-			kitItemMap.put(KitItem.STREAKING_BILL_LS, itemStack);
+			kitItemMap.put(KitItem.STREAKING_CH_LS, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ch"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("shark"), 2, false);
+					return new AItemStackBuilder(itemStack).setName("&cStreaking Lifesteal &7(No-Cost)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			itemStack = MysticFactory.getFreshItem(MysticType.SWORD, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ch"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ls"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("shark"), 2, false);
-			new AItemStackBuilder(itemStack).setName("&cStreaking Lifesteal &7(No-Cost)");
-			kitItemMap.put(KitItem.STREAKING_CH_LS, itemStack);
-
-			itemStack = MysticFactory.getFreshItem(MysticType.BOW, null);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("volley"), 3, false);
-			itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ftts"), 3, false);
-			new AItemStackBuilder(itemStack).setName("&bVolley FTTS &7(w/Electrolytes)");
-			kitItemMap.put(KitItem.VOLLEY_FTTS, itemStack);
+			kitItemMap.put(KitItem.VOLLEY_FTTS, () -> {
+				try {
+					ItemStack itemStack = MysticFactory.getFreshItem(MysticType.BOW, null);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("volley"), 3, false);
+					itemStack = EnchantManager.addEnchant(itemStack, EnchantManager.getEnchant("ftts"), 3, false);
+					return new AItemStackBuilder(itemStack).setName("&bVolley FTTS &7(w/Electrolytes)").getItemStack();
+				} catch(Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
 
 		} catch(Exception exception) {
 			exception.printStackTrace();
