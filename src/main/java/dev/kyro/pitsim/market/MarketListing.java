@@ -70,6 +70,8 @@ public class MarketListing implements Serializable {
 		String bidMap = strings.get(7);
 
 		if(!bidMap.isEmpty()) {
+			this.bidMap.clear();
+
 			String[] entrySplit = bidMap.split(",");
 			for(String s : entrySplit) {
 				String[] dataSplit = s.split(":");

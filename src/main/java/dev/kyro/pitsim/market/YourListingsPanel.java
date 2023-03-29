@@ -9,7 +9,6 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
-import net.minecraft.server.v1_8_R3.ItemMapEmpty;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -123,6 +122,10 @@ public class YourListingsPanel extends AGUIPanel {
 			}
 
 			List<UUID> bidders = new ArrayList<>(listing.bidMap.keySet());
+
+			if(listing.buyer == null) continue;
+			if(!listing.hasEnded) continue;
+
 			if(bidders.contains(player.getUniqueId()) && !listing.buyer.equals(player.getUniqueId())) soulListings.add(listing);
 		}
 
