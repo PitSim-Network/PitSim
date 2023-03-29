@@ -57,14 +57,6 @@ public class HelpManager implements Listener {
 						"what are you doing?"
 				));
 
-		helpIntents.add(new HelpIntent("WHAT_IS_THE_DARKZONE", HelpPageIdentifier.MAIN_PAGE)
-				.setReply("The darkzone is a place that makes you hate living more than anything else")
-				.setTrainingPhrases(
-						"what is the darkzone?",
-						"what do you do in the darkzone?",
-						"how do you unlock the darkzone?"
-				));
-
 		helpIntents.add(new HelpIntent("WHAT_IS_PIT", HelpPageIdentifier.MAIN_PAGE)
 				.setReply("The Hypixel Pit is a glorious minigame run by our one true lord and saviour &cMinikloon")
 				.setTrainingPhrases(
