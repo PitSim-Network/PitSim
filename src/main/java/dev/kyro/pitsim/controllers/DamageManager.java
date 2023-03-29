@@ -331,6 +331,8 @@ public class DamageManager implements Listener {
 			if(attackInfo.getCallback() != null) attackInfo.getCallback().accept(attackEvent);
 		}
 
+		System.out.println(attackEvent.multipliers.toString());
+
 		double damage = attackEvent.getFinalPitDamage();
 		if(attackEvent.isDefenderRealPlayer()) {
 			Shield defenderShield = attackEvent.getDefenderPitPlayer().shield;

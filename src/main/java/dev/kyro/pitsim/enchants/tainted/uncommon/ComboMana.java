@@ -27,11 +27,10 @@ public class ComboMana extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
-		if(attackEvent.getAttacker() != attackEvent.getRealDamager() || attackEvent.isFakeHit()) return;
+		if(attackEvent.getAttacker() != attackEvent.getRealDamager() || attackEvent.getWrapperEvent().hasAttackInfo()) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
-		if(attackEvent.isFakeHit()) return;
 
 		int regLvl = attackEvent.getAttackerEnchantLevel(Regularity.INSTANCE);
 		if(Regularity.isRegHit(attackEvent.getDefender()) && Regularity.skipIncrement(regLvl)) return;
@@ -46,7 +45,7 @@ public class ComboMana extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Every &e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7strike gain &b+" + getMana(enchantLvl) +
+				"&7Every &e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7melee strike gain &b+" + getMana(enchantLvl) +
 				" mana"
 		).getLore();
 	}
@@ -58,10 +57,10 @@ public class ComboMana extends PitEnchant {
 	}
 
 	public int getMana(int enchantLvl) {
-		return enchantLvl * 4 + 2;
+		return enchantLvl * 2 + 2;
 	}
 
 	public int getStrikes(int enchantLvl) {
-		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 4.5), 1);
+		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 6), 1);
 	}
 }

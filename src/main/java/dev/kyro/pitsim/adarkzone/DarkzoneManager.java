@@ -276,11 +276,6 @@ public class DarkzoneManager implements Listener {
 		for(SubLevel subLevel : subLevels) {
 			if(subLevel.getSpawnItemClass() != pitItem.getClass() || !subLevel.getMiddle().equals(location)) continue;
 
-			if(!ProgressionManager.isUnlocked(pitPlayer, DamageBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST) && !player.isOp()) {
-				AOutput.error(player, "&c&lERROR!&7 You do have not unlocked the ability to spawn bosses");
-				return;
-			}
-
 			if(subLevel.isBossSpawned()) {
 				AOutput.error(player, "&c&lERROR!&7 You cannot do that while a boss is spawned");
 				return;

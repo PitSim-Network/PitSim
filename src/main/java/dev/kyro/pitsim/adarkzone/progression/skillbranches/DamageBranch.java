@@ -2,8 +2,11 @@ package dev.kyro.pitsim.adarkzone.progression.skillbranches;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.adarkzone.DarkzoneManager;
+import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -11,6 +14,8 @@ import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
+
+import java.text.DecimalFormat;
 
 public class DamageBranch extends SkillBranch {
 	public static DamageBranch INSTANCE;
@@ -39,6 +44,29 @@ public class DamageBranch extends SkillBranch {
 		if(Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_BOSS))
 			attackEvent.multipliers.addAll(ProgressionManager.getUnlockedEffectAsList(
 					attackEvent.getAttackerPitPlayer(), this, PathPosition.SECOND_PATH, "damage"));
+
+		if(Misc.isEntity(attackEvent.getDefender(), PitEntityType.PIT_BOSS, PitEntityType.PIT_MOB) && MapManager.inDarkzone(attackEvent.getAttacker()) &&
+				ProgressionManager.isUnlocked(attackEvent.getAttackerPitPlayer(), this, SkillBranch.MajorUnlockPosition.FIRST)) {
+			double distance = 1;
+			SubLevel subLevel = null;
+			for(SubLevel testLevel : DarkzoneManager.subLevels) {
+				distance = testLevel.getMiddle().distance(attackEvent.getAttacker().getLocation());
+				if(distance > testLevel.spawnRadius) continue;
+				subLevel = testLevel;
+				break;
+			}
+			if(subLevel != null) {
+				double targetDistance = attackEvent.getDefender().getLocation().distance(attackEvent.getAttacker().getLocation());
+				distance = Math.max(distance, targetDistance);
+
+				double multiplier = Math.max(1 + ((subLevel.spawnRadius - distance) / subLevel.spawnRadius) * (getMaxNearSpawnerMultiplier() - 1), 1);
+				attackEvent.multipliers.add(multiplier);
+			}
+		}
+	}
+
+	public static double getMaxNearSpawnerMultiplier() {
+		return 1.3;
 	}
 
 	public static double getMobBossDamageIncrease() {
@@ -77,20 +105,22 @@ public class DamageBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "&cUnlock: Bosses";
+				return "&cDamage Near Spawners";
 			}
 
 			@Override
 			public String getRefName() {
-				return "unlock-bosses";
+				return "damage-near-spawners";
 			}
 
 			@Override
 			public ItemStack getBaseStack() {
-				return new AItemStackBuilder(Material.SKULL_ITEM)
+				DecimalFormat decimalFormat = new DecimalFormat("0.#");
+				return new AItemStackBuilder(Material.MOB_SPAWNER)
 						.setLore(new ALoreBuilder(
-								"&7Unlocks the ability to summon",
-								"&7bosses in the &5Darkzone"
+								"&7Increased damage when near",
+								"&7the spawners in caves (up",
+								"&7to &c" + decimalFormat.format(getMaxNearSpawnerMultiplier()) + "x&7)"
 						))
 						.getItemStack();
 			}
