@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DiscordManager;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,8 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.text.DecimalFormat;
 
 public class ClaimCommand implements CommandExecutor {
 	@Override
@@ -49,9 +48,8 @@ public class ClaimCommand implements CommandExecutor {
 		long nextClaimTime = lastClaim + 1000L * 60 * 60 * 24 * 30;
 		long currentTime = System.currentTimeMillis();
 		if(nextClaimTime > currentTime) {
-			DecimalFormat decimalFormat = new DecimalFormat("0.##");
-			String timeLeft = decimalFormat.format((nextClaimTime - currentTime) / 1000.0 / 60 / 60 / 24) + "d";
-			AOutput.send(player, "&c&lERROR!&7 You cannot do this for another " + timeLeft);
+			AOutput.send(player, "&c&lERROR!&7 You cannot do this for another " +
+					Misc.formatDurationFull(nextClaimTime - currentTime, true));
 			return;
 		}
 
