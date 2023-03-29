@@ -20,10 +20,10 @@ public abstract class PitEnchant implements Listener, Summarizable {
 	public boolean isRare;
 	public ApplyType applyType;
 	public boolean isUncommonEnchant;
-	public boolean levelStacks = false;
-	public boolean meleOnly = false;
-	public boolean fakeHits = false;
-	public boolean isTainted = false;
+	public boolean levelStacks;
+	public boolean meleeOnly;
+	public boolean fakeHits;
+	public boolean isTainted;
 	public Map<UUID, Cooldown> cooldowns = new HashMap<>();
 
 	public PitEnchant(String name, boolean isRare, ApplyType applyType, String... refNames) {
@@ -52,7 +52,11 @@ public abstract class PitEnchant implements Listener, Summarizable {
 	}
 
 	public List<String> getDescription(int enchantLvl) {
-		return !isEnabled() ? getDisabledDescription() : getNormalDescription(enchantLvl);
+		return getDescription(enchantLvl, false);
+	}
+
+	public List<String> getDescription(int enchantLvl, boolean overrideDisableCheck) {
+		return !isEnabled() && !overrideDisableCheck ? getDisabledDescription() : getNormalDescription(enchantLvl);
 	}
 
 	public String getDisplayName() {
@@ -85,7 +89,7 @@ public abstract class PitEnchant implements Listener, Summarizable {
 //		Skip enchant application if the enchant is a bow enchant and is used in mele
 		if(applyType == ApplyType.BOWS && attackEvent.getArrow() == null) return false;
 //		Skips enchant application if the enchant only works on mele hit and the event is from an arrow
-		if(meleOnly && attackEvent.getArrow() != null) return false;
+		if(meleeOnly && attackEvent.getArrow() != null) return false;
 		return true;
 	}
 

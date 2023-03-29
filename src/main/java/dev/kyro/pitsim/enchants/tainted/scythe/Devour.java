@@ -29,9 +29,6 @@ public class Devour extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		attackEvent.increase += enchantLvl;
-		if(true) return;
-
 		int soulCost = getSoulCost(enchantLvl);
 
 		if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer())) {

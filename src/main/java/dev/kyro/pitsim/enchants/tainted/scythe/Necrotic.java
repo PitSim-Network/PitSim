@@ -1,14 +1,10 @@
 package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
-import dev.kyro.pitsim.controllers.Cooldown;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.events.SpellUseEvent;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
-import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
@@ -16,12 +12,11 @@ import org.bukkit.event.EventPriority;
 
 import java.util.List;
 
-public class Necrotic extends PitEnchant {
+public class Necrotic extends PitEnchantSpell {
 	public static Necrotic INSTANCE;
 
 	public Necrotic() {
-		super("Necrotic", true, ApplyType.SCYTHES,
-				"necrotic", "necro");
+		super("Necrotic", "necrotic", "necro");
 		isTainted = true;
 		INSTANCE = this;
 	}
@@ -44,23 +39,9 @@ public class Necrotic extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onUse(PitPlayerAttemptAbilityEvent event) {
+	public void onUse(SpellUseEvent event) {
+		if(!isThisSpell(event.getSpell())) return;
 		Player player = event.getPlayer();
-
-		int enchantLvl = event.getEnchantLevel(this);
-		if(enchantLvl == 0) return;
-
-		Cooldown cooldown = getCooldown(player, 4);
-		if(cooldown.isOnCooldown()) {
-			Sounds.NO.play(player);
-			return;
-		}
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
-			Sounds.NO.play(player);
-			return;
-		}
-		cooldown.restart();
 
 		player.launchProjectile(WitherSkull.class);
 	}
@@ -79,7 +60,13 @@ public class Necrotic extends PitEnchant {
 				"shoots a &8wither skull &7in the direction that you are looking";
 	}
 
-	public static int getManaCost(int enchantLvl) {
+	@Override
+	public int getManaCost(int enchantLvl) {
 		return Math.max(22 - enchantLvl * 4, 0);
+	}
+
+	@Override
+	public int getCooldownTicks(int enchantLvl) {
+		return 4;
 	}
 }

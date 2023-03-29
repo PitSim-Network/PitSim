@@ -183,9 +183,9 @@ public class DefenceBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("mob-defence", "&9%value%x &7damage from mobs",
-						0.75, 0.75, 0.75, 0.75, 0.75, 0.75));
+						0.7, 0.7, 0.7, 0.7, 0.7, 0.7));
 				addEffect(new EffectData("boss-defence", "&9%value%x &7damage from bosses",
-						0.75, 0.75, 0.75, 0.75, 0.75, 0.75));
+						0.7, 0.7, 0.7, 0.7, 0.7, 0.7));
 			}
 		};
 	}

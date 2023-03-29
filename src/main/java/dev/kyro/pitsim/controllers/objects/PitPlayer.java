@@ -644,7 +644,7 @@ public class PitPlayer {
 	@Exclude
 	public boolean useMana(int amount) {
 		if(!hasManaUnlocked() || amount > mana) return false;
-		mana -= amount;
+		mana = Math.max(mana - amount, 0);
 		return true;
 	}
 
