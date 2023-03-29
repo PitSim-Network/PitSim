@@ -267,11 +267,9 @@ public class TaintedWell implements Listener {
 		setItemText(player);
 	}
 
-	public static void onButtonPush(Player player, boolean enchant) {
+	public static void removeButtons(Player player) {
 		ArmorStand removeStand = removeStands.get(player);
 		ArmorStand enchantStand = enchantStands.get(player);
-
-		int previousRares = 0;
 
 		if(enchantStand == null || removeStand == null) return;
 
@@ -290,16 +288,20 @@ public class TaintedWell implements Listener {
 				removeStand.remove();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 2L);
-		
+
 		PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook tpRemovePacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMoveLook(getStandID(enchantStand), (byte)(-64), (byte)0, (byte)0, (byte)0, (byte)0, false);
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpRemovePacket);
-		
+
 		new BukkitRunnable() {
 			public void run() {
 				enchantStands.remove(player);
 				enchantStand.remove();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 2L);
+	}
+
+	public static void onButtonPush(Player player, boolean enchant) {
+		int previousRares = 0;
 		
 		if(!enchant) {
 			setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
@@ -312,17 +314,19 @@ public class TaintedWell implements Listener {
 			
 			PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(getStandID(wellStand), 0, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR)));
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-
+			removeButtons(player);
 		} else {
 			NBTItem nbtFreshItem = new NBTItem(playerItems.get(player));
 			int freshTier = nbtFreshItem.getInteger(NBTTag.TAINTED_TIER.getRef());
 
 			if(freshTier >= getMaxTier(player)) {
-				setText(player, "\u00A77", ChatColor.RED + "Item is Max Tier!", ChatColor.RED + "Please remove", "\u00A77");
+				String maxTier = getMaxTier(player) == 4 ?  "\u00A77" : ChatColor.GRAY + "(Max Tier is Upgradable)";
+				setText(player, ChatColor.RED + "You cannot enchant", ChatColor.RED + "this item any further!", maxTier, "\u00A77");
 				new BukkitRunnable() {
 					public void run() {
-						setText(player, "\u00A77", "\u00A77", "\u00A77", "\u00A77");
-						showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
+						setItemText(player);
+//						setText(player, "\u00A77", "\u00A77", "\u00A77", "\u00A77");
+//						showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
 					}
 				}.runTaskLater(PitSim.INSTANCE, 40L);
 				return;
@@ -335,12 +339,14 @@ public class TaintedWell implements Listener {
 				setText(player, "\u00A77", ChatColor.RED + "Not enough Souls!", ChatColor.WHITE + String.valueOf(cost) + " Souls" + ChatColor.RED + " Required", "\u00A77");
 				new BukkitRunnable() {
 					public void run() {
-						setText(player, "\u00A77", "\u00A77", "\u00A77", "\u00A77");
-						showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
+						setItemText(player);
+//						showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
 					}
 				}.runTaskLater(PitSim.INSTANCE, 40L);
 				return;
 			}
+
+			removeButtons(player);
 
 			pitPlayer.taintedSouls -= cost;
 			ItemStack freshItem = playerItems.get(player);
@@ -512,6 +518,7 @@ public class TaintedWell implements Listener {
 
 	public static void setItemText(Player player) {
 		ItemStack item = playerItems.get(player);
+		if(item == null) return;
 		Map<PitEnchant, Integer> enchantMap = EnchantManager.getEnchantsOnItem(item);
 		List<PitEnchant> enchants = new ArrayList<PitEnchant>(enchantMap.keySet());
 		if(enchants.size() == 0) {
@@ -533,6 +540,9 @@ public class TaintedWell implements Listener {
 
 	public static int getEnchantCost(int tier, Player player) {
 		int cost;
+
+		System.out.println("Tier: " + tier + " Max: " + getMaxTier(player));
+		if(tier >= getMaxTier(player)) return -1;
 
 		switch(tier + 1) {
 		case 1:
