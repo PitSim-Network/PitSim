@@ -29,6 +29,8 @@ public class ArmorReduction {
 			missingPoints += 5;
 		}
 
+		if(actualPoints + missingPoints >= 20) missingPoints = 20 - actualPoints;
+
 		double actualReduction = actualPoints * 4;
 		double missingReduction = missingPoints * 4;
 
@@ -41,7 +43,7 @@ public class ArmorReduction {
 		points += getArmorPoints(entity.getEquipment().getChestplate());
 		points += getArmorPoints(entity.getEquipment().getLeggings());
 		points += getArmorPoints(entity.getEquipment().getBoots());
-		return points;
+		return Math.min(points, 20);
 	}
 
 	public static int getArmorPoints(ItemStack itemStack) {

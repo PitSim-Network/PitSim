@@ -43,6 +43,9 @@ public class DamageIndicator implements Listener {
 //		TODO: Remove this to remove boss bar damage indicator
 //		if(defenderMob != null) return;
 
+//		TODO: Damage indicators for players
+//		if(attackEvent.isDefenderRealPlayer()) createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), finalDamage);
+
 		EntityPlayer entityPlayer = null;
 		if(attackEvent.isDefenderPlayer()) entityPlayer = ((CraftPlayer) attackEvent.getDefender()).getHandle();
 
