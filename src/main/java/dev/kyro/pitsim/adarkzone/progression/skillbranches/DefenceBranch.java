@@ -22,10 +22,6 @@ public class DefenceBranch extends SkillBranch {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		boolean hasFirstPath = ProgressionManager.isUnlocked(attackEvent.getDefenderPitPlayer(), this, MajorUnlockPosition.FIRST);
-		if(hasFirstPath && Misc.isEntity(attackEvent.getAttacker(), PitEntityType.REAL_PLAYER))
-			attackEvent.multipliers.add(Misc.getReductionMultiplier(getPlayerDamageDecrease()));
-
 		if(Misc.isEntity(attackEvent.getAttacker(), PitEntityType.PIT_MOB)) {
 			attackEvent.multipliers.addAll(ProgressionManager.getUnlockedEffectAsList(
 					attackEvent.getDefenderPitPlayer(), this, PathPosition.FIRST_PATH, "mob-defence"));
@@ -47,10 +43,6 @@ public class DefenceBranch extends SkillBranch {
 
 	public static int getReactivationReductionTicks() {
 		return 60;
-	}
-
-	public static int getPlayerDamageDecrease() {
-		return 50;
 	}
 
 	@Override
