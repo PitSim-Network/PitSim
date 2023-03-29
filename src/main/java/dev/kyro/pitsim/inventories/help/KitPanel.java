@@ -16,14 +16,14 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
 public class KitPanel extends AGUIPanel {
-	public HelpGUI helpGUI;
+	public KitGUI kitGUI;
 
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public PlayerStats stats;
 
 	public KitPanel(AGUI gui) {
 		super(gui);
-		this.helpGUI = (HelpGUI) gui;
+		this.kitGUI = (KitGUI) gui;
 		this.stats = pitPlayer.stats;
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);

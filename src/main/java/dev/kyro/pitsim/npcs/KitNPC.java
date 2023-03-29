@@ -3,7 +3,7 @@ package dev.kyro.pitsim.npcs;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.inventories.help.HelpGUI;
+import dev.kyro.pitsim.inventories.help.KitGUI;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
 import net.citizensnpcs.api.CitizensAPI;
@@ -61,7 +61,7 @@ public class KitNPC extends PitNPC {
 			return;
 		}
 
-		HelpGUI helpGUI = new HelpGUI(player);
-		helpGUI.kitPanel.openPanel(helpGUI.kitPanel);
+		KitGUI kitGUI = new KitGUI(player);
+		kitGUI.kitPanel.openPanel(kitGUI.kitPanel);
 	}
 }

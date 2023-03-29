@@ -221,7 +221,7 @@ public class Persephone extends PitEnchant {
 	}
 
 	public static int getCooldownSeconds(int enchantLvl) {
-		return 2;
+		return 5;
 	}
 
 	public static int getManaCost(int enchantLvl) {
@@ -229,15 +229,15 @@ public class Persephone extends PitEnchant {
 	}
 
 	public static double getHealing() {
-		return 2;
+		return 0.5;
 	}
 
 	public static double getShieldRegenMultiplier() {
-		return 10;
+		return 2;
 	}
 
 	public static int getManaIncreasePercent() {
-		return 100;
+		return 50;
 	}
 
 	public static double getLightningPercent() {

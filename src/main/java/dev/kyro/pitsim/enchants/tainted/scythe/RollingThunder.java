@@ -5,19 +5,16 @@ import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.PitMob;
-import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.PlayerManager;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
-import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.events.SpellUseEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.effects.FallingBlock;
-import dev.kyro.pitsim.misc.math.Polygon2D;
 import dev.kyro.pitsim.misc.math.Point2D;
+import dev.kyro.pitsim.misc.math.Polygon2D;
 import dev.kyro.pitsim.misc.math.RotationUtils;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -35,7 +32,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class RollingThunder extends PitEnchant {
+public class RollingThunder extends PitEnchantSpell {
 	public static RollingThunder INSTANCE;
 	public static Map<Player, List<BlockBreakData>> blockBreakDataMap = new HashMap<>();
 
@@ -45,30 +42,15 @@ public class RollingThunder extends PitEnchant {
 	public static final double EFFECT_INITIAL_SEGMENT_SIZE = 2;
 
 	public RollingThunder() {
-		super("Rolling Thunder", true, ApplyType.SCYTHES,
-				"rollingthunder", "roll", "rolling", "thunder");
+		super("Rolling Thunder", "rollingthunder", "roll", "rolling", "thunder");
 		isTainted = true;
 		INSTANCE = this;
 	}
 
 	@EventHandler
-	public void onUse(PitPlayerAttemptAbilityEvent event) {
+	public void onUse(SpellUseEvent event) {
+		if(!isThisSpell(event.getSpell())) return;
 		Player player = event.getPlayer();
-
-		int enchantLvl = event.getEnchantLevel(this);
-		if(enchantLvl == 0) return;
-
-		Cooldown cooldown = getCooldown(player, getCooldownSeconds(enchantLvl) * 20);
-		if(cooldown.isOnCooldown()) {
-			Sounds.NO.play(player);
-			return;
-		}
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
-			Sounds.NO.play(player);
-			return;
-		}
-		cooldown.restart();
 
 		World world = player.getWorld();
 		Location mainLocation = player.getLocation();
@@ -165,7 +147,7 @@ public class RollingThunder extends PitEnchant {
 						boolean isRealPlayer = PlayerManager.isRealPlayer(livingEntity);
 						if(!isRealPlayer && pitBoss == null && pitMob == null) continue;
 						livingEntity.setVelocity(new Vector(0, 0.4 + segmentNum * 0.03, 0));
-						Misc.stunEntity(livingEntity, getStunTicks(enchantLvl));
+						Misc.stunEntity(livingEntity, getStunTicks(event.getSpellLevel()));
 					}
 					Sounds.ANVIL_LAND.play(centerLoc);
 				}
@@ -269,8 +251,14 @@ public class RollingThunder extends PitEnchant {
 				"&mwas stolen&7 may have been inspired by Breach's ultimate ability Rolling Thunder";
 	}
 
-	public static int getManaCost(int enchantLvl) {
+	@Override
+	public int getManaCost(int enchantLvl) {
 		return Math.max(95 - enchantLvl * 15, 0);
+	}
+
+	@Override
+	public int getCooldownTicks(int enchantLvl) {
+		return getCooldownSeconds(enchantLvl) * 20;
 	}
 
 	public static int getCooldownSeconds(int enchantLvl) {

@@ -21,6 +21,8 @@ import java.util.List;
 public class GoldenHelmet extends PitItem {
 
 	public GoldenHelmet() {
+		hasUUID = true;
+		hasLastServer = true;
 		hasDropConfirm = true;
 		hideExtra = true;
 		unbreakable = true;

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.boosters.SoulBooster;
@@ -13,6 +14,7 @@ import net.citizensnpcs.trait.SkinTrait;
 import net.citizensnpcs.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -178,6 +180,27 @@ public abstract class PitBoss {
 	}
 
 	public void kill(Player killer) {
+		sortDamagers();
+		List<Player> onlineDamagers = new ArrayList<>();
+		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {
+			Player player = Bukkit.getPlayer(entry.getKey());
+			if(player != null) onlineDamagers.add(player);
+		}
+
+		for(Player damager : onlineDamagers) {
+			AOutput.send(damager, "&4&m--------------------&4<&c&lBOSS SLAIN&4>&m--------------------");
+			AOutput.send(damager, "&4&lTOP DAMAGE DEALT:");
+			if(damageMap.size() >= 1) AOutput.send(damager, getDamageString(getDamagerInPosition(0)));
+			if(damageMap.size() >= 2) AOutput.send(damager, getDamageString(getDamagerInPosition(1)));
+			if(damageMap.size() >= 3) AOutput.send(damager, getDamageString(getDamagerInPosition(2)));
+			int playerPosition = getPositionOfDamager(damager.getUniqueId());
+			if(playerPosition > 3) {
+				AOutput.send(damager, "");
+				AOutput.send(damager, getDamageString(damager.getUniqueId()));
+			}
+			AOutput.send(damager, "&4&m--------------------&4<&c&lBOSS SLAIN&4>&m--------------------");
+		}
+
 		dropPool.bossDistribution(killer, this, damageMap);
 
 		double droppedSouls = getDroppedSouls();
@@ -185,6 +208,46 @@ public abstract class PitBoss {
 		DarkzoneManager.createSoulExplosion(null, boss.getLocation().add(0, 0.5, 0), (int) droppedSouls, true);
 
 		remove();
+	}
+
+	public UUID getDamagerInPosition(int position) {
+		if(damageMap.size() < position) return null;
+		return damageMap.keySet().toArray(new UUID[0])[position];
+	}
+
+	public int getPositionOfDamager(UUID damager) {
+		int position = 0;
+		for(UUID uuid : damageMap.keySet()) {
+			if(uuid.equals(damager)) return position;
+			position++;
+		}
+		return -1;
+	}
+
+	public String getDamageString(UUID damager) {
+		int position = getPositionOfDamager(damager);
+
+		Player player = Bukkit.getPlayer(damager);
+		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(damager);
+		String displayName = player != null ? Misc.getDisplayName(player) : offlinePlayer.getName();
+
+		double damage = damageMap.get(damager);
+		String positionColor;
+		switch(position + 1) {
+			case 1:
+				positionColor = "&e";
+				break;
+			case 2:
+				positionColor = "&f";
+				break;
+			case 3:
+				positionColor = "&6";
+				break;
+			default:
+				positionColor = "&7";
+				break;
+		}
+		return "&4 * &7" + positionColor + (position + 1) + ". &7" + displayName + "&7 - &c" + Misc.getHearts(damage);
 	}
 
 	public void remove() {
@@ -209,6 +272,13 @@ public abstract class PitBoss {
 			Misc.sendTitle(player, "&c&lBOSS DESPAWNED!", 60);
 			Misc.sendSubTitle(player, "&7No players nearby", 60);
 		}
+	}
+
+	public void sortDamagers() {
+		Map<UUID, Double> sortedDamageMap = new LinkedHashMap<>();
+		damageMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+				.forEachOrdered(entry -> sortedDamageMap.put(entry.getKey(), entry.getValue()));
+		damageMap = sortedDamageMap;
 	}
 
 	public SubLevel getSubLevel() {

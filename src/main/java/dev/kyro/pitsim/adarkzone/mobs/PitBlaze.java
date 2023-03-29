@@ -116,7 +116,7 @@ public class PitBlaze extends PitMob {
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(BlazeRod.class).getItem(), 1);
+				.addRareItem(() -> ItemFactory.getItem(BlazeRod.class).getItem(), DarkzoneBalancing.MOB_ITEM_DROP_PERCENT);
 	}
 
 	@Override

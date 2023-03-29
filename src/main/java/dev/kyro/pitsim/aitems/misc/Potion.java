@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,17 +48,19 @@ public class Potion extends PitItem {
 	}
 
 	@Override
-	public void updateItem(ItemStack itemStack) {
+	public void updateItem(ItemStack itemStack) {}
 
+	@Override
+	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
+		if(!itemStack.hasItemMeta()) return false;
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		if(!itemMeta.hasLore()) return false;
+		for(String line : itemMeta.getLore()) if(line.contains("Tainted Potion")) return true;
+		return false;
 	}
 
 	@Override
 	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
-		return itemStack;
-	}
-
-	@Override
-	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
-		return false;
+		return null;
 	}
 }

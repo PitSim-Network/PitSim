@@ -121,7 +121,8 @@ public class TaintedChestplate extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
-		return nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef()) && itemStack.getType() == Material.LEATHER_CHESTPLATE;
+		return nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef()) &&
+				(itemStack.getType() == Material.LEATHER_CHESTPLATE || itemStack.getType() == Material.CHAINMAIL_CHESTPLATE);
 	}
 
 	@Override

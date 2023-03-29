@@ -119,6 +119,7 @@ public class RNGesus extends Megastreak {
 		if(pitPlayer != this.pitPlayer) return;
 		if(pitPlayer.getKills() >= INSTABILITY_THRESHOLD && pitPlayer.megastreak instanceof RNGesus) {
 			killEvent.xpMultipliers.clear();
+			killEvent.maxXPMultipliers.clear();
 			killEvent.xpReward = 0;
 			killEvent.xpCap = 0;
 			killEvent.xpReward += getXP(realityMap.get(Reality.XP).getLevel() * 2);

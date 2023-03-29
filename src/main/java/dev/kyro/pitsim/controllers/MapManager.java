@@ -67,10 +67,12 @@ public class MapManager implements Listener {
 	}
 
 	public static boolean inDarkzone(LivingEntity player) {
+		if(player == null) return false;
 		return inDarkzone(player.getLocation());
 	}
 
 	public static boolean inDarkzone(Location location) {
+		if(location == null) return false;
 		return location.getWorld() == getDarkzone();
 	}
 }

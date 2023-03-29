@@ -2,12 +2,9 @@ package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
-import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.ApplyType;
-import dev.kyro.pitsim.events.PitPlayerAttemptAbilityEvent;
+import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
+import dev.kyro.pitsim.events.SpellUseEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
@@ -22,32 +19,17 @@ import org.bukkit.util.Vector;
 
 import java.util.List;
 
-public class MeteorSpell extends PitEnchant {
+public class MeteorSpell extends PitEnchantSpell {
 
 	public MeteorSpell() {
-		super("Meteor", true, ApplyType.SCYTHES,
-				"meteor");
+		super("Meteor", "meteor");
 		isTainted = true;
 	}
 
 	@EventHandler
-	public void onUse(PitPlayerAttemptAbilityEvent event) {
+	public void onUse(SpellUseEvent event) {
+		if(!isThisSpell(event.getSpell())) return;
 		Player player = event.getPlayer();
-
-		int enchantLvl = event.getEnchantLevel(this);
-		if(enchantLvl == 0) return;
-
-		Cooldown cooldown = getCooldown(player, 20);
-		if(cooldown.isOnCooldown()) {
-			Sounds.NO.play(player);
-			return;
-		}
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(!pitPlayer.useManaForSpell(getManaCost(enchantLvl))) {
-			Sounds.NO.play(player);
-			return;
-		}
-		cooldown.restart();
 
 //		pick initial target
 		Location testLocation = player.getLocation();
@@ -63,7 +45,7 @@ public class MeteorSpell extends PitEnchant {
 		}
 
 		if(target == null) {
-			Sounds.NO.play(player);
+			event.setCancelled(true);
 			return;
 		}
 
@@ -118,7 +100,13 @@ public class MeteorSpell extends PitEnchant {
 				"summons a meteor that deals a very high amount of damage";
 	}
 
-	public static int getManaCost(int enchantLvl) {
+	@Override
+	public int getManaCost(int enchantLvl) {
 		return Math.max(72 - enchantLvl * 8, 0);
+	}
+
+	@Override
+	public int getCooldownTicks(int enchantLvl) {
+		return 4;
 	}
 }

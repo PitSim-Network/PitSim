@@ -299,6 +299,10 @@ public class EnchantManager implements Listener {
 	}
 
 	public static void setItemLore(ItemStack itemStack, Player player, boolean displayUncommon) {
+		setItemLore(itemStack, player, displayUncommon, false);
+	}
+
+	public static void setItemLore(ItemStack itemStack, Player player, boolean displayUncommon, boolean overrideDisableCheck) {
 		if(!PlayerManager.isRealPlayer(player)) player = null;
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
@@ -390,8 +394,8 @@ public class EnchantManager implements Listener {
 				if(enchant == null) continue;
 
 				loreBuilder.addLore("&f");
-				loreBuilder.addLore(enchant.getDisplayName(displayUncommon) + enchantLevelToRoman(enchantLvl));
-				loreBuilder.addLore(enchant.getDescription(enchantLvl));
+				loreBuilder.addLore(enchant.getDisplayName(displayUncommon, overrideDisableCheck) + enchantLevelToRoman(enchantLvl));
+				loreBuilder.addLore(enchant.getDescription(enchantLvl, overrideDisableCheck));
 
 //				for(int i = 0; i < 3; i++) {
 //					loreBuilder.addLore("&f");
@@ -501,12 +505,12 @@ public class EnchantManager implements Listener {
 
 	public static int getTaintedMaxLifeIncrease(int tier, int currentMaxLives) {
 		if(tier == 3) {
-			if(Math.random() < 0.001) return 1111 - currentMaxLives;
-			if(Math.random() < 0.01) return 500 - currentMaxLives;
+			if(Math.random() < 0.001) return 1_000 - currentMaxLives;
+			if(Math.random() < 0.01) return 250 - currentMaxLives;
 		} else if(tier == 4) return 0;
 
-		int randomMultiplier = tier * 25;
-		return Math.max((int) (Math.random() * randomMultiplier), 10);
+		int randomNewLives = tier * 15;
+		return (int) (Math.random() * (randomNewLives + 1) + 10);
 	}
 
 	public static ItemStack incrementJewel(Player player, ItemStack itemStack) {

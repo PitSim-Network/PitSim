@@ -5,6 +5,7 @@ import dev.kyro.pitsim.aitems.mobdrops.IronIngot;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MobStatus;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
@@ -72,7 +73,7 @@ public class PitIronGolem extends PitMob {
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(IronIngot.class).getItem(), 1);
+				.addRareItem(() -> ItemFactory.getItem(IronIngot.class).getItem(), DarkzoneBalancing.MOB_ITEM_DROP_PERCENT);
 	}
 
 	@Override

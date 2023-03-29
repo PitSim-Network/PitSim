@@ -22,8 +22,6 @@ import java.util.concurrent.ExecutionException;
 
 public class MigrationManager implements Listener {
 
-	public static final int COMPENSATION_SOULS = 50;
-
 	@EventHandler
 	public void onMessage(MessageEvent event) throws ExecutionException, InterruptedException {
 		PluginMessage message = event.getMessage();
@@ -52,46 +50,49 @@ public class MigrationManager implements Listener {
 		pitPlayer.darkzoneData.preDarkzoneUpdatePrestige = pitPlayer.prestige;
 
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		pitPlayer.darkzoneData.altarXP = DarkzoneLeveling.getXPToLevel(prestigeInfo.darkzoneLevel);
+		pitPlayer.darkzoneData.altarXP = DarkzoneLeveling.getXPToLevel(prestigeInfo.darkzoneLevelIncrease);
 
 		for(int i = 0; i < profile.getCachedInventory().length; i++) {
 			ItemStack itemStack = profile.getCachedInventory()[i];
 
-			if(!shouldConvert(itemStack)) continue;
-			profile.getCachedInventory()[i] = convertItem(pitPlayer, itemStack);
+			PitItem pitItem = getPitItemFromLegacy(itemStack);
+			if(pitItem == null) continue;
+			profile.getCachedInventory()[i] = convertItem(pitPlayer, pitItem, itemStack);
 		}
 
 		for(int i = 0; i < profile.getArmor().length; i++) {
 			ItemStack itemStack = profile.getArmor()[i];
 
-			if(!shouldConvert(itemStack)) continue;
-			profile.getArmor()[i] = convertItem(pitPlayer, itemStack);
+			PitItem pitItem = getPitItemFromLegacy(itemStack);
+			if(pitItem == null) continue;
+			profile.getArmor()[i] = convertItem(pitPlayer, pitItem, itemStack);
 		}
 
 		for(Inventory page : profile.getEnderChest()) {
-			for(int i = 0; i < page.getContents().length; i++) {
+			for(int i = 9; i < page.getSize() - 9; i++) {
 				ItemStack itemStack = page.getContents()[i];
+				if(Misc.isAirOrNull(itemStack)) continue;
 
-				if(!shouldConvert(itemStack)) continue;
-				page.getContents()[i] = convertItem(pitPlayer, itemStack);
+				PitItem pitItem = getPitItemFromLegacy(itemStack);
+				if(pitItem == null) continue;
+				page.setItem(i, convertItem(pitPlayer, pitItem, itemStack));
 			}
 		}
 
 		pitPlayer.save(true, true);
 	}
 
-	public static boolean shouldConvert(ItemStack itemStack) {
-		if(Misc.isAirOrNull(itemStack)) return false;
+	public static PitItem getPitItemFromLegacy(ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack)) return null;
 		NBTItem nbtItem = new NBTItem(itemStack);
-		PitItem pitItem = ItemFactory.getItem(itemStack);
-		return pitItem != null && pitItem.isLegacyItem(itemStack, nbtItem);
+		for(PitItem pitItem : ItemFactory.pitItems) if(pitItem.isLegacyItem(itemStack, nbtItem)) return pitItem;
+		return null;
 	}
 
-	public static ItemStack convertItem(PitPlayer pitPlayer, ItemStack itemStack) {
-		PitItem pitItem = ItemFactory.getItem(itemStack);
+	public static ItemStack convertItem(PitPlayer pitPlayer, PitItem pitItem, ItemStack itemStack) {
 		NBTItem nbtItem = new NBTItem(itemStack);
-		assert pitItem != null;
 		ItemStack replacementItem = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
+		if(replacementItem == null) return null;
 		pitItem.updateItem(replacementItem);
 		return replacementItem;
 	}

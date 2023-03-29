@@ -3,6 +3,7 @@ package dev.kyro.pitsim.commands;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -56,6 +57,7 @@ public class ShowCommand implements CommandExecutor {
 						player.setItemInHand(itemStack);
 						player.updateInventory();
 
+						EnchantManager.setItemLore(itemStack, null, false, true);
 						sendShowMessage(Misc.getDisplayName(player), itemStack);
 
 						new PluginMessage()

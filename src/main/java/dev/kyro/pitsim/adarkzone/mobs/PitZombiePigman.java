@@ -80,7 +80,7 @@ public class PitZombiePigman extends PitMob {
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(RawPork.class).getItem(), 1);
+				.addRareItem(() -> ItemFactory.getItem(RawPork.class).getItem(), DarkzoneBalancing.MOB_ITEM_DROP_PERCENT);
 	}
 
 	@Override

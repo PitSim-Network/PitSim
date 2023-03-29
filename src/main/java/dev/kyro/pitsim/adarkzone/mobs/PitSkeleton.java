@@ -74,7 +74,7 @@ public class PitSkeleton extends PitMob {
 	@Override
 	public DropPool createDropPool() {
 		return new DropPool()
-				.addItem(ItemFactory.getItem(Bone.class).getItem(), 1);
+				.addRareItem(() -> ItemFactory.getItem(Bone.class).getItem(), DarkzoneBalancing.MOB_ITEM_DROP_PERCENT);
 	}
 
 	@Override

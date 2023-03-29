@@ -111,21 +111,23 @@ public class AltarManager implements Listener {
 		PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 
 		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.darkzoneData.altarXP);
-		int difference = info.darkzoneLevel - altarLevel;
+		int difference = info.darkzoneLevelIncrease - altarLevel;
 		double percent = DarkzoneLeveling.getReductionModifier(player);
 		DecimalFormat df = new DecimalFormat("#.#");
 
-		String color = difference > 0 ? "&c" : "&a";
-		String status = difference > 0 ? "&7Taking &f" + df.format(percent) + "% &7of &bXP &7and &6Gold" : "&aYou are stronger than the Darkzone!";
+		String color = difference > 0 ? "&c-" : "&a+";
+		String status = difference > 0 ? "&7Taking &f" + df.format(percent) + "% &7of &bXP &7and &6Gold" : "&aStronger than the Darkzone!";
 
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
 		setText(player, new String[] {
-				"&5Darkzone Level: " + info.darkzoneLevel,
+				"&5Darkzone Level: " + decimalFormat.format(info.darkzoneLevelIncrease),
 				"&8&m----------------------",
 				"&4&lAltar Level",
-				"&4" + altarLevel + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
-						DarkzoneLeveling.getRemainingXP(pitPlayer.darkzoneData.altarXP) / DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + (altarLevel + 1),
+				"&4" + decimalFormat.format(altarLevel) + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
+						DarkzoneLeveling.getRemainingXP(pitPlayer.darkzoneData.altarXP) /
+								DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + decimalFormat.format(altarLevel + 1),
 				"&8&m----------------------",
-				"&7Level Difference: " + color + Math.abs(difference),
+				"&7Level Difference: " + color + decimalFormat.format(Math.abs(difference)),
 				status
 		});
 	}
@@ -182,19 +184,20 @@ public class AltarManager implements Listener {
 		}
 
 		disableText(player);
-		double multiplier = AltarRewards.getTurmoilMultiplier(player);
+		int ticks = AltarRewards.getTurmoilTicks(player);
+		double turmoilMultiplier = ticks * 0.1;
 
 		BukkitRunnable callback = new BukkitRunnable() {
 			@Override
 			public void run() {
 				Misc.strikeLightningForPlayers(CONFIRM_LOCATION, player);
-				AltarRewards.rewardPlayer(player, multiplier);
+				AltarRewards.rewardPlayer(player, turmoilMultiplier);
 				AltarPedestal.disableAll(player);
 				enableText(player);
 			}
 		};
 
-		animations.add(new AltarAnimation(player, AltarPedestal.getTotalCost(player), pedestals, multiplier, callback));
+		animations.add(new AltarAnimation(player, AltarPedestal.getTotalCost(player), pedestals, ticks, callback));
 	}
 
 	public static void disableText(Player player) {
@@ -219,7 +222,7 @@ public class AltarManager implements Listener {
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 
 		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.darkzoneData.altarXP);
-		int difference = prestigeInfo.darkzoneLevel - altarLevel;
+		int difference = prestigeInfo.darkzoneLevelIncrease - altarLevel;
 		if(difference <= 0) return 0;
 		return 100 - 100 * Math.pow(0.99, difference);
 	}

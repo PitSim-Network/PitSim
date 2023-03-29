@@ -24,12 +24,9 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -111,20 +108,6 @@ public class SpawnManager implements Listener {
 			event.setCancelled(true);
 			Sounds.NO.play(player);
 		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onUse(PlayerInteractEvent event) {
-		if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
-
-		Player player = event.getPlayer();
-		if(!isInSpawn(player)) return;
-
-		ItemStack item = player.getInventory().getItemInHand();
-		if(item.getType() != Material.GOLD_HOE) return;
-
-		event.setCancelled(true);
-		AOutput.send(player, "&c&c&lERROR!&7 You cannot use this in the spawn area!");
 	}
 
 	@EventHandler
