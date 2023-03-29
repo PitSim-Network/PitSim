@@ -41,6 +41,7 @@ import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.commands.beta.BaseBetaCommand;
+import dev.kyro.pitsim.commands.beta.MassEnchantCommand;
 import dev.kyro.pitsim.commands.beta.ResetCommand;
 import dev.kyro.pitsim.commands.beta.SoulsCommand;
 import dev.kyro.pitsim.commands.essentials.*;
@@ -601,6 +602,7 @@ public class PitSim extends JavaPlugin {
 		new SoulsCommand(betaCommand, "souls");
 		new ResetCommand(betaCommand, "reset");
 		new GodCommand(betaCommand, "god");
+		new MassEnchantCommand(betaCommand, "massenchant");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());
@@ -661,8 +663,6 @@ public class PitSim extends JavaPlugin {
 		getCommand("broadcast").setExecutor(new BroadcastCommand());
 		getCommand("trash").setExecutor(new TrashCommand());
 		getCommand("rename").setExecutor(new RenameCommand());
-
-		getCommand("massenchant").setExecutor(new MassEnchantCommand());
 	}
 
 	private void registerListeners() {

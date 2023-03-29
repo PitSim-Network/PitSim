@@ -124,7 +124,7 @@ public class AltarManager implements Listener {
 				"&8&m----------------------",
 				"&4&lAltar Level",
 				"&4" + decimalFormat.format(altarLevel) + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
-						DarkzoneLeveling.getRemainingXP(pitPlayer.darkzoneData.altarXP) /
+						DarkzoneLeveling.getXPProgressToNextLevel(pitPlayer.darkzoneData.altarXP) /
 								DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + decimalFormat.format(altarLevel + 1),
 				"&8&m----------------------",
 				"&7Level Difference: " + color + decimalFormat.format(Math.abs(difference)),

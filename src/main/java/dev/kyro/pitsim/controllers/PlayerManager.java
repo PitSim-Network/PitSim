@@ -8,6 +8,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneLeveling;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.PitItem;
@@ -624,13 +625,20 @@ public class PlayerManager implements Listener {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 10);
 		}
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				if(!player.isOnline()) return;
-				if(!pitPlayer.musicDisabled && XmasMap.radio != null) {
-					XmasMap.addToRadio(player);
-				}
+				if(!pitPlayer.musicDisabled && XmasMap.radio != null) XmasMap.addToRadio(player);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!player.isOnline()) return;
+				DarkzoneLeveling.updateAltarXP(pitPlayer);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
 

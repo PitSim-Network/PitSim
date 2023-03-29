@@ -55,7 +55,7 @@ public class AltarRewards {
 			rewardCount *= turmoilMultiplier;
 
 			reward.rewardPlayer(player, getIntReward(rewardCount));
-			System.out.println(reward.name() + " " + chance + " " + size.name() + " " + rewardCount);
+//			System.out.println(reward.name() + " " + chance + " " + size.name() + " " + rewardCount);
 		}
 
 		//Weighted map of LOW/MEDIUM/HIGH
