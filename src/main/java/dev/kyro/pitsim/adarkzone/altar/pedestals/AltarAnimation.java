@@ -141,7 +141,7 @@ public class AltarAnimation {
 				for(int i = 0; i < PARTICLES_PER_TICK; i++) {
 					double percent = (double) ticks / (double) STREAM_TICKS;
 					Location location = pedestal.location.clone().add(0, 1.75, 0).add(vector.clone().multiply(percent));
-					previousLocations.add(location);
+					if(!previousLocations.contains(location)) previousLocations.add(location);
 					for(Location previousLocation : previousLocations) {
 						particle.display(player, previousLocation.clone().add(0, y, 0), pedestal.getParticleColor());
 					}
