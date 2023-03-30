@@ -19,6 +19,7 @@ import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.cosmetics.CosmeticType;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
+import dev.kyro.pitsim.cosmetics.killeffectsbot.IronKill;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.HealEvent;
@@ -528,6 +529,10 @@ public class Misc {
 	}
 
 	public static void playKillSound(PitPlayer pitPlayer) {
+		playKillSound(pitPlayer, null);
+	}
+
+	public static void playKillSound(PitPlayer pitPlayer, PitCosmetic killEffect) {
 		PitCosmetic pitCosmetic = null;
 		for(PitCosmetic equippedCosmetic : CosmeticManager.getEquippedCosmetics(pitPlayer)) {
 			if(equippedCosmetic.cosmeticType != CosmeticType.BOT_KILL_EFFECT) continue;
@@ -544,19 +549,24 @@ public class Misc {
 
 				switch(count) {
 					case 0:
-						Sounds.MULTI_1.play(pitPlayer.player);
+						if(killEffect instanceof IronKill) Sounds.IRON_1.play(pitPlayer.player);
+						else Sounds.MULTI_1.play(pitPlayer.player);
 						break;
 					case 1:
-						Sounds.MULTI_2.play(pitPlayer.player);
+						if(killEffect instanceof IronKill) Sounds.IRON_2.play(pitPlayer.player);
+						else Sounds.MULTI_2.play(pitPlayer.player);
 						break;
 					case 2:
-						Sounds.MULTI_3.play(pitPlayer.player);
+						if(killEffect instanceof IronKill) Sounds.IRON_3.play(pitPlayer.player);
+						else Sounds.MULTI_3.play(pitPlayer.player);
 						break;
 					case 3:
-						Sounds.MULTI_4.play(pitPlayer.player);
+						if(killEffect instanceof IronKill) Sounds.IRON_4.play(pitPlayer.player);
+						else Sounds.MULTI_4.play(pitPlayer.player);
 						break;
 					case 4:
-						Sounds.MULTI_5.play(pitPlayer.player);
+						if(killEffect instanceof IronKill) Sounds.IRON_5.play(pitPlayer.player);
+						else Sounds.MULTI_5.play(pitPlayer.player);
 						break;
 				}
 

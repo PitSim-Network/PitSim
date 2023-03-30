@@ -36,6 +36,11 @@ public class Sounds {
 	public static final SoundEffect MULTI_3 = new SoundEffect(Sound.ORB_PICKUP, 1, 1.8730159);
 	public static final SoundEffect MULTI_4 = new SoundEffect(Sound.ORB_PICKUP, 1, 1.9047619);
 	public static final SoundEffect MULTI_5 = new SoundEffect(Sound.ORB_PICKUP, 1, 1.9523809);
+	public static final SoundEffect IRON_1 = new SoundEffect(Sound.ANVIL_LAND, 0.5, 1.7936507);
+	public static final SoundEffect IRON_2 = new SoundEffect(Sound.ANVIL_LAND, 0.5, 1.8253968);
+	public static final SoundEffect IRON_3 = new SoundEffect(Sound.ANVIL_LAND, 0.5, 1.8730159);
+	public static final SoundEffect IRON_4 = new SoundEffect(Sound.ANVIL_LAND, 0.5, 1.9047619);
+	public static final SoundEffect IRON_5 = new SoundEffect(Sound.ANVIL_LAND, 0.5, 1.9523809);
 	public static final SoundEffect GEM_CRAFT = new SoundEffect(Sound.ORB_PICKUP, 2, 1.5F);
 	public static final SoundEffect GEM_USE = new SoundEffect(Sound.GLASS, 1, 2);
 	public static final SoundEffect JEWEL_SHRED1 = new SoundEffect(Sound.HORSE_ARMOR, 1, 0.8);

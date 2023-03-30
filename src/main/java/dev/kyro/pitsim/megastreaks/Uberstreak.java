@@ -19,6 +19,9 @@ import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.cosmetics.CosmeticManager;
+import dev.kyro.pitsim.cosmetics.CosmeticType;
+import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
@@ -150,7 +153,9 @@ public class Uberstreak extends Megastreak {
 				}
 
 				pitPlayer.incrementKills();
-				Misc.playKillSound(pitPlayer);
+
+				PitCosmetic botKill = CosmeticManager.getEquippedCosmetic(pitPlayer, CosmeticType.BOT_KILL_EFFECT);
+				Misc.playKillSound(pitPlayer, botKill);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 3L);
 	}

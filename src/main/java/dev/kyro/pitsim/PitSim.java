@@ -53,6 +53,7 @@ import dev.kyro.pitsim.cosmetics.aura.*;
 import dev.kyro.pitsim.cosmetics.bounty.*;
 import dev.kyro.pitsim.cosmetics.capes.*;
 import dev.kyro.pitsim.cosmetics.killeffectsbot.AlwaysExe;
+import dev.kyro.pitsim.cosmetics.killeffectsbot.IronKill;
 import dev.kyro.pitsim.cosmetics.killeffectsbot.OnlyExe;
 import dev.kyro.pitsim.cosmetics.killeffectsbot.Tetris;
 import dev.kyro.pitsim.cosmetics.killeffectsplayer.*;
@@ -122,6 +123,8 @@ import java.util.*;
 
 public class PitSim extends JavaPlugin {
 	public static final double VERSION = 3.0;
+
+	public static final boolean MARKET_ENABLED = true;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
@@ -836,6 +839,7 @@ public class PitSim extends JavaPlugin {
 		CosmeticManager.registerCosmetic(new AlwaysExe());
 		CosmeticManager.registerCosmetic(new OnlyExe());
 		CosmeticManager.registerCosmetic(new Tetris());
+		CosmeticManager.registerCosmetic(new IronKill());
 
 		CosmeticManager.registerCosmetic(new DeathHowl());
 		CosmeticManager.registerCosmetic(new DeathScream());

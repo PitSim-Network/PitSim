@@ -301,8 +301,8 @@ public class PassManager implements Listener {
 				.registerReward(new PassFeatherReward(4), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassSwordReward(2), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassDarkzoneDropReward(8, 5), PitSimPass.RewardType.PREMIUM, premiumTier++)
-				.registerReward(new PassCosmeticReward(Material.HUGE_MUSHROOM_2, CosmeticManager.getCosmetic("supermario"),
-						null), PitSimPass.RewardType.PREMIUM, premiumTier++) //TODO: Add new bot kill effect
+				.registerReward(new PassCosmeticReward(Material.HUGE_MUSHROOM_2, CosmeticManager.getCosmetic("ironkill"),
+						null), PitSimPass.RewardType.PREMIUM, premiumTier++)
 
 				.registerReward(new PassXpReward(10_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassVileReward(14), PitSimPass.RewardType.PREMIUM, premiumTier++)

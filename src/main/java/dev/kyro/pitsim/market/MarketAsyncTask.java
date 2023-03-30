@@ -32,6 +32,11 @@ public class MarketAsyncTask {
 		this.player = executor;
 		this.parameter = parameter;
 
+		if(!PitSim.MARKET_ENABLED) {
+			failure.run();
+			return;
+		}
+
 		timeout = new BukkitRunnable() {
 			@Override
 			public void run() {

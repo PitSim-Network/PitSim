@@ -10,6 +10,9 @@ import dev.kyro.pitsim.adarkzone.progression.skillbranches.DefenceBranch;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.cosmetics.CosmeticManager;
+import dev.kyro.pitsim.cosmetics.CosmeticType;
+import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enchants.overworld.Singularity;
 import dev.kyro.pitsim.enchants.overworld.Telebow;
@@ -493,7 +496,8 @@ public class DamageManager implements Listener {
 			if(deadMob != null) {
 				Sounds.MOB_KILL.play(killerPlayer);
 			} else {
-				Misc.playKillSound(pitKiller);
+				PitCosmetic botKill = CosmeticManager.getEquippedCosmetic(PitPlayer.getPitPlayer(killerPlayer), CosmeticType.BOT_KILL_EFFECT);
+				Misc.playKillSound(pitKiller, botKill);
 			}
 		}
 
