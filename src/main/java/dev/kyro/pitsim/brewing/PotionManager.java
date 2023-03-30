@@ -59,6 +59,7 @@ public class PotionManager implements Listener {
 //					TODO: Readd
 //					if(OldBossManager.activePlayers.contains(player)) {
 //						hideActiveBossBar(PitSim.adventure.player(player), player);
+//						hideActiveBossBar(PitSim.adventure.player(player), player);
 //						continue;
 //					}
 
@@ -229,9 +230,13 @@ public class PotionManager implements Listener {
 		List<String> potionStrings = pitPlayer.potionStrings;
 		if(potionStrings == null || potionStrings.isEmpty()) return;
 
+		main:
 		for(String potionString : potionStrings) {
 			String[] split = potionString.split(":");
 			if(split.length != 4) continue;
+
+			BrewingIngredient potionType = BrewingIngredient.getIngredientFromName(split[0]);
+			if(potionType == null) continue;
 
 			int tier = Integer.parseInt(split[1]);
 			int timeLeft = Integer.parseInt(split[2]);
@@ -240,7 +245,11 @@ public class PotionManager implements Listener {
 			long passedTicks = ((System.currentTimeMillis() - time) / 1000) * 20;
 			if(passedTicks > timeLeft) continue;
 
-			PotionEffect potionEffect = new PotionEffect(player, BrewingIngredient.getIngredientFromName(split[0]), BrewingIngredient.getIngredientFromTier(tier), (int) (timeLeft - passedTicks));
+			for(PotionEffect potionEffect : getPotionEffects(player)) {
+				if(potionEffect.potionType == potionType) continue main;
+			}
+
+			PotionEffect potionEffect = new PotionEffect(player, potionType, BrewingIngredient.getIngredientFromTier(tier), (int) (timeLeft - passedTicks));
 			potionEffectList.add(potionEffect);
 		}
 
