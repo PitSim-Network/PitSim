@@ -33,7 +33,7 @@ public class KyroCommand extends ACommand {
 		}
 
 		if(args.isEmpty()) {
-			AOutput.error(player, "&c&lERROR!&7 Usage: <sync|clear>");
+			AOutput.error(player, "&c&lERROR!&7 Usage: <sync|clear|stats|altarxp>");
 			return;
 		}
 
@@ -44,7 +44,12 @@ public class KyroCommand extends ACommand {
 		} else if(subCommand.equals("clear")) {
 			AOutput.send(player, "&9&lAI!&7 Clearing saved Dialogflow intent requests");
 			HelpManager.clearStoredData();
-		} else if(subCommand.equals("levelrun")) {
+		} else if(subCommand.equals("stats")) {
+			StatisticDataChunk dataChunk = StatisticsManager.getDataChunk();
+			dataChunk.send();
+			StatisticsManager.resetDataChunk();
+			AOutput.send(player, "&9&lDEV!&7 Sending statistics to proxy");
+		} else if(subCommand.equals("altarxp")) {
 			pitPlayer.darkzoneData.altarXP = 0;
 			new BukkitRunnable() {
 				@Override
@@ -52,11 +57,6 @@ public class KyroCommand extends ACommand {
 					DarkzoneLeveling.giveXP(pitPlayer, 100);
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 10L);
-		} else if(subCommand.equals("stats")) {
-			StatisticDataChunk dataChunk = StatisticsManager.getDataChunk();
-			dataChunk.send();
-			StatisticsManager.resetDataChunk();
-			AOutput.send(player, "&9&lDEV!&7 Sending statistics to proxy");
 		}
 	}
 
