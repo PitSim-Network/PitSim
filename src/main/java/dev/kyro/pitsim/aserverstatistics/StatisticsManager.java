@@ -5,10 +5,8 @@ import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.PitMob;
-import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.event.EventHandler;
@@ -32,19 +30,6 @@ public class StatisticsManager implements Listener {
 				getDataChunk();
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L * 60);
-	}
-
-	public StatisticsManager() {
-//		TODO: Only if server 1
-		PluginMessage pluginMessage = new PluginMessage()
-				.writeString("STATISTICS_SPIGOT_TO_PROXY_DATA_SHARE");
-
-		pluginMessage.writeInt(EnchantManager.pitEnchants.size());
-		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
-			pluginMessage.writeString(pitEnchant.name);
-			pluginMessage.writeString(pitEnchant.refNames.get(0));
-		}
-		pluginMessage.send();
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
