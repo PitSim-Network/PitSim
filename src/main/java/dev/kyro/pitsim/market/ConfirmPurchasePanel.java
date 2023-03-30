@@ -93,7 +93,7 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 
 
 		if(event.getSlot() == 11) {
-			new MarketAsyncTask(task, listing, player, (bin ? amount : price), bin ? buy : bid, MarketAsyncTask.getDefaultFail(player));
+			new MarketAsyncTask(task, listing.marketUUID, player, (bin ? amount : price), bin ? buy : bid, MarketAsyncTask.getDefaultFail(player));
 		}
 
 		if(event.getSlot() == 15) openPreviousGUI();

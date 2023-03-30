@@ -9,7 +9,6 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
@@ -20,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class CreateListingPanel extends AGUIPanel {
 
@@ -129,12 +129,35 @@ public class CreateListingPanel extends AGUIPanel {
 					return;
 				}
 
-				PluginMessage message = new PluginMessage().writeString("CREATE LISTING").writeString(player.getUniqueId().toString());
-				message.writeString(StorageProfile.serialize(player, selectedItem, false));
-				message.writeInt(startingBid == 0 ? -1 : startingBid).writeInt(binPrice == 0 ? -1 : binPrice).writeBoolean(selectedItem.getAmount() > 1).writeLong(duration).send();
+				BukkitRunnable success = new BukkitRunnable() {
+					@Override
+					public void run() {
+						Sounds.SUCCESS.play(player);
+						AOutput.send(player, "&a&lMARKET &7Listing created!");
+					}
+				};
+
+				BukkitRunnable fail = new BukkitRunnable() {
+					@Override
+					public void run() {
+						ItemStack item = selectedItem.clone();
+						AUtil.giveItemSafely(player, item, true);
+
+						Sounds.NO.play(player);
+						AOutput.send(player, "&a&lMARKET &7Failed to create listing!");
+					}
+				};
+
+				MarketAsyncTask.CreateListingInfo info = new MarketAsyncTask.CreateListingInfo();
+				info.setItem(StorageProfile.serialize(player, selectedItem, false));
+				info.setStartingBid(startingBid == 0 ? -1 : startingBid);
+				info.setBinPrice(binPrice == 0 ? -1 : binPrice);
+				info.setStackBin(selectedItem.getAmount() > 1);
+				info.setDuration(duration);
+
+				new MarketAsyncTask(MarketAsyncTask.MarketTask.CREATE_LISTING, player, info, success, fail);
+
 				selectedItem = null;
-				Sounds.SUCCESS.play(player);
-				AOutput.send(player, "&a&lMARKET &7Listing created!");
 				player.closeInventory();
 			}
 

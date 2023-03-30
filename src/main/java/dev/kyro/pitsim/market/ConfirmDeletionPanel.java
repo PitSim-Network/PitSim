@@ -75,7 +75,7 @@ public class ConfirmDeletionPanel extends AGUIPanel {
 		};
 
 		if(event.getSlot() == 11) {
-			new MarketAsyncTask(task, listing, player, 0, delete, MarketAsyncTask.getDefaultFail(player));
+			new MarketAsyncTask(task, listing.marketUUID, player, 0, delete, MarketAsyncTask.getDefaultFail(player));
 		}
 
 		if(event.getSlot() == 15) openPreviousGUI();

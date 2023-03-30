@@ -19,16 +19,16 @@ public class MarketAsyncTask {
 	private final MarketTask task;
 	private final Runnable success;
 	private final Runnable failure;
-	private final MarketListing listing;
+	private final UUID listingUUID;
 	private final Player player;
 	private final int parameter;
 	private final BukkitTask timeout;
 
-	public MarketAsyncTask(MarketTask task, MarketListing listing, Player executor, int parameter, Runnable success, Runnable failure) {
+	public MarketAsyncTask(MarketTask task, UUID listing, Player executor, int parameter, Runnable success, Runnable failure) {
 		this.task = task;
 		this.success = success;
 		this.failure = failure;
-		this.listing = listing;
+		this.listingUUID = listing;
 		this.player = executor;
 		this.parameter = parameter;
 
@@ -53,10 +53,42 @@ public class MarketAsyncTask {
 		taskMap.put(executor.getUniqueId(), this);
 
 		PluginMessage message = new PluginMessage().writeString(task.proxyName);
-		message.writeString(executor.getUniqueId().toString()).writeString(listing.marketUUID.toString());
+		message.writeString(executor.getUniqueId().toString()).writeString(listing.toString());
 		if(task == MarketTask.BIN_ITEM || task == MarketTask.PLACE_BID) {
 			message.writeInt(parameter);
 		}
+		message.send();
+	}
+
+	public MarketAsyncTask(MarketTask task, Player executor, CreateListingInfo info,  Runnable success, Runnable failure) {
+		this.task = task;
+		this.player = executor;
+		this.success = success;
+		this.failure = failure;
+		this.listingUUID = UUID.randomUUID();
+		this.parameter = 0;
+
+		timeout = new BukkitRunnable() {
+			@Override
+			public void run() {
+				failure.run();
+				taskMap.remove(player.getUniqueId());
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
+
+
+		if(task != MarketTask.CREATE_LISTING) return;
+
+		PluginMessage message = new PluginMessage()
+			.writeString(task.proxyName)
+			.writeString(executor.getUniqueId().toString())
+			.writeString(listingUUID.toString())
+			.writeString(info.item)
+			.writeInt(info.startingBid)
+			.writeInt(info.binPrice)
+			.writeLong(info.duration)
+			.writeBoolean(info.isStackBin);
+
 		message.send();
 	}
 
@@ -75,8 +107,8 @@ public class MarketAsyncTask {
 	public BukkitTask getTimeout() {
 		return timeout;
 	}
-	public MarketListing getListing() {
-		return listing;
+	public UUID getListingUUID() {
+		return listingUUID;
 	}
 
 	public Player getPlayer() {
@@ -98,6 +130,7 @@ public class MarketAsyncTask {
 	}
 
 	public enum MarketTask {
+		CREATE_LISTING("CREATE LISTING"),
 		REMOVE_LISTING("REMOVE LISTING"),
 		PLACE_BID("PLACE MARKET BID"),
 		BIN_ITEM("LISTING BIN"),
@@ -124,5 +157,34 @@ public class MarketAsyncTask {
 				player.closeInventory();
 			}
 		};
+	}
+
+	public static class CreateListingInfo {
+
+		public String item;
+		public int startingBid;
+		public int binPrice;
+		public long duration;
+		public boolean isStackBin;
+
+		public void setItem(String item) {
+			this.item = item;
+		}
+
+		public void setStartingBid(int startingBid) {
+			this.startingBid = startingBid;
+		}
+
+		public void setBinPrice(int binPrice) {
+			this.binPrice = binPrice;
+		}
+
+		public void setDuration(long duration) {
+			this.duration = duration;
+		}
+
+		public void setStackBin(boolean isStackBin) {
+			this.isStackBin = isStackBin;
+		}
 	}
 }
