@@ -27,6 +27,7 @@ import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.aitems.mystics.*;
 import dev.kyro.pitsim.aitems.diamond.*;
+import dev.kyro.pitsim.aserverstatistics.StatisticsManager;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -718,6 +719,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ActionBarManager(), this);
 		getServer().getPluginManager().registerEvents(new HelpManager(), this);
 		getServer().getPluginManager().registerEvents(new VoucherManager(), this);
+		getServer().getPluginManager().registerEvents(new StatisticsManager(), this);
 
 		if(getStatus().isDarkzone()) {
 			getServer().getPluginManager().registerEvents(new TaintedWell(), this);

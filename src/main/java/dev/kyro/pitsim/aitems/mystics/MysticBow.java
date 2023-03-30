@@ -114,6 +114,9 @@ public class MysticBow extends StaticPitItem implements TemporaryItem {
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
 		for(String enchantKey : itemEnchants.getKeys()) {
 			int enchantLvl = itemEnchants.getInteger(enchantKey);
+			if(enchantKey.equals("comoswift")) enchantKey = "comboswift";
+			if(enchantKey.equals("gotta-go-fast")) enchantKey = "gottagofast";
+			if(enchantKey.equals("boo-boo")) enchantKey = "booboo";
 			if(enchantLvl == 0) continue;
 			newItemEnchants.setInteger(enchantKey, enchantLvl);
 		}
@@ -131,8 +134,16 @@ public class MysticBow extends StaticPitItem implements TemporaryItem {
 		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_KILLS.getRef()))
 			newNBTItem.setInteger(NBTTag.ITEM_JEWEL_KILLS.getRef(), nbtItem.getInteger(NBTTag.ITEM_JEWEL_KILLS.getRef()));
 
-		if(nbtItem.hasKey(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()))
-			newNBTItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()).addAll(nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()));
+		if(nbtItem.hasKey(NBTTag.MYSTIC_ENCHANT_ORDER.getRef())) {
+			List<String> enchantOrder = nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef());
+			for(String refName : enchantOrder) {
+				if(refName.equals("comoswift")) refName = "comboswift";
+				if(refName.equals("gotta-go-fast")) refName = "gottagofast";
+				if(refName.equals("boo-boo")) refName = "booboo";
+				newNBTItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()).add(refName);
+			}
+		}
+
 		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()))
 			newNBTItem.setString(NBTTag.ITEM_JEWEL_ENCHANT.getRef(), nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));
 

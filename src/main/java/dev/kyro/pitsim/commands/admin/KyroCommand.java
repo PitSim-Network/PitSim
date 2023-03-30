@@ -6,6 +6,8 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneLeveling;
 import dev.kyro.pitsim.ahelp.HelpManager;
+import dev.kyro.pitsim.aserverstatistics.StatisticDataChunk;
+import dev.kyro.pitsim.aserverstatistics.StatisticsManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.command.Command;
@@ -50,6 +52,11 @@ public class KyroCommand extends ACommand {
 					DarkzoneLeveling.giveXP(pitPlayer, 100);
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 10L);
+		} else if(subCommand.equals("stats")) {
+			StatisticDataChunk dataChunk = StatisticsManager.getDataChunk();
+			dataChunk.send();
+			StatisticsManager.resetDataChunk();
+			AOutput.send(player, "&9&lDEV!&7 Sending statistics to proxy");
 		}
 	}
 

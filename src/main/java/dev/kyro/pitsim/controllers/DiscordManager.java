@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.commands.ClaimCommand;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
+import dev.kyro.pitsim.misc.PrivateInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +21,7 @@ public class DiscordManager implements Listener {
 			Class.forName("com.mysql.jdbc.Driver");
 			String dbUrl = "jdbc:mysql://sql.pitsim.net:3306/s9_PlayerData";
 			String username = "***REMOVED***";
-			String password = "***REMOVED***";
+			String password = PrivateInfo.PLAYER_DATA_SQL_PASSWORD;
 			return DriverManager.getConnection(dbUrl, username, password);
 		} catch(Exception ignored) {}
 		return null;

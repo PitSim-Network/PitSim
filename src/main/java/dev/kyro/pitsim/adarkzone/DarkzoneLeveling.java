@@ -78,6 +78,7 @@ public class DarkzoneLeveling {
 	}
 
 	public static void updateAltarXP(PitPlayer pitPlayer) {
+		if(pitPlayer.darkzoneData.preDarkzoneUpdatePrestige <= 0) return;
 		double altarXP = pitPlayer.darkzoneData.altarXP;
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.darkzoneData.preDarkzoneUpdatePrestige);
 		double expectedMinimumXP = getXPToLevel(prestigeInfo.darkzoneLevelIncrease);

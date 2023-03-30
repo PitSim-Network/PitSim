@@ -18,7 +18,7 @@ public class GottaGoFast extends PitEnchant {
 
 	public GottaGoFast() {
 		super("Gotta go fast", false, ApplyType.PANTS,
-				"gotta-go-fast", "gottagofast", "gtgf", "gotta", "fast");
+				"gottagofast", "gotta-go-fast", "gtgf", "gotta", "fast");
 		INSTANCE = this;
 		isUncommonEnchant = true;
 	}

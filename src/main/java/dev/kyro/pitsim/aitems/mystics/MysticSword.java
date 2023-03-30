@@ -114,6 +114,8 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 		for(String enchantKey : itemEnchants.getKeys()) {
 			int enchantLvl = itemEnchants.getInteger(enchantKey);
 			if(enchantKey.equals("comoswift")) enchantKey = "comboswift";
+			if(enchantKey.equals("gotta-go-fast")) enchantKey = "gottagofast";
+			if(enchantKey.equals("boo-boo")) enchantKey = "booboo";
 			if(enchantLvl == 0) continue;
 			newItemEnchants.setInteger(enchantKey, enchantLvl);
 		}
@@ -135,6 +137,8 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 			List<String> enchantOrder = nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef());
 			for(String refName : enchantOrder) {
 				if(refName.equals("comoswift")) refName = "comboswift";
+				if(refName.equals("gotta-go-fast")) refName = "gottagofast";
+				if(refName.equals("boo-boo")) refName = "booboo";
 				newNBTItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef()).add(refName);
 			}
 		}
