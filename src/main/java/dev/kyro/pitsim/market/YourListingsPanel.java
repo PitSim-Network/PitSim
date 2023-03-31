@@ -271,6 +271,7 @@ public class YourListingsPanel extends AGUIPanel {
 					AOutput.send(player, "&a&lMARKET &7Claimed " + listing.itemData.getItemMeta().getDisplayName() + (listing.stackBIN ? " &8x" + (listing.itemData.getAmount()) : ""));
 					AUtil.giveItemSafely(player, listing.itemData, true);
 					Sounds.RENOWN_SHOP_PURCHASE.play(player);
+					PitPlayer.getPitPlayer(player).stats.listingsClaimed++;
 					placeClaimables();
 				}
 			};
