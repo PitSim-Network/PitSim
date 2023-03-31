@@ -75,7 +75,8 @@ public class ConfirmDeletionPanel extends AGUIPanel {
 		};
 
 		if(event.getSlot() == 11) {
-			new MarketAsyncTask(task, listing.marketUUID, player, 0, delete, MarketAsyncTask.getDefaultFail(player));
+			String failMessage = "&cThere was an error while attempting to delete your listing. Please contact a staff member about this issue.";
+			new MarketAsyncTask(task, listing.marketUUID, player, 0, delete, MarketAsyncTask.getDefaultFail(player, failMessage));
 		}
 
 		if(event.getSlot() == 15) openPreviousGUI();

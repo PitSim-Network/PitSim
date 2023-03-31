@@ -258,7 +258,8 @@ public class YourListingsPanel extends AGUIPanel {
 				}
 			};
 
-			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_SOULS, listing.marketUUID, player, 0, success, MarketAsyncTask.getDefaultFail(player));
+			String failMessage = "&cThere was an error while attempting to claim your souls. Please contact a staff member about this issue.";
+			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_SOULS, listing.marketUUID, player, 0, success, MarketAsyncTask.getDefaultFail(player, failMessage));
 		}
 
 		if(itemClaims.containsKey(slot)) {
@@ -274,7 +275,8 @@ public class YourListingsPanel extends AGUIPanel {
 				}
 			};
 
-			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_ITEM, listing.marketUUID, player, 0, success, MarketAsyncTask.getDefaultFail(player));
+			String failMessage = "&cThere was an error while attempting to claim your item(s). Please contact a staff member about this issue.";
+			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_ITEM, listing.marketUUID, player, 0, success, MarketAsyncTask.getDefaultFail(player, failMessage));
 		}
 	}
 

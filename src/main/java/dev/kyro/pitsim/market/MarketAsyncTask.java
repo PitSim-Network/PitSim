@@ -22,7 +22,7 @@ public class MarketAsyncTask {
 	private final UUID listingUUID;
 	private final Player player;
 	private final int parameter;
-	private final BukkitTask timeout;
+	private BukkitTask timeout;
 
 	public MarketAsyncTask(MarketTask task, UUID listing, Player executor, int parameter, Runnable success, Runnable failure) {
 		this.task = task;
@@ -31,6 +31,7 @@ public class MarketAsyncTask {
 		this.listingUUID = listing;
 		this.player = executor;
 		this.parameter = parameter;
+		this.timeout = null;
 
 		if(!PitSim.MARKET_ENABLED) {
 			failure.run();
@@ -67,6 +68,9 @@ public class MarketAsyncTask {
 		this.failure = failure;
 		this.listingUUID = UUID.randomUUID();
 		this.parameter = 0;
+		this.timeout = null;
+
+		if(task != MarketTask.CREATE_LISTING) return;
 
 		timeout = new BukkitRunnable() {
 			@Override
@@ -77,7 +81,7 @@ public class MarketAsyncTask {
 		}.runTaskLater(PitSim.INSTANCE, 20);
 
 
-		if(task != MarketTask.CREATE_LISTING) return;
+
 
 		PluginMessage message = new PluginMessage()
 			.writeString(task.proxyName)
@@ -149,10 +153,14 @@ public class MarketAsyncTask {
 	}
 
 	public static Runnable getDefaultFail(Player player) {
+		return getDefaultFail(player, "&cThere was an issue with your request. Please try again in a moment.");
+	}
+
+	public static Runnable getDefaultFail(Player player, String message) {
 		return new BukkitRunnable() {
 			@Override
 			public void run() {
-				AOutput.error(player, "&cThere was an issue with your request. Please try again in a moment.");
+				AOutput.error(player, message);
 				Sounds.NO.play(player);
 				player.closeInventory();
 			}
