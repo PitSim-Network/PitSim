@@ -99,6 +99,7 @@ public class Regularity extends PitEnchant {
 	}
 
 	public static boolean isRegHit(LivingEntity defender) {
+		if(defender == null) return false;
 		return toReg.contains(defender.getUniqueId());
 	}
 

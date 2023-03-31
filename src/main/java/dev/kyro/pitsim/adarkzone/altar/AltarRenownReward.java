@@ -104,6 +104,6 @@ public class AltarRenownReward {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer == null) return;
 		pitPlayer.renown += amount;
-		AOutput.send(player, "&4&lALTAR! &7Gained &e+" + amount + " Renown");
+		AOutput.send(player, "&4&lALTAR!&7 Gained &e+" + amount + " Renown");
 	}
 }

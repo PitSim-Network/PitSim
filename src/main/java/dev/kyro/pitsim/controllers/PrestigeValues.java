@@ -150,11 +150,11 @@ public class PrestigeValues {
 		prestigeMap.put(2, new PrestigeInfo(2, 1.5, 60_000, 0, 10, "&9"));
 		prestigeMap.put(3, new PrestigeInfo(3, 2.0, 80_000, 0, 11, "&9"));
 		prestigeMap.put(4, new PrestigeInfo(4, 2.5, 100_000, 0, 12, "&9"));
-		prestigeMap.put(5, new PrestigeInfo(5, 3.0, 120_000, 5, 12, "&e")); //lucky kill
-		prestigeMap.put(6, new PrestigeInfo(6, 3.5, 140_000, 5, 12, "&e")); //impatient
-		prestigeMap.put(7, new PrestigeInfo(7, 4.0, 160_000, 5, 13, "&e")); //streaker
-		prestigeMap.put(8, new PrestigeInfo(8, 4.5, 180_000, 5, 13, "&e"));
-		prestigeMap.put(9, new PrestigeInfo(9, 5.0, 200_000, 5, 14, "&e")); //doubledeath
+		prestigeMap.put(5, new PrestigeInfo(5, 3.0, 120_000, 10, 12, "&e")); //lucky kill
+		prestigeMap.put(6, new PrestigeInfo(6, 3.5, 140_000, 10, 12, "&e")); //impatient
+		prestigeMap.put(7, new PrestigeInfo(7, 4.0, 160_000, 10, 13, "&e")); //streaker
+		prestigeMap.put(8, new PrestigeInfo(8, 4.5, 180_000, 10, 13, "&e"));
+		prestigeMap.put(9, new PrestigeInfo(9, 5.0, 200_000, 10, 14, "&e")); //doubledeath
 		prestigeMap.put(10, new PrestigeInfo(10, 6.0, 300_000, 10, 14, "&6")); //firststrike
 		prestigeMap.put(11, new PrestigeInfo(11, 7.0, 400_000, 10, 14, "&6"));
 		prestigeMap.put(12, new PrestigeInfo(12, 8.0, 500_000, 10, 15, "&6")); //lifeinsurance

@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enchants.overworld;
 
+import dev.kyro.pitsim.aserverstatistics.StatisticsManager;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -43,6 +44,8 @@ public class BulletTime extends PitEnchant {
 
 		Sounds.BULLET_TIME.play(attackEvent.getDefender());
 		attackEvent.getArrow().getWorld().playEffect(attackEvent.getArrow().getLocation(), Effect.EXPLOSION, 0, 30);
+
+		StatisticsManager.logAttack(attackEvent);
 	}
 
 	@Override

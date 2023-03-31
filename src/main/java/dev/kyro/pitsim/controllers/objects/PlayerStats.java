@@ -67,6 +67,15 @@ public class PlayerStats {
 //	Darkzone Mystics
 	public int devour = 0;
 
+//	Darkzone
+	public int itemsTier3 = 0;
+	public int itemsTier4 = 0;
+	public int soulsSacrificed = 0;
+	public int listingsSold = 0;
+	public int listingsPurchased = 0;
+	public int itemsShredded = 0;
+	public int timesFastTraveled = 0;
+
 //	Progression
 	public int minutesPlayed = 0;
 

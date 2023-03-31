@@ -2,7 +2,6 @@ package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.adarkzone.progression.ProgressionGUI;
 import dev.kyro.pitsim.enums.NBTTag;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -25,12 +24,20 @@ public class KTestCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
+//		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
+//			System.out.println(pitEnchant.name.toUpperCase().replaceAll(" ", "_")
+//					.replaceAll(":", "").replaceAll("\"", "").replaceAll("-", "") +
+//					"(\"" + pitEnchant.getDisplayName(false, true).replaceAll("\u00A7", "&")
+//					.replaceAll(":", "").replaceAll("\"", "").replaceAll("-", "") +
+//					"\", \"" + pitEnchant.name.replaceAll(":", "").replaceAll("\"", "")
+//					.replaceAll("-", "") + "\", \"" + pitEnchant.refNames.get(0) + "\", " + pitEnchant.isRare + ", " +
+//					pitEnchant.isUncommonEnchant + ", " + pitEnchant.isTainted + "),");
+//		}
+
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
-
-		ProgressionGUI progressionGUI = new ProgressionGUI(player);
-		progressionGUI.open();
 
 //		for(Block block : getNearbyBlocks(player.getLocation(), 100)) {
 //			Block blockBelow = block.getRelative(0, -1, 0);

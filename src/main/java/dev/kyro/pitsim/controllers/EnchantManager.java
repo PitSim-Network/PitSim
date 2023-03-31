@@ -91,7 +91,9 @@ public class EnchantManager implements Listener {
 	public static void registerEnchant(PitEnchant pitEnchant) {
 		pitEnchants.add(pitEnchant);
 		if(pitEnchant.isEnabled()) PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitSim.INSTANCE);
+		pitEnchant.setDefaultCategories();
 
+//		Code for creating the damage values for the basic darkzone enchants
 //		if(pitEnchant.isTainted && pitEnchant instanceof BasicDarkzoneEnchant) {
 //			BasicDarkzoneEnchant basicEnchant = (BasicDarkzoneEnchant) pitEnchant;
 //			int applicableMobs = basicEnchant.getApplicableMobs().size();

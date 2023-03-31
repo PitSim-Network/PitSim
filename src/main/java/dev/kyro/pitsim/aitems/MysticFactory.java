@@ -12,13 +12,14 @@ import org.bukkit.inventory.ItemStack;
 
 public class MysticFactory {
 	public static ItemStack getFreshItem(Player player, String type) {
+		type = type.toLowerCase();
 		if(type.equals("sword")) {
 			return getFreshItem(MysticType.SWORD, null);
 		} else if(type.equals("bow")) {
 			return getFreshItem(MysticType.BOW, null);
 		} else if(type.equals("chestplate")) {
 			return getFreshItem(MysticType.TAINTED_CHESTPLATE, null);
-		} else if(type.equals("scythe")) {
+		} else if(type.equals("scythe") || type.equals("sythe") || type.equals("scyth")) {
 			return getFreshItem(MysticType.TAINTED_SCYTHE, null);
 		} else if(PantColor.getPantColor(type) != null) {
 			return getFreshItem(MysticType.PANTS, PantColor.getPantColor(type));

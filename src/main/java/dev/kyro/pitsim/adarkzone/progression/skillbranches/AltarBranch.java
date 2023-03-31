@@ -35,7 +35,7 @@ public class AltarBranch extends SkillBranch {
 	}
 
 	public static int getTurboIncrease() {
-		return 20;
+		return 10;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class AltarBranch extends SkillBranch {
 				return new AItemStackBuilder(Material.ENDER_PORTAL_FRAME)
 						.setLore(new ALoreBuilder(
 								"&7Start with the basics:",
-								"&7 - Pedestal of &fKnowledge",
+								"&7 - Pedestal of &3Knowledge",
 								"&7 - Pedestal of &eRenown",
 								"&7 - Pedestal of &4Heresy"
 						))
@@ -70,20 +70,20 @@ public class AltarBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "&4Pedestal Turbo";
+				return "&4Cultist";
 			}
 
 			@Override
 			public String getRefName() {
-				return "pedestal-turbo";
+				return "cultist";
 			}
 
 			@Override
 			public ItemStack getBaseStack() {
-				return new AItemStackBuilder(Material.WATCH)
+				return new AItemStackBuilder(Material.REDSTONE)
 						.setLore(new ALoreBuilder(
-								"&7All pedestals are &4" + getTurboIncrease() + "%",
-								"&7more effective"
+								"&7Sacrificing &fsouls &7gives you",
+								"&4+" + getTurboIncrease() + "% &7more resources"
 						))
 						.getItemStack();
 			}
@@ -130,7 +130,7 @@ public class AltarBranch extends SkillBranch {
 
 			@Override
 			public ItemStack getBaseStack() {
-				return new AItemStackBuilder(Material.COMPASS)
+				return new AItemStackBuilder(Material.WATCH)
 						.setLore(new ALoreBuilder(
 								"&7Unlocks the Pedestal",
 								"&7of &cTurmoil"
@@ -145,18 +145,18 @@ public class AltarBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "&4Altar Output: Demonic Vouchers";
+				return "&4Altar Output: XP";
 			}
 
 			@Override
 			public String getRefName() {
-				return "altar-demonic-vouchers";
+				return "altar-xp";
 			}
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("renown", "&4+%value%% &7more &4Demonic Vouchers",
-						100, 100, 100, 100, 100, 100));
+				addEffect(new EffectData("altar-xp", "&4%value%x &7more &cAltar XP",
+						1.2, 1.2, 1.2, 1.2, 1.2, 1.2));
 			}
 		};
 	}
@@ -166,18 +166,20 @@ public class AltarBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "&4Altar Output: Renown";
+				return "&4Altar Output: Renown & Vouchers";
 			}
 
 			@Override
 			public String getRefName() {
-				return "altar-renown";
+				return "altar-renown-vouchers";
 			}
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("renown", "&4+%value%% &7more &eRenown",
-						100, 100, 100, 100, 100, 100));
+				addEffect(new EffectData("altar-renown", "&4+%value%% &7more &eRenown",
+						15, 0, 15, 0, 15, 0));
+				addEffect(new EffectData("altar-vouchers", "&4+%value%% &7more &4Demonic Vouchers",
+						0, 15, 0, 15, 0, 15));
 			}
 		};
 	}

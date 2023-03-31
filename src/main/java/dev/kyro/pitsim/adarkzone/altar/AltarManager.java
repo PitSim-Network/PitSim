@@ -124,7 +124,7 @@ public class AltarManager implements Listener {
 				"&8&m----------------------",
 				"&4&lAltar Level",
 				"&4" + decimalFormat.format(altarLevel) + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
-						DarkzoneLeveling.getRemainingXP(pitPlayer.darkzoneData.altarXP) /
+						DarkzoneLeveling.getXPProgressToNextLevel(pitPlayer.darkzoneData.altarXP) /
 								DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + decimalFormat.format(altarLevel + 1),
 				"&8&m----------------------",
 				"&7Level Difference: " + color + decimalFormat.format(Math.abs(difference)),
@@ -185,7 +185,7 @@ public class AltarManager implements Listener {
 
 		disableText(player);
 		int ticks = AltarRewards.getTurmoilTicks(player);
-		double turmoilMultiplier = ticks * 0.1;
+		double turmoilMultiplier = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player) ? ticks * 0.1 : 1;
 
 		BukkitRunnable callback = new BukkitRunnable() {
 			@Override

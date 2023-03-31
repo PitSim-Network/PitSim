@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.adarkzone.altar;
 
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.TurmoilPedestal;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.WealthPedestal;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
@@ -19,32 +20,42 @@ public class AltarRewards {
 	public static void rewardPlayer(Player player, double turmoilMultiplier) {
 
 		for(AltarPedestal.ALTAR_REWARD reward : AltarPedestal.ALTAR_REWARD.values()) {
-
-			double chance = Math.random() * 100 + AltarPedestal.getRewardChance(player, reward);
+			double chance = Math.random() * 100;
+			if(reward.pedestal.isActivated(player)) chance += AltarPedestal.getRewardChance(player, reward);
 			AltarPedestal.RewardSize size = AltarPedestal.RewardSize.getFromChance(chance);
+			if(reward == AltarPedestal.ALTAR_REWARD.ALTAR_XP && size == AltarPedestal.RewardSize.NONE) size = AltarPedestal.RewardSize.LOW;
 			double rewardCount = reward.getRewardCount(size);
 
 			rewardCount *= getSoulMultiplier(player);
 
-			if(AltarPedestal.getPedestal(WealthPedestal.class).isActivated(player)) rewardCount *= AltarPedestal.WEALTH_MULTIPLIER;
+			if(AltarPedestal.getPedestal(WealthPedestal.class).isActivated(player)) rewardCount *= DarkzoneBalancing.PEDESTAL_WEALTH_MULTIPLIER;
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			double voucherMultiplier = ProgressionManager.getUnlockedEffectAsValue(pitPlayer, AltarBranch.INSTANCE,
-					SkillBranch.PathPosition.FIRST_PATH, "altar-demonic-vouchers");
 
-			if(reward == AltarPedestal.ALTAR_REWARD.VOUCHERS) rewardCount *= (1 + (0.01 * voucherMultiplier));
-
-			double renownMultiplier = ProgressionManager.getUnlockedEffectAsValue(pitPlayer, AltarBranch.INSTANCE,
-					SkillBranch.PathPosition.FIRST_PATH, "altar-renown");
-
-			if(reward == AltarPedestal.ALTAR_REWARD.RENOWN) rewardCount *= (1 + (0.01 * renownMultiplier));
+			if(reward == AltarPedestal.ALTAR_REWARD.ALTAR_XP) {
+				double multiplier = 1;
+				for(Double value : ProgressionManager.getUnlockedEffectAsList(pitPlayer, AltarBranch.INSTANCE,
+						SkillBranch.PathPosition.FIRST_PATH, "altar-xp")) {
+					multiplier *= value;
+				}
+				rewardCount *= multiplier;
+			} else if(reward == AltarPedestal.ALTAR_REWARD.RENOWN) {
+				double increase = ProgressionManager.getUnlockedEffectAsValue(pitPlayer, AltarBranch.INSTANCE,
+						SkillBranch.PathPosition.SECOND_PATH, "altar-renown");
+				rewardCount *= 1 + increase / 100.0;
+			} else if(reward == AltarPedestal.ALTAR_REWARD.VOUCHERS) {
+				double increase = ProgressionManager.getUnlockedEffectAsValue(pitPlayer, AltarBranch.INSTANCE,
+						SkillBranch.PathPosition.SECOND_PATH, "altar-vouchers");
+				rewardCount *= 1 + increase / 100.0;
+			}
 
 			if(ProgressionManager.isUnlocked(pitPlayer, AltarBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST))
-				rewardCount *= 1.2;
+				rewardCount *= 1 + (AltarBranch.getTurboIncrease() / 100.0);
 
 			rewardCount *= turmoilMultiplier;
 
-			reward.rewardPlayer(player, (int) Math.floor(rewardCount));
+			reward.rewardPlayer(player, getIntReward(rewardCount));
+//			System.out.println(reward.name() + " " + chance + " " + size.name() + " " + rewardCount);
 		}
 
 		//Weighted map of LOW/MEDIUM/HIGH
@@ -83,5 +94,12 @@ public class AltarRewards {
 
 	public static double getSoulMultiplier(Player player) {
 		return AltarPedestal.getTotalCost(player) / (double) AltarPedestal.BASE_COST;
+	}
+
+	public static int getIntReward(double doubleReward) {
+		int intReward = (int) Math.floor(doubleReward);
+		doubleReward -= intReward;
+		if(Math.random() < doubleReward) intReward++;
+		return intReward;
 	}
 }

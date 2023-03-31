@@ -10,15 +10,15 @@ import org.bukkit.inventory.ItemStack;
 public class PvPKit extends Kit {
 	@Override
 	public void addItems() {
-		items.add(KitItem.BILL_STOMP_LS);
-		items.add(KitItem.BILL_LS_PF);
-		items.add(KitItem.CH_LS);
-		items.add(KitItem.PERUN_GAMBLE_STOMP);
-		items.add(KitItem.PERUN_CHEAL_CD);
+		items.add(KitItem.BILL_STOMP_PUN);
+		items.add(KitItem.BILL_LS_CD);
+		items.add(KitItem.CH_LS_GAB);
+		items.add(KitItem.PERUN_GAMBLE_PUN);
+		items.add(KitItem.PERUN_CHEAL_GAB);
 		items.add(KitItem.RGM_MIRROR_PROT);
 		items.add(KitItem.RGM_CF_PROT);
 		items.add(KitItem.REG_MIRROR_PROT);
-		items.add(KitItem.REG_SOLI_LASTSTAND);
+		items.add(KitItem.REG_SOLI_PROT);
 		items.add(KitItem.MLB_DRAIN);
 		items.add(KitItem.MLB_PIN);
 		items.add(KitItem.MLB_WASP);

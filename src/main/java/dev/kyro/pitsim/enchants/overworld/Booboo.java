@@ -19,7 +19,7 @@ public class Booboo extends PitEnchant {
 
 	public Booboo() {
 		super("Boo-boo", false, ApplyType.PANTS,
-				"boo-boo", "boo", "bb", "booboo");
+				"booboo", "boo", "bb", "boo-boo");
 		isUncommonEnchant = true;
 		INSTANCE = this;
 

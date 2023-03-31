@@ -96,7 +96,12 @@ public class HelpItemStacks {
 				.setName("&eMain Progression")
 				.setLore(new ALoreBuilder(
 						"&8&m----------------------------",
-						"&7idk man just figure it out",
+						"&7Unlock access to the different skill",
+						"&7trees by unlocking the paths to them,",
+						"&7starting at the beacon. Each skill",
+						"&7tree offers various upgrades and",
+						"&7unlocks which you can view by clicking",
+						"&7on them after unlocking",
 						"&8&m----------------------------"
 				))
 				.getItemStack();
@@ -107,7 +112,12 @@ public class HelpItemStacks {
 				.setName("&eProgression")
 				.setLore(new ALoreBuilder(
 						"&8&m----------------------------",
-						"&7idk man just figure it out",
+						"&7Start upgrading this skill branch",
+						"&7from the unlock furthest to the left,",
+						"&7and work your way to the last upgrade",
+						"&7on the right. In order to purchase the",
+						"&7last upgrade, you must have both",
+						"&7paths unlocked",
 						"&8&m----------------------------"
 				))
 				.getItemStack();

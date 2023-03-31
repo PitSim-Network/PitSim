@@ -7,6 +7,7 @@ import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,6 +24,11 @@ public class UnlockCosmeticCommand extends ACommand {
 	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
 		if(!(sender instanceof Player)) return;
 		Player player = (Player) sender;
+
+		if(!Misc.isKyro(player.getUniqueId())) {
+			AOutput.error(player, "&c&lERROR!&7 You need to be &9Kyro &7to do this");
+			return;
+		}
 
 		if(args.size() < 2) {
 			AOutput.error(player, "&7Usage: /unlockcosmetic <player> <cosmetic> [color]");

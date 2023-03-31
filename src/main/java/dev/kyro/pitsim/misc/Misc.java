@@ -20,6 +20,7 @@ import dev.kyro.pitsim.cosmetics.CosmeticManager;
 import dev.kyro.pitsim.cosmetics.CosmeticType;
 import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.cosmetics.killeffectsbot.IronKill;
+import dev.kyro.pitsim.enums.DiscordLogChannel;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.HealEvent;
@@ -204,6 +205,14 @@ public class Misc {
 				}
 			}
 		}.runTaskAsynchronously(PitSim.INSTANCE);
+	}
+
+	public static void logToDiscord(DiscordLogChannel logChannel, String message) {
+		new PluginMessage()
+				.writeString("LOG_TO_DISCORD")
+				.writeString(logChannel.name())
+				.writeString(message)
+				.send();
 	}
 
 	public static int getItemCount(Player player, boolean checkArmor, BiPredicate<PitItem, ItemStack> condition) {
@@ -801,6 +810,13 @@ public class Misc {
 //		Fishduper
 		kyroAccounts.add(UUID.fromString("1db946e6-edfe-42ac-9fd6-bf135aa5130e"));
 		return kyroAccounts.contains(uuid);
+	}
+
+	public static boolean isWiji(UUID uuid) {
+		List<UUID> wijiAccounts = new ArrayList<>();
+//		wiji1
+		wijiAccounts.add(UUID.fromString("5c06626c-66bf-48a9-84cb-f2683e6aca87"));
+		return wijiAccounts.contains(uuid);
 	}
 
 	public static TextComponent createItemHover(ItemStack itemStack) {

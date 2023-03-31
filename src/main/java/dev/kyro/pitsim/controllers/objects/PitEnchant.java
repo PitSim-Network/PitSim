@@ -7,6 +7,7 @@ import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.enums.EnchantRarity;
+import dev.kyro.pitsim.aserverstatistics.StatisticCategory;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -25,6 +26,9 @@ public abstract class PitEnchant implements Listener, Summarizable {
 	public boolean fakeHits;
 	public boolean isTainted;
 	public Map<UUID, Cooldown> cooldowns = new HashMap<>();
+
+//	Server Statistics Information
+	public List<StatisticCategory> statisticCategories = new ArrayList<>();
 
 	public PitEnchant(String name, boolean isRare, ApplyType applyType, String... refNames) {
 		this.name = name;
@@ -79,6 +83,19 @@ public abstract class PitEnchant implements Listener, Summarizable {
 	}
 
 	public void onDisable() {
+	}
+
+	public PitEnchant setDefaultCategories() {
+		if(!statisticCategories.isEmpty() || this instanceof PitEnchantSpell) return this;
+		if(isTainted) {
+			statisticCategories.add(StatisticCategory.DARKZONE_VS_PLAYER);
+			statisticCategories.add(StatisticCategory.DARKZONE_VS_MOB);
+			statisticCategories.add(StatisticCategory.DARKZONE_VS_BOSS);
+		} else {
+			statisticCategories.add(StatisticCategory.OVERWORLD_PVP);
+			statisticCategories.add(StatisticCategory.OVERWORLD_STREAKING);
+		}
+		return this;
 	}
 
 	public boolean canApply(AttackEvent attackEvent) {

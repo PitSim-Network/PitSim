@@ -104,7 +104,7 @@ public class AltarVoucherReward {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer == null) return;
 		pitPlayer.darkzoneData.demonicVouchers += amount;
-		AOutput.send(player, "&4&lALTAR! &7Gained &4+" + amount + " Demonic Vouchers");
+		AOutput.send(player, "&4&lALTAR!&7 Gained &4+" + amount + " Demonic Vouchers");
 	}
 
 }

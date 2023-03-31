@@ -23,10 +23,11 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.adarkzone.notdarkzone.ShieldManager;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.ahelp.HelpManager;
+import dev.kyro.pitsim.aitems.diamond.*;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.aitems.mystics.*;
-import dev.kyro.pitsim.aitems.diamond.*;
+import dev.kyro.pitsim.aserverstatistics.StatisticsManager;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;
@@ -37,11 +38,11 @@ import dev.kyro.pitsim.battlepass.quests.dzkillmobs.*;
 import dev.kyro.pitsim.boosters.*;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.PotionManager;
-import dev.kyro.pitsim.brewing.objects.PotionEffect;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
 import dev.kyro.pitsim.commands.beta.BaseBetaCommand;
 import dev.kyro.pitsim.commands.beta.SkillsCommand;
+import dev.kyro.pitsim.commands.beta.MassEnchantCommand;
 import dev.kyro.pitsim.commands.beta.ResetCommand;
 import dev.kyro.pitsim.commands.beta.SoulsCommand;
 import dev.kyro.pitsim.commands.essentials.*;
@@ -328,6 +329,8 @@ public class PitSim extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		StatisticsManager.getDataChunk().send();
+
 		if(status.isDarkzone()) {
 			TaintedWell.onStop();
 			AltarManager.cleanUp();
@@ -359,24 +362,6 @@ public class PitSim extends JavaPlugin {
 				if(entity instanceof Item) {
 					entity.remove();
 				}
-			}
-		}
-
-//		TODO: Fix
-		for(Player player : Bukkit.getOnlinePlayers()) {
-			List<PotionEffect> toExpire = new ArrayList<>();
-			for(PotionEffect potionEffect : PotionManager.potionEffectList) {
-				if(potionEffect.player == player) toExpire.add(potionEffect);
-			}
-
-			for(PotionEffect potionEffect : toExpire) {
-
-				potionEffect.onExpire(true);
-
-				String time = String.valueOf(System.currentTimeMillis());
-
-				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-				pitPlayer.potionStrings.add(potionEffect.potionType.name + ":" + potionEffect.potency.tier + ":" + potionEffect.getTimeLeft() + ":" + time);
 			}
 		}
 
@@ -438,47 +423,47 @@ public class PitSim extends JavaPlugin {
 		if(file.exists()) file.deleteOnExit();
 	}
 
-		private void registerMaps() {
-			PitMap pitMap = null;
-			long time;
+	private void registerMaps() {
+		PitMap pitMap = null;
+		long time;
 
-			PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
-			PitMap sand = MapManager.registerMap(new SandMap("sand", 3));
-			PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
-			PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
+		PitMap biomes = MapManager.registerMap(new BiomesMap("biomes", 7));
+		PitMap sand = MapManager.registerMap(new SandMap("sand", 3));
+		PitMap dimensions = MapManager.registerMap(new DimensionsMap("dimensions", 7));
+		PitMap xmas = MapManager.registerMap(new XmasMap("xmas", -1));
 
-			String configString = FirestoreManager.CONFIG.mapData;
-			String mapName = null;
-			if(configString == null || configString.isEmpty()) {
-				pitMap = biomes;
+		String configString = FirestoreManager.CONFIG.mapData;
+		String mapName = null;
+		if(configString == null || configString.isEmpty()) {
+			pitMap = biomes;
+			time = System.currentTimeMillis();
+		} else {
+			String[] split = configString.split(":");
+			mapName = split[0];
+			time = Long.parseLong(split[1]);
+			PitMap currentMap = MapManager.getMap(mapName);
+			if(currentMap == null) currentMap = biomes;
+			pitMap = currentMap;
+
+			if(((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
+				pitMap = MapManager.getNextMap(currentMap);
 				time = System.currentTimeMillis();
-			} else {
-				String[] split = configString.split(":");
-				mapName = split[0];
-				time = Long.parseLong(split[1]);
-				PitMap currentMap = MapManager.getMap(mapName);
-				if(currentMap == null) currentMap = biomes;
-				pitMap = currentMap;
-
-				if(((System.currentTimeMillis() - time) / 1000.0 / 60.0 / 60.0 / 24.0) >= currentMap.rotationDays) {
-					pitMap = MapManager.getNextMap(currentMap);
-					time = System.currentTimeMillis();
-				}
 			}
-
-			if(TimeManager.isEventActive(PitCalendarEvent.CHRISTMAS_SEASON) && status.isOverworld()) {
-				pitMap = xmas;
-				time = System.currentTimeMillis();
-				MapManager.currentMap.world.setStorm(true);
-				MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
-			}
-
-			if(mapName == null || !Objects.equals(pitMap.world.getName(), mapName)) {
-				FirestoreManager.CONFIG.mapData = pitMap.world.getName() + ":" + time;
-				FirestoreManager.CONFIG.save();
-			}
-			MapManager.setMap(pitMap);
 		}
+
+		if(TimeManager.isEventActive(PitCalendarEvent.CHRISTMAS_SEASON) && status.isOverworld()) {
+			pitMap = xmas;
+			time = System.currentTimeMillis();
+			MapManager.currentMap.world.setStorm(true);
+			MapManager.currentMap.world.setWeatherDuration(Integer.MAX_VALUE);
+		}
+
+		if(mapName == null || !Objects.equals(pitMap.world.getName(), mapName)) {
+			FirestoreManager.CONFIG.mapData = pitMap.world.getName() + ":" + time;
+			FirestoreManager.CONFIG.save();
+		}
+		MapManager.setMap(pitMap);
+	}
 
 	private void registerPerks() {
 		PerkManager.registerUpgrade(new NoPerk());
@@ -609,6 +594,7 @@ public class PitSim extends JavaPlugin {
 		new ResetCommand(betaCommand, "reset");
 		new GodCommand(betaCommand, "god");
 		new SkillsCommand(betaCommand, "skills");
+		new MassEnchantCommand(betaCommand, "massenchant");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());
@@ -669,8 +655,6 @@ public class PitSim extends JavaPlugin {
 		getCommand("broadcast").setExecutor(new BroadcastCommand());
 		getCommand("trash").setExecutor(new TrashCommand());
 		getCommand("rename").setExecutor(new RenameCommand());
-
-		getCommand("massenchant").setExecutor(new MassEnchantCommand());
 	}
 
 	private void registerListeners() {
@@ -726,6 +710,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ActionBarManager(), this);
 		getServer().getPluginManager().registerEvents(new HelpManager(), this);
 		getServer().getPluginManager().registerEvents(new VoucherManager(), this);
+		getServer().getPluginManager().registerEvents(new StatisticsManager(), this);
 
 		if(getStatus().isDarkzone()) {
 			getServer().getPluginManager().registerEvents(new TaintedWell(), this);
