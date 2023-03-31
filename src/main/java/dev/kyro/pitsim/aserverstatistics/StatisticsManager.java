@@ -62,6 +62,8 @@ public class StatisticsManager implements Listener {
 	}
 
 	public static void logAttack(StatisticCategory category, Map<PitEnchant, Integer> enchantMap) {
+		StatisticDataChunk.Record defaultRecord = getDefaultRecord(category);
+		defaultRecord.logAttack(enchantMap);
 		for(Map.Entry<PitEnchant, Integer> entry : enchantMap.entrySet()) {
 			PitEnchant pitEnchant = entry.getKey();
 			StatisticDataChunk.Record record = getRecord(pitEnchant, category);
@@ -85,6 +87,15 @@ public class StatisticsManager implements Listener {
 		StatisticDataChunk dataChunk = getDataChunk();
 		for(StatisticDataChunk.Record record : dataChunk.records) {
 			if(record.getPitEnchant() != pitEnchant || record.getCategory() != category) continue;
+			return record;
+		}
+		throw new RuntimeException();
+	}
+
+	public static StatisticDataChunk.Record getDefaultRecord(StatisticCategory category) {
+		StatisticDataChunk dataChunk = getDataChunk();
+		for(StatisticDataChunk.Record record : dataChunk.records) {
+			if(record.getPitEnchant() != null || record.getCategory() != category) continue;
 			return record;
 		}
 		throw new RuntimeException();

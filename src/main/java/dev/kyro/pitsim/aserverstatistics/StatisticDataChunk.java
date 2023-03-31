@@ -14,6 +14,7 @@ public class StatisticDataChunk {
 	public List<Record> records = new ArrayList<>();
 
 	public StatisticDataChunk() {
+		for(StatisticCategory category : StatisticCategory.values()) records.add(new Record(null, category));
 		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 			for(StatisticCategory category : pitEnchant.statisticCategories) records.add(new Record(pitEnchant, category));
 		}
@@ -61,7 +62,7 @@ public class StatisticDataChunk {
 
 		public void writeToMessage(PluginMessage pluginMessage) {
 			pluginMessage
-					.writeString(pitEnchant.refNames.get(0))
+					.writeString(pitEnchant == null ? "" : pitEnchant.refNames.get(0))
 					.writeString(category.name())
 					.writeInt(totalHits);
 

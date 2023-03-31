@@ -24,6 +24,7 @@ public enum NBTTag {
 
 	IS_VENOM("pr-isvenom"),
 	IS_PREMADE("pr-ispremade"),
+	IS_GOD("pr-isgod"),
 
 	CANNOT_PICKUP("pr-cannot-pickup"),
 	SOUL_AMOUNT("pr-soul-amount"),

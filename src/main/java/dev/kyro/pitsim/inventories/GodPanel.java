@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.aitems.MysticFactory;
+import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.diamond.*;
 import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
@@ -12,9 +13,12 @@ import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
+import dev.kyro.pitsim.enums.DiscordLogChannel;
 import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Base64;
 import dev.kyro.pitsim.misc.Constant;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -109,6 +113,8 @@ class GodPanel extends AGUIPanel {
 	}
 
 	public void addItem(ItemStack itemStack) {
+		NBTItem nbtItem = new NBTItem(itemStack, true);
+		nbtItem.setBoolean(NBTTag.IS_GOD.getRef(), true);
 		items.add(itemStack);
 	}
 
@@ -178,5 +184,25 @@ class GodPanel extends AGUIPanel {
 	public void onOpen(InventoryOpenEvent event) {}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) {}
+	public void onClose(InventoryCloseEvent event) {
+		if(Misc.isKyro(player.getUniqueId()) || Misc.isWiji(player.getUniqueId())) return;
+		List<String> messageLines = new ArrayList<>();
+		for(int i = 0; i < 36; i++) {
+			ItemStack itemStack = player.getInventory().getItem(i);
+			PitItem pitItem = ItemFactory.getItem(itemStack);
+			if(pitItem == null) continue;
+			NBTItem nbtItem = new NBTItem(itemStack, true);
+			if(!nbtItem.hasKey(NBTTag.IS_GOD.getRef())) continue;
+
+			nbtItem.removeKey(NBTTag.IS_GOD.getRef());
+			player.getInventory().setItem(i, itemStack);
+			messageLines.add("> `" + itemStack.getAmount() + "x " + pitItem.getNBTID() +
+					(pitItem.hasUUID ? " (" + nbtItem.getString(NBTTag.ITEM_UUID.getRef()) + ")" : "") + "`");
+		}
+		player.updateInventory();
+
+		if(messageLines.isEmpty()) return;
+		messageLines.add(0, "GOD MENU: `" + player.getName() + "`");
+		Misc.logToDiscord(DiscordLogChannel.GOD_MENU_LOG_CHANNEL, String.join("\n", messageLines));
+	}
 }

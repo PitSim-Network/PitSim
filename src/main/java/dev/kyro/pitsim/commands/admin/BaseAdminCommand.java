@@ -16,7 +16,7 @@ public class BaseAdminCommand extends AMultiCommand {
 	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
 		if(!(sender instanceof Player)) return;
 		Player player = (Player) sender;
-		if(!player.isOp()) return;
+		if(!player.hasPermission("pitsim.admin")) return;
 
 		super.execute(sender, command, alias, args);
 	}
