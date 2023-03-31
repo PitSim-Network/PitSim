@@ -344,16 +344,8 @@ public class ProxyMessaging implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				switchCheck(player);
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-
-				if(StorageManager.isBeingEdited(player.getUniqueId())) {
-					EditSession session = StorageManager.getSession(player.getUniqueId());
-					assert session != null;
-					session.end();
-
-					AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
-					session.getStaffMember().closeInventory();
-				}
 
 				if(StorageManager.isEditing(player)) {
 					EditSession session = StorageManager.getSession(player);
@@ -387,22 +379,25 @@ public class ProxyMessaging implements Listener {
 
 	}
 
+	private static void switchCheck(Player player) {
+		if(StorageManager.isBeingEdited(player.getUniqueId())) {
+			EditSession session = StorageManager.getSession(player.getUniqueId());
+			assert session != null;
+			session.end();
+
+			AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
+			session.getStaffMember().closeInventory();
+		}
+	}
+
 	public static void darkzoneSwitchPlayer(Player player, int requestedServer) {
 		LobbySwitchManager.setSwitchingPlayer(player);
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-
-				if(StorageManager.isBeingEdited(player.getUniqueId())) {
-					EditSession session = StorageManager.getSession(player.getUniqueId());
-					assert session != null;
-					session.end();
-
-					AOutput.error(session.getStaffMember(), "&cYour session ended because the player switched instances!");
-					session.getStaffMember().closeInventory();
-				}
+				switchCheck(player);
 
 				if(StorageManager.isEditing(player)) {
 					EditSession session = StorageManager.getSession(player);

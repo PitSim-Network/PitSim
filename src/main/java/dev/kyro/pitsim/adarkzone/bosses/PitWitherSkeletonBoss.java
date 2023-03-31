@@ -41,7 +41,7 @@ public class PitWitherSkeletonBoss extends PitBoss {
 
 	@Override
 	public String getSkinName() {
-		return "wiji1";
+		return "WitherSkeleton";
 	}
 
 	@Override

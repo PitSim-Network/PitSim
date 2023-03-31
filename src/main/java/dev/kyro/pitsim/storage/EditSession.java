@@ -80,6 +80,13 @@ public class EditSession {
 		if(((EditInventoryPanel) inventory).runnable != null) ((EditInventoryPanel) inventory).runnable.cancel();
 	}
 
+	public void delete() {
+		StorageManager.editSessions.remove(this);
+
+		HandlerList.unregisterAll((Listener) inventory);
+		if(((EditInventoryPanel) inventory).runnable != null) ((EditInventoryPanel) inventory).runnable.cancel();
+	}
+
 	public void createInventory() {
 		inventory = new EditInventoryPanel(this);
 		PitSim.INSTANCE.getServer().getPluginManager().registerEvents((Listener) inventory, PitSim.INSTANCE);

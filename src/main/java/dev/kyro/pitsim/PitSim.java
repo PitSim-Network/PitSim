@@ -125,7 +125,7 @@ import java.util.*;
 public class PitSim extends JavaPlugin {
 	public static final double VERSION = 3.0;
 
-	public static final boolean MARKET_ENABLED = true;
+	public static final boolean MARKET_ENABLED = false;
 
 	public static LuckPerms LUCKPERMS;
 	public static PitSim INSTANCE;
