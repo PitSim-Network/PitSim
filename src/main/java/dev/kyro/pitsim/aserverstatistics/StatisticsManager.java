@@ -37,7 +37,8 @@ public class StatisticsManager implements Listener {
 	}
 
 	public static void logAttack(AttackEvent attackEvent) {
-		if(!attackEvent.isAttackerRealPlayer() || attackEvent.isFakeHit() || Regularity.isRegHit(attackEvent.getDefender())) return;
+		if(!attackEvent.isAttackerRealPlayer() || attackEvent.isFakeHit() || Regularity.isRegHit(attackEvent.getDefender()) ||
+				attackEvent.getAttacker() == attackEvent.getDefender()) return;
 
 		List<StatisticCategory> applicableCategories = new ArrayList<>();
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
