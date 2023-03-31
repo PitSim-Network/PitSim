@@ -10,7 +10,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enchants.overworld.Regularity;
 import dev.kyro.pitsim.events.AttackEvent;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -32,12 +31,15 @@ public class StatisticsManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L * 60);
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onAttack(AttackEvent.Apply attackEvent) {
+	@EventHandler(ignoreCancelled = true)
+	public void onAttack(AttackEvent.Post attackEvent) {
+		logAttack(attackEvent);
+	}
+
+	public static void logAttack(AttackEvent attackEvent) {
 		if(!attackEvent.isAttackerRealPlayer() || attackEvent.isFakeHit() || Regularity.isRegHit(attackEvent.getDefender())) return;
 
 		List<StatisticCategory> applicableCategories = new ArrayList<>();
-
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
 		PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
 		if(attackEvent.isDefenderPlayer() && attackEvent.getAttacker().getWorld() == MapManager.currentMap.world) {
@@ -58,10 +60,10 @@ public class StatisticsManager implements Listener {
 			}
 		}
 
-		for(StatisticCategory category : applicableCategories) logAttack(category, attackEvent.getAttackerEnchantMap());
+		for(StatisticCategory category : applicableCategories) logAttackInCategory(category, attackEvent.getAttackerEnchantMap());
 	}
 
-	public static void logAttack(StatisticCategory category, Map<PitEnchant, Integer> enchantMap) {
+	public static void logAttackInCategory(StatisticCategory category, Map<PitEnchant, Integer> enchantMap) {
 		StatisticDataChunk.Record defaultRecord = getDefaultRecord(category);
 		defaultRecord.logAttack(enchantMap);
 		for(Map.Entry<PitEnchant, Integer> entry : enchantMap.entrySet()) {
