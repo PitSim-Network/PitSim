@@ -67,15 +67,6 @@ public class PlayerStats {
 //	Darkzone Mystics
 	public int devour = 0;
 
-//	Darkzone
-	public int itemsTier3 = 0;
-	public int itemsTier4 = 0;
-	public int soulsSacrificed = 0;
-	public int listingsSold = 0;
-	public int listingsPurchased = 0;
-	public int itemsShredded = 0;
-	public int timesFastTraveled = 0;
-
 //	Progression
 	public int minutesPlayed = 0;
 
@@ -126,10 +117,18 @@ public class PlayerStats {
 	public int bossesKilled;
 	public int mobsKilled;
 	public int lifetimeSouls;
+	@Deprecated
 	public int itemsEnchanted;
 	public int potionsBrewed;
 	public int auctionsWon;
 	public int highestBid;
+	public int itemsTier3 = 0;
+	public int itemsTier4 = 0;
+	public int soulsSacrificed = 0;
+	public int listingsSold = 0;
+	public int listingsPurchased = 0;
+	public int itemsShredded = 0;
+	public int timesFastTraveled = 0;
 
 	//	Misc
 	public int highestStreak;
@@ -211,7 +210,6 @@ public class PlayerStats {
 		bossesKilled = playerData.getInt("stats.darkzone.bosses-killed");
 		mobsKilled = playerData.getInt("stats.darkzone.mobs-killed");
 		lifetimeSouls = playerData.getInt("stats.darkzone.lifetime-souls");
-		itemsEnchanted = playerData.getInt("stats.darkzone.items-enchanted");
 		potionsBrewed = playerData.getInt("stats.darkzone.potions-brewed");
 		auctionsWon = playerData.getInt("stats.darkzone.auctions-won");
 		highestBid = playerData.getInt("stats.darkzone.highest-bid");

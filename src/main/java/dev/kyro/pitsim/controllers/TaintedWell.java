@@ -365,12 +365,6 @@ public class TaintedWell implements Listener {
 				newItem.setItemMeta(meta);
 				EnchantManager.setItemLore(newItem, player);
 
-				NBTItem nbtItem = new NBTItem(newItem);
-
-				if(!nbtItem.hasKey(NBTTag.TAINTED_TIER.getRef())) {
-					PitPlayer.getPitPlayer(player).stats.itemsEnchanted++;
-				}
-
 				playerItems.put(player, newItem);
 				int rares = 0;
 				for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(newItem).keySet()) {

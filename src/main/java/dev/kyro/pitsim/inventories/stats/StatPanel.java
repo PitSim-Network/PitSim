@@ -117,7 +117,6 @@ public class StatPanel extends AGUIPanel {
 						"&7Mobs Killed: &e" + Misc.formatLarge(stats.mobsKilled),
 						"",
 						"&7Lifetime Souls: &e" + Misc.formatLarge(stats.lifetimeSouls),
-						"&7Items Enchanted: &e" + Misc.formatLarge(stats.itemsEnchanted),
 						"&7Potions Brewed: &e" + Misc.formatLarge(stats.potionsBrewed),
 						"",
 						"&7Auctions Won: &e" + Misc.formatLarge(stats.auctionsWon),
