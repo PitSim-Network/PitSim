@@ -258,7 +258,7 @@ public class YourListingsPanel extends AGUIPanel {
 				}
 			};
 
-			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_SOULS, listing, player, 0, success, MarketAsyncTask.getDefaultFail(player));
+			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_SOULS, listing.marketUUID, player, 0, success, MarketAsyncTask.getDefaultFail(player));
 		}
 
 		if(itemClaims.containsKey(slot)) {
@@ -274,7 +274,7 @@ public class YourListingsPanel extends AGUIPanel {
 				}
 			};
 
-			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_ITEM, listing, player, 0, success, MarketAsyncTask.getDefaultFail(player));
+			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_ITEM, listing.marketUUID, player, 0, success, MarketAsyncTask.getDefaultFail(player));
 		}
 	}
 
