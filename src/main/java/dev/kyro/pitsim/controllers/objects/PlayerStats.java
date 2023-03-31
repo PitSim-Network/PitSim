@@ -114,35 +114,35 @@ public class PlayerStats {
 	}
 
 	//	Darkzone
-	public int bossesKilled;
-	public int mobsKilled;
-	public int lifetimeSouls;
+	public int bossesKilled = 0;
+	public int mobsKilled = 0;
+	public int lifetimeSouls = 0;
 	@Deprecated
-	public int itemsEnchanted;
-	public int potionsBrewed;
-	public int auctionsWon;
-	public int highestBid;
-	public int itemsTier3 = 0;
-	public int itemsTier4 = 0;
-	public int soulsSacrificed = 0;
-	public int listingsSold = 0;
-	public int listingsPurchased = 0;
-	public int itemsShredded = 0;
-	public int timesFastTraveled = 0;
+	public int itemsEnchanted = 0;
+	public int potionsBrewed = 0;
+	public int auctionsWon = 0;
+	public int highestBid = 0;
+	public int itemsTier3 = 0; // TODO: Implement
+	public int itemsTier4 = 0; // TODO: Implement
+	public int soulsSacrificed = 0; // TODO: Implement
+	public int listingsSold = 0; // TODO: Implement
+	public int listingsPurchased = 0; // TODO: Implement
+	public int itemsShredded = 0; // TODO: Implement
+	public int timesFastTraveled = 0; // TODO: Implement
 
 	//	Misc
-	public int highestStreak;
-	public double healthRegained;
-	public double absorptionGained;
-	public int bountiesClaimed;
+	public int highestStreak = 0;
+	public double healthRegained = 0;
+	public double absorptionGained = 0;
+	public int bountiesClaimed = 0;
 
-	public int jewelsCompleted;
-	public int itemsGemmed;
-	public int livesLost;
-	public int itemsBroken;
-	public int feathersLost;
+	public int jewelsCompleted = 0;
+	public int itemsGemmed = 0;
+	public int livesLost = 0;
+	public int itemsBroken = 0;
+	public int feathersLost = 0;
 
-	public int chatMessages;
+	public int chatMessages = 0;
 
 	public PlayerStats() {
 	}
