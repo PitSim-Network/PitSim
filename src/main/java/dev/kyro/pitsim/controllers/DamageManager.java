@@ -505,7 +505,7 @@ public class DamageManager implements Listener {
 				LevelManager.addGold(killEvent.getKillerPlayer(), (int) killEvent.getFinalGold());
 			}
 		} else {
-			if(deadIsRealPlayer) {
+			if(deadIsRealPlayer && killEvent.shouldLoseItems()) {
 				int finalSouls = killEvent.getFinalSouls();
 				if(finalSouls != 0) {
 					pitDead.taintedSouls -= finalSouls;

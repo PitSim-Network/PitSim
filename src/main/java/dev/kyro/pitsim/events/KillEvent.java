@@ -250,6 +250,10 @@ public class KillEvent extends Event {
 		return killType;
 	}
 
+	public boolean shouldLoseItems() {
+		return shouldLoseItems;
+	}
+
 	public Map<PlayerItemLocation, ItemInfo> getVulnerableItems() {
 		return deadVulnerableItems;
 	}
