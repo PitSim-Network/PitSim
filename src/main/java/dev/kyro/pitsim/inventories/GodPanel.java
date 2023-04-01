@@ -203,7 +203,7 @@ class GodPanel extends AGUIPanel {
 		player.updateInventory();
 
 		if(messageLines.isEmpty() || PitSim.isDev()) return;
-		messageLines.add(0, "GOD MENU: `" + player.getName() + "`");
+		messageLines.add(0, "`" + player.getName() + "`");
 		Misc.logToDiscord(DiscordLogChannel.GOD_MENU_LOG_CHANNEL, String.join("\n", messageLines));
 	}
 }
