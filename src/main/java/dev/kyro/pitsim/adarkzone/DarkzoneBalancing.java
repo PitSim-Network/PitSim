@@ -75,9 +75,9 @@ public class DarkzoneBalancing {
 	}
 
 	public enum ShredValue {
-		JEWEL_PANTS(40, MysticPants.class),
-		JEWEL_SWORD(40, MysticSword.class),
-		JEWEL_BOW(40, MysticBow.class),
+		JEWEL_PANTS(20, MysticPants.class),
+		JEWEL_SWORD(20, MysticSword.class),
+		JEWEL_BOW(20, MysticBow.class),
 		TAINTED_SCYTHE(10, TaintedScythe.class),
 		TAINTED_CHESTPLATE(10, TaintedChestplate.class),
 		;
