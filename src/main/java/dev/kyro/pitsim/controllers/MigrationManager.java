@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.DarkzoneLeveling;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.storage.StorageManager;
@@ -91,6 +92,7 @@ public class MigrationManager implements Listener {
 
 	public static ItemStack convertItem(PitPlayer pitPlayer, PitItem pitItem, ItemStack itemStack) {
 		NBTItem nbtItem = new NBTItem(itemStack);
+		if(nbtItem.hasKey(NBTTag.CUSTOM_ITEM.getRef())) throw new RuntimeException();
 		ItemStack replacementItem = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
 		if(replacementItem == null) return null;
 		pitItem.updateItem(replacementItem);
