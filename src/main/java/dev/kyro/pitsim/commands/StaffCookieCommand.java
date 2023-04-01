@@ -25,7 +25,7 @@ public class StaffCookieCommand implements CommandExecutor {
 		}
 
 		if(args.length < 1) {
-			AOutput.error(player, "&7Usage: /" + label + " <receiver> (player required to add lore)");
+			AOutput.error(player, "&c&lERROR!&7 Usage: /" + label + " <receiver>");
 			return false;
 		}
 
