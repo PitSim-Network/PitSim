@@ -129,6 +129,8 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 				case JEWEL:
 					return null;
 			}
+		} else {
+			return null;
 		}
 
 		ItemStack newItemStack = new ItemStack(getMaterial(), 1);
