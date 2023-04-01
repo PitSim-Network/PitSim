@@ -254,8 +254,12 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onAnvil(PlayerInteractEvent event) {
-		if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.ANVIL) {
-			event.setCancelled(true);
+		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		Material material = event.getClickedBlock().getType();
+		switch(material) {
+			case ANVIL:
+			case WORKBENCH:
+				event.setCancelled(true);
 		}
 	}
 

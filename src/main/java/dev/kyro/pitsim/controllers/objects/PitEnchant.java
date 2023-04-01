@@ -60,7 +60,7 @@ public abstract class PitEnchant implements Listener, Summarizable {
 	}
 
 	public List<String> getDescription(int enchantLvl, boolean overrideDisableCheck) {
-		return !isEnabled() && !overrideDisableCheck ? getDisabledDescription() : getNormalDescription(enchantLvl);
+		return isEnabled() || overrideDisableCheck ? getNormalDescription(enchantLvl) : getDisabledDescription();
 	}
 
 	public String getDisplayName() {
