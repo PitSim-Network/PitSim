@@ -123,7 +123,7 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
 		PantColor pantColor = nbtItem.hasKey(NBTTag.SAVED_PANTS_COLOR.getRef()) ?
 				PantColor.getPantColor(nbtItem.getString(NBTTag.SAVED_PANTS_COLOR.getRef())) : PantColor.getNormalRandom();
-		if(pantColor == null) throw new RuntimeException();
+		if(pantColor == null) pantColor = PantColor.getNormalRandom();
 		switch(pantColor) {
 			case DARK:
 			case JEWEL:
