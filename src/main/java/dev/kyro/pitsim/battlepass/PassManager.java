@@ -278,7 +278,7 @@ public class PassManager implements Listener {
 				.registerReward(new PassGoldReward(2_500), PitSimPass.RewardType.FREE, 30)
 				.registerReward(new PassPantsReward(1), PitSimPass.RewardType.FREE, 32)
 				.registerReward(new PassXpReward(2_500), PitSimPass.RewardType.FREE, 34)
-				.registerReward(new PassCosmeticReward(Material.BANNER, CosmeticManager.getCosmetic("forgottopay"),
+				.registerReward(new PassCosmeticReward(Material.EMERALD, CosmeticManager.getCosmetic("forgottopay"),
 						null), PitSimPass.RewardType.FREE, 36)
 
 
@@ -301,7 +301,7 @@ public class PassManager implements Listener {
 				.registerReward(new PassFeatherReward(4), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassSwordReward(2), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassDarkzoneDropReward(8, 5), PitSimPass.RewardType.PREMIUM, premiumTier++)
-				.registerReward(new PassCosmeticReward(Material.HUGE_MUSHROOM_2, CosmeticManager.getCosmetic("ironkill"),
+				.registerReward(new PassCosmeticReward(Material.ANVIL, CosmeticManager.getCosmetic("ironkill"),
 						null), PitSimPass.RewardType.PREMIUM, premiumTier++)
 
 				.registerReward(new PassXpReward(10_000), PitSimPass.RewardType.PREMIUM, premiumTier++)
@@ -312,7 +312,7 @@ public class PassManager implements Listener {
 				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassPantsReward(3), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassBoosterReward("xp"), PitSimPass.RewardType.PREMIUM, premiumTier++)
-				.registerReward(new PassCosmeticReward(Material.ENCHANTMENT_TABLE, 13, CosmeticManager.getCosmetic("smoketrail"),
+				.registerReward(new PassCosmeticReward(Material.FIREWORK_CHARGE, CosmeticManager.getCosmetic("smoketrail"),
 						null), PitSimPass.RewardType.PREMIUM, premiumTier++)
 
 				.registerReward(new PassXpReward(12_500), PitSimPass.RewardType.PREMIUM, premiumTier++)
@@ -323,7 +323,7 @@ public class PassManager implements Listener {
 				.registerReward(new PassRenownReward(7), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassPantsReward(3), PitSimPass.RewardType.PREMIUM, premiumTier++)
 				.registerReward(new PassDarkzoneDropReward(10, 4), PitSimPass.RewardType.PREMIUM, premiumTier++)
-				.registerReward(new PassCosmeticReward(Material.WOOL, 1, CosmeticManager.getCosmetic("firecape"),
+				.registerReward(new PassCosmeticReward(Material.BLAZE_POWDER, CosmeticManager.getCosmetic("firecape"),
 						null), PitSimPass.RewardType.PREMIUM, premiumTier++));
 
 
