@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Impatient extends RenownUpgrade {
-	public static RenownUpgrade INSTANCE;
+	public static Impatient INSTANCE;
 
 	public Impatient() {
 		super("Impatient", "IMPATIENT", 10, 14, 6, true, 2);
@@ -55,7 +55,7 @@ public class Impatient extends RenownUpgrade {
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					if(!UpgradeManager.hasUpgrade(player, INSTANCE) || !SpawnManager.isInSpawn(player)) continue;
-					if(MapManager.inDarkzone(player)) {
+					if(MapManager.inDarkzone(player) && UpgradeManager.getTier(player, INSTANCE.refName) == 2) {
 						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 40, 3, false, false);
 					} else {
 						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 40, 1, false, false);
