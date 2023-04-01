@@ -126,7 +126,7 @@ public class SpawnManager implements Listener {
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.hasDropConfirm || !pitItem.destroyIfDroppedInSpawn) return;
-		if(MysticFactory.isJewel(itemStack, false)) return;
+		if(MysticFactory.isImportant(itemStack)) return;
 
 		event.getItemDrop().remove();
 		Sounds.NO.play(event.getPlayer());

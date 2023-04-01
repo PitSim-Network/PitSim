@@ -24,6 +24,7 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 	public MysticPants() {
 		hasUUID = true;
 		hasLastServer = true;
+		hasDropConfirm = true;
 		destroyIfDroppedInSpawn = true;
 		hideExtra = true;
 		unbreakable = true;

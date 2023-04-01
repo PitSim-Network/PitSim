@@ -23,6 +23,7 @@ public class TaintedScythe extends StaticPitItem implements TemporaryItem {
 	public TaintedScythe() {
 		hasUUID = true;
 		hasLastServer = true;
+		hasDropConfirm = true;
 		hideExtra = true;
 		unbreakable = true;
 		hasEnchantGlint = true;

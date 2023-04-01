@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.SoulPickup;
 import dev.kyro.pitsim.aitems.misc.VeryYummyBread;
@@ -158,6 +159,7 @@ public class ItemManager implements Listener {
 			}
 		}
 
+		if(MysticFactory.isImportant(itemStack)) return;
 		if(pitItem == null || !pitItem.hasDropConfirm) {
 			if(itemStack.getType() != Material.ENDER_CHEST && itemStack.getType() != Material.TRIPWIRE_HOOK) return;
 		}
