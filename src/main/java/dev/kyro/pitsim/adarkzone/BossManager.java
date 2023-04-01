@@ -31,7 +31,7 @@ public class BossManager implements Listener {
 	@EventHandler
 	public void onAttack2(AttackEvent.Apply attackEvent) {
 		if(!isPitBoss(attackEvent.getDefender())) return;
-		attackEvent.multipliers.add(0.5);
+		attackEvent.multipliers.add(1 / DarkzoneBalancing.SPOOFED_HEALTH_INCREASE);
 	}
 
 	/**

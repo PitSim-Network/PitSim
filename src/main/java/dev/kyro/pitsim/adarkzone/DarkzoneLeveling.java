@@ -68,7 +68,7 @@ public class DarkzoneLeveling {
 
 	public static double getReductionMultiplier(int altarLevel, int darkzoneLevel) {
 		int levelDifference = Math.max(darkzoneLevel - altarLevel, 0);
-		return Math.pow(0.99, levelDifference);
+		return Math.pow(0.99, 0);
 	}
 
 	public static double getReductionMultiplier(PitPlayer pitPlayer) {
