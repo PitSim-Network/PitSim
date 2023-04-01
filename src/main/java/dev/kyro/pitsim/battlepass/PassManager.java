@@ -273,7 +273,7 @@ public class PassManager implements Listener {
 				.registerReward(new PassGoldReward(2_500), PitSimPass.RewardType.FREE, 21)
 				.registerReward(new PassBowReward(1), PitSimPass.RewardType.FREE, 23)
 				.registerReward(new PassXpReward(2_500), PitSimPass.RewardType.FREE, 25)
-				.registerReward(new PassShardsReward(3), PitSimPass.RewardType.PREMIUM, premiumTier++)
+				.registerReward(new PassShardsReward(3), PitSimPass.RewardType.FREE, 27)
 				.registerReward(new PassVileReward(5), PitSimPass.RewardType.FREE, 28)
 				.registerReward(new PassGoldReward(2_500), PitSimPass.RewardType.FREE, 30)
 				.registerReward(new PassPantsReward(1), PitSimPass.RewardType.FREE, 32)
