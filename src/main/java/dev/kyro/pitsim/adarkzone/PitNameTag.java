@@ -117,10 +117,11 @@ public class PitNameTag {
 		if(nameTagType == NameTagType.NAME) {
 			return displayName;
 		} else if(nameTagType == NameTagType.NAME_AND_HEALTH) {
-			int maxHealth = (int) entity.getMaxHealth();
-			int length = (int) Math.ceil(Math.min(Math.pow(maxHealth, 1 / 2.2), 20));
+			double health = entity.getHealth() * DarkzoneBalancing.SPOOFED_HEALTH_INCREASE;
+			int maxHealth = (int) (entity.getMaxHealth() * DarkzoneBalancing.SPOOFED_HEALTH_INCREASE);
+			int length = (int) Math.ceil(Math.min(Math.pow(maxHealth, 1 / 2.5), 20));
 //			if(entity instanceof Enderman) System.out.println(length);
-			double percentFull = entity.getHealth() / entity.getMaxHealth();
+			double percentFull = health / maxHealth;
 			String healthBar = AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, length, percentFull);
 			return displayName + "&8 [" + healthBar + "&8]";
 		}
