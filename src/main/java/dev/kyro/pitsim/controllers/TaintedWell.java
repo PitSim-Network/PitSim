@@ -540,7 +540,6 @@ public class TaintedWell implements Listener {
 	public static int getEnchantCost(int tier, Player player) {
 		int cost;
 
-		System.out.println("Tier: " + tier + " Max: " + getMaxTier(player));
 		if(tier >= getMaxTier(player)) return -1;
 
 		switch(tier + 1) {
