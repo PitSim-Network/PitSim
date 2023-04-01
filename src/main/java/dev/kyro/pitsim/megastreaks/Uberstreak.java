@@ -379,11 +379,11 @@ public class Uberstreak extends Megastreak {
 			if(this == JEWEL_SWORD) {
 				ItemStack jewelSword = MysticFactory.getJewelItem(MysticType.SWORD);
 				AUtil.giveItemSafely(player, jewelSword);
-				displayStack = getDisplayStack("&3Hidden Jewel Sword", jewelSword);
+				displayStack = getDisplayStack("&eHidden Jewel Sword", jewelSword);
 			} else if(this == JEWEL_BOW) {
 				ItemStack jewelBow = MysticFactory.getJewelItem(MysticType.BOW);
 				AUtil.giveItemSafely(player, jewelBow);
-				displayStack = getDisplayStack("&3Hidden Jewel Bow", jewelBow);
+				displayStack = getDisplayStack("&bHidden Jewel Bow", jewelBow);
 			} else if(this == JEWEL_PANTS) {
 				ItemStack jewelPants = MysticFactory.getJewelItem(MysticType.PANTS);
 				AUtil.giveItemSafely(player, jewelPants);
