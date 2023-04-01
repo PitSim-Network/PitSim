@@ -112,10 +112,9 @@ public class SpawnManager implements Listener {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Pre event) {
-		Player player = event.getAttackerPlayer();
-		if(!event.isAttackerPlayer() || !isInSpawn(player)) return;
-		event.setCancelled(true);
+	public void onAttack(AttackEvent.Pre attackEvent) {
+		if(!isInSpawn(attackEvent.getAttackerPlayer()) && !isInSpawn(attackEvent.getDefender().getLocation())) return;
+		attackEvent.setCancelled(true);
 	}
 
 	@EventHandler
@@ -134,6 +133,7 @@ public class SpawnManager implements Listener {
 	}
 
 	public static boolean isInSpawn(Player player) {
+		if(player == null) return false;
 		return isInSpawn(player, player.getLocation());
 	}
 
