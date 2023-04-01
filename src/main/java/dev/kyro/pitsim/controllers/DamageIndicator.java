@@ -2,10 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.BossManager;
-import dev.kyro.pitsim.adarkzone.DarkzoneManager;
-import dev.kyro.pitsim.adarkzone.PitBoss;
-import dev.kyro.pitsim.adarkzone.PitMob;
+import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -36,7 +33,7 @@ public class DamageIndicator implements Listener {
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
 		PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
 		if(defenderMob != null || defenderBoss != null) {
-			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), finalDamage * 2);
+			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), finalDamage * DarkzoneBalancing.SPOOFED_HEALTH_INCREASE);
 //			TODO: Enable this to remove boss bar damage indicator
 			return;
 		}

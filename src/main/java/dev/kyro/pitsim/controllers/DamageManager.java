@@ -558,10 +558,9 @@ public class DamageManager implements Listener {
 					" &6+" + (altarMultiplier == 1 ? df.format(killEvent.getFinalGold()) + "g " : ""));
 
 			TextComponent killComponent = new TextComponent(kill);
-			killComponent.addExtra(hover);
+			if(altarMultiplier != 1) killComponent.addExtra(hover);
 			if(killerPlayer != null) killerPlayer.sendMessage(killComponent);
 			kill = null;
-
 		}
 
 		String death;

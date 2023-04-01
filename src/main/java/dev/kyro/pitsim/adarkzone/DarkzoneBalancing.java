@@ -11,6 +11,7 @@ import java.util.Random;
 
 public class DarkzoneBalancing {
 	public static final double SCYTHE_DAMAGE = 7.5;
+	public static final double SPOOFED_HEALTH_INCREASE = 4.0;
 
 	public static final int TIER_1_ENCHANT_COST = 5;
 	public static final int TIER_2_ENCHANT_COST = 10;
@@ -52,7 +53,7 @@ public class DarkzoneBalancing {
 		BOSS_HEALTH(40, 1.5),
 		BOSS_SOULS(15, 1.4),
 		MOB_DAMAGE(8.5, 1.5),
-		MOB_HEALTH(22.5, 1.5),
+		MOB_HEALTH(11.25, 1.5),
 		MOB_SOULS(5, 1.3),
 		;
 
@@ -74,9 +75,9 @@ public class DarkzoneBalancing {
 	}
 
 	public enum ShredValue {
-		JEWEL_PANTS(50, MysticPants.class),
-		JEWEL_SWORD(50, MysticSword.class),
-		JEWEL_BOW(50, MysticBow.class),
+		JEWEL_PANTS(40, MysticPants.class),
+		JEWEL_SWORD(40, MysticSword.class),
+		JEWEL_BOW(40, MysticBow.class),
 		TAINTED_SCYTHE(10, TaintedScythe.class),
 		TAINTED_CHESTPLATE(10, TaintedChestplate.class),
 		;
