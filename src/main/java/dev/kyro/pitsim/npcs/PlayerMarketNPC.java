@@ -32,7 +32,7 @@ public class PlayerMarketNPC extends PitNPC {
 	public void onClick(Player player) {
 
 		if(!PitSim.MARKET_ENABLED) {
-			AOutput.error(player, "&a&lMARKET! &aThe player market is currently disabled!");
+			AOutput.error(player, "&a&lMARKET! &cThe player market is currently disabled!");
 			Sounds.NO.play(player);
 			return;
 		}

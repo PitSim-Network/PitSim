@@ -93,6 +93,8 @@ public class TokenOfAppreciation extends PitItem {
 		ItemStack newItemStack = new ItemStack(getMaterial(), 1);
 		newItemStack = buildItem(newItemStack);
 
+		if(newItemStack.getItemMeta() == null || newItemStack.getItemMeta().getLore() == null) return null;
+
 		String receiverString = null;
 		for(String line : itemStack.getItemMeta().getLore()) {
 			if(!line.contains("To:")) continue;

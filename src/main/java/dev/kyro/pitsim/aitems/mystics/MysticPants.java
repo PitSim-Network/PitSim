@@ -175,8 +175,10 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 			newNBTItem.setBoolean(NBTTag.IS_JEWEL.getRef(), nbtItem.getBoolean(NBTTag.IS_JEWEL.getRef()));
 		newItemStack = newNBTItem.getItem();
 
+		String name = itemStack.getItemMeta().getDisplayName();
+
 		new AItemStackBuilder(newItemStack)
-				.setName(itemStack.getItemMeta().getDisplayName());
+				.setName(name == null ? "Replacement Item" : name);
 
 		return newItemStack;
 	}
