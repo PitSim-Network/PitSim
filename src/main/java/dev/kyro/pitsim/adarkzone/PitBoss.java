@@ -132,7 +132,7 @@ public abstract class PitBoss {
 		navigator.getDefaultParameters()
 				.attackDelayTicks(10)
 				.stuckAction(null)
-				.range(2)
+				.range(40)
 				.attackRange(getReach());
 
 		bossTargetingSystem.assignTarget();
