@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.ahelp.Summarizable;
+import dev.kyro.pitsim.perks.NoPerk;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -59,11 +60,8 @@ public abstract class PitPerk implements Listener, Summarizable {
 	}
 
 	public static PitPerk getPitPerk(String refName) {
-
-		for(PitPerk pitPerk : pitPerks) {
-			if(pitPerk.refName.equalsIgnoreCase(refName)) return pitPerk;
-		}
-		return null;
+		for(PitPerk pitPerk : pitPerks) if(pitPerk.refName.equalsIgnoreCase(refName)) return pitPerk;
+		return NoPerk.INSTANCE;
 	}
 
 	@Override
