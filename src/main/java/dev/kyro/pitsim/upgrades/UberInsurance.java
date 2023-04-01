@@ -29,8 +29,10 @@ public class UberInsurance extends RenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
+		System.out.println("a");
 		if(!killEvent.isDeadPlayer() || !isApplicable(killEvent.getDeadPlayer())) return;
-		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : killEvent.getVulnerableItems().entrySet()) {
+		System.out.println("b");
+		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : new ArrayList<>(killEvent.getVulnerableItems().entrySet())) {
 			KillEvent.ItemInfo itemInfo = entry.getValue();
 			if(!itemInfo.pitItem.isMystic) continue;
 			killEvent.removeVulnerableItem(entry.getKey());

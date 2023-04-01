@@ -20,6 +20,7 @@ import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class SelfCheckout extends PitEnchant {
 	@EventHandler
 	public void onScoDeath(KillEvent killEvent) {
 		if(!killEvent.hasKillModifier(KillModifier.SELF_CHECKOUT)) return;
-		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : killEvent.getVulnerableItems().entrySet()) {
+		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : new ArrayList<>(killEvent.getVulnerableItems().entrySet())) {
 			KillEvent.ItemInfo itemInfo = entry.getValue();
 			if(!itemInfo.pitItem.isMystic) continue;
 			killEvent.removeVulnerableItem(entry.getKey());
