@@ -65,7 +65,6 @@ public enum NBTTag {
 	private final String ref;
 
 	NBTTag(String ref) {
-
 		this.ref = ref;
 	}
 
