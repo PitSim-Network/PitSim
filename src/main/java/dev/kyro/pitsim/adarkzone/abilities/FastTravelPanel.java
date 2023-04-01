@@ -80,6 +80,7 @@ public class FastTravelPanel extends AGUIPanel {
 			return;
 		}
 
+		pitPlayer.stats.timesFastTraveled++;
 		pitPlayer.taintedSouls -= destination.cost;
 		destination.travel(player);
 	}

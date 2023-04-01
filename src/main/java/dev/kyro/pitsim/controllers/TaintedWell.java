@@ -360,6 +360,11 @@ public class TaintedWell implements Listener {
 
 				if(newItem == null) return;
 
+				NBTItem nbtItem = new NBTItem(newItem);
+				int newTier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
+				if(newTier == 3) pitPlayer.stats.itemsTier3++;
+				else if(newTier == 4) pitPlayer.stats.itemsTier3++;
+
 				ItemMeta meta = newItem.getItemMeta();
 				meta.setDisplayName(EnchantManager.getMysticName(newItem));
 				newItem.setItemMeta(meta);

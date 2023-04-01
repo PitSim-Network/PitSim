@@ -175,6 +175,7 @@ public class AltarManager implements Listener {
 	public static void activateAltar(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.taintedSouls -= AltarPedestal.getTotalCost(player);
+		pitPlayer.stats.soulsSacrificed += AltarPedestal.getTotalCost(player);
 
 		List<AltarPedestal> pedestals = new ArrayList<>();
 		for(AltarPedestal pedestal : AltarPedestal.altarPedestals) {
