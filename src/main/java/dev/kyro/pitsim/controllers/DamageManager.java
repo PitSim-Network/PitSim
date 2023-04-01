@@ -555,7 +555,7 @@ public class DamageManager implements Listener {
 
 			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" +
 					(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + killEvent.getFinalXp() + "XP" +
-					" &6+" + (altarMultiplier == 1 ? df.format(killEvent.getFinalGold()) + "g " : ""));
+					" &6+" + (altarMultiplier == 1 ? df.format(killEvent.getFinalGold()) + "g" : ""));
 
 			TextComponent killComponent = new TextComponent(kill);
 			if(altarMultiplier != 1) killComponent.addExtra(hover);
