@@ -32,11 +32,17 @@ public class StatisticDataChunk {
 		PluginMessage pluginMessage = new PluginMessage()
 				.writeString("SERVER_STATISTICS")
 				.writeLong(startTime)
-				.writeInt(records.size());
+				.writeInt(getNonEmptyRecordCount());
 
 		for(Record record : records) record.writeToMessage(pluginMessage);
 
 		pluginMessage.send();
+	}
+
+	public int getNonEmptyRecordCount() {
+		int count = 0;
+		for(Record record : records) if(record.totalHits != 0) count++;
+		return count;
 	}
 
 	public static class Record {
