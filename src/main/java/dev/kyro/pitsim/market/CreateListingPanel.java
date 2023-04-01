@@ -144,7 +144,8 @@ public class CreateListingPanel extends AGUIPanel {
 						AUtil.giveItemSafely(player, item, true);
 
 						Sounds.NO.play(player);
-						AOutput.send(player, "&a&lMARKET &7Failed to create listing!");
+						String failMessage = "&cThere was an error while attempting to create your listing. Please contact a staff member about this issue.";
+						AOutput.error(player, failMessage);
 					}
 				};
 

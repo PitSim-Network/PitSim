@@ -188,6 +188,13 @@ public class StorageManager implements Listener {
 			boolean isOnline = message.getBooleans().get(0);
 			String serverName = strings.get(3);
 
+			for(EditSession editSession : editSessions) {
+				if(editSession.getPlayerUUID() != playerUUID) continue;
+
+				editSession.delete();
+				Misc.alertDiscord("@everyone EDIT SESSION CREATION ERROR! " + playerUUID + " already existed in edit session list");
+			}
+
 			new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -301,7 +308,7 @@ public class StorageManager implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		EditSession endSession = null;
 
-		for(EditSession editSession : editSessions) {
+		for(EditSession editSession : new ArrayList<>(editSessions)) {
 			if(editSession.getPlayerUUID().equals(event.getPlayer().getUniqueId()) && editSession.getEditType() == EditType.ONLINE) {
 				endSession = editSession;
 				AOutput.error(editSession.getStaffMember(), "&cYour session ended because the player logged out!");

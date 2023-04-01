@@ -126,7 +126,7 @@ public class PlayerStats {
 	public int itemsTier4 = 0; // TODO: Implement
 	public int soulsSacrificed = 0; // TODO: Implement
 	public int listingsSold = 0; // TODO: Implement
-	public int listingsPurchased = 0; // TODO: Implement
+	public int listingsClaimed = 0;
 	public int itemsShredded = 0; // TODO: Implement
 	public int timesFastTraveled = 0; // TODO: Implement
 

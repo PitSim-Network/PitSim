@@ -17,7 +17,7 @@ public class FastTravelNPC extends PitNPC {
 
 	@Override
 	public Location getRawLocation() {
-		return new Location(MapManager.getDarkzone(), 182.5, 91, -88.5, -145, 0);
+		return new Location(MapManager.getDarkzone(), 182.5, 91, -88.5, 170, 0);
 	}
 
 	@Override

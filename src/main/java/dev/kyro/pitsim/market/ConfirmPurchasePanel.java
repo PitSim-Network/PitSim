@@ -64,6 +64,8 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 	public void onClick(InventoryClickEvent event) {
 		MarketAsyncTask.MarketTask task = bin ? MarketAsyncTask.MarketTask.BIN_ITEM : MarketAsyncTask.MarketTask.PLACE_BID;
 
+		String failMessage = "&cThere was an error while attempting to process your transaction. Please try again in a moment.";
+
 		BukkitRunnable bid = new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -93,7 +95,7 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 
 
 		if(event.getSlot() == 11) {
-			new MarketAsyncTask(task, listing.marketUUID, player, (bin ? amount : price), bin ? buy : bid, MarketAsyncTask.getDefaultFail(player));
+			new MarketAsyncTask(task, listing.marketUUID, player, (bin ? amount : price), bin ? buy : bid, MarketAsyncTask.getDefaultFail(player, failMessage));
 		}
 
 		if(event.getSlot() == 15) openPreviousGUI();

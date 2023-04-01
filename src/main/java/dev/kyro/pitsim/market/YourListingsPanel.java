@@ -258,7 +258,8 @@ public class YourListingsPanel extends AGUIPanel {
 				}
 			};
 
-			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_SOULS, listing.marketUUID, player, 0, success, MarketAsyncTask.getDefaultFail(player));
+			String failMessage = "&cThere was an error while attempting to claim your souls. Please contact a staff member about this issue.";
+			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_SOULS, listing.marketUUID, player, 0, success, MarketAsyncTask.getDefaultFail(player, failMessage));
 		}
 
 		if(itemClaims.containsKey(slot)) {
@@ -270,11 +271,13 @@ public class YourListingsPanel extends AGUIPanel {
 					AOutput.send(player, "&a&lMARKET &7Claimed " + listing.itemData.getItemMeta().getDisplayName() + (listing.stackBIN ? " &8x" + (listing.itemData.getAmount()) : ""));
 					AUtil.giveItemSafely(player, listing.itemData, true);
 					Sounds.RENOWN_SHOP_PURCHASE.play(player);
+					PitPlayer.getPitPlayer(player).stats.listingsClaimed++;
 					placeClaimables();
 				}
 			};
 
-			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_ITEM, listing.marketUUID, player, 0, success, MarketAsyncTask.getDefaultFail(player));
+			String failMessage = "&cThere was an error while attempting to claim your item(s). Please contact a staff member about this issue.";
+			new MarketAsyncTask(MarketAsyncTask.MarketTask.CLAIM_ITEM, listing.marketUUID, player, 0, success, MarketAsyncTask.getDefaultFail(player, failMessage));
 		}
 	}
 

@@ -133,6 +133,9 @@ public class RewardCommand implements CommandExecutor {
 			case "shard":
 				AUtil.giveItemSafely(player, ItemFactory.getItem(AncientGemShard.class).getItem(amount), true);
 				return false;
+			case "double":
+				double goldToGive = Math.min(pitPlayer.gold, 2000000);
+				LevelManager.addGold(player, (int) goldToGive);
 		}
 		return false;
 	}

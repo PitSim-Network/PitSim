@@ -50,7 +50,7 @@ public class PitBlazeBoss extends PitBoss {
 
 	@Override
 	public String getSkinName() {
-		return "wiji1";
+		return "Blaze";
 	}
 
 	@Override
