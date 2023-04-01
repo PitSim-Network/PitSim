@@ -87,6 +87,7 @@ public class ItemManager implements Listener {
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.hasDropConfirm) return;
+		if(pitItem.isMystic && !MysticFactory.isImportant(itemStack)) return;
 
 		event.setCancelled(true);
 		player.updateInventory();
@@ -159,7 +160,7 @@ public class ItemManager implements Listener {
 			}
 		}
 
-		if(MysticFactory.isImportant(itemStack)) return;
+		if(!MysticFactory.isImportant(itemStack)) return;
 		if(pitItem == null || !pitItem.hasDropConfirm) {
 			if(itemStack.getType() != Material.ENDER_CHEST && itemStack.getType() != Material.TRIPWIRE_HOOK) return;
 		}
