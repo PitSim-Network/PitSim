@@ -22,7 +22,7 @@ public class StatisticsManager implements Listener {
 
 	private static StatisticDataChunk dataChunk = new StatisticDataChunk();
 
-	static {
+	public StatisticsManager() {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -37,6 +37,7 @@ public class StatisticsManager implements Listener {
 	}
 
 	public static void logAttack(AttackEvent attackEvent) {
+		if(PitSim.isDev()) return;
 		if(!attackEvent.isAttackerRealPlayer() || attackEvent.isFakeHit() || Regularity.isRegHit(attackEvent.getDefender()) ||
 				attackEvent.getAttacker() == attackEvent.getDefender()) return;
 
