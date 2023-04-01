@@ -40,19 +40,19 @@ public class DarkzoneBalancing {
 	}
 
 	public static int getAttributeAsInt(SubLevelType type, Attribute attribute) {
-		return (int) getAttribute(type, attribute);
+		return (int) Math.floor(getAttribute(type, attribute));
 	}
 
 	public static double getAttribute(SubLevelType subLevelType, Attribute attribute) {
-		return Math.floor(attribute.getBaseValue() * Math.pow(subLevelType.getIndex() + 1, attribute.getScalar()));
+		return attribute.getBaseValue() * Math.pow(attribute.getScalar(), subLevelType.getIndex());
 	}
 
 	public enum Attribute {
-		BOSS_DAMAGE(5, 1.4),
-		BOSS_HEALTH(80, 1.4),
+		BOSS_DAMAGE(5, 1.5),
+		BOSS_HEALTH(40, 1.5),
 		BOSS_SOULS(15, 1.4),
-		MOB_DAMAGE(8, 1.4),
-		MOB_HEALTH(40, 1.4),
+		MOB_DAMAGE(8.5, 1.5),
+		MOB_HEALTH(22.5, 1.5),
 		MOB_SOULS(5, 1.3),
 		;
 

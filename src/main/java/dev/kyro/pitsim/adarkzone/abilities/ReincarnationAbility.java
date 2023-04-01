@@ -6,11 +6,12 @@ import dev.kyro.pitsim.cosmetics.ParticleOffset;
 import dev.kyro.pitsim.cosmetics.particles.CloudParticle;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
 import dev.kyro.pitsim.cosmetics.particles.RedstoneParticle;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -19,20 +20,32 @@ import java.util.Random;
 
 public class ReincarnationAbility extends PitBossAbility {
 	public boolean hasActivated;
+	public boolean isReincarnating;
 	public int randomThreshold = 50;
 	public int rays = 25;
-
-	public ReincarnationAbility(double routineWeight) {
-		super(routineWeight);
-	}
 
 	@Override
 	public void onRoutineExecute() {
 		activate();
 	}
 
+	@EventHandler
+	public void onAttack(AttackEvent.Pre attackEvent) {
+		if(!isAssignedBoss(attackEvent.getDefender()) || !isReincarnating) return;
+		attackEvent.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onAttack(AttackEvent.Post attackEvent) {
+		if(!isAssignedBoss(attackEvent.getDefender())) return;
+		if(attackEvent.getDefender().getHealth() / attackEvent.getDefender().getMaxHealth() > 0.2) return;
+		activate();
+	}
+
 	public void activate() {
+		if(hasActivated) return;
 		hasActivated = true;
+		isReincarnating = true;
 		Sounds.REINCARNATION.play(getPitBoss().boss.getLocation(), 40);
 
 		Location top = getPitBoss().boss.getLocation().add(0, 4, 0);
@@ -72,16 +85,10 @@ public class ReincarnationAbility extends PitBossAbility {
 
 				if(getPitBoss().boss.isDead()) return;
 				getPitBoss().boss.setHealth(getPitBoss().boss.getMaxHealth());
+				isReincarnating = false;
+				getPitBoss().onHealthChange();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 80);
-	}
-
-	@Override
-	public boolean shouldExecuteRoutine() {
-		if(hasActivated) return false;
-		if(getPitBoss().boss.getHealth() >= getPitBoss().boss.getMaxHealth() / 4) return false;
-
-		return getPitBoss().boss.getLocation().add(0, 7, 0).getBlock().getType() == Material.AIR;
 	}
 
 	public void createRays(Location center) {
@@ -89,7 +96,7 @@ public class ReincarnationAbility extends PitBossAbility {
 
 		Random random = new Random();
 
-		for(int i = 0; i < 25; i++) {
+		for(int i = 0; i < rays; i++) {
 			int randomX = random.nextInt(randomThreshold - (-1 * randomThreshold)) + (-1 * randomThreshold);
 			int randomZ = random.nextInt(randomThreshold - (-1 * randomThreshold)) + (-1 * randomThreshold);
 			int randomY = random.nextInt(40) + 3;

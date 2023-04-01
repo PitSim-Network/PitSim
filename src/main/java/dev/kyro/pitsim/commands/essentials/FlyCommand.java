@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.commands.essentials;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Lang;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
@@ -19,7 +20,7 @@ public class FlyCommand implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-		if(!player.hasPermission("pitsim.flight")) {
+		if(!player.hasPermission("pitsim.flight") && !PitSim.isDev()) {
 			Lang.NO_PERMISSION.send(player);
 			return false;
 		}

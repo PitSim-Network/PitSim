@@ -1,9 +1,12 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
-import dev.kyro.pitsim.adarkzone.*;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
+import dev.kyro.pitsim.adarkzone.DropPool;
+import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.CollapseAbility;
-import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import dev.kyro.pitsim.adarkzone.abilities.SlamAbility;
+import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -13,9 +16,10 @@ public class PitSpiderBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new SlamAbility(2, 40, 40, getDamage()),
-				new CollapseAbility(2, 5, 5, 20, getDamage()),
-				new GenericMinionAbility(1, SubLevelType.SPIDER, 2, 10,  5)
+				new SlamAbility(2, 20, getDamage() * 3),
+				new CollapseAbility(2, 5, 5, 20, getDamage() * 8),
+				new GenericMinionAbility(1, SubLevelType.SPIDER, 2, 10,  5),
+				null
 		);
 	}
 
@@ -41,7 +45,7 @@ public class PitSpiderBoss extends PitBoss {
 
 	@Override
 	public double getMaxHealth() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
 	}
 
 	@Override

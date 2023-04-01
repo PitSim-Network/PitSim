@@ -28,7 +28,7 @@ public abstract class PitEnchant implements Listener, Summarizable {
 	public Map<UUID, Cooldown> cooldowns = new HashMap<>();
 
 //	Server Statistics Information
-	public List<StatisticCategory> statisticCategories = new ArrayList<>();
+	public List<StatisticCategory> statisticCategories;
 
 	public PitEnchant(String name, boolean isRare, ApplyType applyType, String... refNames) {
 		this.name = name;
@@ -86,12 +86,14 @@ public abstract class PitEnchant implements Listener, Summarizable {
 	}
 
 	public PitEnchant setDefaultCategories() {
-		if(!statisticCategories.isEmpty() || this instanceof PitEnchantSpell) return this;
-		if(isTainted) {
+		if(statisticCategories != null) return this;
+		statisticCategories = new ArrayList<>();
+		if(isTainted || applyType == ApplyType.BOWS) {
 			statisticCategories.add(StatisticCategory.DARKZONE_VS_PLAYER);
 			statisticCategories.add(StatisticCategory.DARKZONE_VS_MOB);
 			statisticCategories.add(StatisticCategory.DARKZONE_VS_BOSS);
-		} else {
+		}
+		if(!isTainted) {
 			statisticCategories.add(StatisticCategory.OVERWORLD_PVP);
 			statisticCategories.add(StatisticCategory.OVERWORLD_STREAKING);
 		}

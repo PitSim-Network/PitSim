@@ -62,7 +62,7 @@ public class Adrenaline extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7When you have less than &c" + getThresholdPercent(enchantLvl) + "% &7of your max xp, gain " +
+				"&7When you have less than &c" + getThresholdPercent(enchantLvl) + "% &7of your &cmax hp&7, gain " +
 						"&eSpeed " + AUtil.toRoman(getAmplifier(enchantLvl) + 1) + " &7and deal &c+" +
 						getDamageIncrease(enchantLvl) + "% &7more damage"
 		).getLore();

@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.enchants.tainted;
+package dev.kyro.pitsim.enchants.tainted.uncommon;
 
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -7,7 +7,6 @@ import dev.kyro.pitsim.misc.PitLoreBuilder;
 import java.util.List;
 
 public class Durable extends PitEnchant {
-
 	public static Durable INSTANCE;
 
 	public Durable() {

@@ -15,7 +15,6 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.KillType;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
 import dev.kyro.pitsim.misc.wrappers.WrapperPlayerInventory;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
@@ -137,8 +136,8 @@ public class KillEvent extends Event {
 		xpReward += bonusXpReward;
 
 		double postXPCap = Math.min(xpReward, xpCap);
-		double alarModifier = Misc.getReductionMultiplier(DarkzoneLeveling.getReductionModifier(getKillerPlayer()));
-		postXPCap *= alarModifier;
+		double altarMultiplier = DarkzoneLeveling.getReductionMultiplier(getKillerPitPlayer());
+		postXPCap *= altarMultiplier;
 
 		return (int) Math.floor(postXPCap);
 	}
@@ -149,8 +148,8 @@ public class KillEvent extends Event {
 		for(Double goldMultiplier : goldMultipliers) goldReward *= goldMultiplier;
 
 		double postGoldCap = Math.min(goldReward, goldCap);
-		double alarModifier = Misc.getReductionMultiplier(DarkzoneLeveling.getReductionModifier(getKillerPlayer()));
-		postGoldCap *= alarModifier;
+		double altarMultiplier = DarkzoneLeveling.getReductionMultiplier(getKillerPitPlayer());
+		postGoldCap *= altarMultiplier;
 
 		return postGoldCap;
 	}

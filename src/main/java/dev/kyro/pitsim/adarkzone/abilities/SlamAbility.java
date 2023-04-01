@@ -26,15 +26,15 @@ import java.util.List;
 import java.util.Random;
 
 public class SlamAbility extends PitBossAbility {
-	public int radius;
+	public int spawnRadius = 40;
+	public int damageRadius = 3;
 	public int blockCount;
 	public double damage;
 
 	PitParticle dirt = new BlockCrackParticle(new MaterialData(Material.DIRT));
 
-	public SlamAbility(double routineWeight, int radius, int blockCount, double damage) {
+	public SlamAbility(double routineWeight, int blockCount, double damage) {
 		super(routineWeight);
-		this.radius = radius;
 		this.blockCount = blockCount;
 		this.damage = damage;
 	}
@@ -45,11 +45,11 @@ public class SlamAbility extends PitBossAbility {
 
 		List<Block> applicableBlocks = new ArrayList<>();
 
-		for(int x = -1 * radius; x < radius + 1; x++) {
-			for(int z = -1 * radius; z < radius + 1; z++) {
+		for(int x = -1 * spawnRadius; x < spawnRadius + 1; x++) {
+			for(int z = -1 * spawnRadius; z < spawnRadius + 1; z++) {
 				Location blockLocation = centerLocation.clone().add(x, 0, z);
 
-				if(blockLocation.distance(centerLocation) > radius) continue;
+				if(blockLocation.distance(centerLocation) > spawnRadius) continue;
 
 				if(blockLocation.getBlock().getType() != Material.AIR && blockLocation.clone().add(0, 1, 0).getBlock().getType() == Material.AIR) {
 					applicableBlocks.add(blockLocation.getBlock());
@@ -179,7 +179,7 @@ public class SlamAbility extends PitBossAbility {
 					Location viewerLocation = viewer.getLocation();
 					double distance = viewerLocation.distance(initialLocation);
 
-					if(distance > 5) continue;
+					if(distance > damageRadius) continue;
 
 					double multiplier = Math.pow(5 - distance, 1.5);
 					Vector playerVector = viewerLocation.toVector().subtract(initialLocation.toVector());

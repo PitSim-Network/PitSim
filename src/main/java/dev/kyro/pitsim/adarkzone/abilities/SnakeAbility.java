@@ -55,6 +55,7 @@ public class SnakeAbility extends PitBossAbility {
 						if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
 						Player target = (Player) entity;
 
+						target.setNoDamageTicks(0);
 						DamageManager.createIndirectAttack(getPitBoss().boss, target, damage);
 						Misc.applyPotionEffect(target, PotionEffectType.SLOW, 20, 1, false, false);
 					}

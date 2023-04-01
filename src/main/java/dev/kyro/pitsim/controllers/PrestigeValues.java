@@ -76,7 +76,6 @@ public class PrestigeValues {
 	}
 
 	public static PrestigeInfo getPrestigeInfo(int prestige) {
-
 		return prestigeMap.get(prestige);
 	}
 

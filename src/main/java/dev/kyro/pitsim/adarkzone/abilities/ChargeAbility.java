@@ -32,7 +32,8 @@ public class ChargeAbility extends PitBossAbility {
 			explosion.display(viewer, getPitBoss().boss.getLocation());
 		}
 
-		getPitBoss().boss.setVelocity(target.getLocation().toVector().subtract(getPitBoss().boss.getLocation().toVector()).normalize().multiply(2));
+		getPitBoss().boss.setVelocity(target.getLocation().toVector()
+				.subtract(getPitBoss().boss.getLocation().toVector()).normalize().setY(0.2).normalize().multiply(1.8));
 	}
 
 	@Override
@@ -40,6 +41,6 @@ public class ChargeAbility extends PitBossAbility {
 		Player target = getPitBoss().bossTargetingSystem.target;
 		if(target == null) return false;
 
-		return !(target.getLocation().distance(getPitBoss().boss.getLocation()) < 5);
+		return target.getLocation().distance(getPitBoss().boss.getLocation()) >= 5;
 	}
 }

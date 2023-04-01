@@ -65,7 +65,7 @@ import dev.kyro.pitsim.cosmetics.misc.MysticPresence;
 import dev.kyro.pitsim.cosmetics.trails.*;
 import dev.kyro.pitsim.enchants.overworld.GoldBoost;
 import dev.kyro.pitsim.enchants.overworld.*;
-import dev.kyro.pitsim.enchants.tainted.Durable;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Durable;
 import dev.kyro.pitsim.enchants.tainted.chestplate.*;
 import dev.kyro.pitsim.enchants.tainted.common.*;
 import dev.kyro.pitsim.enchants.tainted.scythe.*;

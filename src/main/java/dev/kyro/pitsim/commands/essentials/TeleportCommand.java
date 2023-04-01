@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.commands.essentials;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Lang;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
@@ -21,7 +22,7 @@ public class TeleportCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-		if(!player.hasPermission("pitsim.teleport")) {
+		if(!player.hasPermission("pitsim.teleport") && !PitSim.isDev()) {
 			Lang.NO_PERMISSION.send(player);
 			return false;
 		}
@@ -43,7 +44,7 @@ public class TeleportCommand implements CommandExecutor {
 
 			target = player;
 			tpLocation = new TPLocation(locationPlayer);
-		} else if(args.length == 2) {
+		} else if(args.length == 2 && player.hasPermission("pitsim.teleport")) {
 			target = Bukkit.getPlayer(args[0]);
 			if(target == null) {
 				AOutput.error(player, "&c&lERROR!&7 Could not find a player with the name: " + args[0]);
@@ -64,7 +65,7 @@ public class TeleportCommand implements CommandExecutor {
 				AOutput.error(player, "&c&lERROR!&7 Invalid coordinates");
 				return false;
 			}
-		} else if(args.length == 4) {
+		} else if(args.length == 4 && player.hasPermission("pitsim.teleport")) {
 			target = Bukkit.getPlayer(args[0]);
 			if(target == null) {
 				AOutput.error(player, "&c&lERROR!&7 Could not find a player with the name: " + args[0]);

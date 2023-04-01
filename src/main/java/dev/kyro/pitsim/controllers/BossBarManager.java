@@ -2,7 +2,6 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.BossManager;
-import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.controllers.objects.PitBossBar;
 import dev.kyro.pitsim.enums.PitEntityType;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class BossBarManager {
-
 	public static List<UUID> overriddenPlayers = new ArrayList<>();
 
 	static {
@@ -39,9 +37,7 @@ public class BossBarManager {
 		}.runTaskTimer(PitSim.INSTANCE, 0, 20);
 	}
 
-	public static void init() {
-
-	}
+	public static void init() {}
 
 	public static void showBossBar(Player player, PitBossBar bossBar, int ticks) {
 		List<Player> players = new ArrayList<>(bossBar.players);

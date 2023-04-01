@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.commands.essentials;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.misc.Lang;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
@@ -25,7 +26,7 @@ public class GamemodeCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-		if(!player.hasPermission("pitsim.gamemode")) {
+		if(!player.hasPermission("pitsim.gamemode") && !PitSim.isDev()) {
 			Lang.NO_PERMISSION.send(player);
 			return false;
 		}
@@ -43,9 +44,9 @@ public class GamemodeCommand implements CommandExecutor {
 				AOutput.error(player, "&c&lERROR!&7 Could not find that gamemode");
 				return false;
 			}
-			if(args.length >= 2) targetName = args[1];
+			if(args.length >= 2 && player.hasPermission("pitsim.gamemode")) targetName = args[1];
 		} else {
-			if(args.length >= 1) targetName = args[0];
+			if(args.length >= 1 && player.hasPermission("pitsim.gamemode")) targetName = args[0];
 		}
 
 		if(label.equals("gms")) {

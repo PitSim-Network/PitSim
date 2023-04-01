@@ -59,7 +59,7 @@ public class PitWitherSkeleton extends PitMob {
 
 	@Override
 	public double getDamage() {
-		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
+		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
 	}
 
 	@Override

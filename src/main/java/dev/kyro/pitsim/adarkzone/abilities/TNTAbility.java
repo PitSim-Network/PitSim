@@ -16,9 +16,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class TNTAbility extends PitBossAbility {
 	public double damage;
@@ -31,17 +29,22 @@ public class TNTAbility extends PitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Location centerLocation = getPitBoss().boss.getLocation().add(0, 3, 0); // replace with tnt explosion Location
-
-		TNTPrimed tntPrimed = centerLocation.getWorld().spawn(centerLocation, TNTPrimed.class);
-		tntPrimed.setFuseTicks(40);
-		entities.add(tntPrimed);
-		Sounds.TNT_PRIME.play(tntPrimed.getLocation(), 40);
+		Location spawnLocation = getPitBoss().boss.getLocation().add(0, 3, 0); // replace with tnt explosion Location
 
 		Player target = getPitBoss().bossTargetingSystem.target;
 		if(target == null) return;
 
-		tntPrimed.setVelocity(target.getLocation().toVector().subtract(centerLocation.toVector()).add(new Vector(0, 2.5, 0)).normalize().multiply(1.1));
+		TNTPrimed tntPrimed = spawnLocation.getWorld().spawn(spawnLocation, TNTPrimed.class);
+		entities.add(tntPrimed);
+		Sounds.TNT_PRIME.play(tntPrimed.getLocation(), 40);
+
+		double directDistance = target.getLocation().distance(spawnLocation);
+		Vector distanceVector = target.getLocation().toVector().add(new Vector(0, directDistance * 0.5 + 2, 0))
+				.subtract(spawnLocation.toVector());
+		int fuse = (int) distanceVector.length();
+		tntPrimed.setVelocity(distanceVector.normalize().multiply(1.1));
+		tntPrimed.setFuseTicks(fuse);
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -50,7 +53,7 @@ public class TNTAbility extends PitBossAbility {
 				entities.remove(tntPrimed);
 				Sounds.CREEPER_EXPLODE.play(tntPrimed.getLocation(), 40);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 10);
+		}.runTaskLater(PitSim.INSTANCE, fuse);
 	}
 
 	@Override
@@ -68,6 +71,7 @@ public class TNTAbility extends PitBossAbility {
 
 	public void createExplosion(Location centerLocation) {
 		FireworkSparkParticle particle = new FireworkSparkParticle();
+		Map<Player, Integer> hitMap = new HashMap<>();
 		for(Point3D point : MathUtils.getSphere(0.5, 50, 1, 1, 1)) {
 			Location vectorEnd = centerLocation.clone().add(point.getX(), point.getY(), point.getZ());
 			Vector stepVector = vectorEnd.clone().subtract(centerLocation).toVector().normalize().multiply(0.25);
@@ -84,8 +88,12 @@ public class TNTAbility extends PitBossAbility {
 				if(block != null && block.getType() != Material.AIR) break;
 
 				Location testLocation = displayLocation.clone().add(0, -1, 0);
-				for(Player player : Misc.getNearbyRealPlayers(testLocation, 1))
+				for(Player player : Misc.getNearbyRealPlayers(testLocation, 1.5)) {
+					int timesHit = hitMap.getOrDefault(player, 0);
+					if(timesHit >= 3) continue;
+					hitMap.put(player, timesHit + 1);
 					DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
+				}
 				particle.display(Misc.getNearbyRealPlayers(displayLocation, 50), displayLocation);
 			}
 		}

@@ -5,6 +5,8 @@ import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
+import dev.kyro.pitsim.adarkzone.abilities.ChargeAbility;
+import dev.kyro.pitsim.adarkzone.abilities.minion.WolfMinionAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -14,9 +16,10 @@ public class PitWolfBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-//				new ChargeAbility(2),
-				new CageAbility(1, 40, 5)
-//				new WolfMinionAbility(3, 5, 50)
+				new ChargeAbility(5),
+				new CageAbility(1, 60, 5),
+				new WolfMinionAbility(2, 5, 50),
+				null
 		);
 	}
 
@@ -42,7 +45,7 @@ public class PitWolfBoss extends PitBoss {
 
 	@Override
 	public double getMaxHealth() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH) * 0.75;
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH) * 0.75;
 	}
 
 	@Override

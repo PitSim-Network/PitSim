@@ -4,7 +4,10 @@ import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.adarkzone.abilities.ComboAbility;
+import dev.kyro.pitsim.adarkzone.abilities.PopupAbility;
+import dev.kyro.pitsim.adarkzone.abilities.PullAbility;
+import dev.kyro.pitsim.adarkzone.abilities.WorldBorderAbility;
 import dev.kyro.pitsim.adarkzone.abilities.blockrain.FirestormAbility;
 import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import dev.kyro.pitsim.misc.BlockData;
@@ -19,13 +22,14 @@ public class PitBlazeBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new GenericMinionAbility(1, SubLevelType.BLAZE, 1, 5),
-					new FirestormAbility(2, 40, 200, getDamage() * 0.75),
-				new PopupAbility(2, new BlockData(Material.FIRE, (byte) 0), getDamage() * 0.5, 40, 150),
-				new ComboAbility(20, 12, 0),
-				new PullAbility(2, 20, 1, new MaterialData(Material.GLOWSTONE, (byte) 0)),
+				new GenericMinionAbility(1, SubLevelType.BLAZE, 2, 5),
+				new FirestormAbility(2, 25, 200, getDamage() * 0.75),
+				new PopupAbility(2, new BlockData(Material.FIRE, (byte) 0), getDamage(), 40, 150),
+				new PullAbility(2, 20, new MaterialData(Material.GLOWSTONE, (byte) 0)),
 
-				new WorldBorderAbility()
+				new ComboAbility(15, 12, 0),
+				new WorldBorderAbility(),
+				null
 		);
 	}
 
@@ -51,7 +55,7 @@ public class PitBlazeBoss extends PitBoss {
 
 	@Override
 	public double getMaxHealth() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
 	}
 
 	@Override

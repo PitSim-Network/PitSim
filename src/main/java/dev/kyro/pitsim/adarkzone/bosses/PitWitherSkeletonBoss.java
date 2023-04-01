@@ -1,6 +1,9 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
-import dev.kyro.pitsim.adarkzone.*;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
+import dev.kyro.pitsim.adarkzone.DropPool;
+import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.*;
 import dev.kyro.pitsim.adarkzone.abilities.minion.DefensiveMinionAbility;
 import dev.kyro.pitsim.misc.Sounds;
@@ -14,13 +17,14 @@ public class PitWitherSkeletonBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new DefensiveMinionAbility(SubLevelType.WITHER_SKELETON, 2, 8, 5 * 20),
-				new CageAbility(3, 60, 5),
-				new SlamAbility(2, 40, 50, getDamage() * 0.3),
-				new ChargeAbility(3),
-				new SnakeAbility(3, 25, 2, Material.BEDROCK, (byte) 0, Sounds.WITHER_SNAKE),
+				new DefensiveMinionAbility(SubLevelType.WITHER_SKELETON, 2, 8, 6 * 20),
+				new CageAbility(3, 80, 5),
+				new SlamAbility(2, 50, getDamage() * 3),
+				new ChargeAbility(5),
+				new SnakeAbility(3, 25, getDamage() * 0.75, Material.BEDROCK, (byte) 0, Sounds.WITHER_SNAKE),
 
-				new WorldBorderAbility()
+				new WorldBorderAbility(),
+				null
 		);
 	}
 
@@ -46,7 +50,7 @@ public class PitWitherSkeletonBoss extends PitBoss {
 
 	@Override
 	public double getMaxHealth() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
 	}
 
 	@Override

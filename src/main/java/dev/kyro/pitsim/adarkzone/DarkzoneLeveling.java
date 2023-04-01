@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
 import java.util.LinkedHashMap;
@@ -66,16 +66,20 @@ public class DarkzoneLeveling {
 		Misc.sendSubTitle(pitPlayer.player, "&4 " + currentLevel + " &7\u279F &4" + newLevel, 40);
 	}
 
-	public static double getReduction(int altarLevel, int darkzoneLevel) {
+	public static double getReductionMultiplier(int altarLevel, int darkzoneLevel) {
 		int levelDifference = Math.max(darkzoneLevel - altarLevel, 0);
-
-		return 100 - 100 * Math.pow(0.99, levelDifference);
+		return Math.pow(0.99, levelDifference);
 	}
 
-	public static double getReductionModifier(Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public static double getReductionMultiplier(PitPlayer pitPlayer) {
+		if(pitPlayer == null || !PlayerManager.isRealPlayer(pitPlayer.player)) return 1;
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		return getReduction(getLevel(pitPlayer.darkzoneData.altarXP), prestigeInfo.darkzoneLevelIncrease);
+		return getReductionMultiplier(getLevel(pitPlayer.darkzoneData.altarXP), prestigeInfo.darkzoneLevelIncrease);
+	}
+
+	public static String getReductionPercent(PitPlayer pitPlayer) {
+		DecimalFormat decimalFormat = new DecimalFormat("0.#");
+		return decimalFormat.format((1 - getReductionMultiplier(pitPlayer)) * 100);
 	}
 
 	public static void updateAltarXP(PitPlayer pitPlayer) {

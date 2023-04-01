@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComboVenom extends PitEnchant {
@@ -18,6 +19,8 @@ public class ComboVenom extends PitEnchant {
 				"venom", "combo-venom");
 		isUncommonEnchant = true;
 		INSTANCE = this;
+
+		statisticCategories = new ArrayList<>();
 	}
 
 	public static boolean isVenomed(LivingEntity entity) {

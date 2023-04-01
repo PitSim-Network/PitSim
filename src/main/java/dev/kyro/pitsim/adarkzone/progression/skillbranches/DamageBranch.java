@@ -70,7 +70,7 @@ public class DamageBranch extends SkillBranch {
 	}
 
 	public static double getMobBossDamageIncrease() {
-		return 1.4;
+		return 1.3;
 	}
 
 	public static double getMobKillHealing() {

@@ -35,7 +35,7 @@ public class CageAbility extends PitBossAbility {
 
 		viewers:
 		for(Player viewer : getViewers()) {
-			Location entryLocation = viewer.getLocation().add(-1, 0, -1);
+			if(!Misc.isValidMobPlayerTarget(viewer)) continue;
 			Sounds.CAGE.play(viewer);
 
 			for(Player player : packetBlockMap.keySet()) {

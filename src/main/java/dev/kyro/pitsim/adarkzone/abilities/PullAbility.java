@@ -18,14 +18,12 @@ import java.util.List;
 
 public class PullAbility extends PitBossAbility {
 	public double maxRadius;
-	public double interval;
 	public MaterialData materialData;
 
-	public PullAbility(double routineWeight, double maxRadius, double interval, MaterialData materialData) {
+	public PullAbility(double routineWeight, double maxRadius, MaterialData materialData) {
 		super(routineWeight);
 
 		this.maxRadius = maxRadius;
-		this.interval = interval;
 		this.materialData = materialData;
 	}
 
@@ -37,7 +35,7 @@ public class PullAbility extends PitBossAbility {
 
 		Sounds.PULL.play(getPitBoss().boss.getLocation(), 40);
 
-		for(int radius = 0; radius < maxRadius; radius += interval) {
+		for(int radius = 0; radius < maxRadius; radius++) {
 			int finalRadius = radius;
 
 			new BukkitRunnable() {

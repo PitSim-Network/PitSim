@@ -49,9 +49,10 @@ public class CorruptedFeather extends StaticPitItem {
 	public List<String> getLore() {
 		return new ALoreBuilder(
 				"&eSpecial item",
-				"&7protects your ingredients but",
+				"&7Protects your inventory but",
 				"&7gets consumed on death if",
-				"&7in your hotbar."
+				"&7in your hotbar (&5Darkzone&7",
+				"&7only)"
 		).getLore();
 	}
 

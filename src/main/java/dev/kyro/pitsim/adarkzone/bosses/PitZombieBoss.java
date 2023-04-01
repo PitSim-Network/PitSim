@@ -20,10 +20,11 @@ public class PitZombieBoss extends PitBoss {
 
 		abilities(
 				new GenericMinionAbility(1, SubLevelType.ZOMBIE, 2, 8),
-				new PullAbility(2, 20, 1, new MaterialData(Material.DIRT, (byte) 0)),
+				new PullAbility(2, 20, new MaterialData(Material.DIRT, (byte) 0)),
 				new PoundAbility(2, 5),
 
-				new ComboAbility(8, 5, 0)
+				new ComboAbility(8, 5, 0),
+				null
 		);
 	}
 
@@ -49,7 +50,7 @@ public class PitZombieBoss extends PitBoss {
 
 	@Override
 	public double getMaxHealth() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
 	}
 
 	@Override

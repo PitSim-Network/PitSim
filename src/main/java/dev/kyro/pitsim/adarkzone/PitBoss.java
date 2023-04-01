@@ -77,7 +77,7 @@ public abstract class PitBoss {
 	}
 
 	public PitBoss abilities(PitBossAbility... pitBossAbilities) {
-		abilities = Arrays.asList(pitBossAbilities);
+		for(PitBossAbility pitBossAbility : pitBossAbilities) if(pitBossAbility != null) abilities.add(pitBossAbility);
 		for(PitBossAbility ability : abilities) {
 			ability.pitBoss(this);
 			ability.onEnable();
@@ -132,7 +132,7 @@ public abstract class PitBoss {
 		navigator.getDefaultParameters()
 				.attackDelayTicks(10)
 				.stuckAction(null)
-				.range(50)
+				.range(2)
 				.attackRange(getReach());
 
 		bossTargetingSystem.assignTarget();
@@ -188,7 +188,7 @@ public abstract class PitBoss {
 		}
 
 		for(Player damager : onlineDamagers) {
-			AOutput.send(damager, "&4&m--------------------&4<&c&lBOSS SLAIN&4>&m--------------------");
+			AOutput.send(damager, "&4&m-------------------&4<&c&lBOSS SLAIN&4>&m-------------------");
 			AOutput.send(damager, "&4&lTOP DAMAGE DEALT:");
 			if(damageMap.size() >= 1) AOutput.send(damager, getDamageString(getDamagerInPosition(0)));
 			if(damageMap.size() >= 2) AOutput.send(damager, getDamageString(getDamagerInPosition(1)));
@@ -198,7 +198,7 @@ public abstract class PitBoss {
 				AOutput.send(damager, "");
 				AOutput.send(damager, getDamageString(damager.getUniqueId()));
 			}
-			AOutput.send(damager, "&4&m--------------------&4<&c&lBOSS SLAIN&4>&m--------------------");
+			AOutput.send(damager, "&4&m---------------------------------------------------");
 		}
 
 		dropPool.bossDistribution(killer, this, damageMap);

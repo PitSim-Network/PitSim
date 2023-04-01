@@ -1,10 +1,14 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
-import dev.kyro.pitsim.adarkzone.*;
-import dev.kyro.pitsim.adarkzone.abilities.*;
-import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
+import dev.kyro.pitsim.adarkzone.DropPool;
+import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.LandMineAbility;
+import dev.kyro.pitsim.adarkzone.abilities.LightningAbility;
 import dev.kyro.pitsim.adarkzone.abilities.TNTAbility;
+import dev.kyro.pitsim.adarkzone.abilities.WorldBorderAbility;
+import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -15,11 +19,12 @@ public class PitCreeperBoss extends PitBoss {
 
 		abilities(
 				new GenericMinionAbility(1, SubLevelType.CREEPER, 1, 2),
-				new TNTAbility(2, getDamage() * 0.1),
-				new LandMineAbility(2, 3, 20, 20 * 45, getDamage() * 3),
-				new LightningAbility(3, 1, 0.05),
+				new TNTAbility(2, getDamage() * 2),
+				new LandMineAbility(2, 3, 20 * 3, 20 * 45, getDamage() * 15),
 
-				new WorldBorderAbility()
+				new LightningAbility(4, 2, 0.1),
+				new WorldBorderAbility(),
+				null
 		);
 	}
 
@@ -45,7 +50,7 @@ public class PitCreeperBoss extends PitBoss {
 
 	@Override
 	public double getMaxHealth() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
 	}
 
 	@Override

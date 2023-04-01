@@ -36,20 +36,18 @@ public class FirestormAbility extends BlockRainAbility {
 			if(player == null) continue;
 
 			if(material == Material.FIRE) {
-				player.setFireTicks(5 * 20);
+				if(player.getFireTicks() <= 0) {
+					player.setFireTicks(5 * 20);
+					new BukkitRunnable() {
+						int i = 0;
 
-				new BukkitRunnable() {
-					int i = 0;
-
-					@Override
-					public void run() {
-						if(player.getHealth() <= 1) return;
-						DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
-
-						if(i >= 5) cancel();
-						else i++;
-					}
-				}.runTaskTimer(PitSim.INSTANCE, 0, 20);
+						@Override
+						public void run() {
+							if(++i >= 5) cancel();
+							DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
+						}
+					}.runTaskTimer(PitSim.INSTANCE, 0, 20);
+				}
 			} else DamageManager.createIndirectAttack(getPitBoss().boss, player, damage * 3);
 		}
 	}

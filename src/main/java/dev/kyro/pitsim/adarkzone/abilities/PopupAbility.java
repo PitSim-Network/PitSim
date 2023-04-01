@@ -130,18 +130,14 @@ public class PopupAbility extends PitBossAbility {
 		}
 
 		public void setFire(Player player) {
+			if(player.getFireTicks() > 0) return;
 			player.setFireTicks(5 * 20);
-
 			new BukkitRunnable() {
 				int i = 0;
-
 				@Override
 				public void run() {
-					if(player.getHealth() <= 1) return;
+					if(++i >= 5) cancel();
 					DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
-
-					if(i >= 5) cancel();
-					else i++;
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0, 20);
 		}

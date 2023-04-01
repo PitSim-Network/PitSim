@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.enchants.tainted.Durable;
+import dev.kyro.pitsim.enchants.tainted.uncommon.Durable;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;

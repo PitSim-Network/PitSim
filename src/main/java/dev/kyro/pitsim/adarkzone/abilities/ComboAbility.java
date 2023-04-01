@@ -25,11 +25,11 @@ public class ComboAbility extends PitBossAbility {
 	}
 
 	@EventHandler
-	public void onHit(AttackEvent.Apply event) {
-		if(event.getAttackerPlayer() != getPitBoss().boss) return;
-		if(!event.isDefenderPlayer()) return;
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(attackEvent.getAttackerPlayer() != getPitBoss().boss || !attackEvent.isDefenderPlayer()) return;
+		if(attackEvent.getWrapperEvent().hasAttackInfo()) return;
 
-		Player player = event.getDefenderPlayer();
+		Player player = attackEvent.getDefenderPlayer();
 		comboMap.put(player.getUniqueId(), comboMap.getOrDefault(player.getUniqueId(), 0) + 1);
 
 		if(comboMap.get(player.getUniqueId()) != comboThreshold) return;

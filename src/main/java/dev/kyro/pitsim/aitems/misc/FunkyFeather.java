@@ -51,7 +51,8 @@ public class FunkyFeather extends StaticPitItem {
 				"&eSpecial item",
 				"&7Protects your inventory but",
 				"&7gets consumed on death if",
-				"&7in your hotbar."
+				"&7in your hotbar (&aOverworld&7",
+				"&7only)"
 		).getLore();
 	}
 

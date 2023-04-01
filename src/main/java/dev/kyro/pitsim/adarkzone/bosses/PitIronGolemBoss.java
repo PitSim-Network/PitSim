@@ -18,12 +18,16 @@ public class PitIronGolemBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new AnvilRainAbility(2, 40, 250, getDamage()),
-				new CollapseAbility(2, 5, 5, 10, getDamage() * 2),
-				new WorldBorderAbility(),
 				new IronGolemMinionAbility(),
-				new ComboAbility(5, 20, 0)
+				new AnvilRainAbility(2, 25, 250, getDamage() * 1.5),
+				new CollapseAbility(2, 5, 5, 10, getDamage() * 12),
+
+				new ComboAbility(5, 20, 0),
+				new WorldBorderAbility(),
+				null
 		);
+
+		routineAbilityCooldownTicks *= 0.9;
 	}
 
 	@Override
@@ -48,7 +52,7 @@ public class PitIronGolemBoss extends PitBoss {
 
 	@Override
 	public double getMaxHealth() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
 	}
 
 	@Override

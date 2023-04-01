@@ -36,19 +36,15 @@ public class Telebow extends PitEnchant {
 			@Override
 			public void run() {
 				List<Arrow> toRemove = new ArrayList<>();
-
 				for(Arrow arrow : teleShots) {
 					if(arrow.isDead()) {
 						toRemove.add(arrow);
 						continue;
 					}
-
 					for(int j = 0; j < 10; j++)
 						arrow.getWorld().playEffect(arrow.getLocation(), Effect.POTION_SWIRL, 0, 30);
 				}
-
 				toRemove.forEach(teleShots::remove);
-
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
@@ -96,7 +92,6 @@ public class Telebow extends PitEnchant {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onBowShoot(EntityShootBowEvent event) {
-
 		if(!(event.getEntity() instanceof Player) || !(event.getProjectile() instanceof Arrow)) return;
 
 		Player player = ((Player) event.getEntity()).getPlayer();
@@ -108,10 +103,8 @@ public class Telebow extends PitEnchant {
 		Cooldown cooldown = getCooldown(player, getCooldown(enchantLvl) * 20);
 		cooldown.addModifier(Cooldown.CooldownModifier.TELEBOW);
 		if(cooldown.isOnCooldown()) {
-
 			if(player.isSneaking())
 				ActionBarManager.sendActionBar(player, "&eTelebow: &c" + cooldown.getTicksLeft() / 20 + "&cs cooldown!");
-
 			return;
 		}
 		if(cooldown.isOnCooldown()) return;
@@ -126,46 +119,41 @@ public class Telebow extends PitEnchant {
 		Player player = (Player) event.getEntity().getShooter();
 
 		if(teleShots.size() == 0) return;
-		try {
-			for(Arrow teleShot : teleShots) {
+		for(Arrow teleShot : teleShots) {
+			Arrow teleArrow = (Arrow) event.getEntity();
+			if(!teleShot.equals(event.getEntity()) || !teleArrow.equals(teleShot)) continue;
 
-				Arrow teleArrow = (Arrow) event.getEntity();
-				if(!teleShot.equals(event.getEntity()) || !teleArrow.equals(teleShot)) continue;
+			Location teleportLoc = teleArrow.getLocation().clone();
+			teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
+			teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
 
-				Location teleportLoc = teleArrow.getLocation().clone();
-				teleportLoc.setYaw(-teleArrow.getLocation().getYaw());
-				teleportLoc.setPitch(-teleArrow.getLocation().getPitch());
-
-				if(MapManager.currentMap.world == teleportLoc.getWorld()) {
-					Location midTeleportLoc = teleportLoc.clone();
-					midTeleportLoc.setY(MapManager.currentMap.getY());
-					if(midTeleportLoc.getWorld() == teleportLoc.getWorld()) {
-						double distance = MapManager.currentMap.getMid().distance(midTeleportLoc);
-						if(distance < 12) {
-							AOutput.error(player, "You are not allowed to telebow into mid");
-							teleShots.remove(teleShot);
-							return;
-						}
+			if(PitSim.status.isOverworld() && MapManager.currentMap.world == teleportLoc.getWorld()) {
+				Location midTeleportLoc = teleportLoc.clone();
+				midTeleportLoc.setY(MapManager.currentMap.getY());
+				if(midTeleportLoc.getWorld() == teleportLoc.getWorld()) {
+					double distance = MapManager.currentMap.getMid().distance(midTeleportLoc);
+					if(distance < 12) {
+						AOutput.error(player, "You are not allowed to telebow into mid");
+						teleShots.remove(teleShot);
+						return;
 					}
 				}
+			}
 
-				if(SpawnManager.isInSpawn(teleportLoc)) {
-					AOutput.error(player, "You are not allowed to telebow into spawn");
-					teleShots.remove(teleShot);
-					return;
-				}
-
-				player.teleport(teleportLoc);
-				Sounds.TELEBOW.play(teleArrow.getLocation());
-
+			if(SpawnManager.isInSpawn(teleportLoc)) {
+				AOutput.error(player, "You are not allowed to telebow into spawn");
 				teleShots.remove(teleShot);
-
-				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-				if(pitPlayer.stats != null) pitPlayer.stats.telebow++;
 				return;
 			}
-		} catch(Exception e) {
-			e.printStackTrace();
+
+			player.teleport(teleportLoc);
+			Sounds.TELEBOW.play(teleArrow.getLocation());
+
+			teleShots.remove(teleShot);
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			if(pitPlayer.stats != null) pitPlayer.stats.telebow++;
+			return;
 		}
 	}
 

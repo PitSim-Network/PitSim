@@ -1,6 +1,9 @@
 package dev.kyro.pitsim.adarkzone.bosses;
 
-import dev.kyro.pitsim.adarkzone.*;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
+import dev.kyro.pitsim.adarkzone.DropPool;
+import dev.kyro.pitsim.adarkzone.PitBoss;
+import dev.kyro.pitsim.adarkzone.SubLevelType;
 import dev.kyro.pitsim.adarkzone.abilities.*;
 import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import dev.kyro.pitsim.misc.BlockData;
@@ -15,12 +18,13 @@ public class PitZombiePigmanBoss extends PitBoss {
 
 		abilities(
 				new GenericMinionAbility(1, SubLevelType.ZOMBIE_PIGMAN, 3, 30),
-				new PoundAbility(1, 15),
-				new LightningAbility(10, 1, 0.025),
-				new RuptureAbility(1, 25, getDamage(), 40),
-				new PopupAbility(1, new BlockData(Material.FIRE, (byte) 0), getDamage() * 0.25, 40, 150),
+				new PoundAbility(1, 10),
+				new RuptureAbility(1, 25, getDamage() * 0.5),
+				new PopupAbility(1, new BlockData(Material.FIRE, (byte) 0), getDamage(), 40, 150),
 
-				new WorldBorderAbility()
+				new LightningAbility(4, 2, 0.05),
+				new WorldBorderAbility(),
+				null
 		);
 	}
 
@@ -46,7 +50,7 @@ public class PitZombiePigmanBoss extends PitBoss {
 
 	@Override
 	public double getMaxHealth() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
 	}
 
 	@Override

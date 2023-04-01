@@ -26,11 +26,11 @@ public class RuptureAbility extends PitBossAbility {
 	public int projectileCount;
 	public int radius;
 
-	public RuptureAbility(double routineWeight, int projectileCount, double damage, int radius) {
+	public RuptureAbility(double routineWeight, int projectileCount, double damage) {
 		super(routineWeight);
 		this.damage = damage;
 		this.projectileCount = projectileCount;
-		this.radius = radius;
+		this.radius = 40;
 	}
 
 	@Override
@@ -137,6 +137,7 @@ public class RuptureAbility extends PitBossAbility {
 					new BukkitRunnable() {
 						@Override
 						public void run() {
+							viewer.setNoDamageTicks(0);
 							DamageManager.createDirectAttack(getPitBoss().boss, viewer, damage);
 							Sounds.CREEPER_EXPLODE.play(viewer.getLocation(), 10);
 

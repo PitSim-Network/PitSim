@@ -109,8 +109,7 @@ public class DamageManager implements Listener {
 	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
 		if(!(event.getEntity() instanceof Player)) return;
-		if(event.getCause() != EntityDamageEvent.DamageCause.WITHER && event.getCause() != EntityDamageEvent.DamageCause.CUSTOM)
-			return;
+		if(event.getCause() != EntityDamageEvent.DamageCause.WITHER) return;
 		Player player = (Player) event.getEntity();
 		if(event.getFinalDamage() >= player.getHealth()) {
 			event.setCancelled(true);
@@ -320,12 +319,6 @@ public class DamageManager implements Listener {
 
 //		As strong as iron
 		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
-//		Armor for fake indirect attacks
-		if(attackEvent.getWrapperEvent().hasAttackInfo() &&
-				attackEvent.getWrapperEvent().getAttackInfo().getAttackType() == AttackInfo.AttackType.FAKE_INDIRECT) {
-			attackEvent.multipliers.add(1 - (ArmorReduction.getArmorPoints(attackEvent.getDefender()) * 0.04));
-			AOutput.send(attackEvent.getAttacker(), "modified defender armor artificially");
-		}
 
 //		New player defence
 		if(PitSim.status.isOverworld() && attackEvent.isDefenderRealPlayer() && attackEvent.isAttackerRealPlayer() &&
@@ -355,6 +348,11 @@ public class DamageManager implements Listener {
 					DefenceBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST_PATH))
 				multiplier *= Misc.getReductionMultiplier(DefenceBranch.getShieldDamageFromPlayersReduction());
 			if(defenderShield.isActive()) damage = defenderShield.damageShield(damage, multiplier);
+		}
+//		Armor for fake indirect attacks
+		if(attackEvent.getWrapperEvent().hasAttackInfo() &&
+				attackEvent.getWrapperEvent().getAttackInfo().getAttackType() == AttackInfo.AttackType.FAKE_INDIRECT) {
+			damage *= 1 - (ArmorReduction.getArmorPoints(attackEvent.getDefender()) * 0.04);
 		}
 		attackEvent.getWrapperEvent().getSpigotEvent().setDamage(damage);
 
@@ -547,17 +545,17 @@ public class DamageManager implements Listener {
 		if(deadMob != null) {
 			kill = "&a&lKILL!&7 on " + deadMob.getDisplayName();
 		} else if(killType != KillType.DEATH) {
-			double percent = DarkzoneLeveling.getReductionModifier(killerPlayer);
-			DecimalFormat percentFormat = new DecimalFormat("#.#");
+			double altarMultiplier = DarkzoneLeveling.getReductionMultiplier(pitKiller);
+			String altarPercent = DarkzoneLeveling.getReductionPercent(pitKiller);
 
 			TextComponent hover = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6" +
-					df.format(killEvent.getFinalGold()) + "g &8(&5-" + percentFormat.format(percent) + "%&8)"));
+					df.format(killEvent.getFinalGold()) + "g &8(&5-" + altarPercent + "%&8)"));
 			hover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(
 					ChatColor.translateAlternateColorCodes('&', "&7Go to the &5Darkzone &7to remove this debuff")).create()));
 
 			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" +
 					(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + killEvent.getFinalXp() + "XP" +
-					" &6+" + (percent == 0 ? df.format(killEvent.getFinalGold()) + "g " : ""));
+					" &6+" + (altarMultiplier == 1 ? df.format(killEvent.getFinalGold()) + "g " : ""));
 
 			TextComponent killComponent = new TextComponent(kill);
 			killComponent.addExtra(hover);

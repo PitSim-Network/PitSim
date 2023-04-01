@@ -50,7 +50,7 @@ public class PitCreeper extends PitMob {
 			Vector velocity = player.getLocation().subtract(vectorStart).toVector().normalize().multiply(0.3).multiply(multiplier);
 			player.setVelocity(velocity);
 
-			double damage = multiplier * getDamage();
+			double damage = multiplier * getDamage() * 1.5;
 			DamageManager.createDirectAttack((LivingEntity) entity, player, damage);
 		}
 
@@ -89,7 +89,7 @@ public class PitCreeper extends PitMob {
 
 	@Override
 	public double getDamage() {
-		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
+		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
 	}
 
 	@Override

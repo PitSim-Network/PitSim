@@ -4,10 +4,10 @@ import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.minion.DefensiveMinionAbility;
-import dev.kyro.pitsim.adarkzone.abilities.blockrain.HailAbility;
 import dev.kyro.pitsim.adarkzone.abilities.RuptureAbility;
 import dev.kyro.pitsim.adarkzone.abilities.SnakeAbility;
+import dev.kyro.pitsim.adarkzone.abilities.blockrain.HailAbility;
+import dev.kyro.pitsim.adarkzone.abilities.minion.DefensiveMinionAbility;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,10 +19,11 @@ public class PitSkeletonBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new RuptureAbility(1, 15, 1, 40),
-				new SnakeAbility(2, 20, getDamage() * 0.25, Material.QUARTZ_BLOCK, (byte) 0, Sounds.BONE_SNAKE),
-				new HailAbility(2, 25, 100, getDamage() * 0.5),
-				new DefensiveMinionAbility(SubLevelType.SKELETON, 1, 3, 5 * 20)
+				new RuptureAbility(1, 15, getDamage() * 0.5),
+				new SnakeAbility(2, 20, getDamage() * 0.75, Material.QUARTZ_BLOCK, (byte) 0, Sounds.BONE_SNAKE),
+				new HailAbility(2, 25, 100, getDamage() * 2.5),
+				new DefensiveMinionAbility(SubLevelType.SKELETON, 1, 3, 6 * 20),
+				null
 		);
 	}
 
@@ -48,7 +49,7 @@ public class PitSkeletonBoss extends PitBoss {
 
 	@Override
 	public double getMaxHealth() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
+		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_HEALTH);
 	}
 
 	@Override

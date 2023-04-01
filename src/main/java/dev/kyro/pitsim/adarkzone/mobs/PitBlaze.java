@@ -28,7 +28,7 @@ public class PitBlaze extends PitMob {
 		attackRunnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(lastAttack + 60 > PitSim.currentTick) return;
+				if(lastAttack + 40 > PitSim.currentTick) return;
 				if(Math.random() > 0.25) return;
 
 				Player target = getTarget();
@@ -42,7 +42,7 @@ public class PitBlaze extends PitMob {
 
 	public void throwFireball(Player target) {
 		Location mobLocation = getMob().getLocation().add(0, 1.5, 0);
-		Location targetLocation = target.getLocation().add(0, 1, 0);
+		Location targetLocation = target.getLocation().add(0, 1, 0).add(target.getVelocity().multiply(2));
 		Location source = mobLocation.add(mobLocation.getDirection().normalize().multiply(1.5));
 		Vector direction = targetLocation.clone().subtract(mobLocation).toVector().normalize();
 
@@ -100,7 +100,7 @@ public class PitBlaze extends PitMob {
 
 	@Override
 	public double getDamage() {
-		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
+		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
 	}
 
 	@Override

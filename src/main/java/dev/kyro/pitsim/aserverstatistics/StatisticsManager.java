@@ -43,7 +43,7 @@ public class StatisticsManager implements Listener {
 		List<StatisticCategory> applicableCategories = new ArrayList<>();
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
 		PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
-		if(attackEvent.isDefenderPlayer() && attackEvent.getAttacker().getWorld() == MapManager.currentMap.world) {
+		if(PitSim.status.isOverworld() && attackEvent.isDefenderPlayer() && attackEvent.getAttacker().getWorld() == MapManager.currentMap.world) {
 			if(MapManager.currentMap.getMid().distance(attackEvent.getAttacker().getLocation()) < 10) {
 				applicableCategories.add(StatisticCategory.OVERWORLD_STREAKING);
 			} else {

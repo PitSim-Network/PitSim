@@ -30,6 +30,8 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 		hasEnchantGlint = true;
 		isMystic = true;
 		auctionCategory = AuctionCategory.OVERWORLD_GEAR;
+
+		itemEnchants.put(Enchantment.DAMAGE_ALL, 2);
 	}
 
 	@Override

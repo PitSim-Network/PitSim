@@ -28,21 +28,32 @@ public class BossManager implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void onAttack2(AttackEvent.Apply attackEvent) {
+		if(!isPitBoss(attackEvent.getDefender())) return;
+		attackEvent.multipliers.add(0.5);
+	}
+
 	/**
 	 * Called when the boss is attacked, saves the damage each player does to the boss in damageMap
 	 * @param attackEvent
 	 */
 //	No handler necessary
 	public static void onAttack(AttackEvent.Apply attackEvent, double finalDamage) {
-
 		PitBoss defenderBoss = getPitBoss(attackEvent.getDefender());
 		if(defenderBoss == null) return;
 		Player player = attackEvent.getAttackerPlayer();
-		defenderBoss.onHealthChange();
 		if(!attackEvent.isAttackerPlayer()) return;
 
 		UUID uuid = player.getUniqueId();
 		defenderBoss.damageMap.put(uuid, defenderBoss.damageMap.getOrDefault(uuid, 0.0) + finalDamage);
+	}
+
+	@EventHandler
+	public static void onAttack(AttackEvent.Post attackEvent) {
+		PitBoss defenderBoss = getPitBoss(attackEvent.getDefender());
+		if(defenderBoss == null) return;
+		defenderBoss.onHealthChange();
 	}
 
 	/**

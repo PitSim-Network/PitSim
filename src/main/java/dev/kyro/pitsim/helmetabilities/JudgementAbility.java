@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -119,7 +120,9 @@ public class JudgementAbility extends HelmetAbility {
 				public void run() {
 					if(++count == 4) cancel();
 					Misc.strikeLightningForPlayers(attackEvent.getDefender().getLocation(), 10);
-					attackEvent.getDefender().setHealth(Math.max(attackEvent.getDefender().getHealth() - 2, 1));
+					player.setNoDamageTicks(0);
+					DamageManager.createDirectAttack(attackEvent.getAttacker(), attackEvent.getDefender(),
+							0, newEvent -> newEvent.veryTrueDamage = 2);
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 		}
