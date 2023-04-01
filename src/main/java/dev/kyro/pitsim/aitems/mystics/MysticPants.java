@@ -171,8 +171,7 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 
 		if(nbtItem.hasKey(NBTTag.ITEM_JEWEL_ENCHANT.getRef()))
 			newNBTItem.setString(NBTTag.ITEM_JEWEL_ENCHANT.getRef(), nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));
-		if(nbtItem.hasKey(NBTTag.SAVED_PANTS_COLOR.getRef()))
-			newNBTItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), nbtItem.getString(NBTTag.SAVED_PANTS_COLOR.getRef()));
+		newNBTItem.setString(NBTTag.SAVED_PANTS_COLOR.getRef(), pantColor.displayName);
 		if(nbtItem.hasKey(NBTTag.ORIGINAL_PANTS_COLOR.getRef()))
 			newNBTItem.setString(NBTTag.ORIGINAL_PANTS_COLOR.getRef(), nbtItem.getString(NBTTag.ORIGINAL_PANTS_COLOR.getRef()));
 
