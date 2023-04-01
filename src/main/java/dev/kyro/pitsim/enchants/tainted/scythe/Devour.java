@@ -35,6 +35,7 @@ public class Devour extends PitEnchant {
 			double finalBalance = attackEvent.getAttackerPitPlayer().taintedSouls - soulCost;
 			if(finalBalance < 0) return;
 			attackEvent.getAttackerPitPlayer().taintedSouls -= soulCost;
+			attackEvent.getAttackerPitPlayer().stats.devour += soulCost;
 		}
 
 		attackEvent.increasePercent += getDamageIncrease(enchantLvl);

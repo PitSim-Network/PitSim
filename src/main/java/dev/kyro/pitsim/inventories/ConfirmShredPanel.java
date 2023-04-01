@@ -80,6 +80,7 @@ public class ConfirmShredPanel extends AGUIPanel {
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			pitPlayer.taintedSouls += soulsGained;
+			pitPlayer.stats.itemsShredded++;
 
 			AOutput.send(player, "&b&lSHOP! &7Shredded &f" + item.getItemMeta().getDisplayName() + " &7for &f" + soulsGained + " Souls&7!");
 			player.closeInventory();
