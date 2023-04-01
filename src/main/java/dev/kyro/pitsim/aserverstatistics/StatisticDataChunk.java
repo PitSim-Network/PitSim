@@ -61,6 +61,7 @@ public class StatisticDataChunk {
 		}
 
 		public void writeToMessage(PluginMessage pluginMessage) {
+			if(totalHits == 0) return;
 			pluginMessage
 					.writeString(pitEnchant == null ? "" : pitEnchant.refNames.get(0))
 					.writeString(category.name())
