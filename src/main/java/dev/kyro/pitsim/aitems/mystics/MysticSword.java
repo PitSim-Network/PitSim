@@ -25,6 +25,7 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 	public MysticSword() {
 		hasUUID = true;
 		hasLastServer = true;
+		destroyIfDroppedInSpawn = true;
 		hideExtra = true;
 		unbreakable = true;
 		hasEnchantGlint = true;

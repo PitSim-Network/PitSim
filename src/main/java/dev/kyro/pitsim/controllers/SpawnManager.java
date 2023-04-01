@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.PitEntityType;
@@ -125,6 +126,7 @@ public class SpawnManager implements Listener {
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.hasDropConfirm || !pitItem.destroyIfDroppedInSpawn) return;
+		if(MysticFactory.isJewel(itemStack, false)) return;
 
 		event.getItemDrop().remove();
 		Sounds.NO.play(event.getPlayer());

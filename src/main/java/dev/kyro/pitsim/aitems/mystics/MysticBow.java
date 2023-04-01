@@ -24,6 +24,7 @@ public class MysticBow extends StaticPitItem implements TemporaryItem {
 	public MysticBow() {
 		hasUUID = true;
 		hasLastServer = true;
+		destroyIfDroppedInSpawn = true;
 		hideExtra = true;
 		unbreakable = true;
 		hasEnchantGlint = true;
