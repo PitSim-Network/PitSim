@@ -118,7 +118,6 @@ public class PitPlayer {
 	public int level = 1;
 	public long remainingXP = PrestigeValues.getXPForLevel(1);
 	public String savedLeaderboardRef = "xp";
-	public int soulsGathered = 0;
 
 	public int renown = 0;
 	@Exclude
@@ -751,4 +750,7 @@ public class PitPlayer {
 		AOutput.send(player, "&f&lFAST TRAVEL! &7Unlocked access to " + destination.displayName + "&7!");
 		Sounds.RENOWN_SHOP_PURCHASE.play(player);
 	}
+
+	@Deprecated
+	public int soulsGathered = 0;
 }

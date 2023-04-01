@@ -1,7 +1,11 @@
 package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -38,6 +42,15 @@ public class KTestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
+
+		ItemStack itemStack = player.getItemInHand();
+		for(PitItem pitItem : ItemFactory.pitItems) {
+			if(!pitItem.isLegacyItem(itemStack, new NBTItem(itemStack))) continue;
+			ItemStack newItem = pitItem.getReplacementItem(PitPlayer.getPitPlayer(player), itemStack, new NBTItem(itemStack));
+			if(newItem != null) pitItem.updateItem(newItem);
+			player.getInventory().setItemInHand(newItem);
+			AOutput.send(player, "Updated Itemstack");
+		}
 
 //		for(Block block : getNearbyBlocks(player.getLocation(), 100)) {
 //			Block blockBelow = block.getRelative(0, -1, 0);

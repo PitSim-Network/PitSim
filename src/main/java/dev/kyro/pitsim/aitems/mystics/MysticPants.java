@@ -121,6 +121,15 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
+		if(nbtItem.hasKey(NBTTag.SAVED_PANTS_COLOR.getRef())) {
+			PantColor pantColor = PantColor.getPantColor(nbtItem.getString(NBTTag.SAVED_PANTS_COLOR.getRef()));
+			switch(pantColor) {
+				case DARK:
+				case JEWEL:
+					return null;
+			}
+		}
+
 		ItemStack newItemStack = new ItemStack(getMaterial(), 1);
 		newItemStack = buildItem(newItemStack);
 		NBTItem newNBTItem = new NBTItem(newItemStack);
@@ -176,10 +185,10 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 		newItemStack = newNBTItem.getItem();
 
 		String name = itemStack.getItemMeta().getDisplayName();
-
 		new AItemStackBuilder(newItemStack)
-				.setName(name == null ? "Replacement Item" : name);
+				.setName(name == null ? "&7Fresh Pants" : name);
 
+		PantColor.updatePantColor(newItemStack);
 		return newItemStack;
 	}
 

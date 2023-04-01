@@ -157,9 +157,8 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 		newItemStack = newNBTItem.getItem();
 
 		String name = itemStack.getItemMeta().getDisplayName();
-
 		new AItemStackBuilder(newItemStack)
-				.setName(name == null ? "Replacement Item" : name);
+				.setName(name == null ? getName() : name);
 
 		return newItemStack;
 	}

@@ -90,10 +90,9 @@ public class TokenOfAppreciation extends PitItem {
 
 	@Override
 	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
+		if(itemStack.getItemMeta() == null || itemStack.getItemMeta().getLore() == null) return null;
 		ItemStack newItemStack = new ItemStack(getMaterial(), 1);
 		newItemStack = buildItem(newItemStack);
-
-		if(newItemStack.getItemMeta() == null || newItemStack.getItemMeta().getLore() == null) return null;
 
 		String receiverString = null;
 		for(String line : itemStack.getItemMeta().getLore()) {
