@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class SplkNPC extends PitNPC {
+public class SammymonNPC extends PitNPC {
 
-	public SplkNPC(List<World> worlds) {
+	public SammymonNPC(List<World> worlds) {
 		super(worlds);
 	}
 
@@ -26,7 +26,7 @@ public class SplkNPC extends PitNPC {
 
 	@Override
 	public void createNPC(Location location) {
-		spawnPlayerNPC("&9Sammymon", "Splkpig", location, true);
+		spawnPlayerNPC("&9Sammymon", "Sammymon", location, true);
 	}
 
 	@Override

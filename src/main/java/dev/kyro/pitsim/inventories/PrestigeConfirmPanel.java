@@ -27,7 +27,7 @@ public class PrestigeConfirmPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return "Prestige & Renown";
+		return "&bAre you sure?";
 	}
 
 	@Override

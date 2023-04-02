@@ -51,7 +51,7 @@ public class Impatient extends TieredRenownUpgrade {
 
 	@Override
 	public String getCurrentEffect(int tier) {
-		return "&7Gain &eSpeed " + AUtil.toRoman(tier) + " &7while in spawn";
+		return "&eSpeed " + AUtil.toRoman(tier) + " &7while in spawn";
 	}
 
 	@Override
