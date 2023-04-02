@@ -31,7 +31,7 @@ public class XPBooster extends Booster {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onKillMonitor(KillEvent killEvent) {
-		if(!isActive() || activatorUUID == null || killEvent.getKiller().getUniqueId().equals(activatorUUID)) return;
+		if(!isActive() || activatorUUID == null || killEvent.getKiller() == null || killEvent.getKiller().getUniqueId().equals(activatorUUID)) return;
 		queueShare(killEvent.getFinalXp());
 	}
 
