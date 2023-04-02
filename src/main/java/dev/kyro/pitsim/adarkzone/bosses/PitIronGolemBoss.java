@@ -27,7 +27,7 @@ public class PitIronGolemBoss extends PitBoss {
 				null
 		);
 
-		routineAbilityCooldownTicks *= 0.9;
+		setRoutineAbilityCooldownTicks(getRoutineAbilityCooldownTicks() * 0.9);
 	}
 
 	@Override

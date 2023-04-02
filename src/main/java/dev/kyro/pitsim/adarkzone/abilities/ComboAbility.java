@@ -26,7 +26,7 @@ public class ComboAbility extends PitBossAbility {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(attackEvent.getAttackerPlayer() != getPitBoss().boss || !attackEvent.isDefenderPlayer()) return;
+		if(attackEvent.getAttackerPlayer() != getPitBoss().getBoss() || !attackEvent.isDefenderPlayer()) return;
 		if(attackEvent.getWrapperEvent().hasAttackInfo()) return;
 
 		Player player = attackEvent.getDefenderPlayer();
@@ -47,7 +47,7 @@ public class ComboAbility extends PitBossAbility {
 				}
 
 				player.setNoDamageTicks(0);
-				DamageManager.createDirectAttack(getPitBoss().boss, player, damage);
+				DamageManager.createDirectAttack(getPitBoss().getBoss(), player, damage);
 
 				count++;
 			}

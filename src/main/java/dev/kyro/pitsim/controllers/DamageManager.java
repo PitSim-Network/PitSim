@@ -509,7 +509,7 @@ public class DamageManager implements Listener {
 				int finalSouls = killEvent.getFinalSouls();
 				if(finalSouls != 0) {
 					pitDead.taintedSouls -= finalSouls;
-					DarkzoneManager.createSoulExplosion(killerPlayer, dead.getLocation(), finalSouls, finalSouls >= 50);
+					DarkzoneManager.createSoulExplosion(null, dead.getLocation(), finalSouls, finalSouls >= 50);
 				}
 			}
 		}

@@ -42,11 +42,13 @@ public class FakeItem {
 	}
 
 	public FakeItem showToAllPlayers() {
+		if(hasBeenRemoved) return this;
 		addViewers(Bukkit.getOnlinePlayers().toArray(new Player[0]));
 		return this;
 	}
 
 	public FakeItem addViewers(Player... players) {
+		if(hasBeenRemoved) return this;
 		for(Player player : players) addViewer(player);
 		return this;
 	}

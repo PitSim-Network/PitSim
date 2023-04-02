@@ -101,7 +101,7 @@ class GodPanel extends AGUIPanel {
 		addItem(ItemFactory.getItem(Charcoal.class).getItem(64));
 		addItem(ItemFactory.getItem(Gunpowder.class).getItem(64));
 		addItem(ItemFactory.getItem(IronIngot.class).getItem(64));
-		addItem(ItemFactory.getItem(EnderPearl.class).getItem(64));
+		addItem(ItemFactory.getItem(EnderPearl.class).getItem(16));
 
 		BrewingIngredient enderPearl = BrewingIngredient.getIngredientFromTier(10);
 		assert enderPearl != null;

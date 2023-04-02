@@ -35,8 +35,8 @@ public class PopupAbility extends PitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		if(getPitBoss().bossTargetingSystem.target == null) return;
-		spawnPopups(getPitBoss().bossTargetingSystem.target.getLocation());
+		if(getPitBoss().getBossTargetingSystem().target == null) return;
+		spawnPopups(getPitBoss().getBossTargetingSystem().target.getLocation());
 	}
 
 	public void spawnPopups(Location centerLocation) {
@@ -137,7 +137,7 @@ public class PopupAbility extends PitBossAbility {
 				@Override
 				public void run() {
 					if(++i >= 5) cancel();
-					DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
+					DamageManager.createIndirectAttack(getPitBoss().getBoss(), player, damage);
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0, 20);
 		}

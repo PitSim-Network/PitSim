@@ -20,10 +20,10 @@ public class DefensiveMinionAbility extends MinionAbility {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
-		if(event.getDefender() != getPitBoss().boss) return;
+		if(event.getDefender() != getPitBoss().getBoss()) return;
 		if(lastSpawn + cooldownTicks > PitSim.currentTick) return;
 		lastSpawn = PitSim.currentTick;
 
-		spawnMobs(getPitBoss().boss.getLocation().add(0, 2, 0), spawnAmount);
+		spawnMobs(getPitBoss().getBoss().getLocation().add(0, 2, 0), spawnAmount);
 	}
 }

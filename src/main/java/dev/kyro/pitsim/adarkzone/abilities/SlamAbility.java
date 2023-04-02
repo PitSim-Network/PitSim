@@ -41,7 +41,7 @@ public class SlamAbility extends PitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
+		Location centerLocation = getPitBoss().getBoss().getLocation().clone().subtract(0, 1, 0);
 
 		List<Block> applicableBlocks = new ArrayList<>();
 
@@ -189,7 +189,7 @@ public class SlamAbility extends PitBossAbility {
 					playerVector.multiply(multiplier);
 
 					viewer.setVelocity(playerVector);
-					DamageManager.createIndirectAttack(getPitBoss().boss, viewer, damage);
+					DamageManager.createIndirectAttack(getPitBoss().getBoss(), viewer, damage);
 				}
 				break;
 			}

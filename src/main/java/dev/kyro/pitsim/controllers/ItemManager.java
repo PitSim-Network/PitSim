@@ -34,6 +34,8 @@ import java.util.*;
 public class ItemManager implements Listener {
 	public static Map<UUID, List<ItemStack>> updatedItems = new HashMap<>();
 	public static List<FakeItem> fakeItems = new ArrayList<>();
+	public static Map<Item, Player> soulPickupMap = new HashMap<>();
+	public static Map<Player, Long> soulNotificationCooldownMap = new HashMap<>();
 
 	static {
 		new BukkitRunnable() {
@@ -98,7 +100,7 @@ public class ItemManager implements Listener {
 	@EventHandler
 	public static void onUnload(ChunkUnloadEvent event) {
 		PitItem pitItem = ItemFactory.getItem(SoulPickup.class);
-		for(Entity entity : event.getChunk().getEntities()) {
+		for(Entity entity : new ArrayList<>(Arrays.asList(event.getChunk().getEntities()))) {
 			if(!(entity instanceof Item)) continue;
 			Item item = (Item) entity;
 			ItemStack itemStack = item.getItemStack();
@@ -117,8 +119,20 @@ public class ItemManager implements Listener {
 		SoulPickup pitItem = ItemFactory.getItem(SoulPickup.class);
 		if(pitItem.isThisItem(itemStack)) {
 			int souls = pitItem.getSouls(itemStack);
-
 			event.setCancelled(true);
+
+			if(soulPickupMap.containsKey(droppedItem)) {
+				Player designatedPlayer = soulPickupMap.get(droppedItem);
+				if(designatedPlayer != player) {
+					long lastNotifyTick = soulNotificationCooldownMap.getOrDefault(player, 0L);
+					if(lastNotifyTick + 40 > PitSim.currentTick) return;
+					AOutput.error(player, "&c&lERROR!&7 You cannot pick up this soul");
+					soulNotificationCooldownMap.put(player, PitSim.currentTick);
+					return;
+				}
+			}
+
+			soulPickupMap.remove(droppedItem);
 			droppedItem.remove();
 			pitPlayer.taintedSouls += souls;
 

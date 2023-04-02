@@ -31,7 +31,7 @@ public class BossBarManager {
 						players.add((Player) entity);
 					}
 
-					boss.bossBar.updatePlayers(players);
+					boss.getBossBar().updatePlayers(players);
 				});
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0, 20);

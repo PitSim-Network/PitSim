@@ -46,14 +46,14 @@ public class ReincarnationAbility extends PitBossAbility {
 		if(hasActivated) return;
 		hasActivated = true;
 		isReincarnating = true;
-		Sounds.REINCARNATION.play(getPitBoss().boss.getLocation(), 40);
+		Sounds.REINCARNATION.play(getPitBoss().getBoss().getLocation(), 40);
 
-		Location top = getPitBoss().boss.getLocation().add(0, 4, 0);
-		Vector velocity = top.clone().subtract(getPitBoss().boss.getLocation()).toVector().multiply(0.1);
-		getPitBoss().boss.setVelocity(velocity);
+		Location top = getPitBoss().getBoss().getLocation().add(0, 4, 0);
+		Vector velocity = top.clone().subtract(getPitBoss().getBoss().getLocation()).toVector().multiply(0.1);
+		getPitBoss().getBoss().setVelocity(velocity);
 
-		getPitBoss().boss.setAllowFlight(true);
-		getPitBoss().boss.setFlying(true);
+		getPitBoss().getBoss().setAllowFlight(true);
+		getPitBoss().getBoss().setFlying(true);
 		createRays(top);
 
 		CloudParticle cloudParticle = new CloudParticle();
@@ -64,7 +64,7 @@ public class ReincarnationAbility extends PitBossAbility {
 
 			@Override
 			public void run() {
-				getPitBoss().boss.teleport(top);
+				getPitBoss().getBoss().teleport(top);
 
 				for(int i = 0; i < 25; i++) {
 					for(Player viewer : viewers) {
@@ -80,11 +80,11 @@ public class ReincarnationAbility extends PitBossAbility {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				getPitBoss().boss.setFlying(false);
-				getPitBoss().boss.setAllowFlight(false);
+				getPitBoss().getBoss().setFlying(false);
+				getPitBoss().getBoss().setAllowFlight(false);
 
-				if(getPitBoss().boss.isDead()) return;
-				getPitBoss().boss.setHealth(getPitBoss().boss.getMaxHealth());
+				if(getPitBoss().getBoss().isDead()) return;
+				getPitBoss().getBoss().setHealth(getPitBoss().getBoss().getMaxHealth());
 				isReincarnating = false;
 				getPitBoss().onHealthChange();
 			}
@@ -106,7 +106,7 @@ public class ReincarnationAbility extends PitBossAbility {
 
 
 			Location displayLocation = center.clone();
-			getPitBoss().boss.teleport(center);
+			getPitBoss().getBoss().teleport(center);
 
 			for(int j = 0; j < 75; j++) {
 				displayLocation.add(stepVector);

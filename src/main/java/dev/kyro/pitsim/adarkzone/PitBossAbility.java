@@ -39,7 +39,7 @@ public abstract class PitBossAbility implements Listener {
 	}
 
 	public boolean isAssignedBoss(LivingEntity entity) {
-		return getPitBoss().boss == entity;
+		return getPitBoss().getBoss() == entity;
 	}
 
 	public void disable() {
@@ -51,7 +51,7 @@ public abstract class PitBossAbility implements Listener {
 
 	public List<Player> getViewers() {
 		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : pitBoss.boss.getNearbyEntities(40, 40, 40)) {
+		for(Entity entity : pitBoss.getBoss().getNearbyEntities(40, 40, 40)) {
 			if(!(entity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(entity.getUniqueId());
 			if(player != null) viewers.add(player);
@@ -72,6 +72,6 @@ public abstract class PitBossAbility implements Listener {
 	}
 
 	public boolean isNearToBoss(Player player) {
-		return getPitBoss().boss.getWorld() == player.getWorld() && getPitBoss().boss.getLocation().distance(player.getLocation()) <= 50;
+		return getPitBoss().getBoss().getWorld() == player.getWorld() && getPitBoss().getBoss().getLocation().distance(player.getLocation()) <= 50;
 	}
 }

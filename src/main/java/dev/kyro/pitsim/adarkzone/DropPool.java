@@ -25,7 +25,7 @@ public class DropPool {
 		distributeRewards(weightedMap);
 	}
 
-	public void bossDistribution(Player killer, PitBoss deadBoss, Map<UUID, Double> damageMap) {
+	public void bossDistribution(Map<UUID, Double> damageMap, Player killer, PitBoss deadBoss) {
 		double totalDamage = 0;
 		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) totalDamage += entry.getValue();
 		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {

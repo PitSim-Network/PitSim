@@ -32,7 +32,7 @@ public class HailAbility extends BlockRainAbility {
 			Player player = Bukkit.getPlayer(nearbyEntity.getUniqueId());
 			if(player == null) continue;
 
-			if(material == Material.ICE) DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
+			if(material == Material.ICE) DamageManager.createIndirectAttack(getPitBoss().getBoss(), player, damage);
 			else Misc.applyPotionEffect(player, PotionEffectType.SLOW, 20, 5, false, false);
 		}
 	}

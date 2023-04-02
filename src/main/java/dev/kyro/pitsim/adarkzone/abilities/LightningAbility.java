@@ -25,7 +25,7 @@ public class LightningAbility extends PitBossAbility {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(attackEvent.getAttackerPlayer() != getPitBoss().boss || !attackEvent.isDefenderPlayer()) return;
+		if(attackEvent.getAttackerPlayer() != getPitBoss().getBoss() || !attackEvent.isDefenderPlayer()) return;
 		if(attackEvent.getWrapperEvent().hasAttackInfo()) return;
 		if(Math.random() > chance) return;
 
@@ -43,7 +43,7 @@ public class LightningAbility extends PitBossAbility {
 				if(++count == strikes) cancel();
 				Misc.strikeLightningForPlayers(player.getLocation(), 40);
 				player.setNoDamageTicks(0);
-				DamageManager.createDirectAttack(getPitBoss().boss, player, 0, newEvent -> newEvent.veryTrueDamage = damage);
+				DamageManager.createDirectAttack(getPitBoss().getBoss(), player, 0, newEvent -> newEvent.veryTrueDamage = damage);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 	}

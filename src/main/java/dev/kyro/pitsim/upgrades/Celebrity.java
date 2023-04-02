@@ -44,6 +44,6 @@ public class Celebrity extends RenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&6Celebirty is an &erenown&7 upgrade that doubles the &6gold&7 you get on all bot and player kills";
+		return "&6Celebirty &7is a &erenown&7 upgrade that doubles the &6gold&7 you get on all bot and player kills";
 	}
 }

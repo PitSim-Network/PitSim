@@ -40,7 +40,7 @@ public class WorldBorderAbility extends PitBossAbility {
 		this.defaultSize = getPitBoss().getSubLevel().spawnRadius + 3;
 		this.currentSize = defaultSize;
 
-		trapPlayer(getPitBoss().summoner);
+		trapPlayer(getPitBoss().getSummoner());
 		runnable = new BukkitRunnable() {
 			@Override
 			public void run() {

@@ -39,7 +39,7 @@ public class GenericMinionAbility extends MinionAbility {
 			int randomX = random.nextInt(radius - (-1 * radius)) + (-1 * radius);
 			int randomZ = random.nextInt(radius - (-1 * radius)) + (-1 * radius);
 
-			location = getPitBoss().boss.getLocation().clone().add(randomX, 0, randomZ);
+			location = getPitBoss().getBoss().getLocation().clone().add(randomX, 0, randomZ);
 		}
 		return location;
 	}
