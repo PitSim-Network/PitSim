@@ -7,6 +7,8 @@ import dev.kyro.pitsim.adarkzone.progression.skillbranches.DefenceBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Fortify;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Mechanic;
+import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 
 import java.util.UUID;
 
@@ -74,6 +76,8 @@ public class Shield {
 		isActive = false;
 		shieldAmount = 0;
 		ticksUntilReactivation = getInitialTicksUntilReactivation();
+		Misc.sendTitle(pitPlayer.player, "&9Shield Broken!", 20);
+		Misc.sendSubTitle(pitPlayer.player, "", 20);
 	}
 
 	@Exclude
@@ -92,6 +96,9 @@ public class Shield {
 		ticksUntilReactivation = 0;
 		isActive = true;
 		shieldAmount = getMaxShield();
+		Sounds.SHIELD_REACTIVATE.play(pitPlayer.player);
+		Misc.sendTitle(pitPlayer.player, "&9Shield Recharged!", 20);
+		Misc.sendSubTitle(pitPlayer.player, "", 20);
 	}
 
 	@Exclude

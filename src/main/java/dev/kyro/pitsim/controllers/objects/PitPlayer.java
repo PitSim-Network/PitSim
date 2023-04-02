@@ -691,7 +691,8 @@ public class PitPlayer {
 				player.setExp((float) (shield.getPreciseAmount() / shield.getMaxShield()));
 			} else {
 				player.setLevel(0);
-				player.setExp(1 - ((float) shield.getTicksUntilReactivation() / shield.getInitialTicksUntilReactivation()));
+				float progress = 1 - ((float) shield.getTicksUntilReactivation() / shield.getInitialTicksUntilReactivation());
+				player.setExp(Math.min(progress, 1));
 			}
 			return;
 		}
