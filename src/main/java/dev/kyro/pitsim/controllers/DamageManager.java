@@ -29,6 +29,7 @@ import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.ArmorReduction;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.KillSteal;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -610,8 +611,8 @@ public class DamageManager implements Listener {
 				if(assistPlayer == null) continue;
 				double assistPercent = Math.max(Math.min(entry.getValue() / finalDamage, 1), 0);
 
-				if(UpgradeManager.hasUpgrade(assistPlayer, "KILL_STEAL")) {
-					int tier = UpgradeManager.getTier(assistPlayer, "KILL_STEAL");
+				if(UpgradeManager.hasUpgrade(assistPlayer, KillSteal.INSTANCE)) {
+					int tier = UpgradeManager.getTier(assistPlayer, KillSteal.INSTANCE);
 					assistPercent += (tier * 10) / 100D;
 					if(assistPercent >= 1) {
 						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(assistPlayer);

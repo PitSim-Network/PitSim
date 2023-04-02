@@ -25,6 +25,10 @@ public class PitLoreBuilder extends ALoreBuilder {
 
 	private final int lineWidth;
 
+	public PitLoreBuilder() {
+		this(null);
+	}
+
 	public PitLoreBuilder(String singleLine) {
 		this(singleLine, 32);
 	}
@@ -34,14 +38,24 @@ public class PitLoreBuilder extends ALoreBuilder {
 		addLongLine(longLine);
 	}
 
+	public void addLongLines(String... longLines) {
+		for(String longLine : longLines) addLongLine(longLine);
+	}
+
 	public void addLongLine(String longLine) {
+		addLongLine(longLine, true);
+	}
+
+	public void addLongLine(String longLine, boolean attemptAddSpacer) {
+		if(longLine == null || longLine.isEmpty()) return;
+		if(attemptAddSpacer) attemptAddSpacer();
 		longLine = ChatColor.translateAlternateColorCodes('&', longLine);
 		String currentString = "";
 		String lastChatColor = "";
 		for(String word : longLine.split(" ")) {
 			word = word.replaceAll("\\[]", " ");
 			if(getStringLength(currentString) + 1 + getStringLength(word) > lineWidth) {
-				getLore().add(currentString);
+				addLore(currentString);
 				currentString = lastChatColor;
 			}
 
@@ -62,7 +76,11 @@ public class PitLoreBuilder extends ALoreBuilder {
 			if(!ChatColor.stripColor(currentString).isEmpty()) currentString += " ";
 			currentString += word;
 		}
-		if(!ChatColor.stripColor(currentString).isEmpty()) getLore().add(currentString);
+		if(!ChatColor.stripColor(currentString).isEmpty()) addLore(currentString);
+	}
+
+	public void attemptAddSpacer() {
+		if(!getLore().isEmpty() && !getLore().get(getLore().size() - 1).isEmpty()) addLore("");
 	}
 
 	public static int getStringLength(String string) {

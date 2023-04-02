@@ -1,49 +1,46 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import org.bukkit.ChatColor;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
+import dev.kyro.pitsim.enchants.overworld.Billionaire;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TaxEvasion extends RenownUpgrade {
+public class TaxEvasion extends TieredRenownUpgrade {
+	public static TaxEvasion INSTANCE;
+
 	public TaxEvasion() {
-		super("Tax Evasion", "TAX_EVASION", 25, 28, 22, true, 3);
+		super("Tax Evasion", "TAX_EVASION", 22);
+		INSTANCE = this;
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(25, 50, 75);
+	public ItemStack getBaseItemStack() {
+		return new AItemStackBuilder(Material.IRON_FENCE)
+				.getItemStack();
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
-		ItemStack item = new ItemStack(Material.IRON_FENCE);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
-		List<String> lore = new ArrayList<>();
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
-				"&7Current: &6-" + 5 * UpgradeManager.getTier(player, this) + "% Gold"));
-		if(UpgradeManager.hasUpgrade(player, this))
-			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each Tier:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&dRARE! &9Billionaire &7costs"));
-		lore.add(ChatColor.GOLD + "-5% Gold" + ChatColor.GRAY + ".");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
-		item.setItemMeta(meta);
-		return item;
+	public String getCurrentEffect(int tier) {
+		return "&6-" + (tier * 5) + "% gold";
+	}
+
+	@Override
+	public String getEffectPerTier() {
+		return "&7Hits with " + Billionaire.INSTANCE.getDisplayName(false, true) +
+				" &7cost &6-5% less";
 	}
 
 	@Override
 	public String getSummary() {
 		return "&eTax Evasion&7 is an &erenown&7 upgrade that makes the enchant &dRARE! &9Billionaire&7 cost less &6gold";
+	}
+
+	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(25, 50, 75);
 	}
 }

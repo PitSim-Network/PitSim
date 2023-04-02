@@ -1,43 +1,37 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import org.bukkit.ChatColor;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.pitsim.controllers.objects.UnlockableRenownUpgrade;
+import dev.kyro.pitsim.inventories.WithercraftPanel;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Withercraft extends UnlockableRenownUpgrade {
+	public static Withercraft INSTANCE;
 
-public class Withercraft extends RenownUpgrade {
 	public Withercraft() {
-		super("Withercraft", "WITHERCRAFT", 50, 25, 18, false, 0);
+		super("Withercraft", "WITHERCRAFT", 18, WithercraftPanel.class);
+		INSTANCE = this;
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return null;
+	public ItemStack getBaseItemStack() {
+		return new AItemStackBuilder(Material.COAL)
+				.getItemStack();
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
-		ItemStack item = new ItemStack(Material.COAL);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.GRAY + "Ability to right-click a");
-		lore.add(ChatColor.DARK_PURPLE + "Chunk of Vile " + ChatColor.GRAY + "and sacrifice");
-		lore.add(ChatColor.GRAY + "it to repair a life on a ");
-		lore.add(ChatColor.DARK_AQUA + "Jewel " + ChatColor.GRAY + "item.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, true));
-		item.setItemMeta(meta);
-		return item;
+	public String getEffect() {
+		return "&7Abililty to right-click a &5Chunk of Vile &7and sacrifice it to repair a life on a &3Jewel &7item";
 	}
 
 	@Override
 	public String getSummary() {
 		return "&eWithercraft is an &erenown&7 upgrade that lets you use &5Chunks of Vile&7 to repair lives on &3Jewel &7items";
+	}
+
+	@Override
+	public int getUnlockCost() {
+		return 50;
 	}
 }

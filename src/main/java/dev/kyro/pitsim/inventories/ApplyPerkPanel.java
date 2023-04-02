@@ -40,7 +40,7 @@ public class ApplyPerkPanel extends AGUIPanel {
 
 		for(PitPerk pitPerk : PerkManager.pitPerks) {
 
-			if(pitPerk.renownUnlockable && !UpgradeManager.hasUpgrade(player, pitPerk.upgradeRef)) {
+			if(pitPerk.renownUnlockable && !UpgradeManager.hasUpgrade(player, pitPerk)) {
 				ItemStack perkItem = new ItemStack(Material.BEDROCK);
 				ItemMeta meta = perkItem.getItemMeta();
 
@@ -121,7 +121,7 @@ public class ApplyPerkPanel extends AGUIPanel {
 			for(PitPerk clickedPerk : PerkManager.pitPerks) {
 				if(clickedPerk.guiSlot != slot) continue;
 
-				if(clickedPerk.renownUnlockable && !UpgradeManager.hasUpgrade(player, clickedPerk.upgradeRef)) {
+				if(clickedPerk.renownUnlockable && !UpgradeManager.hasUpgrade(player, clickedPerk)) {
 					AOutput.error(player, "&cThis perk needs to be unlocked in the renown shop!");
 					Sounds.ERROR.play(player);
 					return;

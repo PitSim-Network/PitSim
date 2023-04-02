@@ -13,6 +13,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.VileGUI;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.Withercraft;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -71,7 +72,7 @@ public class ChunkOfVile extends StaticPitItem {
 		if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
 		if(!isThisItem(vileStack)) return;
 
-		if(!UpgradeManager.hasUpgrade(player, "WITHERCRAFT")) {
+		if(!UpgradeManager.hasUpgrade(player, Withercraft.INSTANCE)) {
 			AOutput.error(player, "&c&lERROR!&7 You must first unlock Withercraft from the renown shop before using this item!");
 			Sounds.ERROR.play(player);
 			return;

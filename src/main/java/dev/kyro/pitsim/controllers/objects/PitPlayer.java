@@ -397,8 +397,8 @@ public class PitPlayer {
 
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
 			int tier = 0;
-			if(!upgrade.isTiered && playerData.contains(upgrade.refName)) tier = 1;
-			else if(upgrade.isTiered && playerData.contains(upgrade.refName)) tier = playerData.getInt(upgrade.refName);
+			if(!upgrade.isTiered() && playerData.contains(upgrade.refName)) tier = 1;
+			else if(upgrade.isTiered() && playerData.contains(upgrade.refName)) tier = playerData.getInt(upgrade.refName);
 			renownUpgrades.put(upgrade.refName, tier);
 		}
 

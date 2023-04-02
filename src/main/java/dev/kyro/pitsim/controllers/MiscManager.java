@@ -1,7 +1,11 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.gui.AGUIManager;
 import dev.kyro.pitsim.enchants.overworld.BulletTime;
 import dev.kyro.pitsim.events.AttackEvent;
+import org.bukkit.Material;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,11 +14,31 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 public class MiscManager implements Listener {
+
+	public MiscManager() {
+		ItemStack back = new AItemStackBuilder(Material.ARROW)
+				.setName("&aBack")
+				.setLore(new ALoreBuilder(
+						"&7Click to open the previous screen"
+				)).getItemStack();
+		ItemStack previousPage = new AItemStackBuilder(Material.ARROW)
+				.setName("&aPrevious Page")
+				.setLore(new ALoreBuilder(
+						"&7Click to go to the previous page"
+				)).getItemStack();
+		ItemStack nextPage = new AItemStackBuilder(Material.ARROW)
+				.setName("&aNext Page")
+				.setLore(new ALoreBuilder(
+						"&7Click to go to the next page"
+				)).getItemStack();
+		AGUIManager.setDefaultItemStacks(back, previousPage, nextPage);
+	}
 
 	@EventHandler
 	public void onDamage(EntityDamageByEntityEvent event) {

@@ -27,12 +27,11 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 	public RenownShopConfirmPanel(AGUI gui) {
 		super(gui);
 		renownShopGUI = (RenownShopGUI) gui;
-
 	}
 
 	@Override
 	public String getName() {
-		return "Are you sure?";
+		return "&eAre you sure?";
 	}
 
 	@Override
@@ -42,42 +41,39 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
+		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		if(event.getClickedInventory().getHolder() == this) {
+		if(slot == 11) {
+			RenownUpgrade upgrade = RenownShopGUI.purchaseConfirmations.get(player);
 
-			if(slot == 11) {
-				RenownUpgrade upgrade = RenownShopGUI.purchaseConfirmations.get(player);
-
-				if(upgrade.isTiered) {
-					int tier = UpgradeManager.getTier(player, upgrade);
-					pitPlayer.renownUpgrades.put(upgrade.refName, tier + 1);
-					pitPlayer.renown = pitPlayer.renown - upgrade.getTierCosts().get(tier);
-				} else {
-					pitPlayer.renownUpgrades.put(upgrade.refName, 1);
-					pitPlayer.renown = pitPlayer.renown - upgrade.renownCost;
-				}
-
-				RenownShopGUI.purchaseConfirmations.remove(player);
-				openPanel(renownShopGUI.getHomePanel());
-
-				if(upgrade.isTiered) {
-					AOutput.send(player, ChatColor.translateAlternateColorCodes('&', "&a&lPURCHASE! &6" + upgrade.name + " " + AUtil.toRoman(UpgradeManager.getTier(player, upgrade))));
-				} else {
-					AOutput.send(player, ChatColor.translateAlternateColorCodes('&', "&a&lPURCHASE! &6" + upgrade.name));
-				}
-				Sounds.RENOWN_SHOP_PURCHASE.play(player);
-
-				if(upgrade.refName.equals("UBER_INCREASE")) pitPlayer.dailyUbersLeft++;
+			if(upgrade.isTiered()) {
+				int tier = UpgradeManager.getTier(player, upgrade);
+				pitPlayer.renownUpgrades.put(upgrade.refName, tier + 1);
+				pitPlayer.renown = pitPlayer.renown - upgrade.getTierCosts().get(tier);
+			} else {
+				pitPlayer.renownUpgrades.put(upgrade.refName, 1);
+				pitPlayer.renown = pitPlayer.renown - upgrade.getUnlockCost();
 			}
 
-			if(slot == 15) {
-				RenownShopGUI.purchaseConfirmations.remove(player);
-				openPanel(renownShopGUI.getHomePanel());
+			if(upgrade.isTiered()) {
+				AOutput.send(player, ChatColor.translateAlternateColorCodes('&', "&a&lPURCHASE! &6" + upgrade.name +
+						" " +AUtil.toRoman(UpgradeManager.getTier(player, upgrade))));
+			} else {
+				AOutput.send(player, ChatColor.translateAlternateColorCodes('&', "&a&lPURCHASE! &6" + upgrade.name));
 			}
+			Sounds.RENOWN_SHOP_PURCHASE.play(player);
+
+			if(upgrade.refName.equals("UBER_INCREASE")) pitPlayer.dailyUbersLeft++;
+
+			RenownShopGUI.purchaseConfirmations.remove(player);
+			openPanel(renownShopGUI.getHomePanel());
+			updateInventory();
+		} else if(slot == 15) {
+			RenownShopGUI.purchaseConfirmations.remove(player);
+			openPanel(renownShopGUI.getHomePanel());
 			updateInventory();
 		}
-		updateInventory();
 	}
 
 	@Override
@@ -87,13 +83,13 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 		confirmMeta.setDisplayName(ChatColor.GREEN + "Confirm");
 		List<String> confirmLore = new ArrayList<>();
 		RenownUpgrade upgrade = RenownShopGUI.purchaseConfirmations.get(player);
-		if(upgrade.isTiered) {
+		if(upgrade.isTiered()) {
 			confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Purchasing: &6" + upgrade.name + " " +
 					AUtil.toRoman(UpgradeManager.getTier(player, upgrade) + 1)));
 			confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade))));
 		} else {
 			confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Purchasing: &6" + upgrade.name));
-			confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.renownCost));
+			confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.getUnlockCost()));
 		}
 		confirmMeta.setLore(confirmLore);
 		confirm.setItemMeta(confirmMeta);
