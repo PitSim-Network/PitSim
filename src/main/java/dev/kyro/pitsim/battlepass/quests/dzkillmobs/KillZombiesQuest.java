@@ -32,7 +32,7 @@ public class KillZombiesQuest extends PassQuest {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
 		ItemStack itemStack = new AItemStackBuilder(Material.ROTTEN_FLESH)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

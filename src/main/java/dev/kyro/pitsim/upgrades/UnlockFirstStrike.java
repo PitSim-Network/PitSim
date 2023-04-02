@@ -14,7 +14,7 @@ public class UnlockFirstStrike extends UnlockableRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.COOKED_CHICKEN)
 				.getItemStack();
 	}

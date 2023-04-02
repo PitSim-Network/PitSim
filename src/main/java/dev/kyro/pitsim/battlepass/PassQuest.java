@@ -45,7 +45,7 @@ public abstract class PassQuest implements Listener {
 		createPossibleStates();
 	}
 
-	public abstract ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress);
+	public abstract ItemStack getDisplayStack(PitPlayer pitPlayer, QuestLevel questLevel, double progress);
 
 	//	Only applies to weekly quests
 	public abstract void createPossibleStates();

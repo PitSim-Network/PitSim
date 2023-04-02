@@ -49,7 +49,7 @@ public class DoubleDeath extends TieredRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.SKULL_ITEM)
 				.getItemStack();
 	}

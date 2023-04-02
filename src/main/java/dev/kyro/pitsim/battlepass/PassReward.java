@@ -7,7 +7,7 @@ public abstract class PassReward {
 
 	public abstract boolean giveReward(PitPlayer pitPlayer);
 
-	public abstract ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed);
+	public abstract ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed);
 
 	public double getMultiplier(PitPlayer pitPlayer) {
 		return 1;

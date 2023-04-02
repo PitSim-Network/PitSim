@@ -40,13 +40,13 @@ public abstract class Booster implements Listener {
 			this.activatorUUID = UUID.fromString(FirestoreManager.CONFIG.boosterActivatorMap.get(refName));
 	}
 
-	public abstract ItemStack getBaseDisplayItem();
+	public abstract ItemStack getBaseDisplayStack();
 
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		int amount = Booster.getBoosterAmount(player, this);
 
-		ItemStack itemStack = getBaseDisplayItem();
-		AItemStackBuilder builder = new AItemStackBuilder(getBaseDisplayItem());
+		ItemStack itemStack = getBaseDisplayStack();
+		AItemStackBuilder builder = new AItemStackBuilder(getBaseDisplayStack());
 		ALoreBuilder loreBuilder = new ALoreBuilder(itemStack.getItemMeta().getLore());
 
 		loreBuilder.addLore("");

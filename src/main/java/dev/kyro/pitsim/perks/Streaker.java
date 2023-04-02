@@ -1,14 +1,14 @@
 package dev.kyro.pitsim.perks;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -20,7 +20,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Streaker extends PitPerk {
@@ -30,7 +29,7 @@ public class Streaker extends PitPerk {
 	public static Streaker INSTANCE;
 
 	public Streaker() {
-		super("Streaker", "streaker", new ItemStack(Material.WHEAT), 16, true, "STREAKER", INSTANCE, false);
+		super("Streaker", "streaker");
 		INSTANCE = this;
 	}
 
@@ -39,8 +38,7 @@ public class Streaker extends PitPerk {
 		xpReward.remove(killEvent.getDead());
 		playerTimes.remove(killEvent.getDead());
 
-		if(!playerHasUpgrade(killEvent.getKiller())) return;
-		if(MapManager.inDarkzone(killEvent.getKiller())) return;
+		if(!hasPerk(killEvent.getKiller())) return;
 		if(!killEvent.isDeadPlayer() || NonManager.getNon(killEvent.getDead()) == null) return;
 		killEvent.xpCap += 80;
 
@@ -105,9 +103,17 @@ public class Streaker extends PitPerk {
 	}
 
 	@Override
-	public List<String> getDescription() {
-		return new ALoreBuilder("&7Upon reaching your &emegastreak&7,",
-				"&7gain &bmore XP &7the faster you hit mega", "&7Passively gain &b+80 max XP").getLore();
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.WHEAT)
+				.getItemStack();
+	}
+
+	@Override
+	public PitLoreBuilder getBaseDescription() {
+		return new PitLoreBuilder(
+				"&7Upon reaching your &cMegastreak&7, gain &bmore XP &7the faster you hit mega. " +
+						"Passively gain &b+80 max XP"
+		);
 	}
 
 	@Override

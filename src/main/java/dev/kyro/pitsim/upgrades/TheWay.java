@@ -19,7 +19,7 @@ public class TheWay extends TieredRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.ACACIA_DOOR_ITEM)
 				.getItemStack();
 	}

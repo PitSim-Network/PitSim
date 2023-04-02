@@ -20,7 +20,7 @@ public class UnlockCounterJanitor extends UnlockableRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.SPONGE)
 				.getItemStack();
 	}

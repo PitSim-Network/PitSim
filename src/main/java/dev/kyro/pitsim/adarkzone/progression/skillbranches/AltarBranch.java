@@ -24,7 +24,7 @@ public class AltarBranch extends SkillBranch {
 	}
 
 	@Override
-	public ItemStack getBaseStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.ENDER_PORTAL_FRAME)
 				.setLore(new ALoreBuilder(
 						"&7Improve your relationship",
@@ -52,7 +52,7 @@ public class AltarBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.ENDER_PORTAL_FRAME)
 						.setLore(new ALoreBuilder(
 								"&7Start with the basics:",
@@ -79,7 +79,7 @@ public class AltarBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.REDSTONE)
 						.setLore(new ALoreBuilder(
 								"&7Sacrificing &fsouls &7gives you",
@@ -104,7 +104,7 @@ public class AltarBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.GOLD_BLOCK)
 						.setLore(new ALoreBuilder(
 								"&7Unlocks the Pedestal",
@@ -129,7 +129,7 @@ public class AltarBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.WATCH)
 						.setLore(new ALoreBuilder(
 								"&7Unlocks the Pedestal",

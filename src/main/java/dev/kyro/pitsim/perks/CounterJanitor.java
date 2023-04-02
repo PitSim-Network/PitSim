@@ -1,29 +1,26 @@
 package dev.kyro.pitsim.perks;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 public class CounterJanitor extends PitPerk {
 	public static CounterJanitor INSTANCE;
 
 	public CounterJanitor() {
-		super("Counter-Janitor", "counter-janitor", new ItemStack(Material.SPONGE), 19, true, "COUNTER_JANITOR", INSTANCE, false);
+		super("Counter-Janitor", "counter-janitor");
 		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!playerHasUpgrade(killEvent.getKiller())) return;
-		if(MapManager.inDarkzone(killEvent.getKiller())) return;
+		if(!hasPerk(killEvent.getKiller())) return;
 		if(killEvent.isKillerPlayer() && NonManager.getNon(killEvent.getDead()) == null) {
 			PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 			double missingHealth = killEvent.getKiller().getMaxHealth() - killEvent.getKiller().getHealth();
@@ -32,8 +29,16 @@ public class CounterJanitor extends PitPerk {
 	}
 
 	@Override
-	public List<String> getDescription() {
-		return new ALoreBuilder("&7Instantly heal half your", "&chealth &7on player kill.").getLore();
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.SPONGE)
+				.getItemStack();
+	}
+
+	@Override
+	public PitLoreBuilder getBaseDescription() {
+		return new PitLoreBuilder(
+				"&7Instantly heal half your &chealth &7on player kill"
+		);
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public class Helmetry extends UnlockableRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.GOLD_HELMET)
 				.getItemStack();
 	}

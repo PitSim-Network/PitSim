@@ -27,7 +27,7 @@ public class RenownShopPanel extends APagedGUIPanel {
 
 	@Override
 	public void addItems() {
-		for(RenownUpgrade upgrade : UpgradeManager.upgrades) addItem(() -> upgrade.getDisplayItem(player), event -> {
+		for(RenownUpgrade upgrade : UpgradeManager.upgrades) addItem(() -> upgrade.getDisplayStack(player), event -> {
 			boolean hasUpgrade = UpgradeManager.hasUpgrade(player, upgrade);
 			boolean isTiered = upgrade.isTiered();
 			boolean isMaxed = UpgradeManager.isMaxed(player, upgrade);
@@ -76,11 +76,6 @@ public class RenownShopPanel extends APagedGUIPanel {
 	@Override
 	public String getName() {
 		return "&eRenown Shop";
-	}
-
-	@Override
-	public int getRows() {
-		return 6;
 	}
 
 	@Override

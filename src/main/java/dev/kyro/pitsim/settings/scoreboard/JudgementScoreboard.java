@@ -39,7 +39,7 @@ public class JudgementScoreboard extends ScoreboardOption {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.BEACON)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

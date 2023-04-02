@@ -20,7 +20,7 @@ public class GoldBoost extends TieredRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.GOLD_NUGGET)
 				.getItemStack();
 	}

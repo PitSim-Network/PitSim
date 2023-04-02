@@ -21,14 +21,14 @@ public class GladiatorScoreboard extends ScoreboardOption {
 
 	@Override
 	public String getValue(PitPlayer pitPlayer) {
-		if(!Gladiator.INSTANCE.playerHasUpgrade(pitPlayer.player)) return null;
+		if(!Gladiator.INSTANCE.hasPerk(pitPlayer.player)) return null;
 		int reduction = Gladiator.getReduction(pitPlayer.player);
 		if(reduction == 0) return null;
 		return "&6Gladiator: &9-" + reduction + "%";
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.BONE)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

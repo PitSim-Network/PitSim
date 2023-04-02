@@ -47,7 +47,7 @@ public class UberInsurance extends TieredRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.BOOK_AND_QUILL)
 				.getItemStack();
 	}

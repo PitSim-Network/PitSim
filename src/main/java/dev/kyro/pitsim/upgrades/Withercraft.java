@@ -15,7 +15,7 @@ public class Withercraft extends UnlockableRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.COAL)
 				.getItemStack();
 	}

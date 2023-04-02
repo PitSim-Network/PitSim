@@ -23,7 +23,7 @@ public class Celebrity extends UnlockableRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.RAW_FISH, 1, 3)
 				.getItemStack();
 	}

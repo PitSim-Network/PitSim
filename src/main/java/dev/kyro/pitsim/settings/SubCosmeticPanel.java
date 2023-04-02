@@ -75,7 +75,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 
 		PitCosmetic activeCosmetic = CosmeticManager.getEquippedCosmetic(settingsGUI.pitPlayer, cosmeticType);
 		if(activeCosmetic != null) {
-			ItemStack disableItem = activeCosmetic.getDisplayItem(true);
+			ItemStack disableItem = activeCosmetic.getDisplayStack(true);
 			new AItemStackBuilder(disableItem)
 					.setName("&c&lDisable")
 					.setLore(new ALoreBuilder(
@@ -150,7 +150,7 @@ public abstract class SubCosmeticPanel extends AGUIPanel {
 
 			PitCosmetic pitCosmetic = unlockedCosmetics.get(i);
 			cosmeticMap.put(slot, pitCosmetic);
-			getInventory().setItem(slot, pitCosmetic.getDisplayItem(pitCosmetic.isEnabled(settingsGUI.pitPlayer)));
+			getInventory().setItem(slot, pitCosmetic.getDisplayStack(pitCosmetic.isEnabled(settingsGUI.pitPlayer)));
 		}
 	}
 

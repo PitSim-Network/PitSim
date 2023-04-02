@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
@@ -46,11 +45,6 @@ public class UpgradeManager implements Listener {
 		}
 	}
 
-	public static boolean hasUpgrade(Player player, PitPerk pitPerk) {
-		RenownUpgrade upgrade = getUpgrade(pitPerk.upgradeRef);
-		return hasUpgrade(player, upgrade);
-	}
-
 	public static boolean hasUpgrade(Player player, RenownUpgrade upgrade) {
 		if(!PlayerManager.isRealPlayer(player) || upgrade == null) return false;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -74,11 +68,13 @@ public class UpgradeManager implements Listener {
 		return pitPlayer.renownUpgrades.getOrDefault(upgrade.refName, 0);
 	}
 
+	public static RenownUpgrade getUpgrade(Class<? extends RenownUpgrade> clazz) {
+		for(RenownUpgrade upgrade : upgrades) if(upgrade.getClass() == clazz) return upgrade;
+		return null;
+	}
+
 	public static RenownUpgrade getUpgrade(String refName) {
-		for(RenownUpgrade upgrade : upgrades) {
-			if(!upgrade.refName.equalsIgnoreCase(refName)) continue;
-			return upgrade;
-		}
+		for(RenownUpgrade upgrade : upgrades) if(upgrade.refName.equalsIgnoreCase(refName)) return upgrade;
 		return null;
 	}
 

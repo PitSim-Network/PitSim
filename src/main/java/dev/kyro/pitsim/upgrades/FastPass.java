@@ -14,7 +14,7 @@ public class FastPass extends UnlockableRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.ACTIVATOR_RAIL)
 				.getItemStack();
 	}

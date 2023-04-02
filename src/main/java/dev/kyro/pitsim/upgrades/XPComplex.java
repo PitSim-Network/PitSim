@@ -22,7 +22,7 @@ public class XPComplex extends UnlockableRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.DIAMOND_BARDING)
 				.getItemStack();
 	}

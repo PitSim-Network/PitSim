@@ -18,7 +18,7 @@ public class TaxEvasion extends TieredRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.IRON_FENCE)
 				.getItemStack();
 	}

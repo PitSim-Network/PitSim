@@ -14,14 +14,14 @@ public class UnlockStreaker extends UnlockableRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.WHEAT)
 				.getItemStack();
 	}
 
 	@Override
 	public String getEffect() {
-		return "&7Upon reaching your &emegastreak&7, gain &bmore XP &7the faster you hit mega. Passively gain &b+80 max XP";
+		return "&7Upon reaching your &cMegastreak&7, gain &bmore XP &7the faster you hit mega. Passively gain &b+80 max XP";
 	}
 
 	@Override

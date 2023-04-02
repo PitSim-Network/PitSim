@@ -92,7 +92,7 @@ public class DamageBranch extends SkillBranch {
 	}
 
 	@Override
-	public ItemStack getBaseStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.DIAMOND_SWORD)
 				.setLore(new ALoreBuilder(
 						"&7Upgrade your damage"
@@ -114,7 +114,7 @@ public class DamageBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				DecimalFormat decimalFormat = new DecimalFormat("0.#");
 				return new AItemStackBuilder(Material.MOB_SPAWNER)
 						.setLore(new ALoreBuilder(
@@ -141,7 +141,7 @@ public class DamageBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.BLAZE_POWDER)
 						.setLore(new ALoreBuilder(
 								"&7Deal &c" + getMobBossDamageIncrease() + "x &7damage vs mobs",
@@ -166,7 +166,7 @@ public class DamageBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.GOLDEN_APPLE)
 						.setLore(new ALoreBuilder(
 								"&7Heal &c" + Misc.getHearts(getMobKillHealing()) + " &7on mob kill"
@@ -190,7 +190,7 @@ public class DamageBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.PUMPKIN)
 						.setLore(new ALoreBuilder(
 								"&6" + getSecondItemSpawnChance() + "% &7chance for mob drops to",

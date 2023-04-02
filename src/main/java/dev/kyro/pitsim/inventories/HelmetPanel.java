@@ -81,7 +81,7 @@ public class HelmetPanel extends AGUIPanel {
 		HelmetAbility ability = getAbility(goldenHelmet);
 		if(ability != null) {
 			abilityLoreBuilder.addLore("&7Selected: &9" + ability.name);
-			abilityBuilder.getItemStack().setType(ability.getDisplayItem().getType());
+			abilityBuilder.getItemStack().setType(ability.getDisplayStack().getType());
 			abilityLoreBuilder.addLore(ability.getDescription());
 			abilityLoreBuilder.addLore("", "&eClick to change ability!");
 		} else {

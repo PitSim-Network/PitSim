@@ -26,7 +26,7 @@ public class PvPKit extends Kit {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_SWORD)
 				.setName("&cPvP Kit")
 				.setLore(new ALoreBuilder(

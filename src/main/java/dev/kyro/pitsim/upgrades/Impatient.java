@@ -39,7 +39,7 @@ public class Impatient extends TieredRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.CARROT_ITEM)
 				.getItemStack();
 	}

@@ -31,7 +31,7 @@ public class PassDarkzoneDropReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = ingredient.getItem();
 		itemStack.setAmount(count);
 		return itemStack;

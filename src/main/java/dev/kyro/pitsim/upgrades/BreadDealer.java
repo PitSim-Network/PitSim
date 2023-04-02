@@ -46,7 +46,7 @@ public class BreadDealer extends TieredRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.BREAD)
 				.getItemStack();
 	}

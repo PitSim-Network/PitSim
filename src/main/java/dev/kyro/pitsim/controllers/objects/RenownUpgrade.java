@@ -8,6 +8,7 @@ import dev.kyro.pitsim.ahelp.Summarizable;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -34,12 +35,11 @@ public abstract class RenownUpgrade implements Listener, Summarizable {
 		this.subPanel = subPanel;
 	}
 
-	public abstract ItemStack getBaseItemStack();
+	public abstract ItemStack getBaseDisplayStack();
 	public abstract PitLoreBuilder getBaseDescription(Player player);
 
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		ItemStack itemStack = getBaseItemStack();
 		PitLoreBuilder loreBuilder = getBaseDescription(player);
 		ChatColor chatColor = UpgradeManager.getChatColor(player, this);
 
@@ -76,7 +76,9 @@ public abstract class RenownUpgrade implements Listener, Summarizable {
 		}
 		loreBuilder.addLore(status.getLore());
 
-		return new AItemStackBuilder(itemStack)
+		ItemStack baseStack = getBaseDisplayStack();
+		if(pitPlayer.prestige < prestigeReq) baseStack.setType(Material.BEDROCK);
+		return new AItemStackBuilder(baseStack)
 				.setName(chatColor + name)
 				.setLore(loreBuilder)
 				.getItemStack();

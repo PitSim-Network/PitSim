@@ -59,7 +59,7 @@ public class ColorCosmeticPanel extends AGUIPanel {
 			int slot = cosmeticSlots.get(i);
 			colorMap.put(slot, unlockedColor);
 			boolean isEquipped = pitCosmetic.isEnabled(settingsGUI.pitPlayer, unlockedColor);
-			getInventory().setItem(slot, unlockedColor.getDisplayItem(isEquipped));
+			getInventory().setItem(slot, unlockedColor.getDisplayStack(isEquipped));
 		}
 	}
 

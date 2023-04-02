@@ -62,7 +62,7 @@ public class ShardHunter extends TieredRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.EMERALD)
 				.getItemStack();
 	}

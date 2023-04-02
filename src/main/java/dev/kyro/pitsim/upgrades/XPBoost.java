@@ -31,7 +31,7 @@ public class XPBoost extends TieredRenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getBaseItemStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.EXP_BOTTLE)
 				.getItemStack();
 	}

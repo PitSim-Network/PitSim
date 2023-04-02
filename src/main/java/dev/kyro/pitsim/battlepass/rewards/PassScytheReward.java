@@ -35,7 +35,7 @@ public class PassScytheReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_HOE, count)
 				.setName("&5Scythe Reward")
 				.setLore(new ALoreBuilder(
