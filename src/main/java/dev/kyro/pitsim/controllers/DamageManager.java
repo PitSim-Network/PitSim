@@ -603,7 +603,7 @@ public class DamageManager implements Listener {
 		if(killType == KillType.KILL && deadIsPlayer) {
 			double finalDamage = 0;
 			for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) finalDamage += entry.getValue();
-			for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
+			for(Map.Entry<UUID, Double> entry : new ArrayList<>(pitDead.recentDamageMap.entrySet())) {
 				if(entry.getKey().equals(killEvent.getKiller().getUniqueId())) continue;
 
 				Player assistPlayer = Bukkit.getPlayer(entry.getKey());
