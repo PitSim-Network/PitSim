@@ -55,7 +55,10 @@ public class StatisticDataChunk {
 			this.pitEnchant = pitEnchant;
 			this.category = category;
 
-			for(PitEnchant enchant : EnchantManager.pitEnchants) hitsWithEnchant.put(enchant, 0);
+			for(PitEnchant enchant : EnchantManager.pitEnchants) {
+				if(enchant.statisticCategories.isEmpty()) continue;
+				hitsWithEnchant.put(enchant, 0);
+			}
 		}
 
 		public void logAttack(Map<PitEnchant, Integer> enchantMap) {

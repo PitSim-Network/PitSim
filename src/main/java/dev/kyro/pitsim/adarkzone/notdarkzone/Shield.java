@@ -87,7 +87,7 @@ public class Shield {
 
 	@Exclude
 	public void regenerateTick() {
-		if(isActive()) return;
+		if(isActive() || !isUnlocked()) return;
 		if(ticksUntilReactivation > 1) {
 			ticksUntilReactivation--;
 			return;
