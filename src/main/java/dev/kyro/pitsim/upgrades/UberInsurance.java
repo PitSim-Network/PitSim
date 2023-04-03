@@ -59,7 +59,7 @@ public class UberInsurance extends TieredRenownUpgrade {
 
 	@Override
 	public String getEffectPerTier() {
-		return "&7Retain lives when completing &dUberstreaks &750 kills earlier";
+		return "&7Retain lives on &dMystics &7when completing &dUberstreaks &750 kills earlier";
 	}
 
 	@Override
