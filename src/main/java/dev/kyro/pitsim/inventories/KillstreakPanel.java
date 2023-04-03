@@ -32,7 +32,6 @@ public class KillstreakPanel extends AGUIPanel {
 	public KillstreakPanel(AGUI gui) {
 		super(gui);
 		perkGUI = (PerkGUI) gui;
-
 	}
 
 	@Override

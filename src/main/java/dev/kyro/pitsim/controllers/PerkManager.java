@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.perks.NoPerk;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PerkManager {
-
 	public static List<PitPerk> pitPerks = new ArrayList<>();
 	public static List<Megastreak> megastreaks = new ArrayList<>();
 	public static List<Killstreak> killstreaks = new ArrayList<>();
@@ -22,6 +22,7 @@ public class PerkManager {
 
 	public static void registerMegastreak(Megastreak megastreak) {
 		megastreaks.add(megastreak);
+		if(megastreak.pitPlayer != null) Bukkit.getServer().getPluginManager().registerEvents(megastreak, PitSim.INSTANCE);
 	}
 
 	public static void registerKillstreak(Killstreak killstreak) {

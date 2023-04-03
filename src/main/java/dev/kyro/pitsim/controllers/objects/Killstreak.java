@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Killstreak implements Listener, Summarizable {
-
 	public String displayName;
 	public String refName;
 	public int killInterval;
