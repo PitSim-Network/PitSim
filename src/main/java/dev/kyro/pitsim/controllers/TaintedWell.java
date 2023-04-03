@@ -8,6 +8,7 @@ import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.aitems.mystics.TaintedChestplate;
 import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -301,7 +302,8 @@ public class TaintedWell implements Listener {
 	}
 
 	public static void onButtonPush(Player player, boolean enchant) {
-		int previousRares = 0;
+		int previousLives;
+		Map<PitEnchant, Integer> previousEnchants;
 
 		if(enchantingPlayers.contains(player)) return;
 		
@@ -352,13 +354,17 @@ public class TaintedWell implements Listener {
 
 			pitPlayer.taintedSouls -= cost;
 			ItemStack freshItem = playerItems.get(player);
-			for(PitEnchant pitEnchant : EnchantManager.getEnchantsOnItem(freshItem).keySet()) {
-				if(pitEnchant.isRare) previousRares++;
-			}
+
+			PitItem pitItem = ItemFactory.getItem(freshItem);
+			if(pitItem instanceof TaintedScythe || pitItem instanceof TaintedChestplate) previousLives =
+					((TemporaryItem) pitItem).getMaxLives(freshItem);
+			else previousLives = -1;
+
+			previousEnchants = EnchantManager.getEnchantsOnItem(freshItem);
 
 			try {
 				ItemStack newItem;
-				newItem = TaintedEnchanting.enchantItem(freshItem);
+				newItem = TaintedEnchanting.enchantItem(freshItem, player);
 
 				if(newItem == null) return;
 
@@ -378,13 +384,14 @@ public class TaintedWell implements Listener {
 					if(pitEnchant.isRare) rares++;
 				}
 
-				int finalRares = rares;
-				int finalPreviousRares = previousRares;
 
 				HypixelSound.Sound sound = HypixelSound.Sound.getTier(freshTier + 1);
 				assert sound != null;
 
-				HypixelSound.play(player, player.getLocation(), sound, rares > previousRares);
+				assert pitItem != null;
+				String title = TaintedEnchanting.getTitle(previousEnchants, EnchantManager.getEnchantsOnItem(newItem), previousLives,
+						((TemporaryItem) pitItem).getMaxLives(newItem));
+				HypixelSound.play(player, player.getLocation(), sound, title != null);
 
 				enchantingPlayers.add(player);
 				setText(player, "\u00A77", "\u00A77", "\u00A77", ChatColor.YELLOW + "Its rolling...");
@@ -393,7 +400,12 @@ public class TaintedWell implements Listener {
 					public void run() {
 						TaintedWell.enchantingPlayers.remove(player);
 						TaintedWell.showButtons(player, getEnchantCost(getTier(playerItems.get(player)), player));
-						if(finalRares <= finalPreviousRares) return;
+						String title = TaintedEnchanting.getTitle(previousEnchants, EnchantManager.getEnchantsOnItem(newItem), previousLives,
+								((TemporaryItem) pitItem).getMaxLives(newItem));
+						if(title == null) return;
+
+						TaintedEnchanting.broadcastMessage(playerItems.get(player), title, player);
+
 						player.playEffect(TaintedWell.wellLocation.clone().add(0.0, 1.0, 0.0), Effect.EXPLOSION_HUGE, 0);
 						Sounds.EXPLOSIVE_3.play(player);
 

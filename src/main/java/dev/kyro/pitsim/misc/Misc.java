@@ -810,6 +810,10 @@ public class Misc {
 	}
 
 	public static TextComponent createItemHover(ItemStack itemStack) {
+		return createItemHover(itemStack, null);
+	}
+
+	public static TextComponent createItemHover(ItemStack itemStack, String prefix) {
 		if(Misc.isAirOrNull(itemStack)) {
 			return null;
 		}
@@ -838,7 +842,7 @@ public class Misc {
 				new TextComponent(String.valueOf(stringBuilder))
 		};
 
-		TextComponent hoverComponent = new TextComponent(ChatColor.translateAlternateColorCodes('&', displayName));
+		TextComponent hoverComponent = new TextComponent(ChatColor.translateAlternateColorCodes('&', (prefix != null ? prefix : "") + displayName));
 		hoverComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverEventComponents));
 		return hoverComponent;
 	}

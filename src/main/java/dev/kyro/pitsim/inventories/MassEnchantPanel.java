@@ -99,7 +99,7 @@ public class MassEnchantPanel extends AGUIPanel {
 			ItemStack item = getInventory().getItem(i);
 			if(item == null) continue;
 
-			ItemStack newItem = TaintedEnchanting.enchantItem(getInventory().getItem(i));
+			ItemStack newItem = TaintedEnchanting.enchantItem(getInventory().getItem(i), player);
 
 			if(newItem == null) return;
 

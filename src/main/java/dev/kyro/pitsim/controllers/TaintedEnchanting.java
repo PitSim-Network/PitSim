@@ -1,14 +1,23 @@
 package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Durable;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -42,7 +51,7 @@ public class TaintedEnchanting {
 	public static final double TIER_4_UNCOMMON = 0.45;
 	public static final double TIER_4_RARE = 0.1;
 
-	public static ItemStack enchantItem(ItemStack itemStack) {
+	public static ItemStack enchantItem(ItemStack itemStack, Player player) {
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.isMystic ||
 				pitItem.getTemporaryType(itemStack) != TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH) return null;
@@ -56,6 +65,8 @@ public class TaintedEnchanting {
 
 		int previousDurableTier = -1;
 		int durableTier = 0;
+
+		Map<PitEnchant, Integer> previousEnchants = EnchantManager.getEnchantsOnItem(itemStack);
 
 		if(previousTier == 0) {
 			int tokens;
@@ -182,6 +193,8 @@ public class TaintedEnchanting {
 			}
 		}
 
+		int previousMaxLives = temporaryItem.getMaxLives(itemStack);
+
 		nbtItem = new NBTItem(itemStack, true);
 		nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), previousTier + 1);
 		int addedLives = EnchantManager.getTaintedMaxLifeIncrease(previousTier + 1, temporaryItem.getMaxLives(itemStack));
@@ -195,6 +208,7 @@ public class TaintedEnchanting {
 
 		itemStack = nbtItem.getItem();
 		temporaryItem.addMaxLives(itemStack, addedLives);
+
 		return itemStack;
 	}
 
@@ -211,5 +225,59 @@ public class TaintedEnchanting {
 
 		Random random = new Random();
 		return rarityPool.get(random.nextInt(rarityPool.size()));
+	}
+
+	public static String getTitle(Map<PitEnchant, Integer> existingEnchants, Map<PitEnchant, Integer> newEnchants, int previousLives, int currentLives) {
+		int existingRares = 0;
+		for(PitEnchant pitEnchant : existingEnchants.keySet()) {
+			if(pitEnchant.isRare) existingRares++;
+		}
+
+		int newRares = 0;
+		for(PitEnchant pitEnchant : newEnchants.keySet()) {
+			if(pitEnchant.isRare && !existingEnchants.containsKey(pitEnchant)) newRares++;
+		}
+
+		if(existingRares > 0 && newRares > 0) return "Extraordinary";
+		else if(newRares > 0) return "";
+
+		if(currentLives == EnchantManager.TAINTED_ARTIFACT_LIVES && previousLives < EnchantManager.TAINTED_ARTIFACT_LIVES) return "Artifact";
+		else if(currentLives == EnchantManager.TAINTED_DEMONIC_LIVES && previousLives < EnchantManager.TAINTED_DEMONIC_LIVES) return "Demonic";
+
+		return null;
+	}
+
+	public static void broadcastMessage(ItemStack itemStack, String title, Player player) {
+		if(title == null) return;
+
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		String itemName = EnchantManager.getMysticName(itemStack);
+		itemName = "&5" + title + (title.isEmpty() ? "" : " ") + itemName;
+		itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', itemName));
+		itemStack.setItemMeta(itemMeta);
+
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem != null) pitItem.updateItem(itemStack);
+
+		EnchantManager.setItemLore(itemStack, null, false, true);
+
+		sendTaintedEnchantMessage(Misc.getDisplayName(player), itemStack);
+
+		new PluginMessage()
+				.writeString("TAINTEDENCHANT")
+				.writeString(PitSim.serverName)
+				.writeString(Misc.getDisplayName(player))
+				.writeString(CustomSerializer.serialize(itemStack))
+				.send();
+	}
+
+	public static void sendTaintedEnchantMessage(String displayName, ItemStack itemStack) {
+		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&d&lTAINTED! " + displayName));
+		message.addExtra(Misc.createItemHover(itemStack, " &7created "));
+
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+			if(!pitPlayer.playerChatDisabled) onlinePlayer.sendMessage(message);
+		}
 	}
 }

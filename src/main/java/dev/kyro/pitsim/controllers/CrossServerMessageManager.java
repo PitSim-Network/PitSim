@@ -61,6 +61,10 @@ public class CrossServerMessageManager implements Listener {
 			String displayName = strings.get(1);
 			ItemStack itemStack = CustomSerializer.deserialize(strings.get(2));
 			Uberstreak.sendUberMessage(displayName, itemStack);
+		} else if(strings.get(0).equals("TAINTEDENCHANT")) {
+			String displayName = strings.get(1);
+			ItemStack itemStack = CustomSerializer.deserialize(strings.get(2));
+			TaintedEnchanting.sendTaintedEnchantMessage(displayName, itemStack);
 		} else if(strings.get(0).equals("AUCTIONREQUEST")) {
 			AOutput.log("Received request for auction data");
 			sendAuctionData(strings.get(1));

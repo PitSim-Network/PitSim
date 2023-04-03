@@ -53,6 +53,9 @@ public class EnchantManager implements Listener {
 	public static List<PitEnchant> pitEnchants = new ArrayList<>();
 	public static Map<Player, Map<PitEnchant, Integer>> enchantMap = new HashMap<>();
 
+	public static final int TAINTED_ARTIFACT_LIVES = 250;
+	public static final int TAINTED_DEMONIC_LIVES = 1_000;
+
 	public static void readPlayerEnchants() {
 		enchantMap.clear();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) enchantMap.put(onlinePlayer, readEnchantsOnPlayer(onlinePlayer));
@@ -508,8 +511,8 @@ public class EnchantManager implements Listener {
 
 	public static int getTaintedMaxLifeIncrease(int tier, int currentMaxLives) {
 		if(tier == 3) {
-			if(Math.random() < 0.001) return 1_000 - currentMaxLives;
-			if(Math.random() < 0.01) return 250 - currentMaxLives;
+			if(Math.random() < 0.001) return TAINTED_DEMONIC_LIVES - currentMaxLives;
+			if(Math.random() < 0.01) return TAINTED_ARTIFACT_LIVES - currentMaxLives;
 		} else if(tier == 4) return 0;
 
 		int randomNewLives = tier * 15;
