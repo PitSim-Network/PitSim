@@ -194,7 +194,7 @@ public abstract class PitBoss {
 			if(sortedDamageMap.size() >= 2) AOutput.send(damager, getDamageString(sortedDamageMap, getDamagerInPosition(sortedDamageMap, 1)));
 			if(sortedDamageMap.size() >= 3) AOutput.send(damager, getDamageString(sortedDamageMap, getDamagerInPosition(sortedDamageMap, 2)));
 			int playerPosition = getPositionOfDamager(sortedDamageMap, damager.getUniqueId());
-			if(playerPosition > 3) {
+			if(playerPosition > 2) {
 				AOutput.send(damager, "");
 				AOutput.send(damager, getDamageString(sortedDamageMap, damager.getUniqueId()));
 			}
