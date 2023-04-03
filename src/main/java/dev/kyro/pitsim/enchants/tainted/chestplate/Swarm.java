@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants.tainted.chestplate;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.misc.kyrocosmetic.SwarmParticle;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.ManaRegenEvent;
@@ -40,6 +41,11 @@ public class Swarm extends PitEnchant {
 
 					int enchantLvl = EnchantManager.getEnchantsOnPlayer(onlinePlayer).getOrDefault(INSTANCE, 0);
 					int targetParticles = getParticleCount(enchantLvl);
+
+					if(particleList.size() == targetParticles) continue;
+
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+					if(!pitPlayer.hasManaUnlocked()) continue;
 
 					for(int i = particleList.size(); i < targetParticles; i++) particleList.add(new SwarmParticle(onlinePlayer));
 					while(particleList.size() > targetParticles) particleList.remove(0).remove();

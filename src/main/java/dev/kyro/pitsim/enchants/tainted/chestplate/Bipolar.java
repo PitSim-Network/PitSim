@@ -6,6 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
@@ -40,6 +41,8 @@ public class Bipolar extends PitEnchant {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
 					if(enchantLvl == 0) continue;
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+					if(!pitPlayer.hasManaUnlocked()) continue;
 					if(vengefulPlayers.contains(player)) {
 						Misc.applyPotionEffect(player, PotionEffectType.SPEED, 60,
 								getSpeedAmplifier(enchantLvl), true, false);

@@ -46,7 +46,7 @@ public class Defraction extends PitEnchant {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Pre attackEvent) {
-		if(!canApply(attackEvent)) return;
+		if(!canApply(attackEvent) || !attackEvent.getDefenderPitPlayer().hasManaUnlocked()) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
 		if(enchantLvl == 0) return;

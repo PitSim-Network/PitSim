@@ -183,7 +183,7 @@ public class DarkzoneManager implements Listener {
 					pitPlayer.heal(1);
 
 					int regenCooldownTicks = 30;
-					regenCooldownTicks /= 1 + (Resilient.getRegenIncrease(player) / 100.0);
+					regenCooldownTicks /= 1 + (Resilient.getRegenIncrease(pitPlayer) / 100.0);
 
 					regenCooldownList.add(player);
 					new BukkitRunnable() {
