@@ -17,11 +17,9 @@ import java.util.List;
 public abstract class Megastreak implements Listener, Summarizable {
 	public PitPlayer pitPlayer;
 
-	public Megastreak() {
-	}
-
 	public Megastreak(PitPlayer pitPlayer) {
 		this.pitPlayer = pitPlayer;
+		if(pitPlayer != null) Bukkit.getServer().getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
 	public abstract String getName();

@@ -22,7 +22,6 @@ public class PerkManager {
 
 	public static void registerMegastreak(Megastreak megastreak) {
 		megastreaks.add(megastreak);
-		if(megastreak.pitPlayer != null) Bukkit.getServer().getPluginManager().registerEvents(megastreak, PitSim.INSTANCE);
 	}
 
 	public static void registerKillstreak(Killstreak killstreak) {
