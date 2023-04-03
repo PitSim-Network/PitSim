@@ -1,8 +1,6 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
 import net.minecraft.server.v1_8_R3.EntityItem;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -30,10 +28,9 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-
-		for(AltarPedestal altarPedestal : AltarPedestal.altarPedestals) {
-			Bukkit.broadcastMessage(String.valueOf(altarPedestal.stand.isDead()));
-		}
+//		for(AltarPedestal altarPedestal : AltarPedestal.altarPedestals) {
+//			Bukkit.broadcastMessage(String.valueOf(altarPedestal.stand.isDead()));
+//		}
 
 //
 //		FastTravelGUI fastTravelGUI = new FastTravelGUI(player);

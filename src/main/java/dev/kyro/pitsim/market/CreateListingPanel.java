@@ -356,11 +356,11 @@ public class CreateListingPanel extends AGUIPanel {
 	}
 
 	public boolean isBidValid() {
-		return startingBid >= 10 && startingBid <= 10000;
+		return startingBid >= 10 && startingBid <= 1000000;
 	}
 
 	public boolean isBinValid() {
-		return binPrice >= 10 && binPrice >= startingBid * 2 && binPrice <= 10000;
+		return binPrice >= 10 && binPrice >= startingBid * 2 && binPrice <= 1000000;
 	}
 
 	public void signPromptAuction() {

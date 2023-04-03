@@ -252,7 +252,9 @@ public class YourListingsPanel extends AGUIPanel {
 				public void run() {
 					int amount = listing.ownerUUID.equals(player.getUniqueId()) ? listing.claimableSouls : listing.bidMap.get(player.getUniqueId());
 					AOutput.send(player, "&a&lMARKET &7Claimed &f" + amount + " Souls");
-					PitPlayer.getPitPlayer(player).taintedSouls += amount;
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+					pitPlayer.taintedSouls += amount;
+					if(listing.ownerUUID.equals(player.getUniqueId())) pitPlayer.stats.listingsSold++;
 					Sounds.RENOWN_SHOP_PURCHASE.play(player);
 					placeClaimables();
 				}
@@ -271,7 +273,7 @@ public class YourListingsPanel extends AGUIPanel {
 					AOutput.send(player, "&a&lMARKET &7Claimed " + listing.itemData.getItemMeta().getDisplayName() + (listing.stackBIN ? " &8x" + (listing.itemData.getAmount()) : ""));
 					AUtil.giveItemSafely(player, listing.itemData, true);
 					Sounds.RENOWN_SHOP_PURCHASE.play(player);
-					PitPlayer.getPitPlayer(player).stats.listingsClaimed++;
+					if(listing.ownerUUID != player.getUniqueId()) PitPlayer.getPitPlayer(player).stats.listingsClaimed++;
 					placeClaimables();
 				}
 			};
