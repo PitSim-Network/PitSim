@@ -66,10 +66,10 @@ public class PitPocket extends PitEnchant {
 	}
 
 	public static int getCooldownSeconds(int enchantLvl) {
-		return 20;
+		return 40;
 	}
 
 	public static int getMaxSteal(int enchantLvl) {
-		return enchantLvl * 2;
+		return enchantLvl * 2 - 1;
 	}
 }

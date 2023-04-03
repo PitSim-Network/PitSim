@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -16,9 +17,13 @@ public abstract class BasicDarkzoneEnchant extends PitEnchant {
 		super(name, isRare, applyType, refNames);
 	}
 
-	public abstract int getStatPercent(int enchantLvl);
+	public abstract int getBaseStatPercent(int enchantLvl);
 	public abstract boolean isOffensive();
 	public abstract List<Class<? extends PitMob>> getApplicableMobs();
+
+	public int getStatPercent(int enchantLvl) {
+		return (int) Math.round(getBaseStatPercent(enchantLvl) * DarkzoneBalancing.BASIC_DARKZONE_ENCHANT_MULTIPLIER);
+	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {

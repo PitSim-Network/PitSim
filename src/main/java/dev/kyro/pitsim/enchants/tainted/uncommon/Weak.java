@@ -44,7 +44,6 @@ public class Weak extends PitEnchant {
 	}
 
 	public static int getDecrease(int enchantLvl) {
-		if(enchantLvl == 1) return 5;
-		return enchantLvl * 13 - 15;
+		return (int) Math.pow(10, enchantLvl - 1);
 	}
 }

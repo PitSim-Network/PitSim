@@ -46,6 +46,6 @@ public class LeaveMeAlone extends PitEnchant {
 	}
 
 	public double getDamageReduction(int enchantLvl) {
-		return enchantLvl * 7 + 10;
+		return enchantLvl * 7 + 6;
 	}
 }

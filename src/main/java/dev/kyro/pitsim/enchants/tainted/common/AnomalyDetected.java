@@ -20,7 +20,7 @@ public class AnomalyDetected extends BasicDarkzoneEnchant {
 	}
 
 	@Override
-	public int getStatPercent(int enchantLvl) {
+	public int getBaseStatPercent(int enchantLvl) {
 		return enchantLvl * 9 + 8;
 	}
 

@@ -45,6 +45,6 @@ public class ShieldBuster extends PitEnchant {
 
 	public static int getIncrease(int enchantLvl) {
 		if(enchantLvl == 1) return 30;
-		return enchantLvl * 30 - 10;
+		return enchantLvl * 30 - 20;
 	}
 }

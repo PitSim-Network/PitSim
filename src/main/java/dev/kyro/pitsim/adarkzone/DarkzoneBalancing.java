@@ -12,6 +12,7 @@ import java.util.Random;
 public class DarkzoneBalancing {
 	public static final double SCYTHE_DAMAGE = 7.5;
 	public static final double SPOOFED_HEALTH_INCREASE = 4.0;
+	public static final double BASIC_DARKZONE_ENCHANT_MULTIPLIER = 0.75;
 
 	public static final int TIER_1_ENCHANT_COST = 5;
 	public static final int TIER_2_ENCHANT_COST = 10;

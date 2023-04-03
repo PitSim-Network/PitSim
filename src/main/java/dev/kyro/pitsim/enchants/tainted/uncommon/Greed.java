@@ -44,6 +44,6 @@ public class Greed extends PitEnchant {
 	}
 
 	public int getIncreasePercent(int enchantLvl) {
-		return enchantLvl * 20;
+		return enchantLvl * 8 + 10;
 	}
 }

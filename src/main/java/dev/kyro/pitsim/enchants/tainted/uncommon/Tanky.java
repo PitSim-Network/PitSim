@@ -42,6 +42,6 @@ public class Tanky extends PitEnchant {
 	}
 
 	public static int getExtraHealth(int enchantLvl) {
-		return enchantLvl * 4;
+		return enchantLvl * 2 + 2;
 	}
 }
