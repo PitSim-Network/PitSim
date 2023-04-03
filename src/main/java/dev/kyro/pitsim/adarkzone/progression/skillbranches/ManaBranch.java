@@ -38,7 +38,7 @@ public class ManaBranch extends SkillBranch {
 	public void onAttack(KillEvent killEvent) {
 		boolean hasFirstPath = ProgressionManager.isUnlocked(killEvent.getKillerPitPlayer(), this, MajorUnlockPosition.FIRST_PATH);
 		if(hasFirstPath && Misc.isEntity(killEvent.getDead(), PitEntityType.PIT_MOB))
-			killEvent.getKillerPitPlayer().mana += getMobKillMana();
+			killEvent.getKillerPitPlayer().giveMana(getMobKillMana());
 	}
 
 	public static int getSpellManaReduction() {

@@ -22,7 +22,7 @@ public class PitIronGolemBoss extends PitBoss {
 				new AnvilRainAbility(2, 25, 250, getDamage() * 1.5),
 				new CollapseAbility(2, 5, 5, 10, getDamage() * 12),
 
-				new ComboAbility(5, 20, 0),
+				new ComboAbility(5, 20, getDamage() * 0.2),
 				new WorldBorderAbility(),
 				null
 		);

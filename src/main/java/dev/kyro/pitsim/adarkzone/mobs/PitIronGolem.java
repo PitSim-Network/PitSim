@@ -56,7 +56,8 @@ public class PitIronGolem extends PitMob {
 
 	@Override
 	public double getDamage() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
+		double damage = DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
+		return isMinion() ? damage * 1.2 : damage;
 	}
 
 	@Override

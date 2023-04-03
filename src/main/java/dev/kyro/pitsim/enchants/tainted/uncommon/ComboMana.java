@@ -39,7 +39,7 @@ public class ComboMana extends PitEnchant {
 		HitCounter.incrementCounter(pitPlayer.player, this);
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, getStrikes(enchantLvl))) return;
 
-		pitPlayer.mana += getMana(enchantLvl);
+		pitPlayer.giveMana(getMana(enchantLvl));
 	}
 
 	@Override

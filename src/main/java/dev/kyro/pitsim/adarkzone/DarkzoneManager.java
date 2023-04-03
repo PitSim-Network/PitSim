@@ -146,11 +146,7 @@ public class DarkzoneManager implements Listener {
 					Bukkit.getPluginManager().callEvent(event);
 					if(!event.isCancelled()) {
 						double mana = event.getFinalMana();
-						if(pitPlayer.mana + mana <= pitPlayer.getMaxMana()) {
-							pitPlayer.mana += mana;
-						} else {
-							pitPlayer.mana = pitPlayer.getMaxMana();
-						}
+						pitPlayer.giveMana(mana);
 					}
 
 					if(!SpawnManager.isInSpawn(player)) pitPlayer.updateManaBar();
@@ -209,7 +205,7 @@ public class DarkzoneManager implements Listener {
 
 			Cooldown cooldown = pitSpell.getCooldown(player, pitSpell.getCooldownTicks(enchantLvl));
 			if(cooldown.isOnCooldown()) continue;
-			if(pitPlayer.mana < manaCost) {
+			if(pitPlayer.getMana() < manaCost) {
 				Sounds.NO.play(player);
 				continue;
 			}

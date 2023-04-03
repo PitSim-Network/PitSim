@@ -27,7 +27,7 @@ public class PitBlazeBoss extends PitBoss {
 				new PopupAbility(2, new BlockData(Material.FIRE, (byte) 0), getDamage(), 40, 150),
 				new PullAbility(2, 20, new MaterialData(Material.GLOWSTONE, (byte) 0)),
 
-				new ComboAbility(15, 12, 0),
+				new ComboAbility(15, 12, getDamage() * 0.2),
 				new WorldBorderAbility(),
 				null
 		);

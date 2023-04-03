@@ -104,6 +104,7 @@ public class Sounds {
 	public static final SoundEffect TURMOIL = new SoundEffect(Sound.NOTE_BASS_GUITAR, 1, 1.4);
 	public static final SoundEffect FAST_TRAVEL = new SoundEffect(Sound.ENDERMAN_TELEPORT, 2, 1.4);
 	public static final SoundEffect SHIELD_REACTIVATE = new SoundEffect(Sound.ANVIL_LAND, 1, 2.0);
+	public static final SoundEffect SHIELD_BREAK = new SoundEffect(Sound.ZOMBIE_WOODBREAK, 1, 1);
 
 	public static final SoundEffect CAGE = new SoundEffect()
 			.add(new SoundMoment(0).add(Sound.ANVIL_LAND, 1, 0.7))

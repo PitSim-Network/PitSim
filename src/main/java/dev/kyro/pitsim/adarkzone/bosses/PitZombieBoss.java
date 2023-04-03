@@ -23,7 +23,7 @@ public class PitZombieBoss extends PitBoss {
 				new PullAbility(2, 20, new MaterialData(Material.DIRT, (byte) 0)),
 				new PoundAbility(2, 5),
 
-				new ComboAbility(8, 5, 0),
+				new ComboAbility(8, 5, getDamage() * 0.2),
 				null
 		);
 	}

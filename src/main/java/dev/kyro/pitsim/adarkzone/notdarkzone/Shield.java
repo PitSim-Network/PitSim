@@ -76,6 +76,7 @@ public class Shield {
 		isActive = false;
 		shieldAmount = 0;
 		ticksUntilReactivation = getInitialTicksUntilReactivation();
+		Sounds.SHIELD_BREAK.play(pitPlayer.player);
 		Misc.sendTitle(pitPlayer.player, "&9Shield Broken!", 20);
 		Misc.sendSubTitle(pitPlayer.player, "", 20);
 	}

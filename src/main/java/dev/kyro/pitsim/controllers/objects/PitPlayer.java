@@ -100,7 +100,7 @@ public class PitPlayer {
 	public ItemStack confirmedDrop = null;
 
 	@Exclude
-	public double mana = 0;
+	private double mana = 0;
 
 	@Exclude
 	public long lastCommand = 0;
@@ -631,6 +631,16 @@ public class PitPlayer {
 	@Exclude
 	public boolean hasManaUnlocked() {
 		return ProgressionManager.isUnlocked(this, ManaBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST);
+	}
+
+	public double getMana() {
+		if(!hasManaUnlocked()) return 0;
+		return mana;
+	}
+
+	public void giveMana(double amount) {
+		if(!hasManaUnlocked()) return;
+		mana = Math.min(mana + amount, getMaxMana());
 	}
 
 	@Exclude
