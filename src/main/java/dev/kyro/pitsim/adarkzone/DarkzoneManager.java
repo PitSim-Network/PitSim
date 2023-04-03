@@ -51,7 +51,27 @@ public class DarkzoneManager implements Listener {
 
 	public static List<Player> regenCooldownList = new ArrayList<>();
 
+	public static List<Chunk> mapChunks = new ArrayList<>();
+
 	public DarkzoneManager() {
+
+		Location middle = new Location(MapManager.getDarkzone(), 372, 0, -88);
+		for(int i = -250; i < 250; i+= 16) {
+			Location chunkLoc = middle.clone().add(i, 0, i);
+			mapChunks.add(chunkLoc.getChunk());
+		}
+
+		Location auctionRoom = new Location(MapManager.getDarkzone(), 178, 0, -1009);
+
+		for(int i = -64; i < 64; i++) {
+			Location chunkLoc = auctionRoom.clone().add(i, 0, i);
+			mapChunks.add(chunkLoc.getChunk());
+		}
+
+		for(Chunk mapChunk : mapChunks) {
+			mapChunk.load();
+		}
+
 		SubLevel subLevel;
 
 		subLevel = new SubLevel(
@@ -268,6 +288,12 @@ public class DarkzoneManager implements Listener {
 
 	@EventHandler
 	public void onChunkUnload(ChunkUnloadEvent event) {
+
+		if(mapChunks.contains(event.getChunk())) {
+			event.setCancelled(true);
+			return;
+		}
+
 		for(Entity entity : event.getChunk().getEntities()) {
 			if(!(entity instanceof LivingEntity)) continue;
 			LivingEntity livingEntity = (LivingEntity) entity;

@@ -73,7 +73,8 @@ public abstract class PitMob implements Listener {
 
 	public void spawn(Location spawnLocation) {
 		mob = createMob(spawnLocation);
-		if(mob.isInsideVehicle()) mob.getVehicle().remove();
+		if(mob.getPassenger() != null) mob.getPassenger().remove();
+		if(mob.getVehicle() != null) mob.getVehicle().remove();
 		mob.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, getSpeedAmplifier(), true, false));
 		mob.setMaxHealth(getMaxHealth());
 		mob.setHealth(getMaxHealth());

@@ -214,7 +214,7 @@ public class EnchantManager implements Listener {
 
 		AItemStackBuilder itemStackBuilder = new AItemStackBuilder(nbtItem.getItem());
 
-		itemStackBuilder.setName(getMysticName(itemStack));
+		itemStackBuilder.setName(getMysticName(itemStackBuilder.getItemStack()));
 
 		setItemLore(itemStackBuilder.getItemStack(), null);
 		return itemStackBuilder.getItemStack();
@@ -231,7 +231,8 @@ public class EnchantManager implements Listener {
 		if(mysticType == MysticType.PANTS) chatColor = PantColor.getPantColor(itemStack).chatColor;
 
 		int taintedTier = nbtItem.getInteger(NBTTag.TAINTED_TIER.getRef());
-		int tier = taintedTier != 0 ? taintedTier : enchantNum + 1;
+		int tier = taintedTier != 0 ? taintedTier : enchantNum;
+
 		return chatColor + "Tier " + (tier != 0 ? AUtil.toRoman(tier) : 0) + " " + mysticType.displayName;
 	}
 

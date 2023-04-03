@@ -21,8 +21,6 @@ public class PitSpider extends PitMob {
 		spider.setCustomNameVisible(false);
 		spider.setRemoveWhenFarAway(false);
 		spider.setCanPickupItems(false);
-		if(spider.getPassenger() != null) spider.getPassenger().remove();
-
 		return spider;
 	}
 
