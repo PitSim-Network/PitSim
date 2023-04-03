@@ -304,7 +304,7 @@ public class StorageProfile {
 		if(string.isEmpty()) return new ItemStack(Material.AIR);
 		try {
 //			return Base64.itemFrom64(string);
-			return CustomSerializer.deserialize(string, informUUID);
+			return CustomSerializer.deserializeFromPlayerData(string, informUUID);
 //		} catch(IOException e) {
 		} catch(Exception e) {
 			throw new RuntimeException(e);

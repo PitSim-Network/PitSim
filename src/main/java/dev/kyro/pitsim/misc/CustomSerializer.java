@@ -66,12 +66,16 @@ public class CustomSerializer {
 		return CraftItemStack.asBukkitCopy(nmsStack);
 	}
 
-	public static ItemStack deserialize(String itemString) {
-		return deserialize(itemString, null);
+	public static ItemStack deserializeDirectly(String itemString) {
+		return deserialize(itemString, null, false);
+	}
+
+	public static ItemStack deserializeFromPlayerData(String itemString, UUID informUUID) {
+		return deserialize(itemString, informUUID, true);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static ItemStack deserialize(String itemString, UUID informUUID) {
+	public static ItemStack deserialize(String itemString, UUID informUUID, boolean updateItem) {
 		String[] stringArr = itemString.split("\t");
 		ItemStack itemStack = new ItemStack(Material.getMaterial(stringArr[0]), Integer.parseInt(stringArr[1]));
 		itemStack.setDurability((short) Integer.parseInt(stringArr[2]));
@@ -102,14 +106,16 @@ public class CustomSerializer {
 			}
 		}
 
-		PitItem pitItem = ItemFactory.getItem(itemStack);
-		if(pitItem != null) {
-			ItemStack oldStack = itemStack.clone();
-			pitItem.updateItem(itemStack);
-			if(!pitItem.hasLastServer || pitItem.getLastServer(oldStack) == PitSim.status) {
-				if(informUUID != null && !oldStack.equals(itemStack)) {
-					ItemManager.updatedItems.putIfAbsent(informUUID, new ArrayList<>());
-					ItemManager.updatedItems.get(informUUID).add(itemStack);
+		if(updateItem) {
+			PitItem pitItem = ItemFactory.getItem(itemStack);
+			if(pitItem != null) {
+				ItemStack oldStack = itemStack.clone();
+				pitItem.updateItem(itemStack);
+				if(!pitItem.hasLastServer || pitItem.getLastServer(oldStack) == PitSim.status) {
+					if(informUUID != null && !oldStack.equals(itemStack)) {
+						ItemManager.updatedItems.putIfAbsent(informUUID, new ArrayList<>());
+						ItemManager.updatedItems.get(informUUID).add(itemStack);
+					}
 				}
 			}
 		}

@@ -311,6 +311,7 @@ public class EnchantManager implements Listener {
 	public static void setItemLore(ItemStack itemStack, Player player, boolean displayUncommon, boolean overrideDisableCheck) {
 		if(!PlayerManager.isRealPlayer(player)) player = null;
 
+		if(MysticFactory.isFresh(itemStack)) return;
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.isMystic) return;
 		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
