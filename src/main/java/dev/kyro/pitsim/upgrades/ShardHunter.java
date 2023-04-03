@@ -9,6 +9,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.aitems.misc.AncientGemShard;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
@@ -34,8 +35,7 @@ public class ShardHunter extends TieredRenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer()) return;
-
+		if(!killEvent.isKillerPlayer() || NonManager.getNon(killEvent.getDead()) == null) return;
 		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
 
 		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
@@ -75,13 +75,13 @@ public class ShardHunter extends TieredRenownUpgrade {
 
 	@Override
 	public String getEffectPerTier() {
-		return "&7Gain &f+0.005% chance &7to obtain a &aGem Shard &7on kill, used to create &aTotally Legit Gems";
+		return "&7Gain &f+0.005% chance &7to obtain a &aGem Shard &7on bot kills, which are used to create &aTotally Legit Gems";
 	}
 
 	@Override
 	public String getSummary() {
 		return "&aShardhunter&7 is an &erenown&7 upgrade that gives you the small chance to gain &aAncient Gem " +
-				"Shards&7 on bot/player kills, &aShards&7 can be used to craft a &aGem&7 that allows you to get nine " +
+				"Shards&7 on bot kills, &aShards&7 can be used to craft a &aGem&7 that allows you to get nine " +
 				"token &3Jewel&7 Items";
 	}
 
