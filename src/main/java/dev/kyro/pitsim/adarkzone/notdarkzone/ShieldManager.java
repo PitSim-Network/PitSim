@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ShieldManager implements Listener {
 	public static final double ACTIVE_REGEN_AMOUNT = 0.05;
 
-	static {
+	public ShieldManager() {
 		new BukkitRunnable() {
 			int count = 0;
 			@Override
@@ -28,7 +28,7 @@ public class ShieldManager implements Listener {
 						pitPlayer.shield.addShield(activeRegenAmount);
 					} else {
 						pitPlayer.shield.regenerateTick();
-						if(count % 2 == 0) {
+						if(count % 2 == 0 && pitPlayer.shield.isUnlocked()) {
 							int reactivationTicks = pitPlayer.shield.getTicksUntilReactivation();
 							int initialTicks = pitPlayer.shield.getInitialTicksUntilReactivation();
 							float pitch = ((float) (initialTicks - reactivationTicks) / initialTicks) * 1.5F + 0.5F;
