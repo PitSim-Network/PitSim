@@ -16,6 +16,7 @@ import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.inventories.HelmetGUI;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.Helmetry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -318,7 +319,7 @@ public class HelmetManager implements Listener {
 		GoldenHelmet pitItem = ItemFactory.getItem(GoldenHelmet.class);
 		if(!pitItem.isThisItem(player.getItemInHand())) return;
 
-		if(!UpgradeManager.hasUpgrade(event.getPlayer(), "HELMETRY")) {
+		if(!UpgradeManager.hasUpgrade(event.getPlayer(), Helmetry.INSTANCE)) {
 			AOutput.error(event.getPlayer(), "&cYou must first unlock &6Helmetry &cfrom the renown shop before using this item!");
 			Sounds.NO.play(event.getPlayer());
 			return;

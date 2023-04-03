@@ -42,7 +42,7 @@ public abstract class BlockRainAbility extends PitBossAbility {
 	@Override
 	public void onRoutineExecute() {
 
-		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
+		Location centerLocation = getPitBoss().getBoss().getLocation().clone().subtract(0, 1, 0);
 		List<Location> applicableLocations = new ArrayList<>();
 
 		int rotations = 0;

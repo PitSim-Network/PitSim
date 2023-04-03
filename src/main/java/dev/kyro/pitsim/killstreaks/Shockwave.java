@@ -86,7 +86,7 @@ public class Shockwave extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.MONSTER_EGG, 1, 60)
 				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(

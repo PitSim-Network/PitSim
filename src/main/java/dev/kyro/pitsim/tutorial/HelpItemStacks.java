@@ -25,9 +25,9 @@ public class HelpItemStacks {
 				.setName("&ePerks, Killstreaks, and Megastreaks")
 				.setLore(new ALoreBuilder(
 						"&8&m----------------------------",
-						"&ePerks &7are abilities that passively", "&7help you in combat",
+						"&aPerks &7are abilities that passively", "&7help you in combat",
 						"&eKillstreaks &7are abilities that", "&7activate when streaking",
-						"&eMegastreaks &7shape the style of", "&7your streak",
+						"&cMegastreaks &7shape the style of", "&7your streak",
 						"&8&m----------------------------"
 				))
 				.getItemStack();

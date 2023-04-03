@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.diamond.*;
@@ -100,7 +101,7 @@ class GodPanel extends AGUIPanel {
 		addItem(ItemFactory.getItem(Charcoal.class).getItem(64));
 		addItem(ItemFactory.getItem(Gunpowder.class).getItem(64));
 		addItem(ItemFactory.getItem(IronIngot.class).getItem(64));
-		addItem(ItemFactory.getItem(EnderPearl.class).getItem(64));
+		addItem(ItemFactory.getItem(EnderPearl.class).getItem(16));
 
 		BrewingIngredient enderPearl = BrewingIngredient.getIngredientFromTier(10);
 		assert enderPearl != null;
@@ -201,8 +202,8 @@ class GodPanel extends AGUIPanel {
 		}
 		player.updateInventory();
 
-		if(messageLines.isEmpty()) return;
-		messageLines.add(0, "GOD MENU: `" + player.getName() + "`");
+		if(messageLines.isEmpty() || PitSim.isDev()) return;
+		messageLines.add(0, "`" + player.getName() + "`");
 		Misc.logToDiscord(DiscordLogChannel.GOD_MENU_LOG_CHANNEL, String.join("\n", messageLines));
 	}
 }

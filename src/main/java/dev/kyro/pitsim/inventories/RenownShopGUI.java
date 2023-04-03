@@ -3,10 +3,6 @@ package dev.kyro.pitsim.inventories;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import dev.kyro.pitsim.upgrades.Helmetry;
-import dev.kyro.pitsim.upgrades.ShardHunter;
-import dev.kyro.pitsim.upgrades.Withercraft;
-import net.citizensnpcs.nms.v1_8_R3.entity.WitherController;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -37,11 +33,8 @@ public class RenownShopGUI extends AGUI {
 	}
 
 	public AGUIPanel getSubPanel(RenownUpgrade upgrade) {
-		if(upgrade instanceof ShardHunter) return subPanels.get(0);
-		if(upgrade instanceof Withercraft) return subPanels.get(1);
-		if(upgrade instanceof Helmetry) return subPanels.get(2);
-
-		return null;
+		if(upgrade.subPanel == null) return null;
+		for(AGUIPanel subPanel : subPanels) if(subPanel.getClass() == upgrade.subPanel) return subPanel;
+		throw new RuntimeException();
 	}
-
 }

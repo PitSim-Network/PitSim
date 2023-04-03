@@ -40,7 +40,7 @@ public class Monster extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.APPLE)
 				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(

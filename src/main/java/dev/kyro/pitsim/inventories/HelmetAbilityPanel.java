@@ -97,7 +97,7 @@ public class HelmetAbilityPanel extends AGUIPanel {
 		if(!pitHelmet.isThisItem(helmetStack)) throw new RuntimeException();
 
 		for(HelmetAbility helmetAbility : HelmetAbility.helmetAbilities) {
-			AItemStackBuilder builder = new AItemStackBuilder(helmetAbility.getDisplayItem());
+			AItemStackBuilder builder = new AItemStackBuilder(helmetAbility.getDisplayStack());
 			ALoreBuilder loreBuilder = new ALoreBuilder();
 
 			loreBuilder.addLore(helmetAbility.getDescription());

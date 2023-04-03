@@ -49,7 +49,7 @@ public class CounterStrike extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.IRON_BARDING)
 				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(

@@ -9,6 +9,7 @@ import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.TaxEvasion;
 import org.bukkit.event.EventHandler;
 
 import java.text.DecimalFormat;
@@ -33,8 +34,8 @@ public class Billionaire extends PitEnchant {
 
 		int goldCost = getGoldCost(enchantLvl);
 		if(NonManager.getNon(attackEvent.getDefender()) == null) goldCost = getPlayerGoldCost(enchantLvl);
-		if(UpgradeManager.hasUpgrade(attackEvent.getAttackerPlayer(), "TAX_EVASION"))
-			goldCost *= 1 - (UpgradeManager.getTier(attackEvent.getAttackerPlayer(), "TAX_EVASION") * 0.05);
+		if(UpgradeManager.hasUpgrade(attackEvent.getAttackerPlayer(), TaxEvasion.INSTANCE))
+			goldCost *= 1 - (UpgradeManager.getTier(attackEvent.getAttackerPlayer(), TaxEvasion.INSTANCE) * 0.05);
 
 		if(PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer())) {
 			double finalBalance = attackEvent.getAttackerPitPlayer().gold - goldCost;

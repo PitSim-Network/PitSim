@@ -40,11 +40,7 @@ import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.commands.*;
 import dev.kyro.pitsim.commands.admin.*;
-import dev.kyro.pitsim.commands.beta.BaseBetaCommand;
-import dev.kyro.pitsim.commands.beta.SkillsCommand;
-import dev.kyro.pitsim.commands.beta.MassEnchantCommand;
-import dev.kyro.pitsim.commands.beta.ResetCommand;
-import dev.kyro.pitsim.commands.beta.SoulsCommand;
+import dev.kyro.pitsim.commands.beta.*;
 import dev.kyro.pitsim.commands.essentials.*;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.*;
@@ -564,7 +560,7 @@ public class PitSim extends JavaPlugin {
 
 			NPCManager.registerNPC(new KyroNPC(Collections.singletonList(MapManager.currentMap.world)));
 			NPCManager.registerNPC(new WijiNPC(Collections.singletonList(MapManager.currentMap.world)));
-			NPCManager.registerNPC(new SplkNPC(Collections.singletonList(MapManager.currentMap.world)));
+			NPCManager.registerNPC(new SammymonNPC(Collections.singletonList(MapManager.currentMap.world)));
 		}
 	}
 
@@ -591,6 +587,7 @@ public class PitSim extends JavaPlugin {
 
 		AMultiCommand betaCommand = new BaseBetaCommand("beta");
 		new SoulsCommand(betaCommand, "souls");
+		new RenownCommand(betaCommand, "renown");
 		new ResetCommand(betaCommand, "reset");
 		new GodCommand(betaCommand, "god");
 		new SkillsCommand(betaCommand, "skills");
@@ -608,7 +605,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("show").setExecutor(new ShowCommand());
 		getCommand("enchants").setExecutor(new EnchantListCommand());
 		getCommand("donator").setExecutor(new DonatorCommand());
-		getCommand("renown").setExecutor(new RenownCommand());
+		getCommand("renown").setExecutor(new RenownShopCommand());
 		getCommand("spawn").setExecutor(new SpawnCommand());
 		getCommand("reward").setExecutor(new RewardCommand());
 		getCommand("store").setExecutor(new StoreCommand());

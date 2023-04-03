@@ -28,7 +28,7 @@ public class SoulBranch extends SkillBranch {
 	}
 
 	@Override
-	public ItemStack getBaseStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.GHAST_TEAR)
 				.setLore(new ALoreBuilder(
 						"&7Increase your spiritual",
@@ -52,7 +52,7 @@ public class SoulBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.BOOKSHELF)
 						.setLore(new ALoreBuilder(
 								"&7Unlocks the ability to",
@@ -77,7 +77,7 @@ public class SoulBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.ENCHANTMENT_TABLE)
 						.setLore(new ALoreBuilder(
 								"&7Unlocks the ability to",
@@ -102,7 +102,7 @@ public class SoulBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.SPRUCE_DOOR_ITEM)
 						.setLore(new ALoreBuilder(
 								"&7Removes the cost from fast",
@@ -127,7 +127,7 @@ public class SoulBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.FURNACE)
 						.setLore(new ALoreBuilder(
 								"&7Reduces the cost of enchanting",

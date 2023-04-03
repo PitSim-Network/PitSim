@@ -16,7 +16,7 @@ public class PvPBooster extends Booster {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.GOLD_SWORD)
 				.setLore(new ALoreBuilder(
 						"&7All players can use &3Jewel",

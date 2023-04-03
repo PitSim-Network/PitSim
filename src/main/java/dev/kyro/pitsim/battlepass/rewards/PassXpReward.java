@@ -30,7 +30,7 @@ public class PassXpReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.INK_SACK, 1, 12)
 				.setName("&b&lXP Reward")
 				.setLore(new ALoreBuilder(

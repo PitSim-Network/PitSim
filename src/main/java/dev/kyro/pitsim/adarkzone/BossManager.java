@@ -46,7 +46,7 @@ public class BossManager implements Listener {
 		if(!attackEvent.isAttackerPlayer()) return;
 
 		UUID uuid = player.getUniqueId();
-		defenderBoss.damageMap.put(uuid, defenderBoss.damageMap.getOrDefault(uuid, 0.0) + finalDamage);
+		defenderBoss.getDamageMap().put(uuid, defenderBoss.getDamageMap().getOrDefault(uuid, 0.0) + finalDamage);
 	}
 
 	@EventHandler
@@ -72,7 +72,7 @@ public class BossManager implements Listener {
 	 */
 	public static PitBoss getPitBoss(LivingEntity entity) {
 		if(!(entity instanceof Player)) return null;
-		for(PitBoss pitBoss : pitBosses) if(pitBoss.boss == entity) return pitBoss;
+		for(PitBoss pitBoss : pitBosses) if(pitBoss.getBoss() == entity) return pitBoss;
 		return null;
 	}
 }

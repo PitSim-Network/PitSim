@@ -24,7 +24,7 @@ public class PitEndermanBoss extends PitBoss {
 				null
 		);
 
-		routineAbilityCooldownTicks *= 0.75;
+		setRoutineAbilityCooldownTicks(getRoutineAbilityCooldownTicks() * 0.75);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class PassRenownReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.BEACON)
 				.setName("&e&lRenown Reward")
 				.setLore(new ALoreBuilder(

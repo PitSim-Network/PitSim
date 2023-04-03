@@ -13,6 +13,7 @@ import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.FastPass;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
@@ -95,7 +96,7 @@ public class LevelManager {
 		if(pitPlayer.goldGrinded < prestigeInfo.goldReq) return;
 
 		pitPlayer.prestige += 1;
-		if(UpgradeManager.hasUpgrade(player, "FAST_PASS")) {
+		if(UpgradeManager.hasUpgrade(player, FastPass.INSTANCE)) {
 			pitPlayer.level = 50;
 			pitPlayer.remainingXP = (long) (PrestigeValues.getXPForLevel(50) * prestigeInfo.xpMultiplier);
 		} else {

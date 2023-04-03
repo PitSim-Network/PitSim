@@ -29,9 +29,9 @@ public class TNTAbility extends PitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Location spawnLocation = getPitBoss().boss.getLocation().add(0, 3, 0); // replace with tnt explosion Location
+		Location spawnLocation = getPitBoss().getBoss().getLocation().add(0, 3, 0); // replace with tnt explosion Location
 
-		Player target = getPitBoss().bossTargetingSystem.target;
+		Player target = getPitBoss().getBossTargetingSystem().target;
 		if(target == null) return;
 
 		TNTPrimed tntPrimed = spawnLocation.getWorld().spawn(spawnLocation, TNTPrimed.class);
@@ -58,7 +58,7 @@ public class TNTAbility extends PitBossAbility {
 
 	@Override
 	public boolean shouldExecuteRoutine() {
-		return getPitBoss().bossTargetingSystem.target != null;
+		return getPitBoss().getBossTargetingSystem().target != null;
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class TNTAbility extends PitBossAbility {
 					int timesHit = hitMap.getOrDefault(player, 0);
 					if(timesHit >= 3) continue;
 					hitMap.put(player, timesHit + 1);
-					DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
+					DamageManager.createIndirectAttack(getPitBoss().getBoss(), player, damage);
 				}
 				particle.display(Misc.getNearbyRealPlayers(displayLocation, 50), displayLocation);
 			}

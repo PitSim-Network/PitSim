@@ -26,6 +26,7 @@ public class TaintedChestplate extends StaticPitItem implements TemporaryItem {
 	public TaintedChestplate() {
 		hasUUID = true;
 		hasLastServer = true;
+		hasDropConfirm = true;
 		hideExtra = true;
 		unbreakable = true;
 		hasEnchantGlint = true;

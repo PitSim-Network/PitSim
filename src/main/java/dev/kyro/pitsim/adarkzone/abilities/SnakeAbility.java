@@ -33,8 +33,8 @@ public class SnakeAbility extends PitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Vector direction = getPitBoss().boss.getLocation().getDirection().multiply(15);
-		Location origin = getPitBoss().boss.getLocation();
+		Vector direction = getPitBoss().getBoss().getLocation().getDirection().multiply(15);
+		Location origin = getPitBoss().getBoss().getLocation();
 		direction.divide(new Vector(length, length, length));
 
 		int time = 0;
@@ -56,7 +56,7 @@ public class SnakeAbility extends PitBossAbility {
 						Player target = (Player) entity;
 
 						target.setNoDamageTicks(0);
-						DamageManager.createIndirectAttack(getPitBoss().boss, target, damage);
+						DamageManager.createIndirectAttack(getPitBoss().getBoss(), target, damage);
 						Misc.applyPotionEffect(target, PotionEffectType.SLOW, 20, 1, false, false);
 					}
 				}

@@ -27,25 +27,25 @@ import java.util.*;
 public abstract class PitBoss {
 
 //	Player related
-	public Player summoner;
-	public Map<UUID, Double> damageMap = new HashMap<>();
-	public DropPool dropPool;
-	public PitBossBar bossBar = new PitBossBar(getDisplayName(), 1F);
+	private final Player summoner;
+	private final Map<UUID, Double> damageMap = new HashMap<>();
+	private final DropPool dropPool;
+	private final PitBossBar bossBar = new PitBossBar(getDisplayName(), 1F);
 
 //	Boss related
-	public NPC npcBoss;
-	public Player boss;
-	public BossTargetingSystem bossTargetingSystem = new BossTargetingSystem(this);
-	public PitEquipment equipment = DarkzoneManager.getDefaultEquipment();
+	private NPC npcBoss;
+	private Player boss;
+	private final BossTargetingSystem bossTargetingSystem = new BossTargetingSystem(this);
+	private final PitEquipment equipment = DarkzoneManager.getDefaultEquipment();
 
 //	Ability Related
-	public List<PitBossAbility> abilities = new ArrayList<>();
-	public Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>();
-	public double skipRoutineChance = 0;
-	public long lastRoutineExecuteTick = PitSim.currentTick;
-	public int routineAbilityCooldownTicks = 20 * 8;
+	private final List<PitBossAbility> abilities = new ArrayList<>();
+	private final Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>();
+	private double skipRoutineChance = 0;
+	private long lastRoutineExecuteTick = PitSim.currentTick;
+	private int routineAbilityCooldownTicks = 20 * 8;
 
-	public BukkitTask routineRunnable;
+	private BukkitTask routineRunnable;
 	private BukkitTask targetingRunnable;
 
 	public PitBoss(Player summoner) {
@@ -180,9 +180,9 @@ public abstract class PitBoss {
 	}
 
 	public void kill(Player killer) {
-		sortDamagers();
+		HashMap<UUID, Double> sortedDamageMap = getSortedDamageMap();
 		List<Player> onlineDamagers = new ArrayList<>();
-		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {
+		for(Map.Entry<UUID, Double> entry : sortedDamageMap.entrySet()) {
 			Player player = Bukkit.getPlayer(entry.getKey());
 			if(player != null) onlineDamagers.add(player);
 		}
@@ -190,48 +190,49 @@ public abstract class PitBoss {
 		for(Player damager : onlineDamagers) {
 			AOutput.send(damager, "&4&m-------------------&4<&c&lBOSS SLAIN&4>&m-------------------");
 			AOutput.send(damager, "&4&lTOP DAMAGE DEALT:");
-			if(damageMap.size() >= 1) AOutput.send(damager, getDamageString(getDamagerInPosition(0)));
-			if(damageMap.size() >= 2) AOutput.send(damager, getDamageString(getDamagerInPosition(1)));
-			if(damageMap.size() >= 3) AOutput.send(damager, getDamageString(getDamagerInPosition(2)));
-			int playerPosition = getPositionOfDamager(damager.getUniqueId());
+			if(sortedDamageMap.size() >= 1) AOutput.send(damager, getDamageString(sortedDamageMap, getDamagerInPosition(sortedDamageMap, 0)));
+			if(sortedDamageMap.size() >= 2) AOutput.send(damager, getDamageString(sortedDamageMap, getDamagerInPosition(sortedDamageMap, 1)));
+			if(sortedDamageMap.size() >= 3) AOutput.send(damager, getDamageString(sortedDamageMap, getDamagerInPosition(sortedDamageMap, 2)));
+			int playerPosition = getPositionOfDamager(sortedDamageMap, damager.getUniqueId());
 			if(playerPosition > 3) {
 				AOutput.send(damager, "");
-				AOutput.send(damager, getDamageString(damager.getUniqueId()));
+				AOutput.send(damager, getDamageString(sortedDamageMap, damager.getUniqueId()));
 			}
 			AOutput.send(damager, "&4&m---------------------------------------------------");
 		}
 
-		dropPool.bossDistribution(killer, this, damageMap);
+		dropPool.bossDistribution(sortedDamageMap, killer, this);
 
 		double droppedSouls = getDroppedSouls();
 		if(SoulBooster.INSTANCE.isActive()) droppedSouls *= 1 + (SoulBooster.getSoulsIncrease() / 100.0);
-		DarkzoneManager.createSoulExplosion(null, boss.getLocation().add(0, 0.5, 0), (int) droppedSouls, true);
+		DarkzoneManager.createSoulExplosion(sortedDamageMap,
+				boss.getLocation().add(0, 0.5, 0), (int) droppedSouls, true);
 
 		remove();
 	}
 
-	public UUID getDamagerInPosition(int position) {
-		if(damageMap.size() < position) return null;
-		return damageMap.keySet().toArray(new UUID[0])[position];
+	public UUID getDamagerInPosition(HashMap<UUID, Double> sortedDamageMap, int position) {
+		if(sortedDamageMap.size() < position) return null;
+		return sortedDamageMap.keySet().toArray(new UUID[0])[position];
 	}
 
-	public int getPositionOfDamager(UUID damager) {
+	public int getPositionOfDamager(HashMap<UUID, Double> sortedDamageMap, UUID damager) {
 		int position = 0;
-		for(UUID uuid : damageMap.keySet()) {
+		for(UUID uuid : sortedDamageMap.keySet()) {
 			if(uuid.equals(damager)) return position;
 			position++;
 		}
 		return -1;
 	}
 
-	public String getDamageString(UUID damager) {
-		int position = getPositionOfDamager(damager);
+	public String getDamageString(HashMap<UUID, Double> sortedDamageMap, UUID damager) {
+		int position = getPositionOfDamager(sortedDamageMap, damager);
 
 		Player player = Bukkit.getPlayer(damager);
 		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(damager);
 		String displayName = player != null ? Misc.getDisplayName(player) : offlinePlayer.getName();
 
-		double damage = damageMap.get(damager);
+		double damage = sortedDamageMap.get(damager);
 		String positionColor;
 		switch(position + 1) {
 			case 1:
@@ -274,14 +275,82 @@ public abstract class PitBoss {
 		}
 	}
 
-	public void sortDamagers() {
-		Map<UUID, Double> sortedDamageMap = new LinkedHashMap<>();
+	public HashMap<UUID, Double> getSortedDamageMap() {
+		LinkedHashMap<UUID, Double> sortedDamageMap = new LinkedHashMap<>();
 		damageMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.forEachOrdered(entry -> sortedDamageMap.put(entry.getKey(), entry.getValue()));
-		damageMap = sortedDamageMap;
+		return sortedDamageMap;
 	}
 
 	public SubLevel getSubLevel() {
 		return getSubLevelType().getSubLevel();
+	}
+
+	public Player getSummoner() {
+		return summoner;
+	}
+
+	public Map<UUID, Double> getDamageMap() {
+		return damageMap;
+	}
+
+	public DropPool getDropPool() {
+		return dropPool;
+	}
+
+	public PitBossBar getBossBar() {
+		return bossBar;
+	}
+
+	public NPC getNpcBoss() {
+		return npcBoss;
+	}
+
+	public Player getBoss() {
+		return boss;
+	}
+
+	public BossTargetingSystem getBossTargetingSystem() {
+		return bossTargetingSystem;
+	}
+
+	public PitEquipment getEquipment() {
+		return equipment;
+	}
+
+	public List<PitBossAbility> getAbilities() {
+		return abilities;
+	}
+
+	public Map<PitBossAbility, Double> getRoutineAbilityMap() {
+		return routineAbilityMap;
+	}
+
+	public BukkitTask getRoutineRunnable() {
+		return routineRunnable;
+	}
+
+	public double getSkipRoutineChance() {
+		return skipRoutineChance;
+	}
+
+	public void setSkipRoutineChance(double skipRoutineChance) {
+		this.skipRoutineChance = skipRoutineChance;
+	}
+
+	public long getLastRoutineExecuteTick() {
+		return lastRoutineExecuteTick;
+	}
+
+	public void setLastRoutineExecuteTick(long lastRoutineExecuteTick) {
+		this.lastRoutineExecuteTick = lastRoutineExecuteTick;
+	}
+
+	public int getRoutineAbilityCooldownTicks() {
+		return routineAbilityCooldownTicks;
+	}
+
+	public void setRoutineAbilityCooldownTicks(double routineAbilityCooldownTicks) {
+		this.routineAbilityCooldownTicks = (int) Math.round(routineAbilityCooldownTicks);
 	}
 }

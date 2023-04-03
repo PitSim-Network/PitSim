@@ -35,7 +35,7 @@ public class RuptureAbility extends PitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
+		Location centerLocation = getPitBoss().getBoss().getLocation().clone().subtract(0, 1, 0);
 		List<Block> applicableBlocks = new ArrayList<>();
 
 		for(int x = -1 * radius; x < radius + 1; x++) {
@@ -138,7 +138,7 @@ public class RuptureAbility extends PitBossAbility {
 						@Override
 						public void run() {
 							viewer.setNoDamageTicks(0);
-							DamageManager.createDirectAttack(getPitBoss().boss, viewer, damage);
+							DamageManager.createDirectAttack(getPitBoss().getBoss(), viewer, damage);
 							Sounds.CREEPER_EXPLODE.play(viewer.getLocation(), 10);
 
 							for(Player player : getViewers()) {
@@ -161,7 +161,7 @@ public class RuptureAbility extends PitBossAbility {
 		double distance = 0;
 		for(Entity nearbyEntity : location.getWorld().getNearbyEntities(location, 50, 50, 50)) {
 			if(!(nearbyEntity instanceof Player)) continue;
-			if(!Misc.isValidMobPlayerTarget(nearbyEntity, getPitBoss().boss)) continue;
+			if(!Misc.isValidMobPlayerTarget(nearbyEntity, getPitBoss().getBoss())) continue;
 
 			double entityDistance = nearbyEntity.getLocation().distance(location);
 			if(nearest == null || distance > entityDistance) {

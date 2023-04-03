@@ -48,13 +48,13 @@ public class LandMineAbility extends PitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		LandMine landMine = new LandMine(new FallingBlock(Material.TNT, (byte) 0, getPitBoss().boss.getLocation().add(0, 0.5, 0)));
+		LandMine landMine = new LandMine(new FallingBlock(Material.TNT, (byte) 0, getPitBoss().getBoss().getLocation().add(0, 0.5, 0)));
 		FallingBlock fallingBlock = landMine.fallingBlock;
 		fallingBlock.setViewers(getViewers());
 		fallingBlock.spawnBlock();
 		landMines.add(landMine);
 
-		Sounds.TNT_PLACE.play(getPitBoss().boss.getLocation(), 20);
+		Sounds.TNT_PLACE.play(getPitBoss().getBoss().getLocation(), 20);
 
 		landMine.runnable = new BukkitRunnable() {
 			int i = 0;
@@ -118,7 +118,7 @@ public class LandMineAbility extends PitBossAbility {
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		if(player.getWorld() != getPitBoss().boss.getWorld()) return;
+		if(player.getWorld() != getPitBoss().getBoss().getWorld()) return;
 
 		for(LandMine landMine : landMines) {
 			if(landMine.runnable == null || landMine.isStarting) continue;
@@ -172,7 +172,7 @@ public class LandMineAbility extends PitBossAbility {
 			double distance = player.getLocation().distance(center);
 			if(distance > radius) continue;
 
-			DamageManager.createIndirectAttack(getPitBoss().boss, player, damage);
+			DamageManager.createIndirectAttack(getPitBoss().getBoss(), player, damage);
 
 			double multiplier = Math.pow(5 - distance, 1.5);
 			Vector velocity = player.getLocation().toVector().subtract(landMine.fallingBlock.getSpawnLocation().toVector());

@@ -47,7 +47,7 @@ public class PassCosmeticReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ALoreBuilder loreBuilder = new ALoreBuilder("&7Reward: " + pitCosmetic.getDisplayName());
 		if(particleColor != null) loreBuilder.addLore("&7Color: " + particleColor.displayName);
 		ItemStack itemStack = new AItemStackBuilder(material, 1, data)

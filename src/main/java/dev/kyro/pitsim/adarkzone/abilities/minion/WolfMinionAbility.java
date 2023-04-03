@@ -33,7 +33,7 @@ public class WolfMinionAbility extends MinionAbility {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
-		if(event.getDefender() != getPitBoss().boss);
+		if(event.getDefender() != getPitBoss().getBoss());
 		event.multipliers.add(Misc.getReductionMultiplier(subLevelType.getSubLevel().mobs.size()));
 	}
 

@@ -30,7 +30,7 @@ public class PassVileReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.COAL, count)
 				.setName("&5&lVile Reward")
 				.setLore(new ALoreBuilder(

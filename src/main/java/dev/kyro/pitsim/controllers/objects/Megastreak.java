@@ -22,7 +22,6 @@ public abstract class Megastreak implements Listener, Summarizable {
 
 	public Megastreak(PitPlayer pitPlayer) {
 		this.pitPlayer = pitPlayer;
-		if(pitPlayer != null) Bukkit.getServer().getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
 	public abstract String getName();

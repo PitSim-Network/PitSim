@@ -35,7 +35,7 @@ public class PassKeyReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.TRIPWIRE_HOOK, count)
 				.setName("&d&lKey Reward")
 				.setLore(new ALoreBuilder(

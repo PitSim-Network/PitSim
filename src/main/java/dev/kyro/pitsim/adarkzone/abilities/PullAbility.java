@@ -29,11 +29,11 @@ public class PullAbility extends PitBossAbility {
 
 	@Override
 	public void onRoutineExecute() {
-		Location location = getPitBoss().boss.getLocation().subtract(0, 3, 0);
+		Location location = getPitBoss().getBoss().getLocation().subtract(0, 3, 0);
 		BlockCrackParticle particle = new BlockCrackParticle(materialData);
 		List<Player> affectedPlayers = new ArrayList<>();
 
-		Sounds.PULL.play(getPitBoss().boss.getLocation(), 40);
+		Sounds.PULL.play(getPitBoss().getBoss().getLocation(), 40);
 
 		for(int radius = 0; radius < maxRadius; radius++) {
 			int finalRadius = radius;
@@ -82,7 +82,7 @@ public class PullAbility extends PitBossAbility {
 	@Override
 	public boolean shouldExecuteRoutine() {
 		for(Player viewer : getViewers()) {
-			if(viewer.getLocation().distance(getPitBoss().boss.getLocation()) < 6) return false;
+			if(viewer.getLocation().distance(getPitBoss().getBoss().getLocation()) < 6) return false;
 		}
 		return true;
 	}

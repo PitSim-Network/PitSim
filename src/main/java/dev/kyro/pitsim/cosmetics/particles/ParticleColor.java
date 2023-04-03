@@ -40,7 +40,7 @@ public enum ParticleColor {
 		this.brightness = brightness;
 	}
 
-	public ItemStack getDisplayItem(boolean equipped) {
+	public ItemStack getDisplayStack(boolean equipped) {
 		ItemStack itemStack = new AItemStackBuilder(Material.INK_SACK, 1, data)
 				.setName(displayName)
 				.setLore(new ALoreBuilder(

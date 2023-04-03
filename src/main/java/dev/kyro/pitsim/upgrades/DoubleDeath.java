@@ -4,32 +4,24 @@ import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
-import org.bukkit.ChatColor;
+import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DoubleDeath extends RenownUpgrade {
+public class DoubleDeath extends TieredRenownUpgrade {
 	public static DoubleDeath INSTANCE;
 
 	public DoubleDeath() {
-		super("Double-Death", "DOUBLE_DEATH", 15, 16, 9, true, 4);
+		super("Double-Death", "DOUBLE_DEATH", 9);
 		INSTANCE = this;
-	}
-
-	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(5, 5, 10, 10);
 	}
 
 	public boolean isDoubleDeath(Player player) {
@@ -57,27 +49,28 @@ public class DoubleDeath extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
-		ItemStack item = new ItemStack(Material.SKULL_ITEM);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
-		List<String> lore = new ArrayList<>();
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
-				"&7Current: &d+" + 5 * UpgradeManager.getTier(player, this) + "% Chance"));
-		if(UpgradeManager.hasUpgrade(player, this))
-			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each Tier:");
-		lore.add(ChatColor.GRAY + "Gain " + ChatColor.LIGHT_PURPLE + "+5% " + ChatColor.GRAY + "chance to double");
-		lore.add(ChatColor.GRAY + "megastreak death rewards.");
-		lore.add(ChatColor.GRAY + "Does not work with Uberstreak.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
-		item.setItemMeta(meta);
-		return item;
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.SKULL_ITEM)
+				.getItemStack();
+	}
+
+	@Override
+	public String getCurrentEffect(int tier) {
+		return "&d" + (tier * 5) + "% chance";
+	}
+
+	@Override
+	public String getEffectPerTier() {
+		return "&7Gain &d+5% chance &7to double megastreak death rewards. Does not work with Uberstreak";
 	}
 
 	@Override
 	public String getSummary() {
 		return "&dDouble-Death &7gives you a chance to gain double death rewards on a &cMegastreak&7, excluding &dUberstreak";
+	}
+
+	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(5, 5, 10, 10);
 	}
 }

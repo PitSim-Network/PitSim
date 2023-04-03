@@ -197,10 +197,10 @@ public class CollapseAbility extends PitBossAbility {
 				@Override
 				public void run() {
 					Sounds.COLLAPSE2.play(center, 40);
-					getPitBoss().boss.getWorld().getNearbyEntities(center, radius, 5, radius).forEach(entity -> {
+					getPitBoss().getBoss().getWorld().getNearbyEntities(center, radius, 5, radius).forEach(entity -> {
 						if(Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) {
 							Player player = (Player) entity;
-							DamageManager.createIndirectAttack(getPitBoss().boss, player, damage, attackEvent -> {
+							DamageManager.createIndirectAttack(getPitBoss().getBoss(), player, damage, attackEvent -> {
 
 							});
 							Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, ticks, 1, false, false);

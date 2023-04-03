@@ -1,12 +1,11 @@
 package dev.kyro.pitsim.perks;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.PitSim;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.controllers.MapManager;
-import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -19,17 +18,13 @@ public class Dispersion extends PitPerk {
 	public static Dispersion INSTANCE;
 
 	public Dispersion() {
-		super("Dispersion", "dispersion", new ItemStack(Material.WEB), 22, false, "", INSTANCE, false);
+		super("Dispersion", "dispersion");
 		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!PitSim.status.isOverworld()) return;
-		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
-		if(NonManager.getNon(attackEvent.getDefender()) != null) return;
-		if(!playerHasUpgrade(attackEvent.getDefenderPlayer())) return;
-		if(MapManager.inDarkzone(attackEvent.getDefenderPlayer())) return;
+		if(!attackEvent.isAttackerPlayer() || !hasPerk(attackEvent.getDefenderPlayer())) return;
 
 		if(MapManager.currentMap.world != attackEvent.getDefenderPlayer().getWorld()) return;
 		if(MapManager.currentMap.getMid().distance(attackEvent.getDefenderPlayer().getLocation()) > getRange()) return;
@@ -43,10 +38,16 @@ public class Dispersion extends PitPerk {
 	}
 
 	@Override
-	public List<String> getDescription() {
-		return new ALoreBuilder("&dDisperse " + getChance() + "% &7of the enchants",
-				"&7on your opponent's attacks",
-				"&7while in middle").getLore();
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.WEB)
+				.getItemStack();
+	}
+
+	@Override
+	public PitLoreBuilder getBaseDescription() {
+		return new PitLoreBuilder(
+				"&dDisperse " + getChance() + "% &7of the enchants on your opponent's attacks while in middle"
+		);
 	}
 
 	@Override

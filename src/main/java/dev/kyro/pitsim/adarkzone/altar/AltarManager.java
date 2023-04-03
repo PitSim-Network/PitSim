@@ -115,6 +115,7 @@ public class AltarManager implements Listener {
 		String altarPercent = DarkzoneLeveling.getReductionPercent(pitPlayer);
 
 		String color = difference > 0 ? "&c-" : "&a+";
+		if(difference == 0) color = color.replaceAll("\\+", "");
 		String status = difference > 0 ? "&7Taking &f" + altarPercent + "% &7of &bXP &7and &6Gold" : "&aStronger than the Darkzone!";
 
 		DecimalFormat decimalFormat = new DecimalFormat("#,##0");

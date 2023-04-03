@@ -15,9 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class KillPlayersQuest extends PassQuest {
 	public PlayerToPlayerCooldown cooldown = new PlayerToPlayerCooldown(20 * 60 * 2);
 
@@ -37,7 +34,7 @@ public class KillPlayersQuest extends PassQuest {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
 		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_SWORD)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

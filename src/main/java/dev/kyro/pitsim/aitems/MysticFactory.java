@@ -90,6 +90,13 @@ public class MysticFactory {
 		return nbtItem.hasKey(NBTTag.IS_JEWEL.getRef());
 	}
 
+	public static boolean isImportant(ItemStack itemStack) {
+		if(!isMystic(itemStack)) return false;
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+
+		return isJewel(itemStack, false) || pitItem instanceof TaintedScythe || pitItem instanceof TaintedChestplate;
+	}
+
 	public static boolean isGemmed(ItemStack itemStack) {
 		if(!isMystic(itemStack)) return false;
 

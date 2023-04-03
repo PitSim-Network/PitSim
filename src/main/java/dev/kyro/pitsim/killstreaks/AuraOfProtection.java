@@ -56,7 +56,7 @@ public class AuraOfProtection extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.SLIME_BALL)
 				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(

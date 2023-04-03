@@ -56,7 +56,7 @@ public class DefenceBranch extends SkillBranch {
 	}
 
 	@Override
-	public ItemStack getBaseStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.DIAMOND_CHESTPLATE)
 				.setLore(new ALoreBuilder(
 						"&7Upgrade your defence and shield"
@@ -78,7 +78,7 @@ public class DefenceBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.DIAMOND_CHESTPLATE)
 						.setLore(new ALoreBuilder(
 								"&7Unlocks &9shield &7(displayed using",
@@ -103,7 +103,7 @@ public class DefenceBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.IRON_INGOT)
 						.setLore(new ALoreBuilder(
 								"&7Your shield takes &9-" + getShieldDamageReduction() + "% &7damage",
@@ -128,7 +128,7 @@ public class DefenceBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.DIAMOND)
 						.setLore(new ALoreBuilder(
 								"&7Your shield takes &9-" + getShieldDamageFromPlayersReduction() + "% &7damage",
@@ -153,7 +153,7 @@ public class DefenceBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				DecimalFormat decimalFormat = new DecimalFormat("0.#");
 				double seconds = getReactivationReductionTicks() / 20.0;
 				return new AItemStackBuilder(Material.ANVIL)

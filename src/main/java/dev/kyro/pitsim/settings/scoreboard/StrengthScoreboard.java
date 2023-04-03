@@ -22,7 +22,7 @@ public class StrengthScoreboard extends ScoreboardOption {
 
 	@Override
 	public String getValue(PitPlayer pitPlayer) {
-		if(!StrengthChaining.INSTANCE.playerHasUpgrade(pitPlayer.player)) return null;
+		if(!StrengthChaining.INSTANCE.hasPerk(pitPlayer.player)) return null;
 		int amplifier = StrengthChaining.amplifierMap.getOrDefault(pitPlayer.player.getUniqueId(), 0);
 		if(amplifier == 0) return null;
 		int duration = StrengthChaining.durationMap.getOrDefault(pitPlayer.player.getUniqueId(), 0);
@@ -31,7 +31,7 @@ public class StrengthScoreboard extends ScoreboardOption {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.REDSTONE)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

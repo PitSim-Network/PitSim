@@ -645,17 +645,7 @@ public class Misc {
 	}
 
 	public static boolean isAirOrNull(ItemStack itemStack) {
-
 		return itemStack == null || itemStack.getType() == Material.AIR;
-	}
-
-	public static String getFormattedKills(int kills) {
-
-		DecimalFormat decimalFormat = new DecimalFormat("#.##");
-		decimalFormat.setGroupingUsed(true);
-		decimalFormat.setGroupingSize(3);
-
-		return decimalFormat.format(kills);
 	}
 
 	public static void strikeLightningForPlayers(Location location, double radius) {

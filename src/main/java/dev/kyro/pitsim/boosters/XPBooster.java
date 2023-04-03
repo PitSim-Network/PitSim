@@ -31,7 +31,7 @@ public class XPBooster extends Booster {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onKillMonitor(KillEvent killEvent) {
-		if(!isActive() || activatorUUID == null || killEvent.getKiller().getUniqueId().equals(activatorUUID)) return;
+		if(!isActive() || activatorUUID == null || killEvent.getKiller() == null || killEvent.getKiller().getUniqueId().equals(activatorUUID)) return;
 		queueShare(killEvent.getFinalXp());
 	}
 
@@ -41,7 +41,7 @@ public class XPBooster extends Booster {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		return new AItemStackBuilder(Material.INK_SACK, 1, 12)
 				.setLore(new ALoreBuilder(

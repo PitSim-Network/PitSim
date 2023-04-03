@@ -32,7 +32,6 @@ public class KillstreakPanel extends AGUIPanel {
 	public KillstreakPanel(AGUI gui) {
 		super(gui);
 		perkGUI = (PerkGUI) gui;
-
 	}
 
 	@Override
@@ -147,7 +146,7 @@ public class KillstreakPanel extends AGUIPanel {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 			if(killstreak.refName.equals("NoKillstreak")) {
-				AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem(player));
+				AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayStack(player));
 				builder.setLore(new ALoreBuilder(builder.getItemStack().getItemMeta().getLore()).addLore("", "&eClick to remove killstreak!"));
 				getInventory().setItem(50, builder.getItemStack());
 				killstreakSlots.put(killstreak, 50);
@@ -160,7 +159,7 @@ public class KillstreakPanel extends AGUIPanel {
 				slot++;
 			}
 
-			AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayItem(player));
+			AItemStackBuilder builder = new AItemStackBuilder(killstreak.getDisplayStack(player));
 			ALoreBuilder loreBuilder = new ALoreBuilder(builder.getItemStack().getItemMeta().getLore()).addLore("");
 			if(hasKillstreakEquipped(player, killstreak)) {
 				builder.setName("&a" + killstreak.displayName);

@@ -210,7 +210,7 @@ public class JudgementAbility extends HelmetAbility {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayStack() {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.BEACON);
 		builder.setName("&e" + name);
 		ALoreBuilder loreBuilder = new ALoreBuilder();

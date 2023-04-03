@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.ahelp.Summarizable;
 import dev.kyro.pitsim.controllers.PerkManager;
+import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Killstreak implements Listener, Summarizable {
-
 	public String displayName;
 	public String refName;
 	public int killInterval;
@@ -28,13 +28,13 @@ public abstract class Killstreak implements Listener, Summarizable {
 
 	public abstract void reset(Player player);
 
-	public abstract ItemStack getDisplayItem(Player player);
+	public abstract ItemStack getDisplayStack(Player player);
 
 	public static Killstreak getKillstreak(String refName) {
 		for(Killstreak killstreak : PerkManager.killstreaks) {
 			if(killstreak.refName.equals(refName)) return killstreak;
 		}
-		return null;
+		return NoKillstreak.INSTANCE;
 	}
 
 	public static boolean hasKillstreak(Player player, Killstreak killstreak) {

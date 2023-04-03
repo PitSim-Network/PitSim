@@ -32,11 +32,17 @@ public class StatisticDataChunk {
 		PluginMessage pluginMessage = new PluginMessage()
 				.writeString("SERVER_STATISTICS")
 				.writeLong(startTime)
-				.writeInt(records.size());
+				.writeInt(getNonEmptyRecordCount());
 
 		for(Record record : records) record.writeToMessage(pluginMessage);
 
 		pluginMessage.send();
+	}
+
+	public int getNonEmptyRecordCount() {
+		int count = 0;
+		for(Record record : records) if(record.totalHits != 0) count++;
+		return count;
 	}
 
 	public static class Record {
@@ -49,7 +55,10 @@ public class StatisticDataChunk {
 			this.pitEnchant = pitEnchant;
 			this.category = category;
 
-			for(PitEnchant enchant : EnchantManager.pitEnchants) hitsWithEnchant.put(enchant, 0);
+			for(PitEnchant enchant : EnchantManager.pitEnchants) {
+				if(enchant.statisticCategories.isEmpty()) continue;
+				hitsWithEnchant.put(enchant, 0);
+			}
 		}
 
 		public void logAttack(Map<PitEnchant, Integer> enchantMap) {
@@ -61,6 +70,7 @@ public class StatisticDataChunk {
 		}
 
 		public void writeToMessage(PluginMessage pluginMessage) {
+			if(totalHits == 0) return;
 			pluginMessage
 					.writeString(pitEnchant == null ? "" : pitEnchant.refNames.get(0))
 					.writeString(category.name())

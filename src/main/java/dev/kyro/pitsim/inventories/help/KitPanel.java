@@ -28,7 +28,7 @@ public class KitPanel extends AGUIPanel {
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
 
-		for(Kit kit : KitManager.kits) getInventory().setItem(kit.slot, kit.getDisplayItem());
+		for(Kit kit : KitManager.kits) getInventory().setItem(kit.slot, kit.getDisplayStack());
 
 		getInventory().setItem(26, HelpItemStacks.getKitsItemStack());
 

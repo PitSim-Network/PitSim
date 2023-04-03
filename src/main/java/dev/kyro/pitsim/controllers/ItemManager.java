@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.SoulPickup;
 import dev.kyro.pitsim.aitems.misc.VeryYummyBread;
@@ -33,6 +34,8 @@ import java.util.*;
 public class ItemManager implements Listener {
 	public static Map<UUID, List<ItemStack>> updatedItems = new HashMap<>();
 	public static List<FakeItem> fakeItems = new ArrayList<>();
+	public static Map<Item, Player> soulPickupMap = new HashMap<>();
+	public static Map<Player, Long> soulNotificationCooldownMap = new HashMap<>();
 
 	static {
 		new BukkitRunnable() {
@@ -86,6 +89,7 @@ public class ItemManager implements Listener {
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.hasDropConfirm) return;
+		if(pitItem.isMystic && !MysticFactory.isImportant(itemStack)) return;
 
 		event.setCancelled(true);
 		player.updateInventory();
@@ -96,7 +100,7 @@ public class ItemManager implements Listener {
 	@EventHandler
 	public static void onUnload(ChunkUnloadEvent event) {
 		PitItem pitItem = ItemFactory.getItem(SoulPickup.class);
-		for(Entity entity : event.getChunk().getEntities()) {
+		for(Entity entity : new ArrayList<>(Arrays.asList(event.getChunk().getEntities()))) {
 			if(!(entity instanceof Item)) continue;
 			Item item = (Item) entity;
 			ItemStack itemStack = item.getItemStack();
@@ -115,8 +119,20 @@ public class ItemManager implements Listener {
 		SoulPickup pitItem = ItemFactory.getItem(SoulPickup.class);
 		if(pitItem.isThisItem(itemStack)) {
 			int souls = pitItem.getSouls(itemStack);
-
 			event.setCancelled(true);
+
+			if(soulPickupMap.containsKey(droppedItem)) {
+				Player designatedPlayer = soulPickupMap.get(droppedItem);
+				if(designatedPlayer != player) {
+					long lastNotifyTick = soulNotificationCooldownMap.getOrDefault(player, 0L);
+					if(lastNotifyTick + 40 > PitSim.currentTick) return;
+					AOutput.error(player, "&c&lERROR!&7 You cannot pick up this soul");
+					soulNotificationCooldownMap.put(player, PitSim.currentTick);
+					return;
+				}
+			}
+
+			soulPickupMap.remove(droppedItem);
 			droppedItem.remove();
 			pitPlayer.taintedSouls += souls;
 
@@ -158,6 +174,7 @@ public class ItemManager implements Listener {
 			}
 		}
 
+		if(!MysticFactory.isImportant(itemStack)) return;
 		if(pitItem == null || !pitItem.hasDropConfirm) {
 			if(itemStack.getType() != Material.ENDER_CHEST && itemStack.getType() != Material.TRIPWIRE_HOOK) return;
 		}

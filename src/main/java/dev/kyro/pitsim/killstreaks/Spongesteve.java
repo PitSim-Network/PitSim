@@ -31,7 +31,7 @@ public class Spongesteve extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.SPONGE)
 				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(

@@ -34,7 +34,7 @@ public class PassPantsReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.JEWEL);
 		new AItemStackBuilder(itemStack)
 				.setName("&3&lPants Reward")

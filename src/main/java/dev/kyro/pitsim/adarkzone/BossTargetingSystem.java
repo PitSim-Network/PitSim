@@ -44,8 +44,8 @@ public class BossTargetingSystem {
 	public void setTarget(Player target) {
 		this.target = target;
 
-		if(!pitBoss.npcBoss.isSpawned() || target == null) return;
-		pitBoss.npcBoss.getNavigator().setTarget(target, true);
+		if(!pitBoss.getNpcBoss().isSpawned() || target == null) return;
+		pitBoss.getNpcBoss().getNavigator().setTarget(target, true);
 	}
 
 	public Player findTarget() {
@@ -75,8 +75,8 @@ public class BossTargetingSystem {
 
 	//reward function to find the best target
 	private double rewardFunction(Player player) {
-		Vector distanceVector = player.getLocation().toVector().subtract(pitBoss.boss.getLocation().toVector());
-		Vector bossDirectionVector = pitBoss.boss.getLocation().getDirection();
+		Vector distanceVector = player.getLocation().toVector().subtract(pitBoss.getBoss().getLocation().toVector());
+		Vector bossDirectionVector = pitBoss.getBoss().getLocation().getDirection();
 
 		double scaledHealth = (20 - player.getHealth()) / 20;
 		double scaledDistance = ((pitBoss.getReach() * 2) - distanceVector.length()) / (pitBoss.getReach() * 2);

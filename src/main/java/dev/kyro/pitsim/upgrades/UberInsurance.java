@@ -1,36 +1,34 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class UberInsurance extends RenownUpgrade {
+public class UberInsurance extends TieredRenownUpgrade {
 	public static UberInsurance INSTANCE;
 
 	public UberInsurance() {
-		super("Uber Insurance", "LIFE_INSURANCE", 75, 22, 12, true, 3);
+		super("Uber Insurance", "LIFE_INSURANCE", 12);
 		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
 		if(!killEvent.isDeadPlayer() || !isApplicable(killEvent.getDeadPlayer())) return;
-		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : killEvent.getVulnerableItems().entrySet()) {
+		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : new ArrayList<>(killEvent.getVulnerableItems().entrySet())) {
 			KillEvent.ItemInfo itemInfo = entry.getValue();
 			if(!itemInfo.pitItem.isMystic) continue;
 			killEvent.removeVulnerableItem(entry.getKey());
@@ -39,7 +37,7 @@ public class UberInsurance extends RenownUpgrade {
 
 	public static boolean isApplicable(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		int tier = UpgradeManager.getTier(player, INSTANCE.refName);
+		int tier = UpgradeManager.getTier(player, INSTANCE);
 
 		if(!(pitPlayer.megastreak instanceof Uberstreak)) return false;
 		if(pitPlayer.getKills() >= 400 && tier >= 3) return true;
@@ -49,36 +47,29 @@ public class UberInsurance extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(40, 75, 150);
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.BOOK_AND_QUILL)
+				.getItemStack();
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
-		ItemStack item = new ItemStack(Material.BOOK_AND_QUILL);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
-		List<String> lore = new ArrayList<>();
-		if(UpgradeManager.hasUpgrade(player, this) && UpgradeManager.getTier(player, this) > 0)
-			lore.add(ChatColor.translateAlternateColorCodes('&',
-					"&7Current: &eTier " + AUtil.toRoman(UpgradeManager.getTier(player, this))));
-		if(UpgradeManager.hasUpgrade(player, this) && UpgradeManager.getTier(player, this) > 0)
-			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each Tier:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Retain mystic lives on death when on"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier I: &f500 &dUber"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier II: &f450 &dUber"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&eTier III: &f400 &dUber"));
+	public String getCurrentEffect(int tier) {
+		return "&7Retain lives on &dUber " + Math.max(550 - tier * 50, 100);
+	}
 
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
-		item.setItemMeta(meta);
-		return item;
+	@Override
+	public String getEffectPerTier() {
+		return "&7Retain lives when completing &dUberstreaks &750 kills earlier";
 	}
 
 	@Override
 	public String getSummary() {
 		return "&dUber Insurance &7is a &erenown&7 perk that saves your lives while on an &dUberstreak&7 " +
 				"based on how many &ckills&7 you got";
+	}
+
+	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(40, 75, 150);
 	}
 }

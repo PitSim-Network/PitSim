@@ -34,7 +34,7 @@ public class PrestigePanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return "Prestige & Renown";
+		return "&bPrestige &7and &eRenown";
 	}
 
 	@Override

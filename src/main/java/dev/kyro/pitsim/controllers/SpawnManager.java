@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.PitEntityType;
@@ -111,10 +112,9 @@ public class SpawnManager implements Listener {
 	}
 
 	@EventHandler
-	public void onAttack(AttackEvent.Pre event) {
-		Player player = event.getAttackerPlayer();
-		if(!event.isAttackerPlayer() || !isInSpawn(player)) return;
-		event.setCancelled(true);
+	public void onAttack(AttackEvent.Pre attackEvent) {
+		if(!isInSpawn(attackEvent.getAttackerPlayer()) && !isInSpawn(attackEvent.getDefender().getLocation())) return;
+		attackEvent.setCancelled(true);
 	}
 
 	@EventHandler
@@ -125,6 +125,7 @@ public class SpawnManager implements Listener {
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.hasDropConfirm || !pitItem.destroyIfDroppedInSpawn) return;
+		if(MysticFactory.isImportant(itemStack)) return;
 
 		event.getItemDrop().remove();
 		Sounds.NO.play(event.getPlayer());
@@ -132,6 +133,7 @@ public class SpawnManager implements Listener {
 	}
 
 	public static boolean isInSpawn(Player player) {
+		if(player == null) return false;
 		return isInSpawn(player, player.getLocation());
 	}
 

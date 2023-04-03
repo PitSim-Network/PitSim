@@ -30,9 +30,10 @@ public class Electrolytes extends PitEnchant {
 			if(!potionEffect.getType().equals(PotionEffectType.SPEED)) continue;
 
 			double multiplier = potionEffect.getAmplifier() > 0 ? 0.5 : 1;
-			int ticks = (int) Math.min(potionEffect.getDuration() + (getSeconds(enchantLvl) * 20) * multiplier, getMaxSeconds() * 20);
-			if(potionEffect.getAmplifier() > 0) ticks *= 0.5;
-			Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.SPEED, ticks,
+			int additionalTicks = (int) (getSeconds(enchantLvl) * 20 * multiplier);
+			if(potionEffect.getAmplifier() > 0) additionalTicks *= 0.5;
+			int totalTicks = Math.min(potionEffect.getDuration() + additionalTicks, getMaxSeconds() * 20);
+			Misc.applyPotionEffect(killEvent.getKiller(), PotionEffectType.SPEED, totalTicks,
 					potionEffect.getAmplifier(), false, false);
 			break;
 		}

@@ -30,7 +30,7 @@ public class PassShardsReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.PRISMARINE_SHARD, count)
 				.setName("&a&lShard Reward")
 				.setLore(new ALoreBuilder(

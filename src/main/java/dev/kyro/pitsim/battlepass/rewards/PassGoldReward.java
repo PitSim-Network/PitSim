@@ -29,7 +29,7 @@ public class PassGoldReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_INGOT)
 				.setName("&6&lGold Reward")
 				.setLore(new ALoreBuilder(

@@ -34,7 +34,7 @@ public class PassSwordReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_SWORD, count)
 				.setName("&e&lSword Reward")
 				.setLore(new ALoreBuilder(

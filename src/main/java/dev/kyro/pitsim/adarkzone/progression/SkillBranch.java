@@ -46,7 +46,7 @@ public abstract class SkillBranch implements Listener {
 
 	public abstract String getDisplayName();
 	public abstract String getRefName();
-	public abstract ItemStack getBaseStack();
+	public abstract ItemStack getBaseDisplayStack();
 
 	public abstract MajorProgressionUnlock createFirstUnlock();
 	public abstract MajorProgressionUnlock createLastUnlock();
@@ -58,9 +58,9 @@ public abstract class SkillBranch implements Listener {
 //	This is for the main gui
 	public ItemStack getMainDisplayStack(PitPlayer pitPlayer, MainProgressionUnlock unlock, UnlockState unlockState) {
 		int cost = ProgressionManager.getUnlockCost(pitPlayer, unlock);
-		ItemStack baseStack = getBaseStack();
+		ItemStack baseStack = getBaseDisplayStack();
 		ALoreBuilder loreBuilder = new ALoreBuilder();
-		if(getBaseStack().getItemMeta().hasLore()) loreBuilder.addLore(getBaseStack().getItemMeta().getLore()).addLore("");
+		if(getBaseDisplayStack().getItemMeta().hasLore()) loreBuilder.addLore(getBaseDisplayStack().getItemMeta().getLore()).addLore("");
 
 		ProgressionManager.addPurchaseCostLore(unlock, loreBuilder, unlockState, pitPlayer.taintedSouls, cost, false);
 		if(unlockState == UnlockState.UNLOCKED) Misc.addEnchantGlint(baseStack);
@@ -89,7 +89,7 @@ public abstract class SkillBranch implements Listener {
 
 		public abstract String getDisplayName();
 		public abstract String getRefName();
-		public abstract ItemStack getBaseStack();
+		public abstract ItemStack getBaseDisplayStack();
 
 		public MajorProgressionUnlock() {
 			this.skillBranch = SkillBranch.this;
@@ -97,9 +97,9 @@ public abstract class SkillBranch implements Listener {
 
 		public ItemStack getDisplayStack(PitPlayer pitPlayer) {
 			UnlockState unlockState = ProgressionManager.getUnlockState(pitPlayer, this);
-			ItemStack baseStack = getBaseStack();
+			ItemStack baseStack = getBaseDisplayStack();
 			ALoreBuilder loreBuilder = new ALoreBuilder();
-			if(getBaseStack().getItemMeta().hasLore()) loreBuilder.addLore(getBaseStack().getItemMeta().getLore()).addLore("");
+			if(getBaseDisplayStack().getItemMeta().hasLore()) loreBuilder.addLore(getBaseDisplayStack().getItemMeta().getLore()).addLore("");
 
 			ProgressionManager.addPurchaseCostLore(MajorProgressionUnlock.this, loreBuilder,
 					unlockState, pitPlayer.taintedSouls, ProgressionManager.getInitialSoulCost(this), true);
@@ -137,7 +137,7 @@ public abstract class SkillBranch implements Listener {
 			effectData.add(data);
 		}
 
-		public ItemStack getDisplayItem(PitPlayer pitPlayer, int level) {
+		public ItemStack getDisplayStack(PitPlayer pitPlayer, int level) {
 			UnlockState unlockState = ProgressionManager.getUnlockState(pitPlayer, this, level);
 			ItemStack baseStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) unlockState.data);
 			ALoreBuilder loreBuilder = new ALoreBuilder();

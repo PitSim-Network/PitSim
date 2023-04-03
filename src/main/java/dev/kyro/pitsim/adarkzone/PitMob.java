@@ -26,6 +26,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public abstract class PitMob implements Listener {
 	private Creature mob;
 	private DropPool dropPool;
@@ -82,6 +86,8 @@ public abstract class PitMob implements Listener {
 
 	public void kill(PitPlayer pitKiller) {
 		Player killer = pitKiller == null ? null : pitKiller.player;
+		Map<UUID, Double> damageMap = new HashMap<>();
+		if(killer != null) damageMap.put(killer.getUniqueId(), 1.0);
 		if(mobStatus == MobStatus.STANDARD) {
 			dropPool.mobDistribution(killer, this);
 
@@ -92,7 +98,7 @@ public abstract class PitMob implements Listener {
 			if(Math.random() < soulChance) {
 				double droppedSouls = getDroppedSouls();
 				if(SoulBooster.INSTANCE.isActive()) droppedSouls *= 1 + (SoulBooster.getSoulsIncrease() / 100.0);
-				DarkzoneManager.createSoulExplosion(killer,
+				DarkzoneManager.createSoulExplosion(damageMap,
 						getMob().getLocation().add(0, 0.5, 0), (int) droppedSouls, false);
 			}
 

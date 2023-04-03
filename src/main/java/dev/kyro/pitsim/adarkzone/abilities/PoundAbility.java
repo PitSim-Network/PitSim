@@ -41,7 +41,7 @@ public class PoundAbility extends PitBossAbility {
 	@Override
 	public void onRoutineExecute() {
 		isActive = true;
-		Location centerLocation = getPitBoss().boss.getLocation().clone().subtract(0, 1, 0);
+		Location centerLocation = getPitBoss().getBoss().getLocation().clone().subtract(0, 1, 0);
 
 		List<Block> applicableBlocks = new ArrayList<>();
 
@@ -66,7 +66,7 @@ public class PoundAbility extends PitBossAbility {
 		}
 
 		List<Player> viewers = new ArrayList<>();
-		for(Entity entity : getPitBoss().boss.getNearbyEntities(50, 50, 50)) {
+		for(Entity entity : getPitBoss().getBoss().getNearbyEntities(50, 50, 50)) {
 			if(!(entity instanceof Player)) continue;
 			Player player = Bukkit.getPlayer(entity.getUniqueId());
 			if(player != null) viewers.add(player);
@@ -101,7 +101,7 @@ public class PoundAbility extends PitBossAbility {
 				dirt.display(nmsPlayer, centerLocation, new ParticleOffset(0, 4, 0, 10, 10, 10));
 			}
 
-			if(viewer.getLocation().distance(getPitBoss().boss.getLocation()) > radius + 2) continue;
+			if(viewer.getLocation().distance(getPitBoss().getBoss().getLocation()) > radius + 2) continue;
 			effectedPlayers.add(viewer);
 
 			Vector vector = new Vector(0, 0.6, 0);
@@ -112,7 +112,7 @@ public class PoundAbility extends PitBossAbility {
 		}
 
 		for(PitMob mob : getPitBoss().getSubLevel().mobs) {
-			if(mob.getMob().getLocation().distance(getPitBoss().boss.getLocation()) > radius + 2) continue;
+			if(mob.getMob().getLocation().distance(getPitBoss().getBoss().getLocation()) > radius + 2) continue;
 			Vector vector = new Vector(0, 0.6, 0);
 			vector.setY(vector.getY() + 1.5);
 			vector.normalize();
@@ -120,7 +120,7 @@ public class PoundAbility extends PitBossAbility {
 			mob.getMob().setVelocity(vector);
 		}
 
-		Sounds.EXTRACT.play(getPitBoss().boss.getLocation());
+		Sounds.EXTRACT.play(getPitBoss().getBoss().getLocation());
 
 		new BukkitRunnable() {
 			@Override

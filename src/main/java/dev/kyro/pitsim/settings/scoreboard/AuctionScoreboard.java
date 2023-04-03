@@ -27,7 +27,7 @@ public class AuctionScoreboard extends ScoreboardOption {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.GHAST_TEAR)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

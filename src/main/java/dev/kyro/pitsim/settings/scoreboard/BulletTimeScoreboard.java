@@ -30,7 +30,7 @@ public class BulletTimeScoreboard extends ScoreboardOption {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.ARROW)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

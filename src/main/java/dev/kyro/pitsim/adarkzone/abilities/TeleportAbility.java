@@ -27,7 +27,7 @@ public class TeleportAbility extends PitBossAbility {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply event) {
-		if(event.getDefenderPlayer() != getPitBoss().boss) return;
+		if(event.getDefenderPlayer() != getPitBoss().getBoss()) return;
 		if(!event.isAttackerPlayer()) return;
 
 		Player player = event.getAttackerPlayer();
@@ -64,20 +64,20 @@ public class TeleportAbility extends PitBossAbility {
 		PortalParticle portalParticle = new PortalParticle();
 
 		Block block = applicableBlocks.get(new Random().nextInt(applicableBlocks.size()));
-		Sounds.TELEPORT.play(getPitBoss().boss.getLocation());
+		Sounds.TELEPORT.play(getPitBoss().getBoss().getLocation());
 
 		for(Player viewer : getViewers()) {
 			for(int i = 0; i < 50; i++) {
-				portalParticle.display(viewer, getPitBoss().boss.getLocation(), new ParticleOffset(2, 2, 2 ,2 ,2 ,2));
+				portalParticle.display(viewer, getPitBoss().getBoss().getLocation(), new ParticleOffset(2, 2, 2 ,2 ,2 ,2));
 			}
 		}
 
-		getPitBoss().boss.teleport(block.getLocation().add(0, 1, 0));
-		Sounds.TELEPORT.play(getPitBoss().boss.getLocation());
+		getPitBoss().getBoss().teleport(block.getLocation().add(0, 1, 0));
+		Sounds.TELEPORT.play(getPitBoss().getBoss().getLocation());
 
 		for(Player viewer : getViewers()) {
 			for(int i = 0; i < 50; i++) {
-				portalParticle.display(viewer, getPitBoss().boss.getLocation(), new ParticleOffset(2, 2, 2 ,2 ,2 ,2));
+				portalParticle.display(viewer, getPitBoss().getBoss().getLocation(), new ParticleOffset(2, 2, 2 ,2 ,2 ,2));
 			}
 		}
 	}

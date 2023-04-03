@@ -29,6 +29,7 @@ import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.ArmorReduction;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.KillSteal;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -505,11 +506,11 @@ public class DamageManager implements Listener {
 				LevelManager.addGold(killEvent.getKillerPlayer(), (int) killEvent.getFinalGold());
 			}
 		} else {
-			if(deadIsRealPlayer) {
+			if(deadIsRealPlayer && killEvent.shouldLoseItems()) {
 				int finalSouls = killEvent.getFinalSouls();
 				if(finalSouls != 0) {
 					pitDead.taintedSouls -= finalSouls;
-					DarkzoneManager.createSoulExplosion(killerPlayer, dead.getLocation(), finalSouls, finalSouls >= 50);
+					DarkzoneManager.createSoulExplosion(null, dead.getLocation(), finalSouls, finalSouls >= 50);
 				}
 			}
 		}
@@ -555,7 +556,7 @@ public class DamageManager implements Listener {
 
 			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" +
 					(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + killEvent.getFinalXp() + "XP" +
-					" &6+" + (altarMultiplier == 1 ? df.format(killEvent.getFinalGold()) + "g " : ""));
+					" &6+" + (altarMultiplier == 1 ? df.format(killEvent.getFinalGold()) + "g" : ""));
 
 			TextComponent killComponent = new TextComponent(kill);
 			if(altarMultiplier != 1) killComponent.addExtra(hover);
@@ -603,15 +604,15 @@ public class DamageManager implements Listener {
 		if(killType == KillType.KILL && deadIsPlayer) {
 			double finalDamage = 0;
 			for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) finalDamage += entry.getValue();
-			for(Map.Entry<UUID, Double> entry : pitDead.recentDamageMap.entrySet()) {
+			for(Map.Entry<UUID, Double> entry : new ArrayList<>(pitDead.recentDamageMap.entrySet())) {
 				if(entry.getKey().equals(killEvent.getKiller().getUniqueId())) continue;
 
 				Player assistPlayer = Bukkit.getPlayer(entry.getKey());
 				if(assistPlayer == null) continue;
 				double assistPercent = Math.max(Math.min(entry.getValue() / finalDamage, 1), 0);
 
-				if(UpgradeManager.hasUpgrade(assistPlayer, "KILL_STEAL")) {
-					int tier = UpgradeManager.getTier(assistPlayer, "KILL_STEAL");
+				if(UpgradeManager.hasUpgrade(assistPlayer, KillSteal.INSTANCE)) {
+					int tier = UpgradeManager.getTier(assistPlayer, KillSteal.INSTANCE);
 					assistPercent += (tier * 10) / 100D;
 					if(assistPercent >= 1) {
 						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(assistPlayer);
