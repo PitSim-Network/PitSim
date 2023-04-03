@@ -72,6 +72,12 @@ public class MarketAsyncTask {
 
 		if(task != MarketTask.CREATE_LISTING) return;
 
+		if(taskMap.containsKey(executor.getUniqueId())) {
+			respond(false);
+		}
+
+		taskMap.put(executor.getUniqueId(), this);
+
 		timeout = new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -79,9 +85,6 @@ public class MarketAsyncTask {
 				taskMap.remove(player.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
-
-
-
 
 		PluginMessage message = new PluginMessage()
 			.writeString(task.proxyName)

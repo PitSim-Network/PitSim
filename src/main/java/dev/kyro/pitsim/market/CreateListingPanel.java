@@ -137,11 +137,12 @@ public class CreateListingPanel extends AGUIPanel {
 					}
 				};
 
+				ItemStack returnItem = selectedItem.clone();
+
 				BukkitRunnable fail = new BukkitRunnable() {
 					@Override
 					public void run() {
-						ItemStack item = selectedItem.clone();
-						AUtil.giveItemSafely(player, item, true);
+						AUtil.giveItemSafely(player, returnItem, true);
 
 						Sounds.NO.play(player);
 						String failMessage = "&cThere was an error while attempting to create your listing. Please contact a staff member about this issue.";

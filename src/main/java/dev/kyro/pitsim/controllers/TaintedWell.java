@@ -302,6 +302,8 @@ public class TaintedWell implements Listener {
 
 	public static void onButtonPush(Player player, boolean enchant) {
 		int previousRares = 0;
+
+		if(enchantingPlayers.contains(player)) return;
 		
 		if(!enchant) {
 			setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
