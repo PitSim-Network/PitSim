@@ -2,6 +2,8 @@ package dev.kyro.pitsim.misc;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.libs.discord.DiscordWebhook;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.BossManager;
@@ -24,6 +26,7 @@ import dev.kyro.pitsim.enums.DiscordLogChannel;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.HealEvent;
+import dev.kyro.pitsim.inventories.GenericConfirmationPanel;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -60,34 +63,17 @@ import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Misc {
-
-	public static boolean isEntityNoError(Entity entity, PitEntityType... entityTypes) {
-		if(!(entity instanceof LivingEntity)) return false;
-		LivingEntity livingEntity = (LivingEntity) entity;
-		for(PitEntityType entityType : entityTypes) {
-			switch(entityType) {
-				case REAL_PLAYER:
-					if(PlayerManager.isRealPlayer(livingEntity)) return true;
-					break;
-				case NON:
-					if(NonManager.getNon(livingEntity) != null) return true;
-					break;
-				case HOPPER:
-					if(HopperManager.isHopper(livingEntity)) return true;
-					break;
-				case PIT_MOB:
-					if(DarkzoneManager.isPitMob(livingEntity)) return true;
-					break;
-				case PIT_BOSS:
-					if(BossManager.isPitBoss(livingEntity)) return true;
-					break;
-			}
-		}
-		return false;
+	public static void promptForConfirmation(AGUIPanel previousPanel, ChatColor chatColor, ALoreBuilder confirmLore,
+											 ALoreBuilder cancelLore, Consumer<GenericConfirmationPanel> confirm,
+											 Consumer<GenericConfirmationPanel> cancel) {
+		GenericConfirmationPanel confirmationPanel =
+				new GenericConfirmationPanel(previousPanel.gui, chatColor, confirmLore, cancelLore, confirm, cancel);
+		previousPanel.openPanel(confirmationPanel);
 	}
 
 	public static void stunEntity(LivingEntity livingEntity, int ticks) {

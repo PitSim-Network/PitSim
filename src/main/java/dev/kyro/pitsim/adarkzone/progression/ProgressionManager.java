@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone.progression;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
@@ -8,12 +9,16 @@ import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.notdarkzone.UnlockState;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.*;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.inventories.GenericConfirmationPanel;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ProgressionManager implements Listener {
 	public static final List<SkillBranch> skillBranches = new ArrayList<>();
@@ -218,33 +223,90 @@ public class ProgressionManager implements Listener {
 		throw new RuntimeException();
 	}
 
-	public static void unlock(PitPlayer pitPlayer, MainProgressionUnlock unlock, int cost) {
+	public static void unlock(MainProgressionPanel previousPanel, PitPlayer pitPlayer, MainProgressionUnlock unlock, int cost) {
 		if(pitPlayer.darkzoneData.mainProgressionUnlocks.contains(unlock.id)) throw new RuntimeException();
-		pitPlayer.darkzoneData.mainProgressionUnlocks.add(unlock.id);
-		Sounds.SUCCESS.play(pitPlayer.player);
 
-		AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " &7for " + formatSouls(cost));
+		Consumer<GenericConfirmationPanel> confirm = panel -> {
+			pitPlayer.darkzoneData.mainProgressionUnlocks.add(unlock.id);
+
+			Sounds.SUCCESS.play(pitPlayer.player);
+			AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " &7for " + formatSouls(cost));
+			if(previousPanel != null) {
+				previousPanel.player.openInventory(previousPanel.getInventory());
+				previousPanel.setInventory();
+			}
+		};
+
+		ALoreBuilder confirmLore = new ALoreBuilder(
+				"&7Purchasing: " + unlock.getDisplayName(),
+				"&7Cost: &f" + formatSouls(cost)
+		);
+
+		promptForUnlock(previousPanel, confirmLore, confirm);
 	}
 
-	public static void unlock(PitPlayer pitPlayer, SkillBranch.MajorProgressionUnlock unlock, int cost) {
+	public static void unlock(SkillBranchPanel previousPanel, PitPlayer pitPlayer, SkillBranch.MajorProgressionUnlock unlock, int cost) {
 		pitPlayer.darkzoneData.skillBranchUnlocks.putIfAbsent(unlock.skillBranch.getRefName(), new DarkzoneData.SkillBranchData());
-		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
-		if(skillBranchData.majorUnlocks.contains(unlock.getRefName())) throw new RuntimeException();
-		skillBranchData.majorUnlocks.add(unlock.getRefName());
 
-		Sounds.SUCCESS.play(pitPlayer.player);
-		AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " &7for " + formatSouls(cost));
+		Consumer<GenericConfirmationPanel> confirm = panel -> {
+			DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
+			if(skillBranchData.majorUnlocks.contains(unlock.getRefName())) throw new RuntimeException();
+			skillBranchData.majorUnlocks.add(unlock.getRefName());
+
+			Sounds.SUCCESS.play(pitPlayer.player);
+			AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " &7for " + formatSouls(cost));
+			if(previousPanel != null) {
+				previousPanel.player.openInventory(previousPanel.getInventory());
+				previousPanel.setInventory();
+			}
+		};
+
+		ALoreBuilder confirmLore = new ALoreBuilder(
+				"&7Purchasing: " + unlock.getDisplayName(),
+				"&7Cost: &f" + formatSouls(cost)
+		);
+
+		promptForUnlock(previousPanel, confirmLore, confirm);
 	}
 
-	public static void unlockNext(PitPlayer pitPlayer, SkillBranch.Path unlock, int cost) {
+	public static void unlockNext(SkillBranchPanel previousPanel, PitPlayer pitPlayer, SkillBranch.Path unlock, int cost) {
 		pitPlayer.darkzoneData.skillBranchUnlocks.putIfAbsent(unlock.skillBranch.getRefName(), new DarkzoneData.SkillBranchData());
-		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
-		int currentLevel = skillBranchData.pathUnlocks.getOrDefault(unlock.getRefName(), 0);
-		skillBranchData.pathUnlocks.put(unlock.getRefName(), currentLevel + 1);
 
-		Sounds.SUCCESS.play(pitPlayer.player);
-		AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " " +
-				AUtil.toRoman(currentLevel + 1) + " &7for " + formatSouls(cost));
+		Consumer<GenericConfirmationPanel> confirm = panel -> {
+			DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
+			int currentLevel = skillBranchData.pathUnlocks.getOrDefault(unlock.getRefName(), 0);
+			skillBranchData.pathUnlocks.put(unlock.getRefName(), currentLevel + 1);
+
+			Sounds.SUCCESS.play(pitPlayer.player);
+			AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " " +
+					AUtil.toRoman(currentLevel + 1) + " &7for " + formatSouls(cost));
+			if(previousPanel != null) {
+				previousPanel.player.openInventory(previousPanel.getInventory());
+				previousPanel.setInventory();
+			}
+		};
+
+		ALoreBuilder confirmLore = new ALoreBuilder(
+				"&7Purchasing: " + unlock.getDisplayName(),
+				"&7Cost: &f" + formatSouls(cost)
+		);
+
+		promptForUnlock(previousPanel, confirmLore, confirm);
+	}
+
+	public static void promptForUnlock(AGUIPanel previousPanel, ALoreBuilder confirmLore, Consumer<GenericConfirmationPanel> confirm) {
+		if(PitSim.isDev()) {
+			confirm.accept(null);
+			return;
+		}
+
+		Consumer<GenericConfirmationPanel> cancel = AGUIPanel::openPreviousGUI;
+
+		ALoreBuilder cancelLore = new ALoreBuilder(
+				"&7Click to cancel"
+		);
+
+		Misc.promptForConfirmation(previousPanel, ChatColor.DARK_PURPLE, confirmLore, cancelLore, confirm, cancel);
 	}
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, MainProgressionUnlock unlock) {

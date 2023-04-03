@@ -67,7 +67,7 @@ public class SkillBranchPanel extends AGUIPanel {
 					return;
 				}
 				pitPlayer.taintedSouls -= cost;
-				ProgressionManager.unlock(pitPlayer, unlock, cost);
+				ProgressionManager.unlock(this, pitPlayer, unlock, cost);
 				setInventory();
 			}
 		} else if((slot >= 1 && slot <= 7) || (slot >= 19 && slot <= 25)) {
@@ -85,7 +85,7 @@ public class SkillBranchPanel extends AGUIPanel {
 					return;
 				}
 				pitPlayer.taintedSouls -= cost;
-				ProgressionManager.unlockNext(pitPlayer, unlock, cost);
+				ProgressionManager.unlockNext(this, pitPlayer, unlock, cost);
 				setInventory();
 			}
 		} else if(slot == 36) {

@@ -55,6 +55,7 @@ public class ActionBarManager implements Listener {
 
 //	controls the amount of ticks that the action bar is locked from displaying low priority messages
 	public enum LockTime {
+	SHORT_TIME(30), // time that action bar message is opaque
 	FULL_OPACITY_TIME(2 * 20), // time that action bar message is opaque
 	FULL_TIME(3 * 20), // time it takes until action bar message has fully faded out
 	EXTRA_TIME(4 * 20), // fade + 1 second

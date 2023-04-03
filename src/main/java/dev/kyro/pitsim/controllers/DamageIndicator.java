@@ -100,7 +100,7 @@ public class DamageIndicator implements Listener {
 			}
 		}
 
-		ActionBarManager.sendActionBar(attackEvent.getAttackerPlayer(), output.toString());
+		ActionBarManager.sendActionBar(attackEvent.getAttackerPlayer(), ActionBarManager.LockTime.SHORT_TIME, output.toString());
 	}
 
 	public static void createDamageStand(Player attacker, LivingEntity defender, double damage) {
