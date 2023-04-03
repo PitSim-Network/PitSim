@@ -44,7 +44,7 @@ public class AssuredStrike extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.DIAMOND_SWORD)
 				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(

@@ -41,7 +41,7 @@ public class XPBooster extends Booster {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		return new AItemStackBuilder(Material.INK_SACK, 1, 12)
 				.setLore(new ALoreBuilder(

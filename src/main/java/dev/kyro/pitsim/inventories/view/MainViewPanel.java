@@ -8,7 +8,6 @@ import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
-import dev.kyro.pitsim.perks.NoPerk;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -50,13 +49,7 @@ public class MainViewPanel extends AGUIPanel {
 
 		for(int i = 0; i < pitTarget.pitPerks.size(); i++) {
 			PitPerk pitPerk = pitTarget.pitPerks.get(i);
-			ItemStack itemStack = pitPerk.getDisplayItem();
-			new AItemStackBuilder(itemStack)
-					.setName("&a" + itemStack.getItemMeta().getDisplayName());
-			if(pitPerk instanceof NoPerk) {
-				new AItemStackBuilder(itemStack)
-						.setLore(new ALoreBuilder("&7No perk selected!"));
-			}
+			ItemStack itemStack = pitPerk.getDisplayStack(player, PitPerk.DisplayItemType.VIEW_PANEL);
 			getInventory().setItem(i + 13, itemStack);
 		}
 

@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.perks;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -22,14 +22,13 @@ public class FirstStrike extends PitPerk {
 	public static Map<Player, List<LivingEntity>> hitPlayers = new HashMap<>();
 
 	public FirstStrike() {
-		super("First Strike", "firststrike", new ItemStack(Material.COOKED_CHICKEN), 15, true, "FIRST_STRIKE", INSTANCE, false);
+		super("First Strike", "firststrike");
 		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
-		if(MapManager.inDarkzone(attackEvent.getAttacker())) return;
+		if(!hasPerk(attackEvent.getAttacker())) return;
 
 		hitPlayers.putIfAbsent(attackEvent.getAttackerPlayer(), new ArrayList<>());
 		List<LivingEntity> hitList = hitPlayers.get(attackEvent.getAttackerPlayer());
@@ -47,8 +46,16 @@ public class FirstStrike extends PitPerk {
 	}
 
 	@Override
-	public List<String> getDescription() {
-		return new ALoreBuilder("&7First hit on a player or", "&7bot deals &c+30% damage.").getLore();
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.COOKED_CHICKEN)
+				.getItemStack();
+	}
+
+	@Override
+	public PitLoreBuilder getBaseDescription() {
+		return new PitLoreBuilder(
+				"&7First hit on a player or bot deals &c+30% damage"
+		);
 	}
 
 	@Override

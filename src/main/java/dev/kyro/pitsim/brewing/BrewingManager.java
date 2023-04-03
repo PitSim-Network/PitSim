@@ -4,7 +4,6 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.BrewPotionsQuest;
 import dev.kyro.pitsim.brewing.objects.BrewingAnimation;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
-import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -80,8 +79,7 @@ public class BrewingManager implements Listener {
 							if(timeLeft < 0) text[i + 1] = "&a&lREADY!";
 							else
 								text[i + 1] = session.identifier.color + session.identifier.name + " &f" + Misc.ticksToTime(timeLeft) + "";
-						} else if(UpgradeManager.getTier(player, "CHEMIST") >= i) text[i + 1] = "&cSlot Empty!";
-						else text[i + 1] = "&cSlot Locked!";
+						} else text[i + 1] = "&cSlot Locked!";
 					}
 
 					if(hasReadyPotions(player)) text[4] = "&aRight-Click to collect!";
@@ -215,7 +213,7 @@ public class BrewingManager implements Listener {
 	public static int getBrewingSlot(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player.getPlayer());
 		for(int i = 0; i < pitPlayer.brewingSessions.size(); i++) {
-			if(pitPlayer.brewingSessions.get(i) == null && UpgradeManager.getTier(player, "CHEMIST") >= i) return i + 1;
+			if(pitPlayer.brewingSessions.get(i) == null) return i + 1;
 		}
 		return -1;
 	}

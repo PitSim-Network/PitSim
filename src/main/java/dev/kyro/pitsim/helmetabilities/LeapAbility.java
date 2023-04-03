@@ -69,7 +69,7 @@ public class LeapAbility extends HelmetAbility {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayStack() {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.RABBIT_FOOT);
 		builder.setName("&e" + name);
 		ALoreBuilder loreBuilder = new ALoreBuilder();

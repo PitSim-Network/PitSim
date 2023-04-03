@@ -30,7 +30,7 @@ public class PassFeatherReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.FEATHER, count)
 				.setName("&3&lFeather Reward")
 				.setLore(new ALoreBuilder(

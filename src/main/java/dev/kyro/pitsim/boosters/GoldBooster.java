@@ -40,7 +40,7 @@ public class GoldBooster extends Booster {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		return new AItemStackBuilder(Material.INK_SACK, 1, 14)
 				.setLore(new ALoreBuilder(

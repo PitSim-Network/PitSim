@@ -84,7 +84,7 @@ public class GoldNanoFactory extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_NUGGET);
 		builder.setName("&e" + displayName);

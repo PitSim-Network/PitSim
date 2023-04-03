@@ -16,7 +16,7 @@ public class SoulBooster extends Booster {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.GHAST_TEAR)
 				.setLore(new ALoreBuilder(
 						"&7Gain &f+" + getSoulsIncrease() + "% souls &7from mobs",

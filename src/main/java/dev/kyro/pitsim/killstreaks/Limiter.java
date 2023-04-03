@@ -49,7 +49,7 @@ public class Limiter extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.ANVIL)
 				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(

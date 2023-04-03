@@ -34,7 +34,7 @@ public class PassBowReward extends PassReward {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, boolean hasClaimed) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, boolean hasClaimed) {
 		ItemStack itemStack = new AItemStackBuilder(Material.BOW, count)
 				.setName("&b&lBow Reward")
 				.setLore(new ALoreBuilder(

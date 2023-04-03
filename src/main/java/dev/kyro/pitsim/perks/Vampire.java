@@ -1,17 +1,14 @@
 package dev.kyro.pitsim.perks;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
 
 public class Vampire extends PitPerk {
 	public static Vampire INSTANCE;
@@ -19,25 +16,30 @@ public class Vampire extends PitPerk {
 	public static double initialHealing = 1;
 
 	public Vampire() {
-		super("Vampire", "vampire", new ItemStack(Material.FERMENTED_SPIDER_EYE), 10, false, "", INSTANCE, true);
+		super("Vampire", "vampire");
 		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerPlayer()) return;
-		if(!playerHasUpgrade(attackEvent.getAttacker())) return;
-		if(MapManager.inDarkzone(attackEvent.getAttacker())) return;
-		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
+		if(!hasPerk(attackEvent.getAttacker())) return;
 
 		double healing = initialHealing;
 		if(attackEvent.getArrow() != null && attackEvent.getArrow().isCritical()) healing *= 2;
-		HealEvent healEvent = pitAttacker.heal(healing);
+		HealEvent healEvent = attackEvent.getAttackerPitPlayer().heal(healing);
 	}
 
 	@Override
-	public List<String> getDescription() {
-		return new ALoreBuilder("&7Heal &c" + Misc.getHearts(initialHealing) + " &7on hit.", "&7Doubled on arrow crit.").getLore();
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.FERMENTED_SPIDER_EYE)
+				.getItemStack();
+	}
+
+	@Override
+	public PitLoreBuilder getBaseDescription() {
+		return new PitLoreBuilder(
+				"&7Heal &c" + Misc.getHearts(initialHealing) + " &7on hit. Doubled on arrow crit"
+		);
 	}
 
 	@Override

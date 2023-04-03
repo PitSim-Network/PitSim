@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class SoulsCommand extends ACommand {
-	public SoulsCommand(AMultiCommand base, String executor) {
+public class RenownCommand extends ACommand {
+	public RenownCommand(AMultiCommand base, String executor) {
 		super(base, executor);
 	}
 
@@ -22,22 +22,22 @@ public class SoulsCommand extends ACommand {
 		Player player = (Player) sender;
 
 		if(args.size() < 1) {
-			AOutput.error(player, "&c&lERROR!&7 Usage: /beta souls <amount>");
+			AOutput.error(player, "&c&lERROR!&7 Usage: /beta renown <amount>");
 			return;
 		}
 
-		int souls;
+		int renown;
 		try {
-			souls = Integer.parseInt(args.get(0));
+			renown = Integer.parseInt(args.get(0));
 		} catch (NumberFormatException e) {
 			AOutput.error(player, "&c&lERROR!&7 Invalid number!");
 			return;
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.taintedSouls += souls;
+		pitPlayer.renown += renown;
 		Sounds.SUCCESS.play(player);
-		AOutput.send(player, "&a&lSUCCESS!&7 Added &f" + souls + " souls &7to your account!");
+		AOutput.send(player, "&a&lSUCCESS!&7 Added &e" + renown + " renown &7to your account!");
 	}
 
 	@Override

@@ -28,7 +28,7 @@ public class ReallyToxicScoreboard extends ScoreboardOption {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.INK_SACK, 1, 2)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

@@ -1,26 +1,23 @@
 package dev.kyro.pitsim.upgrades;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
 import dev.kyro.pitsim.misc.Sounds;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DivineIntervention extends RenownUpgrade {
+public class DivineIntervention extends TieredRenownUpgrade {
 	public static DivineIntervention INSTANCE;
 
 	public DivineIntervention() {
-		super("Divine Intervention", "DIVINE_INTERVENTION", 25, 24, 16, true, 5);
+		super("Divine Intervention", "DIVINE_INTERVENTION", 16);
 		INSTANCE = this;
 	}
 
@@ -49,31 +46,28 @@ public class DivineIntervention extends RenownUpgrade {
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(25, 50, 75, 100, 125);
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.QUARTZ_STAIRS)
+				.getItemStack();
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
-		ItemStack item = new ItemStack(Material.QUARTZ_STAIRS);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
-		List<String> lore = new ArrayList<>();
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
-				"&7Current: &e" + (5 * UpgradeManager.getTier(player, this)) + "% chance"));
-		if(UpgradeManager.hasUpgrade(player, this))
-			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each Tier:");
-		lore.add(ChatColor.YELLOW + "+5% chance " + ChatColor.GRAY + "to keep your");
-		lore.add(ChatColor.GRAY + "inventory on death.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
-		item.setItemMeta(meta);
-		return item;
+	public String getCurrentEffect(int tier) {
+		return "&e" + (tier * 5) + "% chance";
+	}
+
+	@Override
+	public String getEffectPerTier() {
+		return "&e+5% chance &7to keep your inventory on death";
 	}
 
 	@Override
 	public String getSummary() {
 		return "&eDivine Intervention&7 is an &erenown&7 upgrade  gives you a small chance to save your inventory on death";
+	}
+
+	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(25, 50, 75, 100, 125);
 	}
 }

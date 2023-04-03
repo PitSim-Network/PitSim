@@ -112,8 +112,8 @@ public class SkillBranchPanel extends AGUIPanel {
 				firstPathSlot++;
 				secondPathSlot++;
 			}
-			getInventory().setItem(firstPathSlot, skillBranch.firstPath.getDisplayItem(pitPlayer, i + 1));
-			getInventory().setItem(secondPathSlot, skillBranch.secondPath.getDisplayItem(pitPlayer, i + 1));
+			getInventory().setItem(firstPathSlot, skillBranch.firstPath.getDisplayStack(pitPlayer, i + 1));
+			getInventory().setItem(secondPathSlot, skillBranch.secondPath.getDisplayStack(pitPlayer, i + 1));
 		}
 		updateInventory();
 	}

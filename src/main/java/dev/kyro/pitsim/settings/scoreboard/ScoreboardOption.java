@@ -13,7 +13,7 @@ public abstract class ScoreboardOption {
 	public abstract String getDisplayName();
 	public abstract String getRefName();
 	public abstract String getValue(PitPlayer pitPlayer);
-	public abstract ItemStack getBaseDisplayItem();
+	public abstract ItemStack getBaseDisplayStack();
 
 	public int getCurrentPosition(PitPlayer pitPlayer) {
 		int count = 0;
@@ -25,7 +25,7 @@ public abstract class ScoreboardOption {
 	}
 
 	public ItemStack getDisplayStack(int position, boolean isEnabled) {
-		ItemStack itemStack = getBaseDisplayItem();
+		ItemStack itemStack = getBaseDisplayStack();
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		ALoreBuilder loreBuilder = new ALoreBuilder(itemMeta.getLore()).addLore(
 				"", "&7Status: " + (isEnabled ? "&aEnabled": "&cDisabled"), ""

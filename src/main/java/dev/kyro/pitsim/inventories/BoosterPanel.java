@@ -58,7 +58,7 @@ public class BoosterPanel extends AGUIPanel {
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
 		for(Booster booster : BoosterManager.boosterList) {
-			ItemStack itemStack = booster.getDisplayItem(player);
+			ItemStack itemStack = booster.getDisplayStack(player);
 			getInventory().setItem(booster.slot, itemStack);
 		}
 	}

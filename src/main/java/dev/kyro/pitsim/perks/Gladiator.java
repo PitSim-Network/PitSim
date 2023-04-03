@@ -1,11 +1,11 @@
 package dev.kyro.pitsim.perks;
 
-import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -24,7 +24,7 @@ public class Gladiator extends PitPerk {
 	public static Map<UUID, Integer> nearbyPlayerMap = new HashMap<>();
 
 	public Gladiator() {
-		super("Gladiator", "gladiator", new ItemStack(Material.BONE, 1, (short) 0), 13, false, "", INSTANCE, false);
+		super("Gladiator", "gladiator");
 		INSTANCE = this;
 	}
 
@@ -33,13 +33,12 @@ public class Gladiator extends PitPerk {
 			@Override
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
-					if(!INSTANCE.playerHasUpgrade(player)) continue;
+					if(!INSTANCE.hasPerk(player)) continue;
 
 					nearbyPlayerMap.putIfAbsent(player.getUniqueId(), 0);
 					List<Entity> players = player.getNearbyEntities(12, 12, 12);
 					players.removeIf(entity -> !(entity instanceof Player));
-					int nearbyPlayers = players.size();
-					if(nearbyPlayers > 10) nearbyPlayers = 10;
+					int nearbyPlayers = Math.min(players.size(), 10);
 					if(nearbyPlayers < 3) nearbyPlayers = 0;
 					nearbyPlayerMap.put(player.getUniqueId(), nearbyPlayers);
 				}
@@ -49,21 +48,22 @@ public class Gladiator extends PitPerk {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!playerHasUpgrade(attackEvent.getDefender())) return;
-		if(MapManager.inDarkzone(attackEvent.getAttacker())) return;
-
+		if(!hasPerk(attackEvent.getDefender())) return;
 		attackEvent.multipliers.add(Misc.getReductionMultiplier(getReduction(attackEvent.getDefenderPlayer())));
 	}
 
 	@Override
-	public List<String> getDescription() {
-		return new ALoreBuilder(
-				"&7Receive &9-3% &7damage per",
-				"&7nearby player.",
-				"",
-				"&712 blocks range.",
-				"&7Minimum 3, max 10 players."
-		).getLore();
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.BONE)
+				.getItemStack();
+	}
+
+	@Override
+	public PitLoreBuilder getBaseDescription() {
+		PitLoreBuilder loreBuilder = new PitLoreBuilder();
+		loreBuilder.addLongLine("&7Receive &9-3% &7damage per nearby player");
+		loreBuilder.addLongLine("&712 block range. 3 players minimum, 10 players maximum");
+		return loreBuilder;
 	}
 
 	@Override

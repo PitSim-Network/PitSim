@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.inventories;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
@@ -7,6 +9,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,9 +19,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class RenownShopConfirmPanel extends AGUIPanel {
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -27,12 +28,11 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 	public RenownShopConfirmPanel(AGUI gui) {
 		super(gui);
 		renownShopGUI = (RenownShopGUI) gui;
-
 	}
 
 	@Override
 	public String getName() {
-		return "Are you sure?";
+		return "&eAre you sure?";
 	}
 
 	@Override
@@ -42,64 +42,58 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
+		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		if(event.getClickedInventory().getHolder() == this) {
+		if(slot == 11) {
+			RenownUpgrade upgrade = RenownShopGUI.purchaseConfirmations.get(player);
 
-			if(slot == 11) {
-				RenownUpgrade upgrade = RenownShopGUI.purchaseConfirmations.get(player);
-
-				if(upgrade.isTiered) {
-					int tier = UpgradeManager.getTier(player, upgrade);
-					pitPlayer.renownUpgrades.put(upgrade.refName, tier + 1);
-					pitPlayer.renown = pitPlayer.renown - upgrade.getTierCosts().get(tier);
-				} else {
-					pitPlayer.renownUpgrades.put(upgrade.refName, 1);
-					pitPlayer.renown = pitPlayer.renown - upgrade.renownCost;
-				}
-
-				RenownShopGUI.purchaseConfirmations.remove(player);
-				openPanel(renownShopGUI.getHomePanel());
-
-				if(upgrade.isTiered) {
-					AOutput.send(player, ChatColor.translateAlternateColorCodes('&', "&a&lPURCHASE! &6" + upgrade.name + " " + AUtil.toRoman(UpgradeManager.getTier(player, upgrade))));
-				} else {
-					AOutput.send(player, ChatColor.translateAlternateColorCodes('&', "&a&lPURCHASE! &6" + upgrade.name));
-				}
-				Sounds.RENOWN_SHOP_PURCHASE.play(player);
-
-				if(upgrade.refName.equals("UBER_INCREASE")) pitPlayer.dailyUbersLeft++;
+			if(upgrade.isTiered()) {
+				int tier = UpgradeManager.getTier(player, upgrade);
+				pitPlayer.renownUpgrades.put(upgrade.refName, tier + 1);
+				pitPlayer.renown = pitPlayer.renown - upgrade.getTierCosts().get(tier);
+			} else {
+				pitPlayer.renownUpgrades.put(upgrade.refName, 1);
+				pitPlayer.renown = pitPlayer.renown - upgrade.getUnlockCost();
 			}
 
-			if(slot == 15) {
-				RenownShopGUI.purchaseConfirmations.remove(player);
-				openPanel(renownShopGUI.getHomePanel());
+			if(upgrade.isTiered()) {
+				AOutput.send(player, "&a&lPURCHASE! &6" + upgrade.name + " " + AUtil.toRoman(UpgradeManager.getTier(player, upgrade)));
+			} else {
+				AOutput.send(player, "&a&lPURCHASE! &6" + upgrade.name);
 			}
+			Sounds.RENOWN_SHOP_PURCHASE.play(player);
+
+			if(upgrade.refName.equals("UBER_INCREASE")) pitPlayer.dailyUbersLeft++;
+
+			RenownShopGUI.purchaseConfirmations.remove(player);
+			openPanel(renownShopGUI.getHomePanel());
+			updateInventory();
+		} else if(slot == 15) {
+			RenownShopGUI.purchaseConfirmations.remove(player);
+			openPanel(renownShopGUI.getHomePanel());
 			updateInventory();
 		}
-		updateInventory();
 	}
 
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
-		ItemStack confirm = new ItemStack(Material.STAINED_CLAY, 1, (short) 13);
-		ItemMeta confirmMeta = confirm.getItemMeta();
-		confirmMeta.setDisplayName(ChatColor.GREEN + "Confirm");
-		List<String> confirmLore = new ArrayList<>();
 		RenownUpgrade upgrade = RenownShopGUI.purchaseConfirmations.get(player);
-		if(upgrade.isTiered) {
-			confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Purchasing: &6" + upgrade.name + " " +
-					AUtil.toRoman(UpgradeManager.getTier(player, upgrade) + 1)));
-			confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade))));
-		} else {
-			confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Purchasing: &6" + upgrade.name));
-			confirmLore.add(ChatColor.translateAlternateColorCodes('&', "&7Cost: &e" + upgrade.renownCost));
-		}
-		confirmMeta.setLore(confirmLore);
-		confirm.setItemMeta(confirmMeta);
+		PitLoreBuilder loreBuilder = new PitLoreBuilder();
+		String tieredString = upgrade.isTiered() ? " " + AUtil.toRoman(UpgradeManager.getTier(player, upgrade) + 1) : "";
+		loreBuilder.addLongLine("&7Purchasing: &6" + upgrade.name + tieredString);
+		loreBuilder.addLongLine("&7Cost: &e" + UpgradeManager.getNextCost(player, upgrade));
+		ItemStack confirmStack = new AItemStackBuilder(Material.STAINED_CLAY, 1, (short) 13)
+				.setName("&aConfirm")
+				.setLore(loreBuilder)
+				.getItemStack();
+		getInventory().setItem(11, confirmStack);
 
-		getInventory().setItem(11, confirm);
-
+		ItemStack cancelStack = new AItemStackBuilder(Material.STAINED_CLAY, 1, (short) 14)
+				.setName("&cCancel")
+				.setLore(new ALoreBuilder(
+						"&7Return to previous menu"
+				)).getItemStack();
 		ItemStack cancel = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 		ItemMeta cancelMeta = cancel.getItemMeta();
 		cancelMeta.setDisplayName(ChatColor.RED + "Cancel");

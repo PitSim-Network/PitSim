@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Killstreak implements Listener, Summarizable {
-
 	public String displayName;
 	public String refName;
 	public int killInterval;
@@ -29,7 +28,7 @@ public abstract class Killstreak implements Listener, Summarizable {
 
 	public abstract void reset(Player player);
 
-	public abstract ItemStack getDisplayItem(Player player);
+	public abstract ItemStack getDisplayStack(Player player);
 
 	public static Killstreak getKillstreak(String refName) {
 		for(Killstreak killstreak : PerkManager.killstreaks) {

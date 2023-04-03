@@ -30,7 +30,7 @@ public class TelebowScoreboard extends ScoreboardOption {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.ENDER_PEARL)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

@@ -131,7 +131,7 @@ public class PassPanel extends AGUIPanel {
 
 			if(PassManager.hasReward(PitSimPass.RewardType.PREMIUM, tier)) {
 				boolean hasClaimed = PassManager.hasClaimedReward(pitPlayer, PitSimPass.RewardType.PREMIUM, tier);
-				ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(tier).getDisplayItem(pitPlayer, hasClaimed);
+				ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(tier).getDisplayStack(pitPlayer, hasClaimed);
 				setLore(PitSimPass.RewardType.PREMIUM, itemStack, passData.getCompletedTiers() >= tier, hasClaimed, passData.hasPremium);
 				if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.PREMIUM, tier)) {
 					Misc.addEnchantGlint(itemStack);
@@ -146,7 +146,7 @@ public class PassPanel extends AGUIPanel {
 			}
 			if(PassManager.hasReward(PitSimPass.RewardType.FREE, tier)) {
 				boolean hasClaimed = PassManager.hasClaimedReward(pitPlayer, PitSimPass.RewardType.FREE, tier);
-				ItemStack itemStack = PassManager.currentPass.freePassRewards.get(tier).getDisplayItem(pitPlayer, hasClaimed);
+				ItemStack itemStack = PassManager.currentPass.freePassRewards.get(tier).getDisplayStack(pitPlayer, hasClaimed);
 				setLore(PitSimPass.RewardType.FREE, itemStack, passData.getCompletedTiers() >= tier, hasClaimed, passData.hasPremium);
 				if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.FREE, tier)) {
 					Misc.addEnchantGlint(itemStack);
@@ -200,7 +200,7 @@ public class PassPanel extends AGUIPanel {
 			if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.PREMIUM, clickedReward)) {
 				boolean success = PassManager.claimReward(pitPlayer, PitSimPass.RewardType.PREMIUM, clickedReward);
 				if(success) {
-					ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(clickedReward).getDisplayItem(pitPlayer, true);
+					ItemStack itemStack = PassManager.currentPass.premiumPassRewards.get(clickedReward).getDisplayStack(pitPlayer, true);
 					setLore(PitSimPass.RewardType.PREMIUM, itemStack, passData.getCompletedTiers() >= clickedReward, true, passData.hasPremium);
 					itemStack.setType(Material.INK_SACK);
 					itemStack.setDurability((short) 8);
@@ -217,7 +217,7 @@ public class PassPanel extends AGUIPanel {
 			if(PassManager.canClaimReward(pitPlayer, PitSimPass.RewardType.FREE, clickedReward)) {
 				boolean success = PassManager.claimReward(pitPlayer, PitSimPass.RewardType.FREE, clickedReward);
 				if(success) {
-					ItemStack itemStack = PassManager.currentPass.freePassRewards.get(clickedReward).getDisplayItem(pitPlayer, true);
+					ItemStack itemStack = PassManager.currentPass.freePassRewards.get(clickedReward).getDisplayStack(pitPlayer, true);
 					setLore(PitSimPass.RewardType.FREE, itemStack, passData.getCompletedTiers() >= clickedReward, true, passData.hasPremium);
 					itemStack.setType(Material.INK_SACK);
 					itemStack.setDurability((short) 8);

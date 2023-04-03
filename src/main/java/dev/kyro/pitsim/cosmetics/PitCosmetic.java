@@ -69,7 +69,7 @@ public abstract class PitCosmetic implements Listener {
 		colorableCosmetic.setParticleColor(pitPlayer.player, getColor(pitPlayer));
 	}
 
-	public ItemStack getDisplayItem(boolean equipped) {
+	public ItemStack getDisplayStack(boolean equipped) {
 		ItemStack itemStack = getRawDisplayItem();
 		ALoreBuilder loreBuilder = new ALoreBuilder(itemStack.getItemMeta().getLore());
 		if(equipped) {

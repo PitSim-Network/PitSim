@@ -330,7 +330,7 @@ public class PitPlayer {
 			else if(i == 3) defaultPerk = Dispersion.INSTANCE;
 
 			String perkString = playerData.getString("perk-" + i);
-			PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : defaultPerk;
+			PitPerk savedPerk = perkString != null ? PerkManager.getPitPerk(perkString) : defaultPerk;
 			pitPerks.set(i, savedPerk != null ? savedPerk : defaultPerk);
 		}
 		for(int i = 0; i < killstreaks.size(); i++) {
@@ -397,8 +397,8 @@ public class PitPlayer {
 
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
 			int tier = 0;
-			if(!upgrade.isTiered && playerData.contains(upgrade.refName)) tier = 1;
-			else if(upgrade.isTiered && playerData.contains(upgrade.refName)) tier = playerData.getInt(upgrade.refName);
+			if(!upgrade.isTiered() && playerData.contains(upgrade.refName)) tier = 1;
+			else if(upgrade.isTiered() && playerData.contains(upgrade.refName)) tier = playerData.getInt(upgrade.refName);
 			renownUpgrades.put(upgrade.refName, tier);
 		}
 
@@ -423,7 +423,7 @@ public class PitPlayer {
 
 		for(int i = 0; i < pitPerks.size(); i++) {
 			String perkString = pitPerksRef.get(i);
-			PitPerk savedPerk = perkString != null ? PitPerk.getPitPerk(perkString) : NoPerk.INSTANCE;
+			PitPerk savedPerk = perkString != null ? PerkManager.getPitPerk(perkString) : NoPerk.INSTANCE;
 			pitPerks.set(i, savedPerk);
 		}
 

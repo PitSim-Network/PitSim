@@ -28,7 +28,7 @@ public class HerosHaste extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.BOOK)
 				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(

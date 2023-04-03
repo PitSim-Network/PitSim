@@ -43,7 +43,7 @@ public abstract class HelmetAbility implements Listener {
 
 	public abstract List<String> getDescription();
 
-	public abstract ItemStack getDisplayItem();
+	public abstract ItemStack getDisplayStack();
 
 	public static HelmetAbility getAbility(String refName) {
 		for(HelmetAbility helmetAbility : helmetAbilities) {

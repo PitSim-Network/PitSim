@@ -29,7 +29,7 @@ public class DoTrueDamageVSPlayersQuest extends PassQuest {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
 		ItemStack itemStack = new AItemStackBuilder(Material.RED_ROSE, 1, 1)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

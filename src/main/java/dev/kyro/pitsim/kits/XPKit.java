@@ -19,7 +19,7 @@ public class XPKit extends Kit {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.WHEAT)
 				.setName("&bXP Streaking Kit")
 				.setLore(new ALoreBuilder(

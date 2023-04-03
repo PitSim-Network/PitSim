@@ -24,7 +24,7 @@ public class EarnRenownQuest extends PassQuest {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
 		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
 		ItemStack itemStack = new AItemStackBuilder(Material.BEACON)
 				.setName(getDisplayName())

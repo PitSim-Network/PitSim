@@ -64,7 +64,7 @@ public class ManaBranch extends SkillBranch {
 	}
 
 	@Override
-	public ItemStack getBaseStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.INK_SACK, 1, 12)
 				.setLore(new ALoreBuilder(
 						"&7Upgrade your mana"
@@ -86,7 +86,7 @@ public class ManaBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.INK_SACK, 1, 12)
 						.setLore(new ALoreBuilder(
 								"&7Unlocks the ability to use",
@@ -111,7 +111,7 @@ public class ManaBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.GOLD_HOE)
 						.setLore(new ALoreBuilder(
 								"&7All spells are &b" + getSpellManaReduction() + "% cheaper",
@@ -136,7 +136,7 @@ public class ManaBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.SKULL_ITEM, 1, 2)
 						.setLore(new ALoreBuilder(
 								"&7Gain &b+" + getMobKillMana() + " mana &7on mob kill"
@@ -160,7 +160,7 @@ public class ManaBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.SPECKLED_MELON)
 						.setLore(new ALoreBuilder(
 								"&7When your shield is down,",

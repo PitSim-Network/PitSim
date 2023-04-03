@@ -1,29 +1,24 @@
 package dev.kyro.pitsim.upgrades;
 
-import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
-import org.bukkit.ChatColor;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Tenacity extends RenownUpgrade {
-	public Tenacity() {
-		super("Tenacity", "TENACITY", 10, 11, 1, true, 2);
-	}
+public class Tenacity extends TieredRenownUpgrade {
+	public static Tenacity INSTANCE;
 
-	@Override
-	public List<Integer> getTierCosts() {
-		return Arrays.asList(10, 50);
+	public Tenacity() {
+		super("Tenacity", "TENACITY", 1);
+		INSTANCE = this;
 	}
 
 	@EventHandler
@@ -39,25 +34,28 @@ public class Tenacity extends RenownUpgrade {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
-		ItemStack item = new ItemStack(Material.MAGMA_CREAM);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
-		List<String> lore = new ArrayList<>();
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add(ChatColor.translateAlternateColorCodes('&',
-				"&7Current: Heal &c" + 0.5 * UpgradeManager.getTier(player, this) + "\u2764 &7on kill."));
-		if(UpgradeManager.hasUpgrade(player, this))
-			lore.add(ChatColor.GRAY + "Tier: " + ChatColor.GREEN + AUtil.toRoman(UpgradeManager.getTier(player, this)));
-		if(UpgradeManager.hasUpgrade(player, this)) lore.add("");
-		lore.add(ChatColor.GRAY + "Each Tier:");
-		lore.add(ChatColor.GRAY + "Heal " + ChatColor.RED + "0.5\u2764 " + ChatColor.GRAY + "on kill.");
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
-		item.setItemMeta(meta);
-		return item;
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.MAGMA_CREAM)
+				.getItemStack();
+	}
+
+	@Override
+	public String getCurrentEffect(int tier) {
+		return "&7Heal &c" + Misc.getHearts(tier) + " &7on kill";
+	}
+
+	@Override
+	public String getEffectPerTier() {
+		return getCurrentEffect(1);
 	}
 
 	@Override
 	public String getSummary() {
 		return "Tenacity is an &erenown &7upgrade that &cheals you &7when you kill a bot or player, which is very useful for streaking";
+	}
+
+	@Override
+	public List<Integer> getTierCosts() {
+		return Arrays.asList(10, 50);
 	}
 }

@@ -98,7 +98,7 @@ public class GoldRushAbility extends HelmetAbility {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayStack() {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_INGOT);
 		builder.setName("&e" + name);
 		ALoreBuilder loreBuilder = new ALoreBuilder();

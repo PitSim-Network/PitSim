@@ -20,7 +20,7 @@ public class GoldKit extends Kit {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_INGOT)
 				.setName("&6Gold Streaking Kit")
 				.setLore(new ALoreBuilder(

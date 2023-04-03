@@ -16,7 +16,7 @@ public class EssentialKit extends Kit {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayStack() {
 		ItemStack itemStack = new AItemStackBuilder(Material.DIAMOND_CHESTPLATE)
 				.setName("&7Essential Kit")
 				.setLore(new ALoreBuilder(

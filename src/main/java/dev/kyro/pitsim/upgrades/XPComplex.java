@@ -1,26 +1,40 @@
 package dev.kyro.pitsim.upgrades;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.controllers.objects.UnlockableRenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
+public class XPComplex extends UnlockableRenownUpgrade {
+	public static XPComplex INSTANCE;
 
-public class XPComplex extends RenownUpgrade {
 	public XPComplex() {
-		super("Experience-Industrial Complex", "XP_COMPLEX", 50, 29, 23, false, 1);
+		super("Experience-Industrial Complex", "XP_COMPLEX", 23);
+		INSTANCE = this;
 	}
 
 	@Override
-	public List<Integer> getTierCosts() {
-		return null;
+	public String getSummary() {
+		return "&eExperience-Industrial Complex&7 is an &erenown&7 upgrade that increases your max &bXP";
+	}
+
+	@Override
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.DIAMOND_BARDING)
+				.getItemStack();
+	}
+
+	@Override
+	public String getEffect() {
+		return "&7Gain &b+150 max XP";
+	}
+
+	@Override
+	public int getUnlockCost() {
+		return 50;
 	}
 
 	@EventHandler
@@ -29,22 +43,5 @@ public class XPComplex extends RenownUpgrade {
 		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
 
 		killEvent.xpCap += 150;
-	}
-
-	@Override
-	public ItemStack getDisplayItem(Player player) {
-		ItemStack item = new ItemStack(Material.DIAMOND_BARDING);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(UpgradeManager.itemNameString(this, player));
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Gain &b+150 max XP&7."));
-		meta.setLore(UpgradeManager.loreBuilder(this, player, lore, false));
-		item.setItemMeta(meta);
-		return item;
-	}
-
-	@Override
-	public String getSummary() {
-		return "&eExperience-Industrial Complex&7 is an &erenown&7 upgrade that increases your max &bXP";
 	}
 }

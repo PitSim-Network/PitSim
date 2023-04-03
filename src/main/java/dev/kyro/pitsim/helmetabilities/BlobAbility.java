@@ -89,7 +89,7 @@ public class BlobAbility extends HelmetAbility {
 	}
 
 	@Override
-	public ItemStack getDisplayItem() {
+	public ItemStack getDisplayStack() {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.SLIME_BALL);
 		builder.setName("&e" + name);
 		ALoreBuilder loreBuilder = new ALoreBuilder();

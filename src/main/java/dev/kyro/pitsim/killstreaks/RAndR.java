@@ -29,7 +29,7 @@ public class RAndR extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLDEN_CARROT)
 				.setName("&e" + displayName)

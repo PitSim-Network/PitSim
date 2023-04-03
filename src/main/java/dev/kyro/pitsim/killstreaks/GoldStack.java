@@ -50,7 +50,7 @@ public class GoldStack extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		DecimalFormat formatter = new DecimalFormat("#.##");
 		AItemStackBuilder builder = new AItemStackBuilder(Material.GOLD_ORE)
 				.setName("&e" + displayName)

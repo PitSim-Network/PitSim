@@ -1,15 +1,13 @@
 package dev.kyro.pitsim.upgrades;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.VeryYummyBread;
 import dev.kyro.pitsim.aitems.misc.YummyBread;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
+import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,11 +15,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
-public class BreadDealer extends RenownUpgrade {
+public class BreadDealer extends TieredRenownUpgrade {
 	public static BreadDealer INSTANCE;
 
 	public BreadDealer() {
-		super("Bread Dealer", "BREADDEALER", 10, 0, 1, true, 2);
+		super("Bread Dealer", "BREADDEALER", 1);
 		INSTANCE = this;
 	}
 
@@ -48,40 +46,32 @@ public class BreadDealer extends RenownUpgrade {
 	}
 
 	@Override
+	public ItemStack getBaseDisplayStack() {
+		return new AItemStackBuilder(Material.BREAD)
+				.getItemStack();
+	}
+
+	@Override
+	public String getCurrentEffect(int tier) {
+		return "&7Retain &e" + (tier * getPercentPerTier()) + "% &7bread";
+	}
+
+	@Override
+	public String getEffectPerTier() {
+		return "&7Retain &e+" + getPercentPerTier() + "% &7bread on death";
+	}
+
+	@Override
+	public String getSummary() {
+		return "&eBread Dealer&7 is an &erenown&7 upgrade that allows you to retain some of the bread in your inventory on death";
+	}
+
+	@Override
 	public List<Integer> getTierCosts() {
 		return Arrays.asList(10, 50);
 	}
 	
 	public static int getPercentPerTier() {
 		return 10;
-	}
-
-	@Override
-	public ItemStack getDisplayItem(Player player) {
-		int tier = UpgradeManager.getTier(player, this);
-		int retainPercent = tier * getPercentPerTier();
-
-		ALoreBuilder loreBuilder = new ALoreBuilder();
-		if(UpgradeManager.hasUpgrade(player, this)) {
-			loreBuilder.addLore(
-					"&7Current: Retain &e" + retainPercent + "% &7bread on death",
-					"&7Tier: &a" + AUtil.toRoman(tier),
-					""
-			);
-		}
-		loreBuilder.addLore(
-				"&7Each Tier:",
-				"&7Retain &e+" + retainPercent + " &7bread on death"
-		);
-
-		return new AItemStackBuilder(Material.BREAD)
-				.setName(UpgradeManager.itemNameString(this, player))
-				.setLore(loreBuilder)
-				.getItemStack();
-	}
-
-	@Override
-	public String getSummary() {
-		return "&eBread Dealer&7 is an &erenown&7 upgrade that allows you to retain some of the bread in your inventory on death";
 	}
 }

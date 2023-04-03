@@ -32,7 +32,7 @@ public class KillSpidersQuest extends PassQuest {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
+	public ItemStack getDisplayStack(PitPlayer pitPlayer, QuestLevel questLevel, double progress) {
 		ItemStack itemStack = new AItemStackBuilder(Material.SPIDER_EYE)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(

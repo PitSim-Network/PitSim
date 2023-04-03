@@ -24,7 +24,7 @@ public class BrewingBranch extends SkillBranch {
 	}
 
 	@Override
-	public ItemStack getBaseStack() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.BREWING_STAND_ITEM)
 				.setLore(new ALoreBuilder(
 						"&7Upgrade potion brewing skills"
@@ -46,7 +46,7 @@ public class BrewingBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.BREWING_STAND_ITEM)
 						.setLore(new ALoreBuilder(
 								"&7Adds an additional slot to",
@@ -71,7 +71,7 @@ public class BrewingBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.CAULDRON_ITEM)
 						.setLore(new ALoreBuilder(
 								"&7A larger cauldron! Perfect",
@@ -97,7 +97,7 @@ public class BrewingBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.FLOWER_POT_ITEM)
 						.setLore(new ALoreBuilder(
 								"&7The perfect item for carrying",
@@ -122,7 +122,7 @@ public class BrewingBranch extends SkillBranch {
 			}
 
 			@Override
-			public ItemStack getBaseStack() {
+			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.NETHER_STAR)
 						.setLore(new ALoreBuilder(
 								"&7The most powerful potion",

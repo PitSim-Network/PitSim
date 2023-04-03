@@ -60,13 +60,13 @@ public class ShardHunterPanel extends AGUIPanel {
 					Sounds.NO.play(player);
 					return;
 				}
-				if(upgrade.isTiered) {
-					if(upgrade.maxTiers != UpgradeManager.getTier(player, upgrade) && upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade)) > pitPlayer.renown) {
+				if(upgrade.isTiered()) {
+					if(upgrade.getMaxTiers() != UpgradeManager.getTier(player, upgrade) && upgrade.getTierCosts().get(UpgradeManager.getTier(player, upgrade)) > pitPlayer.renown) {
 						AOutput.error(player, "&cYou do not have enough renown!");
 						Sounds.NO.play(player);
 						return;
 					}
-					if(UpgradeManager.getTier(player, upgrade) < upgrade.maxTiers) {
+					if(UpgradeManager.getTier(player, upgrade) < upgrade.getMaxTiers()) {
 						RenownShopGUI.purchaseConfirmations.put(player, upgrade);
 						openPanel(renownShopGUI.renownShopConfirmPanel);
 					} else {
@@ -74,7 +74,7 @@ public class ShardHunterPanel extends AGUIPanel {
 						Sounds.NO.play(player);
 					}
 				} else if(!UpgradeManager.hasUpgrade(player, upgrade)) {
-					if(upgrade.renownCost > pitPlayer.renown) {
+					if(upgrade.getUnlockCost() > pitPlayer.renown) {
 						AOutput.error(player, "&cYou do not have enough renown!");
 						Sounds.NO.play(player);
 						return;
@@ -138,7 +138,7 @@ public class ShardHunterPanel extends AGUIPanel {
 		gem.setItemMeta(meta);
 
 		getInventory().setItem(11, gem);
-		getInventory().setItem(15, upgrade.getDisplayItem(player));
+		getInventory().setItem(15, upgrade.getDisplayStack(player));
 
 		ItemStack back = new ItemStack(Material.ARROW);
 		ItemMeta backMeta = back.getItemMeta();

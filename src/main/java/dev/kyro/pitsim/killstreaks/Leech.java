@@ -44,7 +44,7 @@ public class Leech extends Killstreak {
 	}
 
 	@Override
-	public ItemStack getDisplayItem(Player player) {
+	public ItemStack getDisplayStack(Player player) {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.FERMENTED_SPIDER_EYE)
 				.setName("&e" + displayName)
 				.setLore(new ALoreBuilder(

@@ -13,7 +13,7 @@ public class GladiatorPlaceholder implements APAPIPlaceholder {
 
 	@Override
 	public String getValue(Player player) {
-		if(!Gladiator.INSTANCE.playerHasUpgrade(player)) return "None";
+		if(!Gladiator.INSTANCE.hasPerk(player)) return "None";
 		int reduction = Gladiator.getReduction(player);
 		if(reduction == 0) return "None";
 

@@ -16,7 +16,7 @@ public class ChaosBooster extends Booster {
 	}
 
 	@Override
-	public ItemStack getBaseDisplayItem() {
+	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.TNT)
 				.setLore(new ALoreBuilder(
 						"&7Doubles the number of bots",
