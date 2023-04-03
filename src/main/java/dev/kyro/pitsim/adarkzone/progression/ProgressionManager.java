@@ -236,7 +236,6 @@ public class ProgressionManager implements Listener {
 				previousPanel.setInventory();
 			}
 		};
-
 		ALoreBuilder confirmLore = new ALoreBuilder(
 				"&7Purchasing: " + unlock.getDisplayName(),
 				"&7Cost: &f" + formatSouls(cost)
@@ -260,7 +259,6 @@ public class ProgressionManager implements Listener {
 				previousPanel.setInventory();
 			}
 		};
-
 		ALoreBuilder confirmLore = new ALoreBuilder(
 				"&7Purchasing: " + unlock.getDisplayName(),
 				"&7Cost: &f" + formatSouls(cost)
@@ -285,7 +283,6 @@ public class ProgressionManager implements Listener {
 				previousPanel.setInventory();
 			}
 		};
-
 		ALoreBuilder confirmLore = new ALoreBuilder(
 				"&7Purchasing: " + unlock.getDisplayName(),
 				"&7Cost: &f" + formatSouls(cost)
@@ -301,7 +298,6 @@ public class ProgressionManager implements Listener {
 		}
 
 		Consumer<GenericConfirmationPanel> cancel = AGUIPanel::openPreviousGUI;
-
 		ALoreBuilder cancelLore = new ALoreBuilder(
 				"&7Click to cancel"
 		);
