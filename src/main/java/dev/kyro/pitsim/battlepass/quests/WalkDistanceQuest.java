@@ -6,7 +6,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -50,9 +50,9 @@ public class WalkDistanceQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.RABBIT_FOOT)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Walk or sprint &f" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 100) + " &7blocks",
+						"&7Walk or sprint &f" + Formatter.formatLarge(questLevel.getRequirement(pitPlayer) / 100) + " &7blocks",
 						"",
-						"&7Progress: &3" + Misc.formatLarge(progress / 100) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 100) + " &8[" +
+						"&7Progress: &3" + Formatter.formatLarge(progress / 100) + "&7/&3" + Formatter.formatLarge(questLevel.getRequirement(pitPlayer) / 100) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
 										progress / questLevel.getRequirement(pitPlayer)) + "&8]",
 						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"

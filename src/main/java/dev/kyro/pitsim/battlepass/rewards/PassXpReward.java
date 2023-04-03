@@ -6,7 +6,7 @@ import dev.kyro.pitsim.battlepass.PassReward;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,7 +34,7 @@ public class PassXpReward extends PassReward {
 		ItemStack itemStack = new AItemStackBuilder(Material.INK_SACK, 1, 12)
 				.setName("&b&lXP Reward")
 				.setLore(new ALoreBuilder(
-						"&7Reward: &b+" + Misc.formatLarge((long) (xp * getMultiplier(pitPlayer))) + " XP"
+						"&7Reward: &b+" + Formatter.formatLarge((long) (xp * getMultiplier(pitPlayer))) + " XP"
 				)).getItemStack();
 		return itemStack;
 	}

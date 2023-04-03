@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -101,8 +102,8 @@ public class EcoCommand implements CommandExecutor {
 
 			PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 			pitTarget.gold = amount;
-			AOutput.send(sender, "&6&lECO!&7 Set the balance of " + Misc.getDisplayName(target) + "&7 to &6" + Misc.formatGoldFull(amount) + "g");
-			AOutput.send(target, "&6&lGOLD!&7 Your balance was set to &6" + Misc.formatGoldFull(amount) + "g");
+			AOutput.send(sender, "&6&lECO!&7 Set the balance of " + Misc.getDisplayName(target) + "&7 to &6" + Formatter.formatGoldFull(amount) + "g");
+			AOutput.send(target, "&6&lGOLD!&7 Your balance was set to &6" + Formatter.formatGoldFull(amount) + "g");
 		} else {
 			AOutput.error(sender, "&7Usage: /eco <give|take|set> <player> <amount>");
 		}
@@ -113,20 +114,20 @@ public class EcoCommand implements CommandExecutor {
 	public static void giveGold(CommandSender giver, Player target, double amount) {
 		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 		pitTarget.gold += amount;
-		if(giver != target) AOutput.send(giver, "&6&lECO!&7 Gave &6" + Misc.formatGoldFull(amount) + "g &7to " + Misc.getDisplayName(target));
-		AOutput.send(pitTarget.player, "&6&lGOLD!&7 You received &6" + Misc.formatGoldFull(amount) + "g");
+		if(giver != target) AOutput.send(giver, "&6&lECO!&7 Gave &6" + Formatter.formatGoldFull(amount) + "g &7to " + Misc.getDisplayName(target));
+		AOutput.send(pitTarget.player, "&6&lGOLD!&7 You received &6" + Formatter.formatGoldFull(amount) + "g");
 	}
 
 	public static void takeGold(CommandSender giver, Player target, double amount) {
 		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 
 		if(amount > pitTarget.gold) {
-			AOutput.error(giver, "&c&lERROR!&7 That player only has &6" + Misc.formatGoldFull(pitTarget.gold) + "g");
+			AOutput.error(giver, "&c&lERROR!&7 That player only has &6" + Formatter.formatGoldFull(pitTarget.gold) + "g");
 			return;
 		}
 
 		pitTarget.gold -= amount;
-		if(giver != target) AOutput.send(giver, "&6&lECO!&7 Took &6" + Misc.formatGoldFull(amount) + "g &7from " + Misc.getDisplayName(target));
-		AOutput.send(target, "&6&lGOLD!&6 " + Misc.formatGoldFull(amount) + "g &7was taken from you");
+		if(giver != target) AOutput.send(giver, "&6&lECO!&7 Took &6" + Formatter.formatGoldFull(amount) + "g &7from " + Misc.getDisplayName(target));
+		AOutput.send(target, "&6&lGOLD!&6 " + Formatter.formatGoldFull(amount) + "g &7was taken from you");
 	}
 }

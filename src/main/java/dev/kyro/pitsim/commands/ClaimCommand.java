@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DiscordManager;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -49,7 +49,7 @@ public class ClaimCommand implements CommandExecutor {
 		long currentTime = System.currentTimeMillis();
 		if(nextClaimTime > currentTime) {
 			AOutput.send(player, "&c&lERROR!&7 You cannot do this for another " +
-					Misc.formatDurationFull(nextClaimTime - currentTime, true));
+					Formatter.formatDurationFull(nextClaimTime - currentTime, true));
 			return;
 		}
 

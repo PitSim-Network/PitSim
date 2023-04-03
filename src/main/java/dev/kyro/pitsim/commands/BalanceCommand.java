@@ -2,6 +2,7 @@ package dev.kyro.pitsim.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -18,7 +19,7 @@ public class BalanceCommand implements CommandExecutor {
 
 		if(!player.isOp() || args.length < 1) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			AOutput.send(player, "&6&lGOLD!&7 You have &6" + Misc.formatGoldFull(pitPlayer.gold) + "g");
+			AOutput.send(player, "&6&lGOLD!&7 You have &6" + Formatter.formatGoldFull(pitPlayer.gold) + "g");
 			return false;
 		}
 
@@ -29,7 +30,7 @@ public class BalanceCommand implements CommandExecutor {
 		}
 
 		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
-		AOutput.send(player, "&6&lGOLD!&7 " + Misc.getDisplayName(target) + " &7has &6" + Misc.formatGoldFull(pitTarget.gold) + "g");
+		AOutput.send(player, "&6&lGOLD!&7 " + Misc.getDisplayName(target) + " &7has &6" + Formatter.formatGoldFull(pitTarget.gold) + "g");
 		return false;
 	}
 }

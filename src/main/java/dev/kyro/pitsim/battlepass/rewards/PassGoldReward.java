@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.battlepass.PassReward;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,7 +33,7 @@ public class PassGoldReward extends PassReward {
 		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_INGOT)
 				.setName("&6&lGold Reward")
 				.setLore(new ALoreBuilder(
-						"&7Reward: &6" + Misc.formatLarge((int) (gold * getMultiplier(pitPlayer))) + "g"
+						"&7Reward: &6" + Formatter.formatLarge((int) (gold * getMultiplier(pitPlayer))) + "g"
 				)).getItemStack();
 		return itemStack;
 	}

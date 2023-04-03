@@ -12,6 +12,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
@@ -190,7 +191,7 @@ public class AuctionManager implements Listener {
 	}
 
 	public static String getRemainingTime(long endTime) {
-		return Misc.formatDurationFull(endTime - System.currentTimeMillis(), true);
+		return Formatter.formatDurationFull(endTime - System.currentTimeMillis(), true);
 	}
 
 	public static long getAuctionEndTime() {

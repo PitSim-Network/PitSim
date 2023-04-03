@@ -13,6 +13,7 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.WrapperEntityDamageEvent;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.particles.HomeParticle;
@@ -536,7 +537,7 @@ public class RNGesus extends Megastreak {
 
 	public static String getTimeLeft(PitPlayer pitPlayer) {
 		long timeRemaining = pitPlayer.rngCooldown - System.currentTimeMillis();
-		return Misc.formatDurationFull(timeRemaining, true);
+		return Formatter.formatDurationFull(timeRemaining, true);
 	}
 
 	public void putOnCooldown() {

@@ -6,9 +6,8 @@ import dev.kyro.pitsim.controllers.objects.Leaderboard;
 import dev.kyro.pitsim.controllers.objects.LeaderboardData;
 import dev.kyro.pitsim.controllers.objects.LeaderboardPosition;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -33,12 +32,12 @@ public class PlayerKillsLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&c" + Misc.formatLarge(position.intValue) + " kills";
+		return "&c" + Formatter.formatLarge(position.intValue) + " kills";
 	}
 
 	@Override
 	public String getDisplayValue(PitPlayer pitPlayer) {
-		return "&c" + Misc.formatLarge(pitPlayer.stats.playerKills) + " kills";
+		return "&c" + Formatter.formatLarge(pitPlayer.stats.playerKills) + " kills";
 	}
 
 	@Override

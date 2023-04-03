@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.upgrades.Helmetry;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -28,10 +28,10 @@ public class UseHelmetGoldQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.GOLD_NUGGET)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Spend &6" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + "g &7on helmet abilities",
+						"&7Spend &6" + Formatter.formatLarge(questLevel.getRequirement(pitPlayer)) + "g &7on helmet abilities",
 						"&7(&6Golden Helmet&7) required",
 						"",
-						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
+						"&7Progress: &3" + Formatter.formatLarge(progress) + "&7/&3" + Formatter.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
 										progress / questLevel.getRequirement(pitPlayer)) + "&8]",
 						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"

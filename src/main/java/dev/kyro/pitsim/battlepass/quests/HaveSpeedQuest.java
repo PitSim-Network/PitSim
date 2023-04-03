@@ -8,7 +8,7 @@ import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -46,11 +46,11 @@ public class HaveSpeedQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.SUGAR)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Have speed for &f" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 60) + " &7minutes",
+						"&7Have speed for &f" + Formatter.formatLarge(questLevel.getRequirement(pitPlayer) / 60) + " &7minutes",
 						"&7(not counting in spawn or in",
 						"&7the darkzone)",
 						"",
-						"&7Progress: &3" + Misc.formatLarge(progress / 60) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer) / 60) + " &8[" +
+						"&7Progress: &3" + Formatter.formatLarge(progress / 60) + "&7/&3" + Formatter.formatLarge(questLevel.getRequirement(pitPlayer) / 60) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
 										progress / questLevel.getRequirement(pitPlayer)) + "&8]",
 						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"

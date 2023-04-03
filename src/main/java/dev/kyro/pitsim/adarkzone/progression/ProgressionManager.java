@@ -10,6 +10,7 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.UnlockState;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.*;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.inventories.GenericConfirmationPanel;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
@@ -170,28 +171,23 @@ public class ProgressionManager implements Listener {
 
 	public static String getUnlockCostFormatted(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
 		int cost = getUnlockCost(pitPlayer, unlock);
-		return formatSouls(cost);
+		return Formatter.formatSouls(cost);
 	}
 
 	public static String getUnlockCostFormatted(SkillBranch.MajorProgressionUnlock unlock) {
 		int cost = ProgressionManager.getInitialSoulCost(unlock);
-		return formatSouls(cost);
+		return Formatter.formatSouls(cost);
 	}
 
 	public static String getUnlockCostFormatted(SkillBranch.Path unlock, int level) {
 		int cost = ProgressionManager.getInitialSoulCost(unlock, level);
-		return formatSouls(cost);
-	}
-
-	public static String formatSouls(int souls) {
-		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
-		return "&f" + decimalFormat.format(souls) + " soul" + (souls == 1 ? "" : "s");
+		return Formatter.formatSouls(cost);
 	}
 
 	public static void addPurchaseCostLore(Object object, ALoreBuilder loreBuilder, UnlockState unlockState,
 										   int currentSouls, int cost, boolean alwaysDisplayCost) {
 		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
-		String costString = formatSouls(cost);
+		String costString = Formatter.formatSouls(cost);
 		if(unlockState == UnlockState.LOCKED) {
 			if(alwaysDisplayCost) loreBuilder.addLore(
 					"&7Unlock Cost: " + costString,
@@ -230,7 +226,7 @@ public class ProgressionManager implements Listener {
 			pitPlayer.darkzoneData.mainProgressionUnlocks.add(unlock.id);
 
 			Sounds.SUCCESS.play(pitPlayer.player);
-			AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " &7for " + formatSouls(cost));
+			AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " &7for " + Formatter.formatSouls(cost));
 			if(previousPanel != null) {
 				previousPanel.player.openInventory(previousPanel.getInventory());
 				previousPanel.setInventory();
@@ -238,7 +234,7 @@ public class ProgressionManager implements Listener {
 		};
 		ALoreBuilder confirmLore = new ALoreBuilder(
 				"&7Purchasing: " + unlock.getDisplayName(),
-				"&7Cost: &f" + formatSouls(cost)
+				"&7Cost: &f" + Formatter.formatSouls(cost)
 		);
 
 		promptForUnlock(previousPanel, confirmLore, confirm);
@@ -253,7 +249,7 @@ public class ProgressionManager implements Listener {
 			skillBranchData.majorUnlocks.add(unlock.getRefName());
 
 			Sounds.SUCCESS.play(pitPlayer.player);
-			AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " &7for " + formatSouls(cost));
+			AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " &7for " + Formatter.formatSouls(cost));
 			if(previousPanel != null) {
 				previousPanel.player.openInventory(previousPanel.getInventory());
 				previousPanel.setInventory();
@@ -261,7 +257,7 @@ public class ProgressionManager implements Listener {
 		};
 		ALoreBuilder confirmLore = new ALoreBuilder(
 				"&7Purchasing: " + unlock.getDisplayName(),
-				"&7Cost: &f" + formatSouls(cost)
+				"&7Cost: &f" + Formatter.formatSouls(cost)
 		);
 
 		promptForUnlock(previousPanel, confirmLore, confirm);
@@ -277,7 +273,7 @@ public class ProgressionManager implements Listener {
 
 			Sounds.SUCCESS.play(pitPlayer.player);
 			AOutput.send(pitPlayer.player, "&5&lDARKZONE!&7 You unlocked " + unlock.getDisplayName() + " " +
-					AUtil.toRoman(currentLevel + 1) + " &7for " + formatSouls(cost));
+					AUtil.toRoman(currentLevel + 1) + " &7for " + Formatter.formatSouls(cost));
 			if(previousPanel != null) {
 				previousPanel.player.openInventory(previousPanel.getInventory());
 				previousPanel.setInventory();
@@ -285,7 +281,7 @@ public class ProgressionManager implements Listener {
 		};
 		ALoreBuilder confirmLore = new ALoreBuilder(
 				"&7Purchasing: " + unlock.getDisplayName(),
-				"&7Cost: &f" + formatSouls(cost)
+				"&7Cost: &f" + Formatter.formatSouls(cost)
 		);
 
 		promptForUnlock(previousPanel, confirmLore, confirm);

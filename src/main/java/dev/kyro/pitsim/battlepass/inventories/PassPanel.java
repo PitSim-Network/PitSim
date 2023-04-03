@@ -10,6 +10,7 @@ import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PitSimPass;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
@@ -115,7 +116,7 @@ public class PassPanel extends AGUIPanel {
 				getInventory().setItem(i + 36, new AItemStackBuilder(Material.STAINED_GLASS_PANE, 1, (short) 1)
 						.setName("&6&lTier " + tier)
 						.setLore(new ALoreBuilder(
-								"&7Progress: &6" + Misc.formatLarge(passData.getPointsForTier()) + "&7/&6" + Misc.formatLarge(PassManager.POINTS_PER_TIER) +
+								"&7Progress: &6" + Formatter.formatLarge(passData.getPointsForTier()) + "&7/&6" + Formatter.formatLarge(PassManager.POINTS_PER_TIER) +
 										" &8[" + AUtil.createProgressBar("|", ChatColor.GOLD, ChatColor.GRAY, 20,
 										(double) passData.getPointsForTier() / PassManager.POINTS_PER_TIER) + "&8]"
 						))
