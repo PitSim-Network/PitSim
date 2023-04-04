@@ -71,8 +71,15 @@ public class Regularity extends PitEnchant {
 
 		HitCounter.incrementCharge(attackEvent.getAttackerPlayer(), this);
 
-		toReg.add(attackEvent.getDefender().getUniqueId());
 		regCooldown.add(attackEvent.getDefender().getUniqueId());
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				toReg.add(attackEvent.getDefender().getUniqueId());
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1);
+
 		new BukkitRunnable() {
 			@Override
 			public void run() {
