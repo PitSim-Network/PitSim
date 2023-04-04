@@ -80,7 +80,7 @@ public class ShardHunter extends TieredRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&aShardhunter&7 is an &erenown&7 upgrade that gives you the small chance to gain &aAncient Gem " +
+		return "&aShardhunter&7 is a &erenown&7 upgrade that gives you the small chance to gain &aAncient Gem " +
 				"Shards&7 on bot kills, &aShards&7 can be used to craft a &aGem&7 that allows you to get nine " +
 				"token &3Jewel&7 Items";
 	}

@@ -41,7 +41,7 @@ public class VentureCapitalist extends TieredRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&dVenture Capitalist&7 is an &erenown&7 upgrade that increases your daily &dUberstreak&7 limit";
+		return "&dVenture Capitalist&7 is a &erenown&7 upgrade that increases your daily &dUberstreak&7 limit";
 	}
 
 	@Override

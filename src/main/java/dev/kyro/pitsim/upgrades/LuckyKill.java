@@ -68,7 +68,7 @@ public class LuckyKill extends TieredRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&dLucky Kill &7is an &erenown &7upgrade that gives you a small chance to &dtriple &7bot kill rewards";
+		return "&dLucky Kill &7is a &erenown &7upgrade that gives you a small chance to &dtriple &7bot kill rewards";
 	}
 
 	@Override

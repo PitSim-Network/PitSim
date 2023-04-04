@@ -51,7 +51,7 @@ public class Tenacity extends TieredRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "Tenacity is an &erenown &7upgrade that &cheals you &7when you kill a bot or player, which is very useful for streaking";
+		return "Tenacity is a &erenown &7upgrade that &cheals you &7when you kill a bot or player, which is very useful for streaking";
 	}
 
 	@Override

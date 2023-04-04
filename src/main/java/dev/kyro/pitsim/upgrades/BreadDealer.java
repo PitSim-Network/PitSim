@@ -60,7 +60,7 @@ public class BreadDealer extends TieredRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&eBread Dealer&7 is an &erenown&7 upgrade that allows you to retain some of the bread in your inventory on death";
+		return "&eBread Dealer&7 is a &erenown&7 upgrade that allows you to retain some of the bread in your inventory on death";
 	}
 
 	@Override

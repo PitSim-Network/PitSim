@@ -26,7 +26,7 @@ public class FastPass extends UnlockableRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&eFast Pass&7 is an &erenown&7 upgrade that increases the level you start on after completing a &eprestige";
+		return "&eFast Pass&7 is a &erenown&7 upgrade that increases the level you start on after completing a &eprestige";
 	}
 
 	@Override

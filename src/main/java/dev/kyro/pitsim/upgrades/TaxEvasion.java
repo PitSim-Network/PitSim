@@ -36,7 +36,7 @@ public class TaxEvasion extends TieredRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&eTax Evasion&7 is an &erenown&7 upgrade that makes the enchant &dRARE! &9Billionaire&7 cost less &6gold";
+		return "&eTax Evasion&7 is a &erenown&7 upgrade that makes the enchant &dRARE! &9Billionaire&7 cost less &6gold";
 	}
 
 	@Override

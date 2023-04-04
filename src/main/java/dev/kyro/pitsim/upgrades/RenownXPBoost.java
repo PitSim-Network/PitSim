@@ -48,7 +48,7 @@ public class RenownXPBoost extends TieredRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&eRenown &bXP Boost &7is an &erenown &7upgrade that grants extra &b+5XP &7on a player/bot kill per tier";
+		return "&eRenown &bXP Boost &7is a &erenown &7upgrade that grants extra &b+5XP &7on a player/bot kill per tier";
 	}
 
 	@Override
