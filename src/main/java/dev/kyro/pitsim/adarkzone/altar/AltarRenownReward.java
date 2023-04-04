@@ -36,27 +36,18 @@ public class AltarRenownReward {
 		Random random = new Random();
 		World world = ((CraftWorld) location.getWorld()).getHandle();
 
-		int itemCount = (int) Math.pow(amount, 3.0 / 5.0);
-		Map<Integer, Integer> renownDistributionMap = new HashMap<>();
-		int renownToDistribute = amount - itemCount;
-		for(int i = 0; i < itemCount; i++) renownDistributionMap.put(i, 1);
-		for(int i = 0; i < renownToDistribute; i++) {
-			int randomStack = new Random().nextInt(itemCount);
-			renownDistributionMap.put(randomStack, renownDistributionMap.get(randomStack) + 1);
-		}
-
-		for(Map.Entry<Integer, Integer> entry : renownDistributionMap.entrySet()) {
+		for(Integer stackSize : Misc.createDistribution(amount, 3.0 / 5.0)) {
 			double offsetX = (random.nextInt(20) - 10) * 0.1;
 			double offsetZ = (random.nextInt(20) - 10) * 0.1;
 
 			EntityItem entityItem = new EntityItem(world);
 			Location spawnLocation = new Location(location.getWorld(), location.getX() + offsetX, location.getY(), location.getZ() + offsetZ);
 			entityItem.setPosition(spawnLocation.getX(), spawnLocation.getY(), spawnLocation.getZ());
-			ItemStack itemStack = new ItemStack(Material.QUARTZ, entry.getValue(), (short) 0);
+			ItemStack itemStack = new ItemStack(Material.QUARTZ, stackSize, (short) 0);
 			entityItem.setItemStack(CraftItemStack.asNMSCopy(new ItemStack(itemStack)));
-			items.put(entityItem, entry.getValue());
+			items.put(entityItem, stackSize);
 
-			PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 2, entry.getValue());
+			PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 2, stackSize);
 			((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawn);
 
 			PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entityItem.getId(), entityItem.getDataWatcher(), true);
@@ -74,7 +65,7 @@ public class AltarRenownReward {
 
 						Sounds.ITEM_PICKUP.play(player);
 
-						reward(entry.getValue());
+						reward(stackSize);
 						items.remove(entityItem);
 						cancel();
 					}

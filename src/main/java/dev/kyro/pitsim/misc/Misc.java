@@ -68,6 +68,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Misc {
+	public static List<Integer> createDistribution(int amount, double exponentialReduction) {
+		int distributions = (int) Math.pow(amount, exponentialReduction);
+		Map<Integer, Integer> distributionMap = new HashMap<>();
+		amount -= distributions;
+		for(int i = 0; i < distributions; i++) distributionMap.put(i, 1);
+		for(int i = 0; i < amount; i++) {
+			int randomStack = new Random().nextInt(distributions);
+			distributionMap.put(randomStack, distributionMap.get(randomStack) + 1);
+		}
+		return new ArrayList<>(distributionMap.values());
+	}
+
 	public static void promptForConfirmation(AGUIPanel previousPanel, ChatColor chatColor, ALoreBuilder confirmLore,
 											 ALoreBuilder cancelLore, Consumer<GenericConfirmationPanel> confirm,
 											 Consumer<GenericConfirmationPanel> cancel) {
@@ -398,24 +410,6 @@ public class Misc {
 		return message;
 	}
 
-	public static byte getTetrisWoolColor() {
-		int randomInt = new Random().nextInt(6);
-		switch(randomInt) {
-			case 0:
-				return 1;
-			case 1:
-				return 2;
-			case 2:
-				return 3;
-			case 3:
-				return 4;
-			case 4:
-				return 5;
-			case 5:
-				return 14;
-		}
-		return -1;
-	}
 
 	public static void addEnchantGlint(ItemStack itemStack) {
 		itemStack.addUnsafeEnchantment(Enchantment.WATER_WORKER, 1);

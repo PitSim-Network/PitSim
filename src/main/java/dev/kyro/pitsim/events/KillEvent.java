@@ -87,7 +87,7 @@ public class KillEvent extends Event {
 
 		if(isDeadRealPlayer) this.soulsLost = getBaseSouls(getDeadPitPlayer());
 
-		deadInventoryWrapper = new WrapperPlayerInventory(getDeadPlayer());
+		if(isDeadPlayer) deadInventoryWrapper = new WrapperPlayerInventory(getDeadPlayer());
 		checkLoseLives();
 	}
 
@@ -182,7 +182,7 @@ public class KillEvent extends Event {
 			if(livesLost != 0) PlayerManager.sendLivesLostMessage(deadPlayer, livesLost);
 		}
 
-		deadInventoryWrapper.setInventory();
+		if(deadInventoryWrapper != null) deadInventoryWrapper.setInventory();
 	}
 
 	@Override

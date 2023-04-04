@@ -87,6 +87,7 @@ public class ReincarnationAbility extends PitBossAbility {
 				getPitBoss().getBoss().setHealth(getPitBoss().getBoss().getMaxHealth());
 				isReincarnating = false;
 				getPitBoss().onHealthChange();
+				Sounds.REINCARNATION_END.play(getPitBoss().getBoss().getLocation(), 40);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 80);
 	}

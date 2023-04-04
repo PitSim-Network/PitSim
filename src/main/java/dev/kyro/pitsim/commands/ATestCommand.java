@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,6 +28,8 @@ public class ATestCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
+
+		Sounds.ALTAR_LEVEL_UP.play(player);
 
 //		for(AltarPedestal altarPedestal : AltarPedestal.altarPedestals) {
 //			Bukkit.broadcastMessage(String.valueOf(altarPedestal.stand.isDead()));

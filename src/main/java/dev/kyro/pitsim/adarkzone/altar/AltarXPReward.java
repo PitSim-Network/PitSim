@@ -3,6 +3,7 @@ package dev.kyro.pitsim.adarkzone.altar;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneLeveling;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.EntityExperienceOrb;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityExperienceOrb;
@@ -17,37 +18,34 @@ import java.util.Random;
 
 public class AltarXPReward {
 	public Player player;
-	public double xp;
-	public int orbCount = new Random().nextInt(5 - 3) + 3;
+	public int xp;
 
-	public AltarXPReward(Player player, double xp) {
+	public AltarXPReward(Player player, int xp) {
 		this.player = player;
 		this.xp = xp;
 	}
 
 	public void spawn(Location location) {
-		for(int i = 0; i < orbCount; i++) {
-			World world = ((CraftWorld) location.getWorld()).getHandle();
-			EntityExperienceOrb orb = new EntityExperienceOrb(world, location.getX(), location.getY(), location.getZ(), (int) xp);
+		Random random = new Random();
+		World world = ((CraftWorld) location.getWorld()).getHandle();
+
+		for(Integer stackSize : Misc.createDistribution(xp, 1.0 / 2.0)) {
+			double offsetX = (random.nextInt(20) - 10) * 0.1;
+			double offsetZ = (random.nextInt(20) - 10) * 0.1;
+
+			EntityExperienceOrb orb = new EntityExperienceOrb(world, location.getX() + offsetX, location.getY(), location.getZ() + offsetZ, stackSize);
 			PacketPlayOutSpawnEntityExperienceOrb spawn = new PacketPlayOutSpawnEntityExperienceOrb(orb);
 			((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawn);
 
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					despawn(orb);
-					reward();
+					PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(orb.getId());
+					((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
+
+					DarkzoneLeveling.giveXP(PitPlayer.getPitPlayer(player), stackSize);
 				}
-			}.runTaskLater(PitSim.INSTANCE, 20 + (3L * i));
+			}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(31) + 10);
 		}
-	}
-
-	public void despawn(EntityExperienceOrb orb) {
-		PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(orb.getId());
-		((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
-	}
-
-	public void reward() {
-		DarkzoneLeveling.giveXP(PitPlayer.getPitPlayer(player), xp / orbCount);
 	}
 }

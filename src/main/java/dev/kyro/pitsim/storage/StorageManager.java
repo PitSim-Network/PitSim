@@ -214,7 +214,7 @@ public class StorageManager implements Listener {
 	}
 
 	@EventHandler
-	public void onPickup(PlayerDropItemEvent event) {
+	public void onDrop(PlayerDropItemEvent event) {
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
 		if(profile.hasData() && profile.isSaving()) {

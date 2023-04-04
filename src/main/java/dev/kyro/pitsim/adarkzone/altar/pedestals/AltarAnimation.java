@@ -78,7 +78,7 @@ public class AltarAnimation {
 				soulItems.add(entityItem);
 				Sounds.SOUL_DROP.play(player, 1f, Math.min(0.05f * ticks, 2f));
 
-				if(soulItems.size() >= Math.sqrt(totalSouls) + (24 - Math.sqrt(AltarPedestal.BASE_COST))) {
+				if(soulItems.size() >= getPartialRotations(totalSouls) + (24 - getPartialRotations(AltarPedestal.BASE_COST))) {
 					cancel();
 					drawPedestalStreams();
 				}
@@ -249,6 +249,10 @@ public class AltarAnimation {
 
 		onComplete = null;
 		endAnimation();
+	}
+
+	public int getPartialRotations(int amount) {
+		return (int) Math.pow(amount, 1 / 1.65);
 	}
 
 	public static ItemStack getItemStack() {
