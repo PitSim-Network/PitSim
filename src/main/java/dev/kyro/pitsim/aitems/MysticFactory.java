@@ -69,7 +69,7 @@ public class MysticFactory {
 	}
 
 	public static boolean isFresh(ItemStack itemStack) {
-		if(!isMystic(itemStack)) return false;
+		if(!isMystic(itemStack) || isJewel(itemStack, false)) return false;
 
 		NBTItem nbtItem = new NBTItem(itemStack);
 		int enchantNum = nbtItem.getInteger(NBTTag.ITEM_ENCHANT_NUM.getRef());
