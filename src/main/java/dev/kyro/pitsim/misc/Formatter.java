@@ -8,7 +8,7 @@ public class Formatter {
 	public static DecimalFormat commaFormat = new DecimalFormat("#,##0");
 
 	public static String formatRenown(int renown) {
-		return "&e" + commaFormat.format(renown) + " Renown" + Misc.s(renown);
+		return "&e" + commaFormat.format(renown) + " Renown";
 	}
 
 	public static String formatSouls(int souls) {
