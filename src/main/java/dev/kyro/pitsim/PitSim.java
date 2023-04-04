@@ -735,8 +735,8 @@ public class PitSim extends JavaPlugin {
 
 	public void registerUpgrades() {
 		UpgradeManager.registerUpgrade(new Tenacity());
-		UpgradeManager.registerUpgrade(new dev.kyro.pitsim.upgrades.GoldBoost());
-		UpgradeManager.registerUpgrade(new XPBoost());
+		UpgradeManager.registerUpgrade(new RenownGoldBoost());
+		UpgradeManager.registerUpgrade(new RenownXPBoost());
 		UpgradeManager.registerUpgrade(new LuckyKill());
 		UpgradeManager.registerUpgrade(new Impatient());
 		UpgradeManager.registerUpgrade(new UnlockStreaker());
@@ -749,7 +749,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new Withercraft());
 		UpgradeManager.registerUpgrade(new TaxEvasion());
 		UpgradeManager.registerUpgrade(new XPComplex());
-		UpgradeManager.registerUpgrade(new UberIncrease());
+		UpgradeManager.registerUpgrade(new VentureCapitalist());
 		UpgradeManager.registerUpgrade(new KillSteal());
 		UpgradeManager.registerUpgrade(new ShardHunter());
 		UpgradeManager.registerUpgrade(new TheWay());

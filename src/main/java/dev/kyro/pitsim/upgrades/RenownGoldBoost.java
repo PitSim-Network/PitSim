@@ -11,11 +11,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
-public class GoldBoost extends TieredRenownUpgrade {
-	public static GoldBoost INSTANCE;
+public class RenownGoldBoost extends TieredRenownUpgrade {
+	public static RenownGoldBoost INSTANCE;
 
-	public GoldBoost() {
-		super("Renown Gold Boost", "GOLD_BOOST", 1);
+	public RenownGoldBoost() {
+		super("Renown Gold Boost", "GOLD_BOOST", 3);
 		INSTANCE = this;
 	}
 

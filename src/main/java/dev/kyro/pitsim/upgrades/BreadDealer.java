@@ -1,48 +1,45 @@
 package dev.kyro.pitsim.upgrades;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.VeryYummyBread;
 import dev.kyro.pitsim.aitems.misc.YummyBread;
-import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
+import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class BreadDealer extends TieredRenownUpgrade {
 	public static BreadDealer INSTANCE;
 
 	public BreadDealer() {
-		super("Bread Dealer", "BREADDEALER", 1);
+		super("Bread Dealer", "BREADDEALER", 30);
 		INSTANCE = this;
 	}
 
-	public static void handleBreadOnDeath(Player player) {
-		int tier = UpgradeManager.getTier(player, BreadDealer.INSTANCE);
-		int retainPercent = tier * getPercentPerTier();
+	@EventHandler
+	public void onKill(KillEvent killEvent) {
+		if(!UpgradeManager.hasUpgrade(killEvent.getDeadPlayer(), this)) return;
+		double percentSaved = UpgradeManager.getTier(killEvent.getDeadPlayer(), this) * getPercentPerTier();
+		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : new ArrayList<>(killEvent.getVulnerableItems().entrySet())) {
+			PlayerItemLocation itemLocation = entry.getKey();
+			KillEvent.ItemInfo itemInfo = entry.getValue();
+			if(!(itemInfo.pitItem instanceof YummyBread) && !(itemInfo.pitItem instanceof VeryYummyBread)) continue;
+			killEvent.removeVulnerableItem(itemLocation);
 
-		if(!PlayerManager.isRealPlayer(player)) return;
-		for(int i = 0; i < player.getInventory().getSize(); i++) {
-			ItemStack itemStack = player.getInventory().getItem(i);
-
-			PitItem pitItem = ItemFactory.getItem(itemStack);
-			if(!(pitItem instanceof YummyBread) && !(pitItem instanceof VeryYummyBread)) continue;
-
-			int quantity = itemStack.getAmount();
-			quantity *= retainPercent / 100.0;
-			if(quantity == 0) {
-				player.getInventory().setItem(i, new ItemStack(Material.AIR));
-			} else {
-				itemStack.setAmount(quantity);
-				player.getInventory().setItem(i, itemStack);
-			}
+			ItemStack modifiedStack = itemInfo.itemStack.clone();
+			int newAmount = (int) Math.floor(modifiedStack.getAmount() * percentSaved / 100.0);
+			modifiedStack.setAmount(newAmount);
+			killEvent.getDeadInventoryWrapper().putItem(itemLocation, modifiedStack);
 		}
+		killEvent.getDeadPlayer().updateInventory();
 	}
 
 	@Override
@@ -68,7 +65,7 @@ public class BreadDealer extends TieredRenownUpgrade {
 
 	@Override
 	public List<Integer> getTierCosts() {
-		return Arrays.asList(10, 50);
+		return Arrays.asList(10, 20, 30, 40, 50);
 	}
 	
 	public static int getPercentPerTier() {

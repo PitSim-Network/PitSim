@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -18,7 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public class YummyBread extends StaticPitItem {
+public class YummyBread extends StaticPitItem implements TemporaryItem {
 	public static Map<Player, Integer> breadStacks = new HashMap<>();
 
 	public YummyBread() {
@@ -103,5 +104,10 @@ public class YummyBread extends StaticPitItem {
 	@Override
 	public boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem) {
 		return nbtItem.hasKey(NBTTag.IS_YUMMY_BREAD.getRef());
+	}
+
+	@Override
+	public TemporaryType getTemporaryType() {
+		return TemporaryType.LOST_ON_DEATH;
 	}
 }

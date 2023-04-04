@@ -59,10 +59,9 @@ public class KillEvent extends Event {
 	public double soulsLost;
 	public List<Double> soulMultipliers = new ArrayList<>();
 
-	public boolean isLuckyKill = false;
-
 	private boolean shouldLoseItems = false;
 	private WrapperPlayerInventory deadInventoryWrapper;
+
 	private final Map<PlayerItemLocation, ItemInfo> deadVulnerableItems = new LinkedHashMap<>();
 
 	public KillEvent(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillType killType, KillModifier... killModifiers) {
@@ -88,43 +87,8 @@ public class KillEvent extends Event {
 
 		if(isDeadRealPlayer) this.soulsLost = getBaseSouls(getDeadPitPlayer());
 
-		checkLoseLives();
-	}
-
-	public boolean hasKillModifier(KillModifier killModifier) {
-		return new ArrayList<>(killModifiers).contains(killModifier);
-	}
-
-	private void checkLoseLives() {
-		if(!isDeadRealPlayer) return;
-
-		if(PvPBooster.INSTANCE.isActive()) return;
-		if(DivineIntervention.attemptDivine(getDeadPlayer())) return;
-
-		if(PitSim.status.isOverworld()) {
-			if(ItemFactory.getItem(FunkyFeather.class).useFeather(killer, getDeadPlayer())) return;
-		} else {
-			if(ItemFactory.getItem(CorruptedFeather.class).useCorruptedFeather(killer, getDeadPlayer())) return;
-		}
-
-		shouldLoseItems = true;
 		deadInventoryWrapper = new WrapperPlayerInventory(getDeadPlayer());
-		for(Map.Entry<PlayerItemLocation, ItemStack> entry : deadInventoryWrapper.getItemMap().entrySet()) {
-			ItemStack itemStack = entry.getValue();
-			PitItem pitItem = ItemFactory.getItem(itemStack);
-			if(!(pitItem instanceof TemporaryItem)) continue;
-
-			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
-			if(temporaryItem.getTemporaryType() == TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH) {
-				int currentLives = temporaryItem.getLives(itemStack);
-				if(currentLives == 0) continue;
-				deadVulnerableItems.put(entry.getKey(), new ItemInfo(pitItem, entry.getValue(), 1));
-			} else if(temporaryItem.getTemporaryType() == TemporaryItem.TemporaryType.LOST_ON_DEATH) {
-				deadVulnerableItems.put(entry.getKey(), new ItemInfo(pitItem, entry.getValue(), 0));
-			} else {
-				throw new RuntimeException();
-			}
-		}
+		checkLoseLives();
 	}
 
 	public int getFinalXp() {
@@ -165,6 +129,62 @@ public class KillEvent extends Event {
 		return (int) Math.min(Math.ceil(soulsLost), getDeadPitPlayer().taintedSouls);
 	}
 
+	private void checkLoseLives() {
+		if(!isDeadRealPlayer) return;
+
+		if(PvPBooster.INSTANCE.isActive()) return;
+		if(DivineIntervention.attemptDivine(getDeadPlayer())) return;
+
+		if(PitSim.status.isOverworld()) {
+			if(ItemFactory.getItem(FunkyFeather.class).useFeather(killer, getDeadPlayer())) return;
+		} else {
+			if(ItemFactory.getItem(CorruptedFeather.class).useCorruptedFeather(killer, getDeadPlayer())) return;
+		}
+
+		shouldLoseItems = true;
+		for(Map.Entry<PlayerItemLocation, ItemStack> entry : deadInventoryWrapper.getItemMap().entrySet()) {
+			ItemStack itemStack = entry.getValue();
+			PitItem pitItem = ItemFactory.getItem(itemStack);
+			if(!(pitItem instanceof TemporaryItem)) continue;
+
+			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
+			if(temporaryItem.getTemporaryType() == TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH) {
+				int currentLives = temporaryItem.getLives(itemStack);
+				if(currentLives == 0) continue;
+				deadVulnerableItems.put(entry.getKey(), new ItemInfo(pitItem, entry.getValue(), 1));
+			} else if(temporaryItem.getTemporaryType() == TemporaryItem.TemporaryType.LOST_ON_DEATH) {
+				deadVulnerableItems.put(entry.getKey(), new ItemInfo(pitItem, entry.getValue(), 0));
+			} else {
+				throw new RuntimeException();
+			}
+		}
+	}
+
+	public void updateItems() {
+		if(shouldLoseItems) {
+			int livesLost = 0;
+			for(Map.Entry<PlayerItemLocation, ItemInfo> entry : deadVulnerableItems.entrySet()) {
+				ItemStack itemStack = entry.getValue().itemStack;
+				PitItem pitItem = ItemFactory.getItem(itemStack);
+				assert pitItem != null;
+				TemporaryItem temporaryItem = (TemporaryItem) pitItem;
+
+				TemporaryItem.ItemDamageResult damageResult = temporaryItem.damage(itemStack, entry.getValue().livesToLose);
+				livesLost += damageResult.getLivesLost();
+
+				deadInventoryWrapper.putItem(entry.getKey(), damageResult.getItemStack());
+				if(damageResult.wasRemoved()) {
+					temporaryItem.onItemRemove(itemStack);
+					PlayerManager.sendItemLossMessage(deadPlayer, itemStack);
+				}
+			}
+
+			if(livesLost != 0) PlayerManager.sendLivesLostMessage(deadPlayer, livesLost);
+		}
+
+		deadInventoryWrapper.setInventory();
+	}
+
 	@Override
 	public HandlerList getHandlers() {
 		return handlers;
@@ -172,6 +192,10 @@ public class KillEvent extends Event {
 
 	public static HandlerList getHandlerList() {
 		return handlers;
+	}
+
+	public boolean hasKillModifier(KillModifier killModifier) {
+		return new ArrayList<>(killModifiers).contains(killModifier);
 	}
 
 	public int getKillerEnchantLevel(PitEnchant pitEnchant) {
@@ -250,6 +274,10 @@ public class KillEvent extends Event {
 		return killType;
 	}
 
+	public WrapperPlayerInventory getDeadInventoryWrapper() {
+		return deadInventoryWrapper;
+	}
+
 	public boolean shouldLoseItems() {
 		return shouldLoseItems;
 	}
@@ -260,31 +288,6 @@ public class KillEvent extends Event {
 
 	public void removeVulnerableItem(PlayerItemLocation itemLocation) {
 		deadVulnerableItems.remove(itemLocation);
-	}
-
-	public void damageItems() {
-		if(!shouldLoseItems) return;
-
-		int livesLost = 0;
-		for(Map.Entry<PlayerItemLocation, ItemInfo> entry : deadVulnerableItems.entrySet()) {
-			ItemStack itemStack = entry.getValue().itemStack;
-			PitItem pitItem = ItemFactory.getItem(itemStack);
-			assert pitItem != null;
-			TemporaryItem temporaryItem = (TemporaryItem) pitItem;
-
-			TemporaryItem.ItemDamageResult damageResult = temporaryItem.damage(itemStack, entry.getValue().livesToLose);
-			livesLost += damageResult.getLivesLost();
-
-			deadInventoryWrapper.putItem(entry.getKey(), damageResult.getItemStack());
-			if(damageResult.wasRemoved()) {
-				temporaryItem.onItemRemove(itemStack);
-				PlayerManager.sendItemLossMessage(deadPlayer, itemStack);
-			}
-		}
-
-		if(livesLost != 0) PlayerManager.sendLivesLostMessage(deadPlayer, livesLost);
-
-		deadInventoryWrapper.setInventory();
 	}
 
 	public static class ItemInfo {

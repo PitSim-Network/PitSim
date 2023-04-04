@@ -29,7 +29,7 @@ import dev.kyro.pitsim.events.IncrementKillsEvent;
 import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.upgrades.UberIncrease;
+import dev.kyro.pitsim.upgrades.VentureCapitalist;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -455,7 +455,7 @@ public class Uberstreak extends Megastreak {
 	}
 
 	public static int getMaxUbers(Player player) {
-		return 5 + UberIncrease.getUberIncrease(player);
+		return 5 + VentureCapitalist.getUberIncrease(player);
 	}
 
 	public static void checkUberReset(PitPlayer pitPlayer) {
