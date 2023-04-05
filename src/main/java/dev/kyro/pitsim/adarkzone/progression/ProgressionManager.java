@@ -223,6 +223,7 @@ public class ProgressionManager implements Listener {
 		if(pitPlayer.darkzoneData.mainProgressionUnlocks.contains(unlock.id)) throw new RuntimeException();
 
 		Consumer<GenericConfirmationPanel> confirm = panel -> {
+			pitPlayer.taintedSouls -= cost;
 			pitPlayer.darkzoneData.mainProgressionUnlocks.add(unlock.id);
 
 			Sounds.SUCCESS.play(pitPlayer.player);
@@ -244,6 +245,7 @@ public class ProgressionManager implements Listener {
 		pitPlayer.darkzoneData.skillBranchUnlocks.putIfAbsent(unlock.skillBranch.getRefName(), new DarkzoneData.SkillBranchData());
 
 		Consumer<GenericConfirmationPanel> confirm = panel -> {
+			pitPlayer.taintedSouls -= cost;
 			DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
 			if(skillBranchData.majorUnlocks.contains(unlock.getRefName())) throw new RuntimeException();
 			skillBranchData.majorUnlocks.add(unlock.getRefName());
@@ -267,6 +269,7 @@ public class ProgressionManager implements Listener {
 		pitPlayer.darkzoneData.skillBranchUnlocks.putIfAbsent(unlock.skillBranch.getRefName(), new DarkzoneData.SkillBranchData());
 
 		Consumer<GenericConfirmationPanel> confirm = panel -> {
+			pitPlayer.taintedSouls -= cost;
 			DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(unlock.skillBranch.getRefName());
 			int currentLevel = skillBranchData.pathUnlocks.getOrDefault(unlock.getRefName(), 0);
 			skillBranchData.pathUnlocks.put(unlock.getRefName(), currentLevel + 1);

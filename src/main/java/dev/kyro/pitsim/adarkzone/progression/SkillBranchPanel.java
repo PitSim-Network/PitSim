@@ -66,7 +66,6 @@ public class SkillBranchPanel extends AGUIPanel {
 					Lang.NOT_ENOUGH_SOULS.send(player);
 					return;
 				}
-				pitPlayer.taintedSouls -= cost;
 				ProgressionManager.unlock(this, pitPlayer, unlock, cost);
 				setInventory();
 			}
@@ -84,7 +83,6 @@ public class SkillBranchPanel extends AGUIPanel {
 					Lang.NOT_ENOUGH_SOULS.send(player);
 					return;
 				}
-				pitPlayer.taintedSouls -= cost;
 				ProgressionManager.unlockNext(this, pitPlayer, unlock, cost);
 				setInventory();
 			}
