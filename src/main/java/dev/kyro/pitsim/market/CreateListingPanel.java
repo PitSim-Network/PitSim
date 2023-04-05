@@ -9,6 +9,7 @@ import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.packets.SignPrompt;
@@ -292,7 +293,7 @@ public class CreateListingPanel extends AGUIPanel {
 		AItemStackBuilder durationBuilder = new AItemStackBuilder(Material.WATCH)
 				.setName("&eListing Duration")
 				.setLore(new ALoreBuilder(
-						"&7Listing Duration: &f" + Misc.formatDurationFull(duration, false),
+						"&7Listing Duration: &f" + Formatter.formatDurationFull(duration, false),
 						"",
 						"&7Maximum Duration: &f" + getMaxDurationDays() + " Days",
 						"&eBoost this with a rank", "&efrom &f&nstore.pitsim.net",

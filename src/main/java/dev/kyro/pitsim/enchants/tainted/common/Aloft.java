@@ -19,7 +19,7 @@ public class Aloft extends BasicDarkzoneEnchant {
 	}
 
 	@Override
-	public int getStatPercent(int enchantLvl) {
+	public int getBaseStatPercent(int enchantLvl) {
 		return enchantLvl * 12 + 9;
 	}
 

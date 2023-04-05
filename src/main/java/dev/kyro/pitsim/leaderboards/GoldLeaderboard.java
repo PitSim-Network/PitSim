@@ -6,7 +6,7 @@ import dev.kyro.pitsim.controllers.objects.Leaderboard;
 import dev.kyro.pitsim.controllers.objects.LeaderboardData;
 import dev.kyro.pitsim.controllers.objects.LeaderboardPosition;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,12 +32,12 @@ public class GoldLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&6" + Misc.formatLarge(position.doubleValue) + "g";
+		return "&6" + Formatter.formatLarge(position.doubleValue) + "g";
 	}
 
 	@Override
 	public String getDisplayValue(PitPlayer pitPlayer) {
-		return "&6" + Misc.formatLarge(pitPlayer.gold) + "g";
+		return "&6" + Formatter.formatLarge(pitPlayer.gold) + "g";
 	}
 
 	@Override

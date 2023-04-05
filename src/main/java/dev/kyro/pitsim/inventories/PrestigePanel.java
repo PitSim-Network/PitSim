@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.tutorial.HelpItemStacks;
 import org.bukkit.ChatColor;
@@ -120,7 +121,7 @@ public class PrestigePanel extends AGUIPanel {
 		renownLore.add(ChatColor.translateAlternateColorCodes('&', "&7&oThese upgrades are safe"));
 		renownLore.add(ChatColor.translateAlternateColorCodes('&', "&7&ofrom prestige reset."));
 		renownLore.add("");
-		renownLore.add(ChatColor.translateAlternateColorCodes('&', "&7Renown &e" + pitPlayer.renown + " Renown"));
+		renownLore.add(ChatColor.translateAlternateColorCodes('&', "&7Renown &e" + Formatter.formatRenown(pitPlayer.renown)));
 		renownLore.add("");
 		renownLore.add(ChatColor.translateAlternateColorCodes('&', "&eClick to browse!"));
 		renownMeta.setLore(renownLore);

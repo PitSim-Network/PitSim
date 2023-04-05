@@ -467,7 +467,7 @@ public class DamageManager implements Listener {
 
 		killEvent = new KillEvent(attackEvent, killer, dead, killType, killModifiers);
 		Bukkit.getServer().getPluginManager().callEvent(killEvent);
-		killEvent.damageItems();
+		killEvent.updateItems();
 
 		if(killerIsRealPlayer && deadIsPlayer) EnchantManager.incrementKillsOnJewels(killerPlayer);
 
@@ -545,7 +545,7 @@ public class DamageManager implements Listener {
 		String kill = null;
 		if(deadMob != null) {
 			kill = "&a&lKILL!&7 on " + deadMob.getDisplayName();
-		} else if(killType != KillType.DEATH) {
+		} else if(killType != KillType.DEATH && PitSim.status.isOverworld()) {
 			double altarMultiplier = DarkzoneLeveling.getReductionMultiplier(pitKiller);
 			String altarPercent = DarkzoneLeveling.getReductionPercent(pitKiller);
 

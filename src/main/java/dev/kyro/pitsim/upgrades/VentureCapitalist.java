@@ -11,16 +11,16 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
-public class UberIncrease extends TieredRenownUpgrade {
-	public static UberIncrease INSTANCE;
+public class VentureCapitalist extends TieredRenownUpgrade {
+	public static VentureCapitalist INSTANCE;
 
-	public UberIncrease() {
+	public VentureCapitalist() {
 		super("Venture Capitalist", "UBER_INCREASE", 25);
 		INSTANCE = this;
 	}
 
 	public static int getUberIncrease(Player player) {
-		return UpgradeManager.getTier(player, UberIncrease.INSTANCE);
+		return UpgradeManager.getTier(player, VentureCapitalist.INSTANCE);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class UberIncrease extends TieredRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&dVenture Capitalist&7 is an &erenown&7 upgrade that increases your daily &dUberstreak&7 limit";
+		return "&dVenture Capitalist&7 is a &erenown&7 upgrade that increases your daily &dUberstreak&7 limit";
 	}
 
 	@Override

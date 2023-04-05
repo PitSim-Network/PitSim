@@ -115,6 +115,7 @@ public class NonManager {
 	}
 
 	public static Non getNon(LivingEntity entity) {
+		if(entity == null) return null;
 		try {
 			for(Non non : nons) {
 				if(non == null) continue;

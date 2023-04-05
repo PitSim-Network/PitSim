@@ -19,7 +19,7 @@ public class ComboSlow extends PitEnchant {
 
 	public ComboSlow() {
 		super("Combo: Slow", false, ApplyType.SCYTHES,
-				"comboeslow", "slow", "cslow");
+				"comboslow", "slow", "cslow");
 		isUncommonEnchant = true;
 		isTainted = true;
 		INSTANCE = this;
@@ -60,7 +60,7 @@ public class ComboSlow extends PitEnchant {
 	}
 
 	public int getSeconds(int enchantLvl) {
-		return enchantLvl + 1;
+		return Math.min(enchantLvl + 1, 4);
 	}
 
 	public int getAmplifier(int enchantLvl) {
@@ -68,6 +68,6 @@ public class ComboSlow extends PitEnchant {
 	}
 
 	public int getStrikes(int enchantLvl) {
-		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 4.5), 1);
+		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 6.5), 5);
 	}
 }

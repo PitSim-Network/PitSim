@@ -7,7 +7,7 @@ import dev.kyro.pitsim.controllers.objects.Leaderboard;
 import dev.kyro.pitsim.controllers.objects.LeaderboardData;
 import dev.kyro.pitsim.controllers.objects.LeaderboardPosition;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,12 +33,12 @@ public class XPLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&b" + Misc.formatLarge(position.longValue);
+		return "&b" + Formatter.formatLarge(position.longValue);
 	}
 
 	@Override
 	public String getDisplayValue(PitPlayer pitPlayer) {
-		return "&b" + Misc.formatLarge(PrestigeValues.getTotalXP(pitPlayer.prestige, pitPlayer.level, pitPlayer.remainingXP));
+		return "&b" + Formatter.formatLarge(PrestigeValues.getTotalXP(pitPlayer.prestige, pitPlayer.level, pitPlayer.remainingXP));
 	}
 
 	@Override

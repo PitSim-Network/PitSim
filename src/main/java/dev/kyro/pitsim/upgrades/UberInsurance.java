@@ -21,7 +21,7 @@ public class UberInsurance extends TieredRenownUpgrade {
 	public static UberInsurance INSTANCE;
 
 	public UberInsurance() {
-		super("Uber Insurance", "LIFE_INSURANCE", 12);
+		super("Uber Insurance", "LIFE_INSURANCE", 20);
 		INSTANCE = this;
 	}
 

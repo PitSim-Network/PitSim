@@ -64,7 +64,7 @@ public class ShowCommand implements CommandExecutor {
 								.writeString("ITEMSHOW")
 								.writeString(PitSim.serverName)
 								.writeString(Misc.getDisplayName(player))
-								.writeString(CustomSerializer.serialize(player.getItemInHand()))
+								.writeString(CustomSerializer.serialize(itemStack))
 								.send();
 					}
 				}.runTask(PitSim.INSTANCE);

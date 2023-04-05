@@ -47,6 +47,8 @@ commands:
   discord:
   disc:
   booster:
+    aliases:
+      - boosters
   boostergive:
   fps:
   resource:

@@ -120,7 +120,7 @@ public class HelmetryPanel extends AGUIPanel {
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&7put into it. Use abilities that cost"));
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&6gold &7from the helmet."));
 		lore.add("");
-		if(pitPlayer.renown >= 10) lore.add(ChatColor.YELLOW + "Craft for 10 renown!");
+		if(pitPlayer.renown >= 10) lore.add(ChatColor.YELLOW + "Craft for 10 Renown!");
 		else lore.add(ChatColor.RED + "Not enough renown!");
 		meta.setLore(lore);
 		gem.setItemMeta(meta);

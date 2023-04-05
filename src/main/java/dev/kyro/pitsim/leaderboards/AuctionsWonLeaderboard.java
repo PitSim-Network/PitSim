@@ -3,9 +3,8 @@ package dev.kyro.pitsim.leaderboards;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.*;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -30,12 +29,12 @@ public class AuctionsWonLeaderboard extends Leaderboard {
 
 	@Override
 	public String getDisplayValue(LeaderboardPosition position) {
-		return "&d" + Misc.formatLarge(position.intValue) + " auction" + (position.intValue == 1 ? "" : "s");
+		return "&d" + Formatter.formatLarge(position.intValue) + " auction" + (position.intValue == 1 ? "" : "s");
 	}
 
 	@Override
 	public String getDisplayValue(PitPlayer pitPlayer) {
-		return "&d" + Misc.formatLarge(pitPlayer.stats.auctionsWon) + " auction" + (pitPlayer.stats.auctionsWon == 1 ? "" : "s");
+		return "&d" + Formatter.formatLarge(pitPlayer.stats.auctionsWon) + " auction" + (pitPlayer.stats.auctionsWon == 1 ? "" : "s");
 	}
 
 	@Override

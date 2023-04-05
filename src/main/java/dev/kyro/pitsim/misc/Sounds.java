@@ -77,7 +77,7 @@ public class Sounds {
 	public static final SoundEffect PEDESTAL_ACTIVATE = new SoundEffect(Sound.ORB_PICKUP, 1, 0.5);
 	public static final SoundEffect PEDESTAL_DEACTIVATE = new SoundEffect(Sound.DIG_STONE, 2, 0.2);
 	public static final SoundEffect XP_GAIN = new SoundEffect(Sound.ORB_PICKUP, 1, 1);
-	public static final SoundEffect ALTAR_LEVEL_UP = new SoundEffect(Sound.WOLF_HOWL, 1, 0.8);
+	public static final SoundEffect ALTAR_LEVEL_UP = new SoundEffect(Sound.WITHER_SPAWN, 1, 1);
 	public static final SoundEffect VOUCHER_USE = new SoundEffect(Sound.IRONGOLEM_DEATH, 1, 0.8);
 	public static final SoundEffect HEARTBEAT1 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.6);
 	public static final SoundEffect HEARTBEAT2 = new SoundEffect(Sound.NOTE_BASS_DRUM, 1, 0.8);
@@ -125,7 +125,6 @@ public class Sounds {
 			.add(new SoundMoment(14).add(Sound.DIG_GRASS, 1, 1.4));
 
 	public static final SoundEffect REINCARNATION = new SoundEffect()
-			.add(new SoundMoment(0).add(Sound.WITHER_SPAWN, 1, 0.4))
 			.add(new SoundMoment(2).add(Sound.NOTE_BASS, 1, 0.8))
 			.add(new SoundMoment(4).add(Sound.NOTE_BASS, 1, 0.9))
 			.add(new SoundMoment(6).add(Sound.NOTE_BASS, 1, 1.0))
@@ -136,6 +135,7 @@ public class Sounds {
 			.add(new SoundMoment(64).add(Sound.FIZZ, 1, 1.0))
 			.add(new SoundMoment(66).add(Sound.FIZZ, 1, 1.1))
 			.add(new SoundMoment(68).add(Sound.FIZZ, 1, 1.2));
+	public static final SoundEffect REINCARNATION_END = new SoundEffect(Sound.WITHER_SPAWN, 1, 1);
 
 
 	//	Enchants

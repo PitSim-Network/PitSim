@@ -34,7 +34,6 @@ public class ShardHunterPanel extends AGUIPanel {
 	public ShardHunterPanel(AGUI gui) {
 		super(gui);
 		renownShopGUI = (RenownShopGUI) gui;
-
 	}
 
 	@Override

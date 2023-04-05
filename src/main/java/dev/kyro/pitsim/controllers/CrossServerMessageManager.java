@@ -47,11 +47,11 @@ public class CrossServerMessageManager implements Listener {
 
 		if(strings.get(0).equals("ITEMSHOW")) {
 			String displayName = strings.get(1);
-			ItemStack itemStack = CustomSerializer.deserialize(strings.get(2));
+			ItemStack itemStack = CustomSerializer.deserializeDirectly(strings.get(2));
 			ShowCommand.sendShowMessage(displayName, itemStack);
 		} else if(strings.get(0).equals("FINDJEWEL")) {
 			String displayName = strings.get(1);
-			ItemStack itemStack = CustomSerializer.deserialize(strings.get(2));
+			ItemStack itemStack = CustomSerializer.deserializeDirectly(strings.get(2));
 			EnchantManager.sendJewelFindMessage(displayName, itemStack);
 		} else if(strings.get(0).equals("PRESTIGE")) {
 			String displayName = strings.get(1);
@@ -59,11 +59,11 @@ public class CrossServerMessageManager implements Listener {
 			LevelManager.onPrestige(displayName, prestige);
 		} else if(strings.get(0).equals("UBERDROP")) {
 			String displayName = strings.get(1);
-			ItemStack itemStack = CustomSerializer.deserialize(strings.get(2));
+			ItemStack itemStack = CustomSerializer.deserializeDirectly(strings.get(2));
 			Uberstreak.sendUberMessage(displayName, itemStack);
 		} else if(strings.get(0).equals("TAINTEDENCHANT")) {
 			String displayName = strings.get(1);
-			ItemStack itemStack = CustomSerializer.deserialize(strings.get(2));
+			ItemStack itemStack = CustomSerializer.deserializeDirectly(strings.get(2));
 			TaintedEnchanting.sendTaintedEnchantMessage(displayName, itemStack);
 		} else if(strings.get(0).equals("AUCTIONREQUEST")) {
 			AOutput.log("Received request for auction data");

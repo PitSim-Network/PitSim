@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
@@ -23,7 +22,7 @@ public class SpawnCommand implements CommandExecutor {
 
 		PlayerSpawnCommandEvent event = new PlayerSpawnCommandEvent(player);
 		Bukkit.getPluginManager().callEvent(event);
-		if(event.isCancelled() && (!player.isOp() || PitSim.getStatus().isDarkzone())) return false;
+		if(event.isCancelled() && !player.isOp()) return false;
 
 		SpawnManager.lastLocationMap.remove(player);
 		Location teleportLoc = MapManager.currentMap.getSpawn();

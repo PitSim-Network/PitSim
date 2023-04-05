@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.misc.wrappers;
 
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -48,12 +49,19 @@ public class WrapperPlayerInventory {
 	public void setInventory() {
 		for(int i = 0; i < 36; i++) {
 			ItemStack itemStack = getItem(PlayerItemLocation.slot(i));
+			if(isSameStack(itemStack, inventory.getItem(i))) continue;
 			inventory.setItem(i, itemStack);
 		}
-		inventory.setHelmet(getItem(PlayerItemLocation.helmet()));
-		inventory.setChestplate(getItem(PlayerItemLocation.chestplate()));
-		inventory.setLeggings(getItem(PlayerItemLocation.leggings()));
-		inventory.setBoots(getItem(PlayerItemLocation.boots()));
+		if(isSameStack(inventory.getHelmet(), getItem(PlayerItemLocation.helmet()))) inventory.setHelmet(getItem(PlayerItemLocation.helmet()));
+		if(isSameStack(inventory.getChestplate(), getItem(PlayerItemLocation.chestplate()))) inventory.setChestplate(getItem(PlayerItemLocation.chestplate()));
+		if(isSameStack(inventory.getLeggings(), getItem(PlayerItemLocation.leggings()))) inventory.setLeggings(getItem(PlayerItemLocation.leggings()));
+		if(isSameStack(inventory.getBoots(), getItem(PlayerItemLocation.boots()))) inventory.setBoots(getItem(PlayerItemLocation.boots()));
 		player.updateInventory();
+	}
+
+	public boolean isSameStack(ItemStack stack1, ItemStack stack2) {
+		if(Misc.isAirOrNull(stack1) && Misc.isAirOrNull(stack2)) return true;
+		if(stack1 == null || stack2 == null) return false;
+		return stack1.equals(stack2);
 	}
 }

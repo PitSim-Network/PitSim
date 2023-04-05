@@ -18,7 +18,7 @@ public class XPComplex extends UnlockableRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&eExperience-Industrial Complex&7 is an &erenown&7 upgrade that increases your max &bXP";
+		return "&eExperience-Industrial Complex&7 is a &erenown&7 upgrade that increases your max &bXP";
 	}
 
 	@Override

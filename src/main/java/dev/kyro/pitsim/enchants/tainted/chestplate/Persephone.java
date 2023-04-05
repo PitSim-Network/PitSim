@@ -58,11 +58,10 @@ public class Persephone extends PitEnchant {
 			public void run() {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
-					if(enchantLvl == 0) {
-						if(flowerMap.containsKey(player)) {
-							List<FlowerBunch> flowerBunches = flowerMap.remove(player);
-							for(FlowerBunch flowerBunch : flowerBunches) flowerBunch.remove();
-						}
+					if(enchantLvl != 0) continue;
+					if(flowerMap.containsKey(player)) {
+						List<FlowerBunch> flowerBunches = flowerMap.remove(player);
+						for(FlowerBunch flowerBunch : flowerBunches) flowerBunch.remove();
 					}
 				}
 			}

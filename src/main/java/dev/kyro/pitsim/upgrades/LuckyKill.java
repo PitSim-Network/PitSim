@@ -6,13 +6,11 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.adarkzone.BossManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,32 +28,25 @@ public class LuckyKill extends TieredRenownUpgrade {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer()) return;
-		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this)) return;
-		if(!(NonManager.getNon(killEvent.getDead()) == null)) return;
-		if(!(killEvent.getDead() instanceof Player)) return;
-		if(BossManager.isPitBoss(killEvent.getDead())) return;
-		if(!killEvent.isDeadPlayer()) return;
+		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this) ||
+				NonManager.getNon(killEvent.getDead()) == null) return;
 
-		int tier = UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
-		if(tier == 0) return;
-
-		double chance = 0.01 * tier;
-
+		double chance = 0.01 * UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
 		boolean isLuckyKill = Math.random() < chance;
+		if(!isLuckyKill) return;
 
-		if(isLuckyKill) killEvent.isLuckyKill = true;
+		killEvent.xpMultipliers.add(3.0);
+		killEvent.maxXPMultipliers.add(3.0);
+		killEvent.goldMultipliers.add(3.0);
+		killEvent.goldCap *= 3.0;
+		AOutput.send(killEvent.getKiller(), "&d&lLUCKY KILL!&7 Rewards tripled!");
 
-		if(isLuckyKill) {
-			AOutput.send(killEvent.getKiller(), "&d&lLUCKY KILL!&7 Rewards tripled!");
-
-			File file = new File("plugins/NoteBlockAPI/Effects/LuckyKill.nbs");
-			Song song = NBSDecoder.parse(file);
-			RadioSongPlayer rsp = new RadioSongPlayer(song);
-			rsp.setRepeatMode(RepeatMode.NO);
-			rsp.addPlayer(killEvent.getKillerPlayer());
-			rsp.setPlaying(true);
-		}
+		File file = new File("plugins/NoteBlockAPI/Effects/LuckyKill.nbs");
+		Song song = NBSDecoder.parse(file);
+		RadioSongPlayer rsp = new RadioSongPlayer(song);
+		rsp.setRepeatMode(RepeatMode.NO);
+		rsp.addPlayer(killEvent.getKillerPlayer());
+		rsp.setPlaying(true);
 	}
 
 	@Override
@@ -71,13 +62,13 @@ public class LuckyKill extends TieredRenownUpgrade {
 
 	@Override
 	public String getEffectPerTier() {
-		return "&7Gain &f+1% chance &7when getting a player kill to make it a &dLucky Kill&7, tripling " +
-				"all kill rewards";
+		return "&7Gain &f+1% chance &7when getting a bot kill to make it a &dLucky Kill&7, tripling " +
+				"all kill rewards and caps";
 	}
 
 	@Override
 	public String getSummary() {
-		return "&dLucky Kill &7is an &erenown &7upgrade that gives you a small chance to &dtriple &7player kill rewards";
+		return "&dLucky Kill &7is a &erenown &7upgrade that gives you a small chance to &dtriple &7bot kill rewards";
 	}
 
 	@Override

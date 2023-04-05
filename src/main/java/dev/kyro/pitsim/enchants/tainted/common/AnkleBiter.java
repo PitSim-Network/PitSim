@@ -20,7 +20,7 @@ public class AnkleBiter extends BasicDarkzoneEnchant {
 	}
 
 	@Override
-	public int getStatPercent(int enchantLvl) {
+	public int getBaseStatPercent(int enchantLvl) {
 		return enchantLvl * 10 + 6;
 	}
 

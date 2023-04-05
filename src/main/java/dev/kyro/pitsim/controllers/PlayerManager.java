@@ -358,8 +358,6 @@ public class PlayerManager implements Listener {
 		Non killingNon = NonManager.getNon(killEvent.getKiller());
 
 		if(pitDead.bounty != 0 && killingNon == null && pitKiller != pitDead) {
-			if(killEvent.isLuckyKill) pitDead.bounty = pitDead.bounty * 3;
-
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
 			String bountyMessage = Misc.getBountyClaimedMessage(pitKiller, pitDead, "&6&l" + formatter.format(pitDead.bounty) + "g");
 			for(Player player : Bukkit.getOnlinePlayers()) {

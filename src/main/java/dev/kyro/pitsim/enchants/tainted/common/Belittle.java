@@ -21,7 +21,7 @@ public class Belittle extends BasicDarkzoneEnchant {
 	}
 
 	@Override
-	public int getStatPercent(int enchantLvl) {
+	public int getBaseStatPercent(int enchantLvl) {
 		return enchantLvl * 5 + 4;
 	}
 

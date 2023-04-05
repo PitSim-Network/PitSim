@@ -2,6 +2,7 @@ package dev.kyro.pitsim.enchants.tainted.chestplate;
 
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -32,6 +33,10 @@ public class Terror extends PitEnchant {
 	public static double getAvoidanceMultiplier(Player player) {
 		int enchantLvl = EnchantManager.getEnchantLevel(player, INSTANCE);
 		if(enchantLvl == 0) return 1;
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(!pitPlayer.hasManaUnlocked()) return 1;
+
 		return getAvoidanceMultiplier(enchantLvl);
 	}
 

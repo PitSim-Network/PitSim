@@ -72,6 +72,6 @@ public class ComboDefence extends PitEnchant {
 	}
 
 	public int getStrikes(int enchantLvl) {
-		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 6.0), 1);
+		return Math.max(Misc.linearEnchant(enchantLvl, -0.5, 7.0), 1);
 	}
 }

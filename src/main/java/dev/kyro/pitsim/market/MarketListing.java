@@ -3,7 +3,7 @@ package dev.kyro.pitsim.market;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.storage.StorageProfile;
 import org.bukkit.inventory.ItemStack;
 
@@ -153,7 +153,7 @@ public class MarketListing implements Serializable {
 		if (remainingTime <= 0) {
 			return "Listing has expired";
 		}
-		return Misc.formatDurationFull(remainingTime, true);
+		return Formatter.formatDurationFull(remainingTime, true);
 	}
 
 	public boolean hasEnded() {

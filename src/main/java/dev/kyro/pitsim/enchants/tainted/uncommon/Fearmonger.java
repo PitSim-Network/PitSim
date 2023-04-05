@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -60,7 +61,7 @@ public class Fearmonger extends PitEnchant {
 		DecimalFormat decimalFormat = new DecimalFormat("0.##");
 		return new PitLoreBuilder(
 				"&7No mobs will attack you for &a" + decimalFormat.format(getImmuneTicks(enchantLvl) / 20.0) +
-						"&7 second" + (getImmuneTicks(enchantLvl) / 20.0 == 1 ? "" : "s") + " following each mob kill"
+						" second" + Misc.s(getImmuneTicks(enchantLvl) / 20.0) + " &7following each mob kill"
 		).getLore();
 	}
 

@@ -9,7 +9,6 @@ import dev.kyro.pitsim.cosmetics.PitCosmetic;
 import dev.kyro.pitsim.enums.NotePitch;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
-import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -127,7 +126,7 @@ public class Tetris extends PitCosmetic {
 
 	@Override
 	public ItemStack getRawDisplayItem() {
-		ItemStack itemStack = new AItemStackBuilder(Material.WOOL, 1, Misc.getTetrisWoolColor())
+		ItemStack itemStack = new AItemStackBuilder(Material.WOOL, 1, getTetrisWoolColor())
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
 						"&7Go for a new high streak",
@@ -136,5 +135,24 @@ public class Tetris extends PitCosmetic {
 				))
 				.getItemStack();
 		return itemStack;
+	}
+
+	public static byte getTetrisWoolColor() {
+		int randomInt = new Random().nextInt(6);
+		switch(randomInt) {
+			case 0:
+				return 1;
+			case 1:
+				return 2;
+			case 2:
+				return 3;
+			case 3:
+				return 4;
+			case 4:
+				return 5;
+			case 5:
+				return 14;
+		}
+		return -1;
 	}
 }

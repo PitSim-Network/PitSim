@@ -183,7 +183,7 @@ public class DarkzoneManager implements Listener {
 					pitPlayer.heal(1);
 
 					int regenCooldownTicks = 30;
-					regenCooldownTicks /= 1 + (Resilient.getRegenIncrease(player) / 100.0);
+					regenCooldownTicks /= 1 + (Resilient.getRegenIncrease(pitPlayer) / 100.0);
 
 					regenCooldownList.add(player);
 					new BukkitRunnable() {
@@ -431,17 +431,9 @@ public class DarkzoneManager implements Listener {
 	}
 
 	public static void createSoulExplosion(Map<UUID, Double> damageMap, Location location, int souls, boolean largeExplosion) {
-		int items = (int) Math.pow(souls, 3.0 / 5.0);
-		Map<Integer, Integer> soulDistributionMap = new HashMap<>();
-		int soulsToDistribute = souls - items;
-		for(int i = 0; i < items; i++) soulDistributionMap.put(i, 1);
-		for(int i = 0; i < soulsToDistribute; i++) {
-			int randomStack = new Random().nextInt(items);
-			soulDistributionMap.put(randomStack, soulDistributionMap.get(randomStack) + 1);
-		}
-		for(Map.Entry<Integer, Integer> entry : soulDistributionMap.entrySet()) {
+		for(Integer stackSize : Misc.createDistribution(souls, 3.0 / 5.0)) {
 			Location spawnLocation = location.clone().add(Misc.randomOffset(2), Misc.randomOffsetPositive(2), Misc.randomOffset(2));
-			ItemStack soulStack = ItemFactory.getItem(SoulPickup.class).getItem(entry.getValue());
+			ItemStack soulStack = ItemFactory.getItem(SoulPickup.class).getItem(stackSize);
 			Item droppedItem = location.getWorld().dropItem(spawnLocation, soulStack);
 
 			if(damageMap != null) {

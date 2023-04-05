@@ -32,7 +32,7 @@ public class Frail extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7This item is &4cursed&7. You take &c+" + getIncrease(enchantLvl) + "% &7damage when attacked"
+				"&7This item is &4cursed&7. You take &c+" + getIncrease(enchantLvl) + "%[]&7damage when attacked"
 		).getLore();
 	}
 
@@ -43,7 +43,6 @@ public class Frail extends PitEnchant {
 	}
 
 	public static int getIncrease(int enchantLvl) {
-		if(enchantLvl == 1) return 4;
-		return enchantLvl * 7 - 1;
+		return (int) Math.pow(10, enchantLvl - 1);
 	}
 }

@@ -7,7 +7,7 @@ import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.PassQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -31,11 +31,11 @@ public class DailyMegastreakQuest extends PassQuest {
 		ItemStack itemStack = new AItemStackBuilder(Material.WHEAT)
 				.setName(getDisplayName())
 				.setLore(new ALoreBuilder(
-						"&7Complete &e" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7megastreak" +
+						"&7Complete &e" + Formatter.formatLarge(questLevel.getRequirement(pitPlayer)) + " &7megastreak" +
 								(questLevel.getRequirement(pitPlayer) == 1 ? "" : "s"),
 						"&7(Requires premium pass)",
 						"",
-						"&7Progress: &3" + Misc.formatLarge(progress) + "&7/&3" + Misc.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
+						"&7Progress: &3" + Formatter.formatLarge(progress) + "&7/&3" + Formatter.formatLarge(questLevel.getRequirement(pitPlayer)) + " &8[" +
 								AUtil.createProgressBar("|", ChatColor.AQUA, ChatColor.GRAY, 20,
 										progress / questLevel.getRequirement(pitPlayer)) + "&8]",
 						"&7Reward: &3" + questLevel.rewardPoints + " &7Quest Points"

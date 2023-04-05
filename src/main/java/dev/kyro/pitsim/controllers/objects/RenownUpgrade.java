@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.ahelp.Summarizable;
 import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -55,8 +56,8 @@ public abstract class RenownUpgrade implements Listener, Summarizable {
 
 		ALoreBuilder cost = new ALoreBuilder(
 				"",
-				"&7Cost: &e" + renownCost + " Renown",
-				"&7You Have: &e" + pitPlayer.renown + " Renown"
+				"&7Cost: &e" + Formatter.formatRenown(renownCost),
+				"&7You Have: &e" + Formatter.formatRenown(pitPlayer.renown)
 		);
 		if(pitPlayer.prestige >= prestigeReq && !isMaxed) loreBuilder.addLore(cost.getLore());
 

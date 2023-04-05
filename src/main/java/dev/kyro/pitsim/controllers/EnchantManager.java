@@ -311,6 +311,7 @@ public class EnchantManager implements Listener {
 	public static void setItemLore(ItemStack itemStack, Player player, boolean displayUncommon, boolean overrideDisableCheck) {
 		if(!PlayerManager.isRealPlayer(player)) player = null;
 
+		if(MysticFactory.isFresh(itemStack)) return;
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.isMystic) return;
 		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
@@ -403,7 +404,7 @@ public class EnchantManager implements Listener {
 				loreBuilder.addLore(enchant.getDisplayName(displayUncommon, overrideDisableCheck) + enchantLevelToRoman(enchantLvl));
 				loreBuilder.addLore(enchant.getDescription(enchantLvl, overrideDisableCheck));
 
-//				for(int i = 0; i < 3; i++) {
+//				for(int i = 0; i < 4; i++) {
 //					loreBuilder.addLore("&f");
 //					loreBuilder.addLore(enchant.getDisplayName(displayUncommon) + enchantLevelToRoman(i + 1));
 //					loreBuilder.addLore(enchant.getDescription(i + 1));

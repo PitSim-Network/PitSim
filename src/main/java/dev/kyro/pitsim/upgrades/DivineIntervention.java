@@ -63,7 +63,7 @@ public class DivineIntervention extends TieredRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&eDivine Intervention&7 is an &erenown&7 upgrade  gives you a small chance to save your inventory on death";
+		return "&eDivine Intervention&7 is a &erenown&7 upgrade  gives you a small chance to save your inventory on death";
 	}
 
 	@Override

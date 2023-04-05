@@ -11,11 +11,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 
-public class XPBoost extends TieredRenownUpgrade {
-	public static XPBoost INSTANCE;
+public class RenownXPBoost extends TieredRenownUpgrade {
+	public static RenownXPBoost INSTANCE;
 
-	public XPBoost() {
-		super("Renown XP Boost", "XP_BOOST", 1);
+	public RenownXPBoost() {
+		super("Renown XP Boost", "XP_BOOST", 2);
 		INSTANCE = this;
 	}
 
@@ -48,7 +48,7 @@ public class XPBoost extends TieredRenownUpgrade {
 
 	@Override
 	public String getSummary() {
-		return "&eRenown &bXP Boost &7is an &erenown &7upgrade that grants extra &b+5XP &7on a player/bot kill per tier";
+		return "&eRenown &bXP Boost &7is a &erenown &7upgrade that grants extra &b+5XP &7on a player/bot kill per tier";
 	}
 
 	@Override
