@@ -17,6 +17,8 @@ public class ServerIPPlaceholder implements APAPIPlaceholder {
 		customIPMap.put(UUID.fromString("ee660496-3cf1-458a-94fb-e11764c18663"), ServerIP.NOTFUTURE);
 		customIPMap.put(UUID.fromString("245a7079-d97b-4438-9002-288f06d3e887"), ServerIP.MALEFFECT);
 		customIPMap.put(UUID.fromString("b1ac41f3-c446-42be-ba56-e5208a3efa6d"), ServerIP.SAMMH);
+		customIPMap.put(UUID.fromString("28801d82-e146-408a-bb19-e1f09e173eba"), ServerIP.CHAT_TRIGGERS);
+		customIPMap.put(UUID.fromString("80f9db20-067b-4c2b-a7da-9c5736282b04"), ServerIP.CHAT_TRIGGERS);
 	}
 
 	@Override
@@ -37,6 +39,7 @@ public class ServerIPPlaceholder implements APAPIPlaceholder {
 		NOTFUTURE("future"),
 		MALEFFECT("maleffect"),
 		SAMMH("sammh"),
+		CHAT_TRIGGERS("ct")
 		;
 
 		private String subDomain;
