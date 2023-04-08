@@ -3,7 +3,6 @@ package dev.kyro.pitsim.adarkzone;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.bosses.*;
 import dev.kyro.pitsim.adarkzone.mobs.*;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
@@ -54,24 +53,6 @@ public class DarkzoneManager implements Listener {
 	public static List<Chunk> mapChunks = new ArrayList<>();
 
 	public DarkzoneManager() {
-
-		Location middle = new Location(MapManager.getDarkzone(), 372, 0, -88);
-		for(int i = -250; i < 250; i+= 16) {
-			Location chunkLoc = middle.clone().add(i, 0, i);
-			mapChunks.add(chunkLoc.getChunk());
-		}
-
-		Location auctionRoom = new Location(MapManager.getDarkzone(), 178, 0, -1009);
-
-		for(int i = -64; i < 64; i++) {
-			Location chunkLoc = auctionRoom.clone().add(i, 0, i);
-			mapChunks.add(chunkLoc.getChunk());
-		}
-
-		for(Chunk mapChunk : mapChunks) {
-			mapChunk.load();
-		}
-
 		SubLevel subLevel;
 
 		subLevel = new SubLevel(
@@ -517,16 +498,21 @@ public class DarkzoneManager implements Listener {
 	}
 
 	public static void clearEntities() {
-		World world = MapManager.getDarkzone();
+		Location middle = new Location(MapManager.getDarkzone(), 372, 0, -88);
+		for(int i = -250; i < 250; i+= 16) {
+			Location chunkLoc = middle.clone().add(i, 0, i);
+			mapChunks.add(chunkLoc.getChunk());
+		}
 
-		List<Chunk> chunksToLoad = new ArrayList<>();
-		chunksToLoad.add(world.getChunkAt(TaintedWell.wellLocation));
-		chunksToLoad.add(world.getChunkAt(AltarManager.ALTAR_CENTER));
-		chunksToLoad.add(world.getChunkAt(AltarManager.ALTAR_CENTER.clone().add(5, 0, 0)));
+		Location auctionRoom = new Location(MapManager.getDarkzone(), 178, 0, -1009);
 
+		for(int i = -64; i < 64; i++) {
+			Location chunkLoc = auctionRoom.clone().add(i, 0, i);
+			mapChunks.add(chunkLoc.getChunk());
+		}
 
-		for(Chunk chunk : chunksToLoad) {
-			chunk.load();
+		for(Chunk mapChunk : mapChunks) {
+			mapChunk.load();
 		}
 
 		for(Entity entity : MapManager.getDarkzone().getEntities()) {
