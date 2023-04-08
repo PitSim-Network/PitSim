@@ -186,7 +186,6 @@ class GodPanel extends AGUIPanel {
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
-		if(Misc.isKyro(player.getUniqueId()) || Misc.isWiji(player.getUniqueId())) return;
 		List<String> messageLines = new ArrayList<>();
 		for(int i = 0; i < 36; i++) {
 			ItemStack itemStack = player.getInventory().getItem(i);
@@ -197,8 +196,10 @@ class GodPanel extends AGUIPanel {
 
 			nbtItem.removeKey(NBTTag.IS_GOD.getRef());
 			player.getInventory().setItem(i, itemStack);
-			messageLines.add("> `" + itemStack.getAmount() + "x " + pitItem.getNBTID() +
-					(pitItem.hasUUID ? " (" + nbtItem.getString(NBTTag.ITEM_UUID.getRef()) + ")" : "") + "`");
+			if(!Misc.isKyro(player.getUniqueId()) && !Misc.isWiji(player.getUniqueId())) {
+				messageLines.add("> `" + itemStack.getAmount() + "x " + pitItem.getNBTID() +
+						(pitItem.hasUUID ? " (" + nbtItem.getString(NBTTag.ITEM_UUID.getRef()) + ")" : "") + "`");
+			}
 		}
 		player.updateInventory();
 
