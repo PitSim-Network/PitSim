@@ -16,7 +16,8 @@ public class Necrotic extends PitEnchantSpell {
 	public static Necrotic INSTANCE;
 
 	public Necrotic() {
-		super("Necrotic", "necrotic", "necro");
+		super("Necrotic",
+				"necrotic", "necro");
 		isTainted = true;
 		INSTANCE = this;
 	}

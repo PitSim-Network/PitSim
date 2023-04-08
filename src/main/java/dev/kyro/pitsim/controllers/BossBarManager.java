@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.BossManager;
+import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.controllers.objects.PitBossBar;
 import dev.kyro.pitsim.enums.PitEntityType;
@@ -21,9 +22,9 @@ public class BossBarManager {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				BossManager.pitBosses.forEach(boss -> {
+				for(PitBoss pitBoss : BossManager.pitBosses) {
 					List<Player> players = new ArrayList<>();
-					SubLevel subLevel = boss.getSubLevel();
+					SubLevel subLevel = pitBoss.getSubLevel();
 					int radius = subLevel.spawnRadius;
 					for(Entity entity : MapManager.getDarkzone().getNearbyEntities(subLevel.getMiddle(), radius, radius, radius)) {
 						if(!Misc.isEntity(entity, PitEntityType.REAL_PLAYER)) continue;
@@ -31,8 +32,8 @@ public class BossBarManager {
 						players.add((Player) entity);
 					}
 
-					boss.getBossBar().updatePlayers(players);
-				});
+					pitBoss.getBossBar().updatePlayers(players);
+				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0, 20);
 	}

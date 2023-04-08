@@ -16,7 +16,8 @@ public class Leech extends PitEnchantSpell {
 	public static Leech INSTANCE;
 
 	public Leech() {
-		super("Leech", "leech");
+		super("Leech",
+				"leech");
 		isTainted = true;
 		INSTANCE = this;
 	}

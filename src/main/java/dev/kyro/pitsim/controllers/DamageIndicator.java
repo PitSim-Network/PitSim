@@ -33,7 +33,7 @@ public class DamageIndicator implements Listener {
 		PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
 		PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
 		if(defenderMob != null || defenderBoss != null) {
-			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), finalDamage * DarkzoneBalancing.SPOOFED_HEALTH_INCREASE);
+			createDamageStand(attackEvent.getAttackerPlayer(), attackEvent.getDefender(), finalDamage);
 //			TODO: Enable this to remove boss bar damage indicator
 			return;
 		}

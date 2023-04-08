@@ -42,7 +42,8 @@ public class RollingThunder extends PitEnchantSpell {
 	public static final double EFFECT_INITIAL_SEGMENT_SIZE = 2;
 
 	public RollingThunder() {
-		super("Rolling Thunder", "rollingthunder", "roll", "rolling", "thunder");
+		super("Rolling Thunder",
+				"rollingthunder", "roll", "rolling", "thunder");
 		isTainted = true;
 		INSTANCE = this;
 	}

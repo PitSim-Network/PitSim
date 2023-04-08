@@ -14,7 +14,7 @@ public class AnomalyDetected extends BasicDarkzoneEnchant {
 
 	public AnomalyDetected() {
 		super("Anomaly Detected!", false, ApplyType.SCYTHES,
-				"anamolydetected", "anamoly", "anomalydetected", "anomaly");
+				"anomalydetected", "anomaly");
 		isTainted = true;
 		INSTANCE = this;
 	}

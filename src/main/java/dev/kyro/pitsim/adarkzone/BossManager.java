@@ -28,12 +28,6 @@ public class BossManager implements Listener {
 		}
 	}
 
-	@EventHandler
-	public void onAttack2(AttackEvent.Apply attackEvent) {
-		if(!isPitBoss(attackEvent.getDefender())) return;
-		attackEvent.multipliers.add(1 / DarkzoneBalancing.SPOOFED_HEALTH_INCREASE);
-	}
-
 	/**
 	 * Called when the boss is attacked, saves the damage each player does to the boss in damageMap
 	 * @param attackEvent
@@ -46,8 +40,7 @@ public class BossManager implements Listener {
 		if(!attackEvent.isAttackerPlayer()) return;
 
 		UUID uuid = player.getUniqueId();
-		defenderBoss.getDamageMap().put(uuid, defenderBoss.getDamageMap().getOrDefault(uuid, 0.0) + finalDamage *
-				DarkzoneBalancing.SPOOFED_HEALTH_INCREASE);
+		defenderBoss.getDamageMap().put(uuid, defenderBoss.getDamageMap().getOrDefault(uuid, 0.0) + finalDamage);
 	}
 
 	@EventHandler

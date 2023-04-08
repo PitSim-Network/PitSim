@@ -60,7 +60,8 @@ public class CleaveSpell extends PitEnchantSpell {
 	}
 
 	public CleaveSpell() {
-		super("Cleave", "cleave", "cleaver");
+		super("Cleave",
+				"cleave", "cleaver");
 		isTainted = true;
 	}
 

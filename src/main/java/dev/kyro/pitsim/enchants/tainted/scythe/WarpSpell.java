@@ -20,7 +20,8 @@ import java.util.Set;
 
 public class WarpSpell extends PitEnchantSpell {
 	public WarpSpell() {
-		super("Warp", "warp", "teleport", "tp");
+		super("Warp",
+				"warp", "teleport", "tp");
 		isTainted = true;
 	}
 

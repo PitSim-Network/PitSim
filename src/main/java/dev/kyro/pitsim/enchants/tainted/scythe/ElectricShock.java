@@ -27,7 +27,8 @@ public class ElectricShock extends PitEnchantSpell {
 	public static ElectricShock INSTANCE;
 
 	public ElectricShock() {
-		super("Electric Shock", "electricshock", "shock", "electric");
+		super("Electric Shock",
+				"electricshock", "shock", "electric");
 		isTainted = true;
 		INSTANCE = this;
 	}

@@ -22,7 +22,8 @@ import java.util.List;
 public class MeteorSpell extends PitEnchantSpell {
 
 	public MeteorSpell() {
-		super("Meteor", "meteor");
+		super("Meteor",
+				"meteor");
 		isTainted = true;
 	}
 

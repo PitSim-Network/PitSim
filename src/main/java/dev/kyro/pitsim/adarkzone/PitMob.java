@@ -93,9 +93,10 @@ public abstract class PitMob implements Listener {
 			dropPool.mobDistribution(killer, this);
 
 			double soulChance = 0.05;
-			soulChance *= 1 + (Reaper.getSoulChanceIncrease(killer) / 100.0);
-			soulChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
-					pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance-mobs") / 100.0);
+			double reaperChance = Reaper.getSoulChanceIncrease(killer) / 100.0;
+			double soulBranchUpgrade = ProgressionManager.getUnlockedEffectAsValue(
+					pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance-mobs") / 100.0;
+			soulChance *= 1 + (reaperChance + soulBranchUpgrade);
 			if(Math.random() < soulChance) {
 				double droppedSouls = getDroppedSouls();
 				if(SoulBooster.INSTANCE.isActive()) droppedSouls *= 1 + (SoulBooster.getSoulsIncrease() / 100.0);

@@ -27,8 +27,7 @@ public class AuctioneerNPC extends PitNPC {
 
 	@Override
 	public void onClick(Player player) {
-		FastTravelGUI gui = new FastTravelGUI(player);
-		gui.open();
-//		AOutput.send(player, "&8&lSHADY FIGURE&7: &ePsst. Visit the door behind me to spend your &fTainted Souls&e.");
+		FastTravelGUI fastTravelGUI = new FastTravelGUI(player);
+		fastTravelGUI.open();
 	}
 }

@@ -33,7 +33,8 @@ public class FreezeSpell extends PitEnchantSpell {
 	public static Map<Location, Material> blockMap = new HashMap<>();
 
 	public FreezeSpell() {
-		super("Freeze", "freeze", "cold");
+		super("Freeze",
+				"freeze", "cold");
 		isTainted = true;
 	}
 

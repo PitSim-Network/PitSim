@@ -591,7 +591,8 @@ public class PitSim extends JavaPlugin {
 		new ResetCommand(betaCommand, "reset");
 		new GodCommand(betaCommand, "god");
 		new SkillsCommand(betaCommand, "skills");
-		new MassEnchantCommand(betaCommand, "massenchant");
+		new MassEnchantCommand(betaCommand, "me");
+		new FastTravelCommand(betaCommand, "ft");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());

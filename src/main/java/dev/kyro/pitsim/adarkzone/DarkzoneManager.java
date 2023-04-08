@@ -268,12 +268,6 @@ public class DarkzoneManager implements Listener {
 	}
 
 	@EventHandler
-	public void onAttack2(AttackEvent.Apply attackEvent) {
-		if(!isPitMob(attackEvent.getDefender())) return;
-		attackEvent.multipliers.add(1 / DarkzoneBalancing.SPOOFED_HEALTH_INCREASE);
-	}
-
-	@EventHandler
 	public void onRegen(EntityRegainHealthEvent event) {
 		if(!PitSim.status.isDarkzone() || !(event.getEntity() instanceof Player) ||
 				event.getRegainReason() != EntityRegainHealthEvent.RegainReason.SATIATED) return;

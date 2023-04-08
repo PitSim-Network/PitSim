@@ -15,7 +15,8 @@ public class Medic extends PitEnchantSpell {
 	public static Medic INSTANCE;
 
 	public Medic() {
-		super("Medic", "medic");
+		super("Medic",
+				"medic");
 		isTainted = true;
 		INSTANCE = this;
 	}

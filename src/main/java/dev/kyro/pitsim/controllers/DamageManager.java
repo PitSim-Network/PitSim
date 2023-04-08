@@ -318,6 +318,22 @@ public class DamageManager implements Listener {
 	public static double handleAttack(AttackEvent.Apply attackEvent) {
 //		AOutput.send(attackEvent.attacker, "Initial Damage: " + attackEvent.event.getDamage());
 
+		if(PitSim.status.isDarkzone()) {
+			PitMob attackerMob = DarkzoneManager.getPitMob(attackEvent.getAttacker());
+			PitMob defenderMob = DarkzoneManager.getPitMob(attackEvent.getDefender());
+			PitBoss attackerBoss = BossManager.getPitBoss(attackEvent.getAttacker());
+			PitBoss defenderBoss = BossManager.getPitBoss(attackEvent.getDefender());
+
+			if(attackerMob != null || attackerBoss != null) {
+				attackEvent.selfTrueDamage /= DarkzoneBalancing.SPOOFED_HEALTH_INCREASE;
+				attackEvent.selfVeryTrueDamage /= DarkzoneBalancing.SPOOFED_HEALTH_INCREASE;
+			} else if(defenderMob != null || defenderBoss != null) {
+				attackEvent.multipliers.add(1 / DarkzoneBalancing.SPOOFED_HEALTH_INCREASE);
+				attackEvent.trueDamage /= DarkzoneBalancing.SPOOFED_HEALTH_INCREASE;
+				attackEvent.veryTrueDamage /= DarkzoneBalancing.SPOOFED_HEALTH_INCREASE;
+			}
+		}
+
 //		As strong as iron
 		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
 
