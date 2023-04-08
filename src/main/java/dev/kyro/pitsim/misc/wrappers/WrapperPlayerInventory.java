@@ -52,10 +52,10 @@ public class WrapperPlayerInventory {
 			if(isSameStack(itemStack, inventory.getItem(i))) continue;
 			inventory.setItem(i, itemStack);
 		}
-		if(isSameStack(inventory.getHelmet(), getItem(PlayerItemLocation.helmet()))) inventory.setHelmet(getItem(PlayerItemLocation.helmet()));
-		if(isSameStack(inventory.getChestplate(), getItem(PlayerItemLocation.chestplate()))) inventory.setChestplate(getItem(PlayerItemLocation.chestplate()));
-		if(isSameStack(inventory.getLeggings(), getItem(PlayerItemLocation.leggings()))) inventory.setLeggings(getItem(PlayerItemLocation.leggings()));
-		if(isSameStack(inventory.getBoots(), getItem(PlayerItemLocation.boots()))) inventory.setBoots(getItem(PlayerItemLocation.boots()));
+		if(!isSameStack(inventory.getHelmet(), getItem(PlayerItemLocation.helmet()))) inventory.setHelmet(getItem(PlayerItemLocation.helmet()));
+		if(!isSameStack(inventory.getChestplate(), getItem(PlayerItemLocation.chestplate()))) inventory.setChestplate(getItem(PlayerItemLocation.chestplate()));
+		if(!isSameStack(inventory.getLeggings(), getItem(PlayerItemLocation.leggings()))) inventory.setLeggings(getItem(PlayerItemLocation.leggings()));
+		if(!isSameStack(inventory.getBoots(), getItem(PlayerItemLocation.boots()))) inventory.setBoots(getItem(PlayerItemLocation.boots()));
 		player.updateInventory();
 	}
 
