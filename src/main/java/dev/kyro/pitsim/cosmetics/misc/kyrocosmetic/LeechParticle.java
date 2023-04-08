@@ -12,6 +12,7 @@ import java.util.Random;
 
 public class LeechParticle extends AIParticle {
 	public State state = State.IDLE;
+	public int timesToIdle = 0;
 	public int ticksUntilGoal = 0;
 	public Vector stepVector;
 
@@ -21,10 +22,7 @@ public class LeechParticle extends AIParticle {
 
 	@Override
 	public void tick() {
-		if(state == State.ATTACK && target.getLocation().distance(owner.getLocation()) > 25) {
-			state = State.IDLE;
-			ticksUntilGoal = 0;
-		}
+		if(state == State.ATTACK && target.getLocation().distance(owner.getLocation()) > 25) setIdle();
 		if(state == State.ATTACK) {
 			updateAttackStepVector();
 			double distance = particleLocation.distance(target.getLocation().add(0, 1, 0));
@@ -39,26 +37,38 @@ public class LeechParticle extends AIParticle {
 			updateReturnStepVector();
 			double distance = particleLocation.distance(owner.getLocation().add(0, 1, 0));
 			if(distance < 0.5) {
+				setIdle();
 				owner.setHealth(Math.min(owner.getHealth() + 2, owner.getMaxHealth()));
-				state = State.IDLE;
 				Sounds.KYRO_LIFESTEAL_GAIN.play(owner);
 				Location newIdleLocation = getIdleLocation();
 				updateIdleStepVector(newIdleLocation);
 			}
 		}
 		if(state == State.IDLE && ticksUntilGoal == 0) {
-			pickTarget();
-			if(target == null) {
+			if(timesToIdle == 0) {
+				pickTarget();
+				if(target == null) {
+					Location newIdleLocation = getIdleLocation();
+					updateIdleStepVector(newIdleLocation);
+				} else {
+					state = State.ATTACK;
+					updateAttackStepVector();
+				}
+			} else {
+				timesToIdle--;
 				Location newIdleLocation = getIdleLocation();
 				updateIdleStepVector(newIdleLocation);
-			} else {
-				state = State.ATTACK;
-				updateAttackStepVector();
 			}
 		}
 		particleLocation.add(stepVector);
 		ticksUntilGoal--;
 		display(Effect.HEART);
+	}
+
+	public void setIdle() {
+		state = State.IDLE;
+		timesToIdle = new Random().nextInt(3) + 2;
+		ticksUntilGoal = 0;
 	}
 
 	public void updateIdleStepVector(Location newIdleLocation) {

@@ -11,9 +11,9 @@ import java.util.Random;
 
 public class SwarmParticle extends AIParticle {
 	public State state = State.IDLE;
+	public int timesToIdle = 0;
 	public int ticksUntilGoal = 0;
 	public Vector stepVector;
-	public int cooldownTicks = 0;
 
 	public static final double DAMAGE = 10;
 
@@ -23,33 +23,37 @@ public class SwarmParticle extends AIParticle {
 
 	@Override
 	public void tick() {
-		if(cooldownTicks > 0) cooldownTicks--;
-		if(state == State.ATTACK && target.getLocation().distance(owner.getLocation()) > 25) {
-			state = State.IDLE;
-			cooldownTicks = new Random().nextInt(40) + 80;
-			ticksUntilGoal = 0;
-		}
+		if(state == State.ATTACK && target.getLocation().distance(owner.getLocation()) > 25) setIdle();
 		if(state == State.ATTACK) {
 			double distance = particleLocation.distance(target.getLocation().add(0, 1, 0));
 			if(distance < 1.5) DamageManager.createIndirectAttack(owner, target, DAMAGE);
-			if(ticksUntilGoal == 0) {
-				state = State.IDLE;
-				cooldownTicks = new Random().nextInt(40) + 80;
-			}
+			if(ticksUntilGoal == 0) setIdle();
 		}
 		if(state == State.IDLE && ticksUntilGoal == 0) {
-			pickTarget();
-			if(target == null || cooldownTicks != 0) {
+			if(timesToIdle == 0) {
+				pickTarget();
+				if(target == null) {
+					Location newIdleLocation = getIdleLocation();
+					updateIdleStepVector(newIdleLocation);
+				} else {
+					state = State.ATTACK;
+					updateAttackStepVector();
+				}
+			} else {
+				timesToIdle--;
 				Location newIdleLocation = getIdleLocation();
 				updateIdleStepVector(newIdleLocation);
-			} else {
-				state = State.ATTACK;
-				updateAttackStepVector();
 			}
 		}
 		particleLocation.add(stepVector);
 		ticksUntilGoal--;
 		display(Effect.VILLAGER_THUNDERCLOUD);
+	}
+
+	public void setIdle() {
+		state = State.IDLE;
+		timesToIdle = new Random().nextInt(3) + 2;
+		ticksUntilGoal = 0;
 	}
 
 	public void updateIdleStepVector(Location newIdleLocation) {
