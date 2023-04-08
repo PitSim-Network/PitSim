@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.misc.kyrocosmetic.SwarmParticle;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Swarm extends PitEnchant {
+	public static Map<Player, Long> lastHitTime = new HashMap<>();
 	public static Map<Player, List<SwarmParticle>> particleMap = new HashMap<>();
 	public static Swarm INSTANCE;
 
@@ -40,7 +42,7 @@ public class Swarm extends PitEnchant {
 					List<SwarmParticle> particleList = particleMap.get(onlinePlayer);
 
 					int enchantLvl = EnchantManager.getEnchantsOnPlayer(onlinePlayer).getOrDefault(INSTANCE, 0);
-					int targetParticles = getParticleCount(enchantLvl);
+					int targetParticles = hasAttackedRecently(onlinePlayer) ? getParticleCount(enchantLvl) : 0;
 
 					if(particleList.size() == targetParticles) continue;
 
@@ -55,6 +57,12 @@ public class Swarm extends PitEnchant {
 	}
 
 	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!attackEvent.isAttackerRealPlayer() || attackEvent.getWrapperEvent().hasAttackInfo()) return;
+		lastHitTime.put(attackEvent.getAttackerPlayer(), PitSim.currentTick);
+	}
+
+	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if(!particleMap.containsKey(player)) return;
@@ -64,15 +72,20 @@ public class Swarm extends PitEnchant {
 	@EventHandler
 	public void onManaRegen(ManaRegenEvent event) {
 		Player player = event.getPlayer();
+		if(!hasAttackedRecently(player)) return;
 		int enchantLvl = EnchantManager.getEnchantsOnPlayer(player).getOrDefault(INSTANCE, 0);
 		if(enchantLvl == 0) return;
 		event.multipliers.add(Misc.getReductionMultiplier(getReduction(enchantLvl)));
 	}
 
+	public boolean hasAttackedRecently(Player player) {
+		return lastHitTime.getOrDefault(player, 0L) + 100 > PitSim.currentTick;
+	}
+
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7When equipped, spawn &2" + getParticleCount(enchantLvl) + " swarm particle" +
+				"&7When fighting mobs, spawn &2" + getParticleCount(enchantLvl) + " swarm particle" +
 				(getParticleCount(enchantLvl) == 1 ? "" : "s") + "&7, but regain mana &b" +
 				getReduction(enchantLvl) + "% &7slower"
 		).getLore();
