@@ -46,7 +46,8 @@ public class BossManager implements Listener {
 		if(!attackEvent.isAttackerPlayer()) return;
 
 		UUID uuid = player.getUniqueId();
-		defenderBoss.getDamageMap().put(uuid, defenderBoss.getDamageMap().getOrDefault(uuid, 0.0) + finalDamage);
+		defenderBoss.getDamageMap().put(uuid, defenderBoss.getDamageMap().getOrDefault(uuid, 0.0) + finalDamage *
+				DarkzoneBalancing.SPOOFED_HEALTH_INCREASE);
 	}
 
 	@EventHandler

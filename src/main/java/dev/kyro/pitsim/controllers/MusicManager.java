@@ -4,6 +4,7 @@ import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +23,7 @@ public class MusicManager implements Listener {
 			@Override
 			public void run() {
 				int songCount = NoteBlockAPI.getAPI().getPlayingSongCount();
-				AOutput.log("NOTEBLOCK DEBUG: " + songCount + " playing song" + (songCount == 1 ? "" : "s"));
+				AOutput.log("NOTEBLOCK DEBUG: " + songCount + " playing song" + Misc.s(songCount));
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0, 20 * 60 * 5);
 //		new BukkitRunnable() {
