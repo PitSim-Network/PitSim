@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enchants.overworld;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -15,6 +16,11 @@ public class Chipping extends PitEnchant {
 		super("Chipping", false, ApplyType.BOWS,
 				"chipping", "chip");
 		isUncommonEnchant = true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return PitSim.status.isOverworld();
 	}
 
 	@EventHandler

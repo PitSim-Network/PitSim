@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.enchants.overworld;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -15,6 +16,11 @@ public class TrueShot extends PitEnchant {
 	public TrueShot() {
 		super("True Shot", true, ApplyType.BOWS,
 				"trueshot", "true");
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return PitSim.status.isOverworld();
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
@@ -37,7 +43,7 @@ public class TrueShot extends PitEnchant {
 			).getLore();
 		}
 		return new PitLoreBuilder(
-				"&7Deal &c" + getPercent(enchantLvl) + "% + " + Misc.getHearts(getBase(enchantLvl)) +
+				"&7Deal &c" + getPercent(enchantLvl) + "% &7+ &c" + Misc.getHearts(getBase(enchantLvl)) +
 				" &7of arrow damage as true damage (ignores armor)"
 		).getLore();
 	}
@@ -49,7 +55,7 @@ public class TrueShot extends PitEnchant {
 	}
 
 	public int getPercent(int enchantLvl) {
-		return Math.min(enchantLvl * 10, 100) + 25;
+		return Math.min(enchantLvl * 10, 100) + 20;
 	}
 
 	public double getBase(int enchantLvl) {
