@@ -36,6 +36,7 @@ public class SuperMario extends PitCosmetic {
 		psp.setDistance(SOUND_RANGE);
 		psp.setRepeatMode(RepeatMode.NO);
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) psp.addPlayer(onlinePlayer);
+		psp.setAutoDestroy(true);
 		psp.setPlaying(true);
 	}
 

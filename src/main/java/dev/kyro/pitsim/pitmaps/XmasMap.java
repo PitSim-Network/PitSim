@@ -33,6 +33,7 @@ public class XmasMap extends PitMap {
 		esp.setDistance(18);
 		esp.setRepeatMode(RepeatMode.ALL);
 		esp.setTargetLocation(getMid().add(0, 20, 0));
+		esp.setAutoDestroy(true);
 		esp.setPlaying(true);
 		radio = esp;
 	}

@@ -46,6 +46,7 @@ public class LuckyKill extends TieredRenownUpgrade {
 		RadioSongPlayer rsp = new RadioSongPlayer(song);
 		rsp.setRepeatMode(RepeatMode.NO);
 		rsp.addPlayer(killEvent.getKillerPlayer());
+		rsp.setAutoDestroy(true);
 		rsp.setPlaying(true);
 	}
 

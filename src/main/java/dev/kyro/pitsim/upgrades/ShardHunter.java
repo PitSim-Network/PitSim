@@ -58,6 +58,7 @@ public class ShardHunter extends TieredRenownUpgrade {
 		RadioSongPlayer radioPlayer = new RadioSongPlayer(song);
 		radioPlayer.setRepeatMode(RepeatMode.NO);
 		radioPlayer.addPlayer(killEvent.getKillerPlayer());
+		radioPlayer.setAutoDestroy(true);
 		radioPlayer.setPlaying(true);
 	}
 

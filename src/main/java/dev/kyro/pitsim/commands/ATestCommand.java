@@ -1,6 +1,9 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.misc.Sounds;
+import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
+import com.xxmicloxx.NoteBlockAPI.model.Song;
+import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
+import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +33,13 @@ public class ATestCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		Sounds.ALTAR_LEVEL_UP.play(player);
+		File file = new File("plugins/NoteBlockAPI/Effects/mario.nbs");
+		Song song = NBSDecoder.parse(file);
+		RadioSongPlayer radioSongPlayer = new RadioSongPlayer(song);
+		radioSongPlayer.addPlayer(player);
+		radioSongPlayer.setAutoDestroy(true);
+		radioSongPlayer.setPlaying(true);
+		radioSongPlayer.setRepeatMode(RepeatMode.ALL);
 
 //		for(AltarPedestal altarPedestal : AltarPedestal.altarPedestals) {
 //			Bukkit.broadcastMessage(String.valueOf(altarPedestal.stand.isDead()));

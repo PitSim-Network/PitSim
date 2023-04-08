@@ -42,6 +42,7 @@ public class DoubleDeath extends TieredRenownUpgrade {
 			RadioSongPlayer rsp = new RadioSongPlayer(song);
 			rsp.setRepeatMode(RepeatMode.NO);
 			rsp.addPlayer(player);
+			rsp.setAutoDestroy(true);
 			rsp.setPlaying(true);
 		}
 
