@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
@@ -25,7 +26,7 @@ public class SpawnCommand implements CommandExecutor {
 		if(event.isCancelled() && !player.isOp()) return false;
 
 		SpawnManager.lastLocationMap.remove(player);
-		Location teleportLoc = MapManager.currentMap.getSpawn();
+		Location teleportLoc = PitSim.status.isOverworld() ? MapManager.currentMap.getSpawn() : MapManager.getDarkzoneSpawn();
 		player.teleport(teleportLoc);
 		PhoenixAbility.alreadyActivatedList.remove(player.getUniqueId());
 		for(Hopper hopper : HopperManager.hopperList) {
