@@ -4,10 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitMob;
-import dev.kyro.pitsim.controllers.Cooldown;
-import dev.kyro.pitsim.controllers.EnchantManager;
-import dev.kyro.pitsim.controllers.PlayerManager;
-import dev.kyro.pitsim.controllers.SpawnManager;
+import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.particles.FireworkSparkParticle;
@@ -28,7 +25,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -105,9 +101,7 @@ public class Persephone extends PitEnchant {
 						randomTarget.getWorld().strikeLightningEffect(randomTarget.getLocation());
 
 						double damage = PlayerManager.isRealPlayer(randomTarget) ? getLightningPlayerDamage() : getLightningMobDamage();
-						EntityDamageEvent event = new EntityDamageEvent(randomTarget, EntityDamageEvent.DamageCause.CUSTOM, damage);
-						Bukkit.getPluginManager().callEvent(event);
-						if(!event.isCancelled()) randomTarget.damage(event.getDamage());
+						DamageManager.createIndirectAttack(entry.getKey(), randomTarget, 0, attackEvent -> attackEvent.trueDamage = damage);
 					}
 				}
 				count++;
