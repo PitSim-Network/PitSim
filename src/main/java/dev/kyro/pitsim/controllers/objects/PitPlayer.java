@@ -44,7 +44,9 @@ import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.settings.scoreboard.ScoreboardData;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.storage.StorageProfile;
-import dev.kyro.pitsim.tutorial.Tutorial;
+import dev.kyro.pitsim.tutorial.DarkzoneTutorial;
+import dev.kyro.pitsim.tutorial.OverworldTutorial;
+import dev.kyro.pitsim.tutorial.TutorialData;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -167,7 +169,15 @@ public class PitPlayer {
 	public boolean darkzoneCutscene = false;
 
 	public PlayerStats stats = new PlayerStats();
-	public Tutorial tutorial = new Tutorial();
+
+	public TutorialData overworldTutorialData = new TutorialData();
+	public TutorialData darkzoneTutorialData = new TutorialData();
+
+	@Exclude
+	public OverworldTutorial overworldTutorial = new OverworldTutorial(overworldTutorialData, this);
+	@Exclude
+	public DarkzoneTutorial darkzoneTutorial = new DarkzoneTutorial(darkzoneTutorialData, this);
+
 	public ScoreboardData scoreboardData = new ScoreboardData();
 	private PassData passData = new PassData();
 	public DarkzoneData darkzoneData = new DarkzoneData();
@@ -379,7 +389,7 @@ public class PitPlayer {
 			boosters.put(booster.refName, playerData.getInt("boosters." + booster.refName));
 
 		stats = new PlayerStats(this, playerData);
-		tutorial = new Tutorial(this, playerData);
+		overworldTutorial = new OverworldTutorial(playerData);
 //			updateXPBar();
 
 		for(int i = 0; i < brewingSessions.size(); i++) {
@@ -449,9 +459,10 @@ public class PitPlayer {
 		}
 
 		this.stats.init(this);
-		this.tutorial.init(this);
 		this.scoreboardData.init(this);
 		this.shield.init(this);
+		this.overworldTutorial.attemptStart();
+		this.darkzoneTutorial.attemptStart();
 		updateXPBar();
 
 		this.isInitialized = true;
