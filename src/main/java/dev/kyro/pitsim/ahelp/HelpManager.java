@@ -32,15 +32,12 @@ public class HelpManager implements Listener {
 	private static PagesSettings pagesSettings;
 	private static IntentsSettings intentsSettings;
 
-	//	TODO: Replace with database code
-
 	public HelpManager() {
 		setupSettings();
 		setupEnv();
 	}
 
 	public static void registerIntentsAndPages() {
-//		Intents
 		for(PitPerk pitPerk : PerkManager.pitPerks) registerIntent(pitPerk);
 		for(Killstreak killstreak : PerkManager.killstreaks) registerIntent(killstreak);
 		for(Megastreak megastreak : PerkManager.megastreaks) registerIntent(megastreak);
