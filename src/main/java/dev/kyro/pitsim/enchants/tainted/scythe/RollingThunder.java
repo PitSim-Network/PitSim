@@ -6,6 +6,7 @@ import dev.kyro.pitsim.adarkzone.DarkzoneManager;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.PitMob;
 import dev.kyro.pitsim.controllers.PlayerManager;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.cosmetics.particles.BlockCrackParticle;
 import dev.kyro.pitsim.events.SpellUseEvent;
@@ -72,7 +73,7 @@ public class RollingThunder extends PitEnchantSpell {
 				for(int y = -5; y <= 5; y++) {
 					Location testLocation = mainLocation.clone().add(x, y, z);
 					Block block = testLocation.getBlock();
-					if(block == null || block.getType() == Material.AIR) continue;
+					if(block == null || block.getType() == Material.AIR || SpawnManager.isInSpawn(testLocation)) continue;
 
 					boolean hasSpace = true;
 					for(int i = 0; i < 3; i++) {
@@ -141,7 +142,7 @@ public class RollingThunder extends PitEnchantSpell {
 						if(!(entity instanceof LivingEntity) || entity == player) continue;
 						LivingEntity livingEntity = (LivingEntity) entity;
 						Location location = livingEntity.getLocation();
-						if(!polygon.contains(new Point2D(location.getX(), location.getZ())) ||
+						if(SpawnManager.isInSpawn(location) || !polygon.contains(new Point2D(location.getX(), location.getZ())) ||
 								Math.abs(location.getY() - mainLocation.getY()) > 5 || stunnedEntities.contains(livingEntity)) continue;
 						PitMob pitMob = DarkzoneManager.getPitMob(livingEntity);
 						PitBoss pitBoss = BossManager.getPitBoss(livingEntity);
