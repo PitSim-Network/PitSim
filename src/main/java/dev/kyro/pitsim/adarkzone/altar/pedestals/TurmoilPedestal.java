@@ -27,7 +27,7 @@ public class TurmoilPedestal extends AltarPedestal {
 
 	@Override
 	public int getActivationCost() {
-		return 300;
+		return 150;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone.altar.pedestals;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -78,7 +79,7 @@ public class AltarAnimation {
 				soulItems.add(entityItem);
 				Sounds.SOUL_DROP.play(player, 1f, Math.min(0.05f * ticks, 2f));
 
-				if(soulItems.size() >= getPartialRotations(totalSouls) + (24 - getPartialRotations(AltarPedestal.BASE_COST))) {
+				if(soulItems.size() >= getPartialRotations(totalSouls) + (24 - getPartialRotations(DarkzoneBalancing.BASE_ALTAR_COST))) {
 					cancel();
 					drawPedestalStreams();
 				}

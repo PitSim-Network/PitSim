@@ -30,7 +30,7 @@ public class DarkzoneLeveling {
 
 	private static double generateXPForLevel(int level) {
 		if(level == 1) return 0;
-		return (level - 2) * 0.75 + 15;
+		return (level - 2) * DarkzoneBalancing.EVERY_LEVEL_XP_INCREASE + DarkzoneBalancing.FIRST_LEVEL_XP;
 	}
 
 	public static double getXPForLevel(int level) {
@@ -61,7 +61,6 @@ public class DarkzoneLeveling {
 
 		AOutput.send(pitPlayer.player, "&4&lALTAR LEVEL UP! &c" + currentLevel + " &7\u279F &c" + newLevel);
 
-		if(!Misc.isKyro(pitPlayer.player.getUniqueId())) Sounds.ALTAR_LEVEL_UP.play(pitPlayer.player);
 		Misc.sendTitle(pitPlayer.player, "&4&lLEVEL UP!", 40);
 		Misc.sendSubTitle(pitPlayer.player, "&4 " + currentLevel + " &7\u279F &4" + newLevel, 40);
 	}
@@ -74,7 +73,7 @@ public class DarkzoneLeveling {
 	public static double getReductionMultiplier(PitPlayer pitPlayer) {
 		if(pitPlayer == null || !PlayerManager.isRealPlayer(pitPlayer.player)) return 1;
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		return getReductionMultiplier(getLevel(pitPlayer.darkzoneData.altarXP), prestigeInfo.darkzoneLevelIncrease);
+		return getReductionMultiplier(getLevel(pitPlayer.darkzoneData.altarXP), prestigeInfo.getDarkzoneLevel());
 	}
 
 	public static String getReductionPercent(PitPlayer pitPlayer) {
@@ -86,11 +85,11 @@ public class DarkzoneLeveling {
 		if(pitPlayer.darkzoneData.preDarkzoneUpdatePrestige <= 0) return;
 		double altarXP = pitPlayer.darkzoneData.altarXP;
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.darkzoneData.preDarkzoneUpdatePrestige);
-		double expectedMinimumXP = getXPToLevel(prestigeInfo.darkzoneLevelIncrease);
+		double expectedMinimumXP = getXPToLevel(prestigeInfo.getDarkzoneLevel());
 		if(altarXP >= expectedMinimumXP) return;
 		pitPlayer.darkzoneData.altarXP = expectedMinimumXP;
 		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
 		AOutput.send(pitPlayer.player, "&4&lALTAR UPDATE!&7 An update has increased your &cAltar XP &7to level &c" +
-				decimalFormat.format(prestigeInfo.darkzoneLevelIncrease));
+				decimalFormat.format(prestigeInfo.getDarkzoneLevel()));
 	}
 }
