@@ -21,8 +21,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class CombatManager implements Listener {
-	public static int combatTime = 20 * 20;
 	public static HashMap<UUID, Integer> taggedPlayers = new HashMap<>();
+
+	public static int getCombatTicks() {
+		return PitSim.status.isOverworld() ? 20 * 20 : 20 * 5;
+	}
 
 	public static boolean isInCombat(Player player) {
 		return taggedPlayers.containsKey(player.getUniqueId());
@@ -57,8 +60,8 @@ public class CombatManager implements Listener {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(attackEvent.hasAttacker()) taggedPlayers.put(attackEvent.getAttacker().getUniqueId(), combatTime);
-		taggedPlayers.put(attackEvent.getDefender().getUniqueId(), combatTime);
+		if(attackEvent.hasAttacker()) taggedPlayers.put(attackEvent.getAttacker().getUniqueId(), getCombatTicks());
+		taggedPlayers.put(attackEvent.getDefender().getUniqueId(), getCombatTicks());
 
 		if(attackEvent.isDefenderRealPlayer() && attackEvent.hasAttacker() &&
 				attackEvent.getDefenderPitPlayer() != attackEvent.getAttacker()) {
