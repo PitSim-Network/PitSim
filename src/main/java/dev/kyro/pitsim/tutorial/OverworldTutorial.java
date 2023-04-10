@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -40,6 +41,16 @@ public class OverworldTutorial extends Tutorial {
 
 	@Override
 	public boolean isActive() {
-		return pitPlayer.prestige <= 1 && data.completedObjectives.size() < getObjectiveSize();
+		return pitPlayer.prestige <= 1 && data.completedObjectives.size() < getObjectiveSize() && PitSim.status.isOverworld();
+	}
+
+	@Override
+	public void onStart() {
+
+	}
+
+	@Override
+	public void onQuit() {
+
 	}
 }

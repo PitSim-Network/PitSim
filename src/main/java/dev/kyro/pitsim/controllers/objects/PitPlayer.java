@@ -283,6 +283,11 @@ public class PitPlayer {
 		if(isInitialized) {
 			PotionManager.savePotions(this, finalSave);
 
+			if(finalSave) {
+				darkzoneTutorial.onQuit();
+				overworldTutorial.onQuit();
+			}
+
 			megastreakRef = megastreak.getRefNames().get(0);
 
 			for(int i = 0; i < pitPerks.size(); i++) {

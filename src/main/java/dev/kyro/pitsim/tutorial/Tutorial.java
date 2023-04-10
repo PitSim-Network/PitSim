@@ -32,6 +32,8 @@ public abstract class Tutorial {
 	public abstract int getStartTicks();
 	public abstract void sendCompletionMessages();
 	public abstract boolean isActive();
+	public abstract void onStart();
+	public abstract void onQuit();
 
 	@Deprecated
 	public Tutorial(FileConfiguration playerData) {
@@ -54,6 +56,8 @@ public abstract class Tutorial {
 		this.uuid = pitPlayer.uuid;
 
 		if(!isActive()) return;
+		System.out.println(3);
+		onStart();
 
 		if(!data.hasStartedTutorial) {
 			isInObjective = true;

@@ -7,11 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum TutorialObjective {
+	//Overworld
 	PERKS(OverworldTutorial.class, "perks", "&ePerks and Killstreaks", new ParticleBox(2, 2, 1, 2.3)),
 	KITS(OverworldTutorial.class, "kits", "&eKits",  new ParticleBox(2, 1, 1, 1.3)),
 	PRESTIGE(OverworldTutorial.class, "prestige", "&ePrestige and Renown",  new ParticleBox(2, 2, 1, 2.3)),
 	KEEPER(OverworldTutorial.class, "keeper", "&2The Keeper",  new ParticleBox(2, 2, 1, 2.2)),
-	PASS(OverworldTutorial.class, "pass", "&3Battle Pass",  new ParticleBox(2, 2, 1, 2.3));
+	PASS(OverworldTutorial.class, "pass", "&3Battle Pass",  new ParticleBox(2, 2, 1, 2.3)),
+
+	//Darkzone
+	TAINTED_WELL(DarkzoneTutorial.class, "tainted", "&3Battle Pass",  new ParticleBox(2, 2, 1, 2.3)),
+	;
 
 	public final Class<? extends Tutorial> tutorialClass;
 	public final String refName;
@@ -51,6 +56,7 @@ public enum TutorialObjective {
 		else if(this == PRESTIGE) return MapManager.currentMap.getPrestigeNPCSpawn();
 		else if(this == KEEPER) return MapManager.currentMap.getKeeperNPCSpawn();
 		else if(this == PASS) return MapManager.currentMap.getPassNPCSpawn();
+		else if(this == TAINTED_WELL) return MapManager.getDarkzoneSpawn();
 		return null;
 	}
 
