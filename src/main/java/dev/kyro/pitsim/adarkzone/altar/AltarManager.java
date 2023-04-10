@@ -173,7 +173,7 @@ public class AltarManager implements Listener {
 	}
 
 	public static void activateAltar(Player player) {
-		if(true) {
+		if(PitSim.isDev()) {
 			int ticks = AltarRewards.getTurmoilTicks(player);
 			double turmoilMultiplier = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player) ? ticks * 0.1 : 1;
 			AltarRewards.rewardPlayer(player, turmoilMultiplier);

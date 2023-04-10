@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone.altar;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.TurmoilPedestal;
 import dev.kyro.pitsim.adarkzone.altar.pedestals.WealthPedestal;
@@ -23,12 +24,12 @@ public class AltarRewards {
 
 	public static final int MAX_TURMOIL_TICKS = 60;
 
-	public static Map<AltarPedestal.AltarReward, Double> rewardMap = new LinkedHashMap<>();
-	public static final int TEST_ROLLS = 10_000;
+	public static Map<AltarPedestal.AltarReward, Double> avgRewardMap = new LinkedHashMap<>();
+	public static final int ROLLS = PitSim.isDev() ? 10_000 : 1;
 
 	public static void rewardPlayer(Player player, double turmoilMultiplier) {
-		rewardMap.clear();
-		for(int i = 0; i < TEST_ROLLS; i++) {
+		avgRewardMap.clear();
+		for(int i = 0; i < ROLLS; i++) {
 			for(AltarPedestal.AltarReward reward : AltarPedestal.AltarReward.values()) {
 				double chance = Math.random() * 100;
 				if(reward.pedestal.isActivated(player)) chance += AltarPedestal.getRewardChance(player, reward);
@@ -61,7 +62,7 @@ public class AltarRewards {
 
 				rewardCount *= turmoilMultiplier;
 
-				rewardMap.put(reward, rewardMap.getOrDefault(reward, 0.0) + rewardCount);
+				avgRewardMap.put(reward, avgRewardMap.getOrDefault(reward, 0.0) + rewardCount);
 				if(i == 0) reward.rewardPlayer(player, getIntReward(rewardCount));
 //			System.out.println(reward.name() + " " + chance + " " + size.name() + " " + rewardCount);
 			}
@@ -69,14 +70,16 @@ public class AltarRewards {
 
 		Sounds.ALTAR_ROLL.play(player);
 
-		int totalCost = AltarPedestal.getTotalCost(player);
-		AOutput.send(player, "&4&m-------------------&4<&c&lALTAR&4>&m-------------------");
-		for(Map.Entry<AltarPedestal.AltarReward, Double> entry : rewardMap.entrySet()) {
-			double value = entry.getValue() / TEST_ROLLS;
-			AOutput.send(player, "&4" + entry.getKey().name() + ": &c" + Formatter.decimalCommaFormat.format(value) +
-					" &4per 100: &c" + Formatter.decimalCommaFormat.format(value * 100 / totalCost));
+		if(PitSim.isDev()) {
+			int totalCost = AltarPedestal.getTotalCost(player);
+			AOutput.send(player, "&4&m-------------------&4<&c&lALTAR&4>&m-------------------");
+			for(Map.Entry<AltarPedestal.AltarReward, Double> entry : avgRewardMap.entrySet()) {
+				double value = entry.getValue() / ROLLS;
+				AOutput.send(player, "&4" + entry.getKey().name() + ": &c" + Formatter.decimalCommaFormat.format(value) +
+						" &4per 100: &c" + Formatter.decimalCommaFormat.format(value * 100 / totalCost));
+			}
+			AOutput.send(player, "&4&m-------------------&4<&c&lALTAR&4>&m-------------------");
 		}
-		AOutput.send(player, "&4&m-------------------&4<&c&lALTAR&4>&m-------------------");
 	}
 
 	public static int getTurmoilTicks(Player player) {
