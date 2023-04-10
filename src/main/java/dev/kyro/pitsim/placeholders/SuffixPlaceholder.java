@@ -25,7 +25,7 @@ public class SuffixPlaceholder implements APAPIPlaceholder {
 			if(pitPlayer.bounty != 0) return "&7 &6&l" + pitPlayer.bounty + "g";
 		} else {
 			int souls = (int) Math.ceil(KillEvent.getBaseSouls(pitPlayer));
-			if(pitPlayer.taintedSouls != 0) return "&7 &f&l" + Formatter.formatSouls(souls);
+			if(souls != 0) return "&7 &f&l" + Formatter.formatSouls(souls);
 		}
 
 		GuildData guild = GuildData.getGuildData(player);
