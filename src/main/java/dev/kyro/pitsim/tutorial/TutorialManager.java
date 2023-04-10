@@ -10,11 +10,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TutorialManager implements Listener {
+	public static List<NPCCheckpoint> checkpoints = new ArrayList<>();
 	public static Map<Player, Location> lastLocationMap = new HashMap<>();
+
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
@@ -30,5 +34,16 @@ public class TutorialManager implements Listener {
 			player.setVelocity(new Vector());
 			AOutput.error(event.getPlayer(), "&c&c&lERROR!&7 You must complete the tutorial before leaving spawn!");
 		}
+	}
+
+	public static NPCCheckpoint getCheckpoint(TutorialObjective objective) {
+		for(NPCCheckpoint checkpoint : checkpoints) {
+			if(checkpoint.objective == objective) return checkpoint;
+		}
+		return null;
+	}
+
+	public static NPCCheckpoint getCheckpoint(int index) {
+		return checkpoints.get(index);
 	}
 }

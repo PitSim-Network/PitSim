@@ -96,6 +96,7 @@ import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.settings.scoreboard.*;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.tutorial.TutorialManager;
+import dev.kyro.pitsim.tutorial.checkpoints.TaintedWellCheckpoint;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -303,6 +304,7 @@ public class PitSim extends JavaPlugin {
 		registerKits();
 		registerCosmetics();
 		registerScoreboardOptions();
+		registerNPCCheckpoints();
 
 		PassManager.registerPasses();
 		HelpManager.registerIntentsAndPages();
@@ -925,6 +927,10 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new EnderPearl());
 
 		ItemFactory.registerItem(new Potion());
+	}
+
+	public static void registerNPCCheckpoints() {
+		new TaintedWellCheckpoint();
 	}
 
 	private void loadConfig() {

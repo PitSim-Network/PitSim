@@ -15,9 +15,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class TutorialNPC {
 	public static final String NPC_SKIN_NAME = "wiji1";
 	public static final String NPC_NAME = "tutorial";
+	public static final Location NPC_SPAWN_LOCATION = MapManager.getDarkzoneSpawn();
 
 	public NPC npc;
 	public Tutorial tutorial;
+	public NPCCheckpoint currentCheckpoint;
 
 	public TutorialNPC(Tutorial tutorial) {
 		this.tutorial = tutorial;
@@ -26,7 +28,7 @@ public class TutorialNPC {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				walkToCheckPoint(NPCCheckpoint.getCheckpoint(1));
+				walkToCheckPoint(TutorialManager.getCheckpoint(0));
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
 
@@ -34,11 +36,10 @@ public class TutorialNPC {
 
 	public void create() {
 		NPCRegistry registry = CitizensAPI.getNPCRegistry();
-		NPCCheckpoint checkpoint = NPCCheckpoint.getCheckpoint(0);
 		MinecraftSkin minecraftSkin = MinecraftSkin.getSkin(NPC_SKIN_NAME);
 		if(minecraftSkin != null) {
 			npc = registry.createNPC(EntityType.PLAYER, NPC_NAME);
-			npc.spawn(checkpoint.location);
+			npc.spawn(NPC_SPAWN_LOCATION);
 
 			npc.addTrait(LookClose.class);
 			npc.getTrait(LookClose.class).setRange(10);
@@ -73,24 +74,6 @@ public class TutorialNPC {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0, 10);
-	}
-
-	public enum NPCCheckpoint {
-		INITIAL(new Location(MapManager.getDarkzone(), 185, 91, -93), 60),
-		WELL(new Location(MapManager.getDarkzone(), 189.5, 92, -105.5, 13, 0), 60);
-
-		public final Location location;
-		public final int walkTime;
-
-
-		NPCCheckpoint(Location location, int walkTime) {
-			this.location = location;
-			this.walkTime = walkTime;
-		}
-
-		public static NPCCheckpoint getCheckpoint(int index) {
-			return NPCCheckpoint.values()[index];
-		}
 	}
 
 }
