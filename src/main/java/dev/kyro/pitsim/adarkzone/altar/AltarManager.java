@@ -99,7 +99,7 @@ public class AltarManager implements Listener {
 		for(int i = 0; i < 7; i++) {
 			if(text[i] == null) text[i] = "";
 
-			DataWatcher dw = ((CraftEntity)textStands[i]).getHandle().getDataWatcher();
+			DataWatcher dw = ((CraftEntity)textStands[i]).getHandle().getDataWatcher().clone();
 			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', text[i]));
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStands[i]), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
@@ -220,7 +220,7 @@ public class AltarManager implements Listener {
 			PacketPlayOutSpawnEntity spawnPacket = new PacketPlayOutSpawnEntity(((CraftEntity) textStand).getHandle(), 78);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawnPacket);
 
-			DataWatcher dw = ((CraftEntity)textStand).getHandle().getDataWatcher();
+			DataWatcher dw = ((CraftEntity)textStand).getHandle().getDataWatcher().clone();
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStand), dw, true);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
