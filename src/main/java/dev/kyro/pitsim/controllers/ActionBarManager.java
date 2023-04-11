@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.megastreaks.RNGesus;
@@ -38,6 +39,7 @@ public class ActionBarManager implements Listener {
 	}
 
 	public static void sendActionBar(Player player, LockTime lockTime, String message) {
+		if(VanishAPI.isInvisible(player)) return;
 		if(lockTime == null) {
 			if(lockedTimeMap.containsKey(player)) return;
 		} else {
