@@ -36,8 +36,6 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class AltarPedestal implements Listener {
-	public static final int BASE_COST = 100;
-
 	public static List<AltarPedestal> altarPedestals = new ArrayList<>();
 	public Location location;
 	public ArmorStand stand;
@@ -178,20 +176,17 @@ public abstract class AltarPedestal implements Listener {
 		}
 	}
 
-	public static int getRewardChance(Player player, ALTAR_REWARD reward) {
+	public static int getRewardChance(Player player, AltarReward reward) {
 		return reward.pedestal.isActivated(player) ? DarkzoneBalancing.PEDESTAL_INCREASE_PERCENT : 0;
 	}
 
 	public static int getTotalCost(Player player) {
-		int totalCost = BASE_COST;
-		for(AltarPedestal pedestal : altarPedestals) {
-			if(pedestal.isActivated(player)) totalCost += pedestal.getActivationCost();
-		}
-
+		int totalCost = DarkzoneBalancing.BASE_ALTAR_COST;
+		for(AltarPedestal pedestal : altarPedestals) if(pedestal.isActivated(player)) totalCost += pedestal.getActivationCost();
 		return totalCost;
 	}
 
-	public enum ALTAR_REWARD {
+	public enum AltarReward {
 		ALTAR_XP(getPedestal(KnowledgePedestal.class), DarkzoneBalancing.AVERAGE_XP_PER_100_SOULS),
 		RENOWN(getPedestal(RenownPedestal.class), DarkzoneBalancing.AVERAGE_RENOWN_PER_100_SOULS),
 		VOUCHERS(getPedestal(HeresyPedestal.class), DarkzoneBalancing.AVERAGE_VOUCHERS_PER_100_SOULS);
@@ -199,7 +194,7 @@ public abstract class AltarPedestal implements Listener {
 		public final AltarPedestal pedestal;
 		public final double base;
 
-		ALTAR_REWARD(AltarPedestal pedestal, double base) {
+		AltarReward(AltarPedestal pedestal, double base) {
 			this.pedestal = pedestal;
 			this.base = base;
 		}

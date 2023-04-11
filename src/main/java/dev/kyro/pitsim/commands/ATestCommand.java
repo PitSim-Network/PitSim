@@ -1,9 +1,5 @@
 package dev.kyro.pitsim.commands;
 
-import com.xxmicloxx.NoteBlockAPI.model.RepeatMode;
-import com.xxmicloxx.NoteBlockAPI.model.Song;
-import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
-import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,93 +27,8 @@ public class ATestCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-
-		File file = new File("plugins/NoteBlockAPI/Effects/mario.nbs");
-		Song song = NBSDecoder.parse(file);
-		RadioSongPlayer radioSongPlayer = new RadioSongPlayer(song);
-		radioSongPlayer.addPlayer(player);
-		radioSongPlayer.setAutoDestroy(true);
-		radioSongPlayer.setPlaying(true);
-		radioSongPlayer.setRepeatMode(RepeatMode.ALL);
-
-//		for(AltarPedestal altarPedestal : AltarPedestal.altarPedestals) {
-//			Bukkit.broadcastMessage(String.valueOf(altarPedestal.stand.isDead()));
-//		}
-
-//
-//		FastTravelGUI fastTravelGUI = new FastTravelGUI(player);
-//		fastTravelGUI.open();
-
-//		SpawnBlocker.setBarrier(player);
-
-//		RenownShopGUI renownShopGUI = new RenownShopGUI(player);
-//		renownShopGUI.open();
-
-//		MarketGUI marketGUI = new MarketGUI(player);
-//		marketGUI.open();
-
-//		if(BiomeChanger.players.contains(player.getUniqueId())) {
-//			BiomeChanger.players.remove(player.getUniqueId());
-//		} else {
-//			BiomeChanger.players.add(player.getUniqueId());
-//		}
-
-
-//		HelpManager.HelperAgent helperAgent = HelpManager.getAgent(player);
-//		helperAgent.detectIntent(String.join(" ", args));
-
-//		PacketBlock packetBlock = new PacketBlock(Material.RED_ROSE, (byte) 1, player.getLocation());
-//		packetBlock.setViewers(Collections.singletonList(player));
-//		packetBlock.spawnBlock();
-//		packetBlock.removeAfter(100);
-
-//		location = player.getLocation();
-//
-//		new BukkitRunnable() {
-//			@Override
-//			public void run() {
-//				double x = Math.cos(Math.toRadians(degrees)) * RADIUS;
-//				double z = Math.sin(Math.toRadians(degrees)) * RADIUS;
-//
-//				World world = ((CraftWorld) (player.getWorld())).getHandle();
-//				EntityItem entityItem = new EntityItem(world);
-//				entityItem.setPosition(location.getX() + x, location.getY(), location.getZ() + z);
-//				entityItem.setItemStack(CraftItemStack.asNMSCopy(getItemStack()));
-//
-//
-//				PacketPlayOutSpawnEntity spawn = new PacketPlayOutSpawnEntity(entityItem, 1, 1);
-//				((CraftPlayer) player).getHandle().playerConnection.sendPacket(spawn);
-//
-//				PacketPlayOutEntityMetadata meta = new PacketPlayOutEntityMetadata(entityItem.getId(), entityItem.getDataWatcher(), true);
-//				((CraftPlayer) player).getHandle().playerConnection.sendPacket(meta);
-//
-//				degrees += 15;
-//				items.add(entityItem);
-//
-//				if(items.size() > TOTAL_ITEMS) {
-//					EntityItem removeItem = items.remove(0);
-//					PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(removeItem.getId());
-//					((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
-//				}
-//			}
-//		}.runTaskTimer(PitSim.INSTANCE, 0, 1);
-
-//
-//		double radius = 5;
-//
-//		for(int i = 0; i < 360; i += 15) {
-//
-//
-//			new BukkitRunnable() {
-//				@Override
-//				public void run() {
-//
-//				}
-//			}.runTaskLater(PitSim.INSTANCE, 20);
-//		}
-
-
-
+		if(!player.isOp()) return false;
+		
 		return false;
 	}
 

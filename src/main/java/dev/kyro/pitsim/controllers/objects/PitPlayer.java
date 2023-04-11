@@ -712,7 +712,7 @@ public class PitPlayer {
 		player.setLevel(level);
 		float remaining = remainingXP;
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
-		float total = (float) (PrestigeValues.getXPForLevel(level) * prestigeInfo.xpMultiplier);
+		float total = (float) (PrestigeValues.getXPForLevel(level) * prestigeInfo.getXpMultiplier());
 
 		player.setLevel(level);
 		float xp = (total - remaining) / total;

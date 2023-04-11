@@ -52,6 +52,6 @@ public class GrindGoldQuest extends PassQuest {
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
-		return Math.pow(PrestigeValues.getPrestigeInfo(pitPlayer.prestige).goldReq / 1000.0, 9.0 / 10.0) * 1000;
+		return Math.pow(PrestigeValues.getPrestigeInfo(pitPlayer.prestige).getGoldReq() / 1000.0, 9.0 / 10.0) * 1000;
 	}
 }
