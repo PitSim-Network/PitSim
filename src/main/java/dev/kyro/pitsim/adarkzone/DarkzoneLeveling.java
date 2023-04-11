@@ -81,15 +81,17 @@ public class DarkzoneLeveling {
 		return decimalFormat.format((1 - getReductionMultiplier(pitPlayer)) * 100);
 	}
 
-	public static void updateAltarXP(PitPlayer pitPlayer) {
-		if(pitPlayer.darkzoneData.preDarkzoneUpdatePrestige <= 0) return;
-		double altarXP = pitPlayer.darkzoneData.altarXP;
-		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.darkzoneData.preDarkzoneUpdatePrestige);
-		double expectedMinimumXP = getXPToLevel(prestigeInfo.getDarkzoneLevel());
-		if(altarXP >= expectedMinimumXP) return;
-		pitPlayer.darkzoneData.altarXP = expectedMinimumXP;
-		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
-		AOutput.send(pitPlayer.player, "&4&lALTAR UPDATE!&7 An update has increased your &cAltar XP &7to level &c" +
-				decimalFormat.format(prestigeInfo.getDarkzoneLevel()));
-	}
+//TODO: Will mess up altar levels if uncommented
+
+//	public static void updateAltarXP(PitPlayer pitPlayer) {
+//		if(pitPlayer.darkzoneData.preDarkzoneUpdatePrestige <= 0) return;
+//		double altarXP = pitPlayer.darkzoneData.altarXP;
+//		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.darkzoneData.preDarkzoneUpdatePrestige);
+//		double expectedMinimumXP = getXPToLevel(prestigeInfo.getDarkzoneLevel());
+//		if(altarXP >= expectedMinimumXP) return;
+//		pitPlayer.darkzoneData.altarXP = expectedMinimumXP;
+//		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
+//		AOutput.send(pitPlayer.player, "&4&lALTAR UPDATE!&7 An update has increased your &cAltar XP &7to level &c" +
+//				decimalFormat.format(prestigeInfo.getDarkzoneLevel()));
+//	}
 }

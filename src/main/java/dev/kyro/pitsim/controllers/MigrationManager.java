@@ -146,7 +146,14 @@ public class MigrationManager implements Listener {
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.getOrDefault("altar",
 				new DarkzoneData.SkillBranchData());
 
-		skillBranchData.pathUnlocks.put("altar-xp", Math.max(getTrackLevel(pitPlayer.prestige),
+		int level = getProgressionTier(pitPlayer.prestige);
+
+		if(level >= 1) skillBranchData.majorUnlocks.add("unlock-basic-pedestals");
+		if(level >= 5) skillBranchData.majorUnlocks.add("unlock-pedestal-wealth");
+
+		int pathLevel = level - (level >= 1 ? 1 : 0) - (level >= 5 ? 1 : 0);
+
+		skillBranchData.pathUnlocks.put("altar-xp", Math.max(pathLevel,
 				skillBranchData.pathUnlocks.getOrDefault("altar-xp", 0)));
 		pitPlayer.darkzoneData.skillBranchUnlocks.put("altar", skillBranchData);
 
@@ -157,12 +164,15 @@ public class MigrationManager implements Listener {
 		pitPlayer.save(false, true);
 	}
 
-	public static int getTrackLevel(int prestige) {
+	public static int getProgressionTier(int prestige) {
 		if(prestige < 15) return 0;
 		else if(prestige < 20) return 1;
 		else if(prestige < 25) return 2;
 		else if(prestige < 30) return 3;
 		else if(prestige < 40) return 4;
-		else return 6;
+		else if(prestige < 45) return 5;
+		else if(prestige < 50) return 6;
+		else if(prestige < 55) return 7;
+		else return 8;
 	}
 }
