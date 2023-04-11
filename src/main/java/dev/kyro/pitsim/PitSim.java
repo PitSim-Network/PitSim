@@ -149,7 +149,10 @@ public class PitSim extends JavaPlugin {
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.STANDALONE;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
 
-		if(status.isDarkzone()) DarkzoneManager.clearEntities();
+		if(status.isDarkzone()) {
+			DarkzoneManager.loadChunks();
+			DarkzoneManager.clearEntities();
+		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PlayerManager.addRealPlayer(onlinePlayer.getUniqueId());

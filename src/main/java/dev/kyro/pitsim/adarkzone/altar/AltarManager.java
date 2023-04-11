@@ -229,9 +229,7 @@ public class AltarManager implements Listener {
 			EntityArmorStand tempStand = new EntityArmorStand((((CraftWorld) MapManager.getDarkzone()).getHandle()));
 			tempStand.n(true);
 			tempStand.setInvisible(true);
-//			tempStand.setCustomNameVisible(true);
 			tempStand.setArms(true);
-//			tempStand.setCustomName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "TAINTED ALTAR");
 			tempStand.setGravity(false);
 
 			DataWatcher dw = tempStand.getDataWatcher();
