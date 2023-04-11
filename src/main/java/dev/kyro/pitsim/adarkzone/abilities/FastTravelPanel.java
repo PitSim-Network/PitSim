@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.FastTravelDestination;
 import dev.kyro.pitsim.adarkzone.FastTravelManager;
 import dev.kyro.pitsim.controllers.CombatManager;
@@ -68,8 +69,8 @@ public class FastTravelPanel extends AGUIPanel {
 		FastTravelDestination destination = FastTravelManager.destinations.get(index);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(destination.subLevel != null && !pitPlayer.hasFastTravelUnlocked(destination.subLevel)) {
-			AOutput.error(event.getWhoClicked(), "&cYou must kill the Boss to unlock this location!");
+		if(destination.subLevel != null && !pitPlayer.hasFastTravelUnlocked(destination.subLevel) && !PitSim.isDev()) {
+			AOutput.error(event.getWhoClicked(), "&cYou must kill the boss to unlock this location!");
 			Sounds.NO.play(player);
 			return;
 		}
