@@ -8,15 +8,13 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
-import net.minecraft.server.v1_8_R3.DataWatcher;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
@@ -99,7 +97,15 @@ public class AltarManager implements Listener {
 		for(int i = 0; i < 7; i++) {
 			if(text[i] == null) text[i] = "";
 
-			DataWatcher dw = ((CraftEntity)textStands[i]).getHandle().getDataWatcher();
+			EntityArmorStand tempStand = new EntityArmorStand((((CraftWorld) MapManager.getDarkzone()).getHandle()));
+			tempStand.n(true);
+			tempStand.setInvisible(true);
+			tempStand.setCustomNameVisible(true);
+			tempStand.setArms(true);
+			tempStand.setCustomName(text[i]);
+			tempStand.setGravity(false);
+
+			DataWatcher dw = tempStand.getDataWatcher();
 			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', text[i]));
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStands[i]), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
@@ -213,7 +219,15 @@ public class AltarManager implements Listener {
 			PacketPlayOutSpawnEntity spawnPacket = new PacketPlayOutSpawnEntity(((CraftEntity) textStand).getHandle(), 78);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawnPacket);
 
-			DataWatcher dw = ((CraftEntity)textStand).getHandle().getDataWatcher();
+			EntityArmorStand tempStand = new EntityArmorStand((((CraftWorld) MapManager.getDarkzone()).getHandle()));
+			tempStand.n(true);
+			tempStand.setInvisible(true);
+//			tempStand.setCustomNameVisible(true);
+			tempStand.setArms(true);
+//			tempStand.setCustomName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "TAINTED ALTAR");
+			tempStand.setGravity(false);
+
+			DataWatcher dw = tempStand.getDataWatcher();
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStand), dw, true);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
