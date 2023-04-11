@@ -48,7 +48,7 @@ public class PrestigePanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(event.getClickedInventory().getHolder() == this) {
 			if(slot == 11) {
-				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq) {
+				if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.getGoldReq()) {
 					if(pitPlayer.prestige == PrestigeValues.MAX_PRESTIGE) {
 						AOutput.error(player, "&aYou are already the maximum prestige!");
 						Sounds.NO.play(player);
@@ -83,7 +83,7 @@ public class PrestigePanel extends AGUIPanel {
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Required Level: " + prestigeInfo.getOpenBracket() + "&b&l120" + prestigeInfo.getCloseBracket()));
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Grinded: &6" +
-					formatter.format(pitPlayer.goldGrinded) + "&7/&6" + formatter.format(prestigeInfo.goldReq) + "g"));
+					formatter.format(pitPlayer.goldGrinded) + "&7/&6" + formatter.format(prestigeInfo.getGoldReq()) + "g"));
 			prestigeLore.add("");
 			prestigeLore.add(ChatColor.GRAY + "Costs:");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &c&lResets &blevel &cto 1"));
@@ -92,13 +92,13 @@ public class PrestigePanel extends AGUIPanel {
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7&oRenown upgrades are kept"));
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7&oEnder chest is kept"));
 			prestigeLore.add("");
-			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Reward: &e" + prestigeInfo.renownReward + " &eRenown"));
+			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Reward: &e" + prestigeInfo.getRenownReward() + " &eRenown"));
 			prestigeLore.add("");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7New prestige: &e" + AUtil.toRoman(pitPlayer.prestige + 1)));
 			if(pitPlayer.prestige != 0)
-				prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.xpMultiplier) + "&b% &7needed xp!"));
+				prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&b+" + (int) (100 * nextPrestigeInfo.getXpMultiplier()) + "&b% &7needed xp!"));
 			prestigeLore.add("");
-			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.goldReq) {
+			if(pitPlayer.level == 120 && pitPlayer.goldGrinded >= prestigeInfo.getGoldReq()) {
 				prestigeLore.add(ChatColor.YELLOW + "Click to purchase!");
 			} else {
 				prestigeLore.add(ChatColor.RED + "Requirements not met!");

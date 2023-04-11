@@ -25,8 +25,12 @@ public class DarkzoneBalancing {
 
 	public static final double MOB_ITEM_DROP_PERCENT = 10;
 
-	public static final double AVERAGE_XP_PER_100_SOULS = 10.0;
-	public static final double AVERAGE_RENOWN_PER_100_SOULS = 1.2;
+	public static final int FIRST_LEVEL_XP = 5;
+	public static final double EVERY_LEVEL_XP_INCREASE = 1;
+
+	public static final int BASE_ALTAR_COST = 50;
+	public static final double AVERAGE_XP_PER_100_SOULS = 100.0;
+	public static final double AVERAGE_RENOWN_PER_100_SOULS = 3.0;
 	public static final double AVERAGE_VOUCHERS_PER_100_SOULS = 3.0;
 	public static final double NONE_REWARD_MULTIPLIER = 0.0;
 	public static final double LOW_REWARD_MULTIPLIER = 1.0;

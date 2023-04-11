@@ -53,7 +53,7 @@ public class LevelManager {
 		if(pitPlayer.remainingXP > 0) return;
 
 		pitPlayer.level += 1;
-		pitPlayer.remainingXP = (long) ((PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.xpMultiplier));
+		pitPlayer.remainingXP = (long) ((PrestigeValues.getXPForLevel(pitPlayer.level) * prestigeInfo.getXpMultiplier()));
 		pitPlayer.updateXPBar();
 
 		Sounds.LEVEL_UP.play(player);
@@ -93,23 +93,23 @@ public class LevelManager {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 		if(pitPlayer.level < 120) return;
-		if(pitPlayer.goldGrinded < prestigeInfo.goldReq) return;
+		if(pitPlayer.goldGrinded < prestigeInfo.getGoldReq()) return;
 
 		pitPlayer.prestige += 1;
 		if(UpgradeManager.hasUpgrade(player, FastPass.INSTANCE)) {
 			pitPlayer.level = 50;
-			pitPlayer.remainingXP = (long) (PrestigeValues.getXPForLevel(50) * prestigeInfo.xpMultiplier);
+			pitPlayer.remainingXP = (long) (PrestigeValues.getXPForLevel(50) * prestigeInfo.getXpMultiplier());
 		} else {
 			pitPlayer.level = 1;
-			pitPlayer.remainingXP = (long) (PrestigeValues.getXPForLevel(1) * prestigeInfo.xpMultiplier);
+			pitPlayer.remainingXP = (long) (PrestigeValues.getXPForLevel(1) * prestigeInfo.getXpMultiplier());
 		}
 		pitPlayer.goldGrinded = 0;
 		if(pitPlayer.megastreak != null) pitPlayer.megastreak.stop();
 		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.endKillstreak();
 		pitPlayer.gold = 0;
-		pitPlayer.renown += prestigeInfo.renownReward;
-		EarnRenownQuest.INSTANCE.gainRenown(pitPlayer, prestigeInfo.renownReward);
+		pitPlayer.renown += prestigeInfo.getRenownReward();
+		EarnRenownQuest.INSTANCE.gainRenown(pitPlayer, prestigeInfo.getRenownReward());
 		pitPlayer.moonBonus = 0;
 		pitPlayer.goldStack = 0;
 		pitPlayer.killstreaks.set(1, NoKillstreak.INSTANCE);

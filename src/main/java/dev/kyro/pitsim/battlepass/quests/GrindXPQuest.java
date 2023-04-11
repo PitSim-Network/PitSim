@@ -52,6 +52,6 @@ public class GrindXPQuest extends PassQuest {
 
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
-		return Math.pow(PrestigeValues.getPrestigeInfo(pitPlayer.prestige).xpMultiplier, 9.0 / 10.0);
+		return Math.pow(PrestigeValues.getPrestigeInfo(pitPlayer.prestige).getXpMultiplier(), 9.0 / 10.0);
 	}
 }

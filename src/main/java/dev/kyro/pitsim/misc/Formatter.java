@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.misc;
 
+import org.bukkit.ChatColor;
+
 import java.text.DecimalFormat;
 import java.time.Duration;
 
@@ -8,11 +10,11 @@ public class Formatter {
 	public static DecimalFormat commaFormat = new DecimalFormat("#,##0");
 
 	public static String formatRenown(int renown) {
-		return "&e" + commaFormat.format(renown) + " Renown";
+		return translate("&e" + commaFormat.format(renown) + " Renown");
 	}
 
 	public static String formatSouls(int souls) {
-		return "&f" + commaFormat.format(souls) + " Soul" + Misc.s(souls);
+		return translate("&f" + commaFormat.format(souls) + " Soul" + Misc.s(souls));
 	}
 
 	public static String formatGoldFull(double amount) {
@@ -76,5 +78,9 @@ public class Formatter {
 
 	public static String formatPercent(double percent) {
 		return new DecimalFormat("0.0").format(percent * 100) + "%";
+	}
+
+	public static String translate(String string) {
+		return ChatColor.translateAlternateColorCodes('&', string);
 	}
 }
