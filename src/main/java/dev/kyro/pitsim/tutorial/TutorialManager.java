@@ -19,13 +19,25 @@ public class TutorialManager implements Listener {
 	public static List<NPCCheckpoint> checkpoints = new ArrayList<>();
 	public static Map<Player, Location> lastLocationMap = new HashMap<>();
 
+	public static final int DARKZONE_OBJECTIVE_DISTANCE = 8;
+
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		Tutorial darkzoneTutorial = pitPlayer.darkzoneTutorial;
+		DarkzoneTutorial darkzoneTutorial = pitPlayer.darkzoneTutorial;
 		if(!darkzoneTutorial.isActive()) return;
+		NPCCheckpoint current = darkzoneTutorial.tutorialNPC.getCheckpoint();
+
+		if(current != null && !darkzoneTutorial.isInObjective) {
+			for(NPCCheckpoint checkpoint : checkpoints) {
+				if(checkpoint.location.distance(player.getLocation()) > DARKZONE_OBJECTIVE_DISTANCE) continue;
+				if(darkzoneTutorial.data.completedObjectives.contains(checkpoint.objective)) continue;
+
+				darkzoneTutorial.tutorialNPC.setCheckpoint(checkpoint);
+			}
+		}
 
 		if(SpawnManager.isInSpawn(player.getLocation())) {
 			lastLocationMap.put(player, player.getLocation());

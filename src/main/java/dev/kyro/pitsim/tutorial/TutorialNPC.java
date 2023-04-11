@@ -4,26 +4,33 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.misc.MinecraftSkin;
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.LookClose;
 import net.citizensnpcs.trait.SkinTrait;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class TutorialNPC {
+public class TutorialNPC implements Listener {
 	public static final String NPC_SKIN_NAME = "wiji1";
 	public static final String NPC_NAME = "tutorial";
 	public static final Location NPC_SPAWN_LOCATION = MapManager.getDarkzoneSpawn();
 
 	public NPC npc;
 	public Tutorial tutorial;
-	public NPCCheckpoint currentCheckpoint;
+	public boolean isTalking = false;
+	private NPCCheckpoint currentCheckpoint;
 
 	public TutorialNPC(Tutorial tutorial) {
 		this.tutorial = tutorial;
 		create();
+
+		currentCheckpoint = null;
 
 		new BukkitRunnable() {
 			@Override
@@ -32,6 +39,7 @@ public class TutorialNPC {
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20);
 
+		Bukkit.getServer().getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
 	public void create() {
@@ -74,6 +82,39 @@ public class TutorialNPC {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0, 10);
+	}
+
+	@EventHandler
+	public void onNPCClick(NPCRightClickEvent event) {
+		if(event.getNPC() != npc) return;
+
+		if(currentCheckpoint == null) {
+
+			return;
+		}
+
+		if(currentCheckpoint.canSatisfy(tutorial)) {
+			currentCheckpoint.onSatisfy(tutorial, currentCheckpoint.getSatisfyDelay());
+		} else currentCheckpoint.onEngage(tutorial, currentCheckpoint.getEngageDelay());
+	}
+
+	public void setCheckpoint(NPCCheckpoint checkpoint) {
+		currentCheckpoint = checkpoint;
+		walkToCheckPoint(checkpoint);
+		checkpoint.onEngage(tutorial, checkpoint.getEngageDelay());
+	}
+
+	public NPCCheckpoint getCheckpoint() {
+		return currentCheckpoint;
+	}
+
+	public void setTalking(boolean talking, int delay) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				isTalking = talking;
+			}
+		}.runTaskLater(PitSim.INSTANCE, delay);
 	}
 
 }

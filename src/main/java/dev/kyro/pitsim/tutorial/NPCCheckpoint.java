@@ -7,8 +7,10 @@ public abstract class NPCCheckpoint {
 		public final Location location;
 		public final int walkTime;
 
-		public abstract void onCheckpointEngage(Tutorial tutorial);
-		public abstract void onCheckpointSatisfy(Tutorial tutorial);
+		protected abstract void onCheckpointEngage(Tutorial tutorial);
+		protected abstract void onCheckpointSatisfy(Tutorial tutorial);
+		public abstract int getEngageDelay();
+		public abstract int getSatisfyDelay();
 	
 		public NPCCheckpoint(TutorialObjective objective, Location location, int walkTime) {
 			this.objective = objective;
@@ -18,7 +20,7 @@ public abstract class NPCCheckpoint {
 			TutorialManager.checkpoints.add(this);
 		}
 
-		public void onEngage(Tutorial tutorial) {
+		public void onEngage(Tutorial tutorial, int delay) {
 			tutorial.isInObjective = true;
 			onCheckpointEngage(tutorial);
 		}
@@ -26,5 +28,9 @@ public abstract class NPCCheckpoint {
 		public void onSatisfy(Tutorial tutorial, int delay) {
 			onCheckpointSatisfy(tutorial);
 			tutorial.completeObjective(objective, delay);
+		}
+
+		public boolean canSatisfy(Tutorial tutorial) {
+			return true;
 		}
 	}

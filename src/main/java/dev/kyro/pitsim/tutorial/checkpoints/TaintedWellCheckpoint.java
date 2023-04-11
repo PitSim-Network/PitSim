@@ -21,4 +21,14 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 	public void onCheckpointSatisfy(Tutorial tutorial) {
 
 	}
+
+	@Override
+	public int getEngageDelay() {
+		return 60;
+	}
+
+	@Override
+	public int getSatisfyDelay() {
+		return 60;
+	}
 }
