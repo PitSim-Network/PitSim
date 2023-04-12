@@ -16,7 +16,10 @@ public enum TutorialObjective {
 
 	//Darkzone
 	TAINTED_WELL(DarkzoneTutorial.class, "tainted", "&5Tainted Well",  new ParticleBox(10, 10, 10)),
-		PROGRESSION(DarkzoneTutorial.class, "progression", "&5Main Progression",  new ParticleBox(7, 7, 10)),
+	PROGRESSION(DarkzoneTutorial.class, "progression", "&5Main Progression",  new ParticleBox(7, 7, 10)),
+	MARKET_SHOP(DarkzoneTutorial.class, "market-shop", "&3Market &7and &bShop",  new ParticleBox(7, 7, 10)),
+	ALTAR(DarkzoneTutorial.class, "altar", "&5Tainted Altar",  new ParticleBox(10, 20, 20)),
+	BREWING(DarkzoneTutorial.class, "brewing", "&dBrewing",  new ParticleBox(7, 7, 10)),
 	;
 
 	public final Class<? extends Tutorial> tutorialClass;
@@ -59,6 +62,9 @@ public enum TutorialObjective {
 		else if(this == PASS) return MapManager.currentMap.getPassNPCSpawn();
 		else if(this == TAINTED_WELL) return new Location(MapManager.getDarkzone(), 186.5, 91, -105.5);
 		else if(this == PROGRESSION) return new Location(MapManager.getDarkzone(), 188.5, 91, -83);
+		else if(this == MARKET_SHOP) return new Location(MapManager.getDarkzone(), 202.5, 91, -83);
+		else if(this == ALTAR) return new Location(MapManager.getDarkzone(), 221.5, 92, -83.5);
+		else if(this == BREWING) return new Location(MapManager.getDarkzone(), 222.5, 91, -104);
 		return null;
 	}
 
