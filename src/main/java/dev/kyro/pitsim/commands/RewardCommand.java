@@ -4,9 +4,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.MysticFactory;
-import dev.kyro.pitsim.aitems.misc.AncientGemShard;
-import dev.kyro.pitsim.aitems.misc.ChunkOfVile;
-import dev.kyro.pitsim.aitems.misc.FunkyFeather;
+import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.diamond.ProtBoots;
 import dev.kyro.pitsim.aitems.diamond.ProtChestplate;
 import dev.kyro.pitsim.aitems.diamond.ProtHelmet;
@@ -15,8 +13,10 @@ import dev.kyro.pitsim.battlepass.PassData;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.LevelManager;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -45,6 +45,7 @@ public class RewardCommand implements CommandExecutor {
 		String item = args[1].toLowerCase();
 		int amount = args.length < 3 ? 1 : Integer.parseInt(args[2]);
 
+		Player finalPlayer = player;
 		switch(item) {
 			case "pass":
 				passData.hasPremium = true;
@@ -90,6 +91,18 @@ public class RewardCommand implements CommandExecutor {
 					AUtil.giveItemSafely(player, jbpants);
 				}
 				return false;
+			case "scythe":
+				for(int i = 0; i < amount; i++) {
+					ItemStack scythe = MysticFactory.getJewelItem(MysticType.TAINTED_SCYTHE);
+					AUtil.giveItemSafely(player, scythe);
+				}
+				return false;
+			case "chestplate":
+				for(int i = 0; i < amount; i++) {
+					ItemStack chestplate = MysticFactory.getJewelItem(MysticType.TAINTED_CHESTPLATE);
+					AUtil.giveItemSafely(player, chestplate);
+				}
+				return false;
 			case "p1":
 				ItemFactory.getItem(ProtHelmet.class).giveItem(player, 1);
 				ItemFactory.getItem(ProtChestplate.class).giveItem(player, 1);
@@ -108,11 +121,25 @@ public class RewardCommand implements CommandExecutor {
 			case "p1boots":
 				ItemFactory.getItem(ProtBoots.class).giveItem(player, 1);
 				return false;
+			case "ghelm":
+				ItemStack itemStack = ItemFactory.getItem(GoldenHelmet.class).getItem();
+				itemStack = HelmetManager.depositGold(itemStack, amount);
+				AUtil.giveItemSafely(player, itemStack, true);
+				return false;
 			case "feather":
 				ItemFactory.getItem(FunkyFeather.class).giveItem(player, amount);
 				return false;
+			case "corruptedfeather":
+				ItemFactory.getItem(CorruptedFeather.class).giveItem(player, amount);
+				return false;
 			case "vile":
 				ItemFactory.getItem(ChunkOfVile.class).giveItem(player, amount);
+				return false;
+			case "shard":
+				AUtil.giveItemSafely(player, ItemFactory.getItem(AncientGemShard.class).getItem(amount), true);
+				return false;
+			case "yummybread":
+				ItemFactory.getItem(YummyBread.class).giveItem(player, amount);
 				return false;
 			case "xp":
 				LevelManager.addXP(player, amount);
@@ -120,22 +147,28 @@ public class RewardCommand implements CommandExecutor {
 			case "gold":
 				LevelManager.addGold(player, amount);
 				return false;
-			case "renown":
-				pitPlayer.renown += amount;
-				Player finalPlayer = player;
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						AOutput.send(finalPlayer, "&7You have been given &e" + amount + " renown");
-					}
-				}.runTaskLater(PitSim.INSTANCE, 3L);
-				return false;
-			case "shard":
-				AUtil.giveItemSafely(player, ItemFactory.getItem(AncientGemShard.class).getItem(amount), true);
-				return false;
 			case "double":
 				double goldToGive = Math.min(pitPlayer.gold, 2000000);
 				LevelManager.addGold(player, (int) goldToGive);
+				return false;
+			case "renown":
+				pitPlayer.renown += amount;
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						AOutput.send(finalPlayer, "&7You have been given " + Formatter.formatRenown(amount));
+					}
+				}.runTaskLater(PitSim.INSTANCE, 3L);
+				return false;
+			case "soul":
+				pitPlayer.taintedSouls += amount;
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						AOutput.send(finalPlayer, "&7You have been given " + Formatter.formatSouls(amount));
+					}
+				}.runTaskLater(PitSim.INSTANCE, 3L);
+				return false;
 		}
 		return false;
 	}

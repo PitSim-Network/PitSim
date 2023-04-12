@@ -58,7 +58,7 @@ public class NonManager {
 					}.runTaskLater(PitSim.INSTANCE, (long) (20 * 60 * (Math.random() * 10 + 5)));
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 40L, 20);
+		}.runTaskTimer(PitSim.INSTANCE, 40L, 3L);
 
 		new BukkitRunnable() {
 			@Override
@@ -69,12 +69,12 @@ public class NonManager {
 	}
 
 	public static int getMaxNons() {
-		int base = 25;
-		int max = 40;
+		int base = 30;
+		int max = 50;
 
 		if(ChaosBooster.INSTANCE.isActive()) {
-			max = 50;
-			base = 50;
+			max = 60;
+			base = 60;
 		}
 
 		Location mid = MapManager.currentMap.getMid();
@@ -84,7 +84,7 @@ public class NonManager {
 			double distance = mid.distance(onlinePlayer.getLocation());
 			if(distance < 15) playersNearMid++;
 		}
-		return Math.min(playersNearMid * 3 + base, max);
+		return Math.min(playersNearMid * 4 + base, max);
 	}
 
 	public static void updateNons(List<String> newBotIGNs) {

@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.boosters;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,22 +44,20 @@ public class XPBooster extends Booster {
 	public ItemStack getBaseDisplayStack() {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		return new AItemStackBuilder(Material.INK_SACK, 1, 12)
-				.setLore(new ALoreBuilder(
-						"&7All players on the server gain",
-						"&b+" + getXPIncrease() + "% XP &7and &b+" + getMaxXPIncrease() + "% max XP",
-						"",
-						"&7If you activate this booster,",
-						"&7gain &b" + decimalFormat.format(getXPShare()) + "% &7of the &bxp &7earned",
-						"&7by everyone online"
+				.setLore(new PitLoreBuilder(
+						"&7All players on the server gain &b+" + getXPIncrease() + "% XP &7and &b+" + getMaxXPIncrease() + "% max XP"
+				).addLongLine(
+						"&7If you activate this booster, gain &b" + decimalFormat.format(getXPShare()) +
+						"% &7of the &bxp &7earned by everyone online"
 				)).getItemStack();
 	}
 
 	public static int getXPIncrease() {
-		return 40;
+		return 50;
 	}
 
 	public static int getMaxXPIncrease() {
-		return 25;
+		return 35;
 	}
 
 	public static double getXPShare() {

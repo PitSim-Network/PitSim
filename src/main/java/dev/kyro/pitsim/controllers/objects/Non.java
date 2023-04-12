@@ -149,7 +149,6 @@ public class Non {
 	}
 
 	public void pickTarget() {
-
 		Player closest = null;
 		double closestDistance = 100;
 		Location midLoc = MapManager.currentMap.getMid();
@@ -160,7 +159,7 @@ public class Non {
 			if(SpawnManager.isInSpawn(onlinePlayer)) continue;
 			nearbyPlayers.add(onlinePlayer);
 		}
-		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 3.5, 3, 3.5)) {
+		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 4, 3, 4)) {
 			if(!(nearbyEntity instanceof Player)) continue;
 			if(!nearbyPlayers.contains(nearbyEntity)) nearbyPlayers.add((Player) nearbyEntity);
 		}
@@ -255,19 +254,11 @@ public class Non {
 	}
 
 	public void pickTraits() {
-
-		if(Math.random() < 0.8) {
-
-			traits.add(NonTrait.NO_JUMP);
-		}
-		if(Math.random() < 0.08) {
-
-			traits.add(NonTrait.IRON_STREAKER);
-		}
+		if(Math.random() < 0.8) traits.add(NonTrait.NO_JUMP);
+//		if(Math.random() < 0.08) traits.add(NonTrait.IRON_STREAKER);
 	}
 
 	public void rewardKill() {
-
 		non.setHealth(Math.min(non.getHealth() + 3, non.getMaxHealth()));
 		EntityPlayer nmsPlayer = ((CraftPlayer) non).getHandle();
 		if(nmsPlayer.getAbsorptionHearts() < 8) {

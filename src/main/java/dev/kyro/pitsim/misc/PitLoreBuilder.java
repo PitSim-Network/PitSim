@@ -38,16 +38,18 @@ public class PitLoreBuilder extends ALoreBuilder {
 		addLongLine(longLine);
 	}
 
-	public void addLongLines(String... longLines) {
+	public PitLoreBuilder addLongLines(String... longLines) {
 		for(String longLine : longLines) addLongLine(longLine);
+		return this;
 	}
 
-	public void addLongLine(String longLine) {
+	public PitLoreBuilder addLongLine(String longLine) {
 		addLongLine(longLine, true);
+		return this;
 	}
 
-	public void addLongLine(String longLine, boolean attemptAddSpacer) {
-		if(longLine == null || longLine.isEmpty()) return;
+	public PitLoreBuilder addLongLine(String longLine, boolean attemptAddSpacer) {
+		if(longLine == null || longLine.isEmpty()) return this;
 		if(attemptAddSpacer) attemptAddSpacer();
 		longLine = ChatColor.translateAlternateColorCodes('&', longLine);
 		String currentString = "";
@@ -77,6 +79,7 @@ public class PitLoreBuilder extends ALoreBuilder {
 			currentString += word;
 		}
 		if(!ChatColor.stripColor(currentString).isEmpty()) addLore(currentString);
+		return this;
 	}
 
 	public void attemptAddSpacer() {

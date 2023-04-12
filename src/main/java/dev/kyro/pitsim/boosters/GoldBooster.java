@@ -1,10 +1,10 @@
 package dev.kyro.pitsim.boosters;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,6 +26,7 @@ public class GoldBooster extends Booster {
 	public void onKill(KillEvent killEvent) {
 		if(!isActive()) return;
 		killEvent.goldMultipliers.add(1 + (getGoldIncrease() / 100.0));
+		killEvent.goldCap += getGoldCapIncrease();
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -43,18 +44,19 @@ public class GoldBooster extends Booster {
 	public ItemStack getBaseDisplayStack() {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		return new AItemStackBuilder(Material.INK_SACK, 1, 14)
-				.setLore(new ALoreBuilder(
-						"&7All players on the server gain",
-						"&6+" + getGoldIncrease() +"% gold",
-						"",
-						"&7If you activate this booster,",
-						"&7gain &6" + decimalFormat.format(getGoldShare()) + "% &7of the &6gold &7earned",
-						"&7by everyone online"
+				.setLore(new PitLoreBuilder(
+						"&7All players on the server gain &6+" + getGoldIncrease() + "% gold &7and &6+" + getGoldCapIncrease() + " max gold"
+				).addLongLine(
+						"&7If you activate this booster, gain &6" + decimalFormat.format(getGoldShare()) + "% &7of the &6gold &7earned by everyone online"
 				)).getItemStack();
 	}
 
 	public static int getGoldIncrease() {
-		return 40;
+		return 50;
+	}
+
+	public static int getGoldCapIncrease() {
+		return 500;
 	}
 
 	public static double getGoldShare() {
