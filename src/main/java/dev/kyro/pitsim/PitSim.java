@@ -96,6 +96,7 @@ import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.settings.scoreboard.*;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.tutorial.TutorialManager;
+import dev.kyro.pitsim.tutorial.checkpoints.ProgressionCheckpoint;
 import dev.kyro.pitsim.tutorial.checkpoints.TaintedWellCheckpoint;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
@@ -342,6 +343,10 @@ public class PitSim extends JavaPlugin {
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+
+			pitPlayer.overworldTutorial.endTutorial();
+			pitPlayer.darkzoneTutorial.endTutorial();
+
 
 //			disable cosmetics
 			if(!VanishAPI.isInvisible(onlinePlayer)) {
@@ -936,6 +941,7 @@ public class PitSim extends JavaPlugin {
 
 	public static void registerNPCCheckpoints() {
 		new TaintedWellCheckpoint();
+		new ProgressionCheckpoint();
 	}
 
 	private void loadConfig() {

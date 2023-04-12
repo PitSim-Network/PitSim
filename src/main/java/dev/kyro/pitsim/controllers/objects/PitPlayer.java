@@ -284,8 +284,8 @@ public class PitPlayer {
 			PotionManager.savePotions(this, finalSave);
 
 			if(finalSave) {
-				darkzoneTutorial.onQuit();
-				overworldTutorial.onQuit();
+				darkzoneTutorial.endTutorial();
+				overworldTutorial.endTutorial();
 			}
 
 			megastreakRef = megastreak.getRefNames().get(0);

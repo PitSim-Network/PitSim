@@ -33,7 +33,7 @@ public abstract class Tutorial {
 	public abstract void sendCompletionMessages();
 	public abstract boolean isActive();
 	public abstract void onStart();
-	public abstract void onQuit();
+	public abstract void onTutorialEnd();
 
 	@Deprecated
 	public Tutorial(FileConfiguration playerData) {
@@ -104,6 +104,7 @@ public abstract class Tutorial {
 						public void run() {
 							AOutput.send(pitPlayer.player, "&a&lTUTORIAL COMPLETED!");
 							Sounds.LEVEL_UP.play(pitPlayer.player);
+							onTutorialEnd();
 						}
 					}.runTaskLater(PitSim.INSTANCE, 30);
 
@@ -180,6 +181,13 @@ public abstract class Tutorial {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
+	}
+
+	public void endTutorial() {
+		Audience audience = PitSim.adventure.player(uuid);
+		audience.hideBossBar(bossBar);
+		bossBar = null;
+		onTutorialEnd();
 	}
 
 }

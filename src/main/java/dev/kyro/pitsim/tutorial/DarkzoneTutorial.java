@@ -44,7 +44,7 @@ public class DarkzoneTutorial extends Tutorial {
 	}
 
 	@Override
-	public void onQuit() {
+	public void onTutorialEnd() {
 		if(tutorialNPC != null) {
 			tutorialNPC.remove();
 			tutorialNPC = null;

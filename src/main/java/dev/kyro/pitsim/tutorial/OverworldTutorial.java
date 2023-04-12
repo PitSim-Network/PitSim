@@ -50,7 +50,7 @@ public class OverworldTutorial extends Tutorial {
 	}
 
 	@Override
-	public void onQuit() {
+	public void onTutorialEnd() {
 
 	}
 }

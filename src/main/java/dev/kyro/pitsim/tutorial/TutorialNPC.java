@@ -32,12 +32,12 @@ public class TutorialNPC implements Listener {
 
 		currentCheckpoint = null;
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				walkToCheckPoint(TutorialManager.getCheckpoint(0));
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20);
+//		new BukkitRunnable() {
+//			@Override
+//			public void run() {
+//				walkToCheckPoint(TutorialManager.getCheckpoint(0));
+//			}
+//		}.runTaskLater(PitSim.INSTANCE, 20);
 
 		Bukkit.getServer().getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
@@ -65,6 +65,7 @@ public class TutorialNPC implements Listener {
 
 	public void walkToCheckPoint(NPCCheckpoint checkpoint) {
 		npc.getNavigator().setTarget(checkpoint.location);
+		npc.getNavigator().getDefaultParameters().distanceMargin(0);
 
 		new BukkitRunnable() {
 			@Override
@@ -74,7 +75,6 @@ public class TutorialNPC implements Listener {
 					return;
 				}
 
-				System.out.println(npc.getEntity().getLocation().distance(checkpoint.location));
 				if(npc.getEntity().getLocation().distance(checkpoint.location) <= 2) {
 					cancel();
 					npc.getNavigator().setTarget(null, true);
@@ -88,8 +88,14 @@ public class TutorialNPC implements Listener {
 	public void onNPCClick(NPCRightClickEvent event) {
 		if(event.getNPC() != npc) return;
 
-		if(currentCheckpoint == null) {
+		if(currentCheckpoint == null || tutorial.isInObjective) {
+			return;
+		}
 
+		boolean hasCompleted = tutorial.data.completedObjectives.contains(currentCheckpoint.objective);
+
+		if(hasCompleted) {
+			tutorial.sendMessage("You have already completed this objective", 0);
 			return;
 		}
 

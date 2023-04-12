@@ -28,12 +28,12 @@ public class TutorialManager implements Listener {
 
 		DarkzoneTutorial darkzoneTutorial = pitPlayer.darkzoneTutorial;
 		if(!darkzoneTutorial.isActive()) return;
-		NPCCheckpoint current = darkzoneTutorial.tutorialNPC.getCheckpoint();
 
-		if(current != null && !darkzoneTutorial.isInObjective) {
+		if(!darkzoneTutorial.isInObjective) {
 			for(NPCCheckpoint checkpoint : checkpoints) {
 				if(checkpoint.location.distance(player.getLocation()) > DARKZONE_OBJECTIVE_DISTANCE) continue;
 				if(darkzoneTutorial.data.completedObjectives.contains(checkpoint.objective)) continue;
+				if(darkzoneTutorial.tutorialNPC.getCheckpoint() == checkpoint) continue;
 
 				darkzoneTutorial.tutorialNPC.setCheckpoint(checkpoint);
 			}

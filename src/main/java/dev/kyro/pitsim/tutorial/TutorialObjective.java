@@ -15,7 +15,8 @@ public enum TutorialObjective {
 	PASS(OverworldTutorial.class, "pass", "&3Battle Pass",  new ParticleBox(2, 2, 1, 2.3)),
 
 	//Darkzone
-	TAINTED_WELL(DarkzoneTutorial.class, "tainted", "&3Battle Pass",  new ParticleBox(2, 2, 1, 2.3)),
+	TAINTED_WELL(DarkzoneTutorial.class, "tainted", "&5Tainted Well",  new ParticleBox(2, 2, 1, 2.3)),
+	PROGRESSION(DarkzoneTutorial.class, "progression", "&5Main Progression",  new ParticleBox(2, 2, 1, 2.3)),
 	;
 
 	public final Class<? extends Tutorial> tutorialClass;
@@ -57,6 +58,7 @@ public enum TutorialObjective {
 		else if(this == KEEPER) return MapManager.currentMap.getKeeperNPCSpawn();
 		else if(this == PASS) return MapManager.currentMap.getPassNPCSpawn();
 		else if(this == TAINTED_WELL) return MapManager.getDarkzoneSpawn();
+		else if(this == PROGRESSION) return MapManager.getDarkzoneSpawn();
 		return null;
 	}
 
