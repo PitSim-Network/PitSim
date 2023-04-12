@@ -629,7 +629,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("view").setExecutor(new ViewCommand());
 		getCommand("music").setExecutor(new MusicCommand());
-		getCommand("migrate").setExecutor(new MigrateCommand());
+//		getCommand("migrate").setExecutor(new MigrateCommand());
 		getCommand("pass").setExecutor(new PassCommand());
 		getCommand("quests").setExecutor(new QuestsCommand());
 		SettingsCommand settingsCommand = new SettingsCommand();

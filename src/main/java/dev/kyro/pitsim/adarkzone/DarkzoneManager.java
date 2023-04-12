@@ -501,7 +501,7 @@ public class DarkzoneManager implements Listener {
 		mapChunks.clear();
 		Location middle = new Location(MapManager.getDarkzone(), 372, 0, -88);
 		for(int x = -250; x < 250; x+= 16) {
-			for(int z = -250; z < 250; z++) {
+			for(int z = -250; z < 250; z+= 16) {
 				Location chunkLoc = middle.clone().add(x, 0, z);
 				mapChunks.add(chunkLoc.getChunk());
 			}
