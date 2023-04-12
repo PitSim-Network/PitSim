@@ -62,12 +62,13 @@ public class CreateListingPanel extends AGUIPanel {
 			if(slot == 13) {
 				if(selectedItem == null) return;
 				AUtil.giveItemSafely(player, selectedItem, true);
+				selectedItem = null;
+				player.updateInventory();
 				Sounds.BOOSTER_REMIND.play(player);
 				auctionEnabled = false;
 				binEnabled = false;
 				startingBid = 0;
 				binPrice = 0;
-				selectedItem = null;
 				calculateItems();
 			}
 
@@ -144,6 +145,7 @@ public class CreateListingPanel extends AGUIPanel {
 					@Override
 					public void run() {
 						AUtil.giveItemSafely(player, returnItem, true);
+						player.updateInventory();
 
 						Sounds.NO.play(player);
 						String failMessage = "&cThere was an error while attempting to create your listing. Please contact a staff member about this issue.";
@@ -179,6 +181,8 @@ public class CreateListingPanel extends AGUIPanel {
 
 				if(selectedItem != null) {
 					AUtil.giveItemSafely(player, selectedItem, true);
+					selectedItem = null;
+					player.updateInventory();
 				}
 
 				Misc.createMeta(item);
@@ -188,9 +192,9 @@ public class CreateListingPanel extends AGUIPanel {
 				startingBid = 0;
 				binPrice = 0;
 				selectedItem = item;
-				Sounds.BOOSTER_REMIND.play(player);
 				player.getInventory().setItem(slot, new ItemStack(Material.AIR));
 				player.updateInventory();
+				Sounds.BOOSTER_REMIND.play(player);
 				calculateItems();
 			}
 		}
@@ -350,6 +354,7 @@ public class CreateListingPanel extends AGUIPanel {
 		if(selectedItem != null && !signClose) {
 			Player player = (Player) event.getPlayer();
 			AUtil.giveItemSafely(player, selectedItem, true);
+			selectedItem = null;
 			player.updateInventory();
 		}
 

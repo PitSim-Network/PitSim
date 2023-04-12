@@ -76,7 +76,7 @@ public class ChatTriggerManager implements Listener {
 
 	public static void sendPrestigeInfo(PitPlayer pitPlayer) {
 		Map<String, Object> dataMap = new HashMap<>();
-		dataMap.put("totalGReqForPres", PrestigeValues.getPrestigeInfo(pitPlayer.prestige).goldReq);
+		dataMap.put("totalGReqForPres", PrestigeValues.getPrestigeInfo(pitPlayer.prestige).getGoldReq());
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 

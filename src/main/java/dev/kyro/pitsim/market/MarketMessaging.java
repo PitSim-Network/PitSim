@@ -1,9 +1,11 @@
 package dev.kyro.pitsim.market;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.events.MessageEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,7 +33,13 @@ public class MarketMessaging implements Listener {
 
 			listing = new MarketListing(message);
 			MarketManager.listings.add(listing);
-			MarketGUI.updateGUIS();
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					MarketGUI.updateGUIS();
+				}
+			}.runTask(PitSim.INSTANCE);
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("MARKET REMOVAL")) {

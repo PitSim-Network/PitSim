@@ -8,15 +8,13 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
-import net.minecraft.server.v1_8_R3.DataWatcher;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
@@ -99,7 +97,15 @@ public class AltarManager implements Listener {
 		for(int i = 0; i < 7; i++) {
 			if(text[i] == null) text[i] = "";
 
-			DataWatcher dw = ((CraftEntity)textStands[i]).getHandle().getDataWatcher().clone();
+			EntityArmorStand tempStand = new EntityArmorStand((((CraftWorld) MapManager.getDarkzone()).getHandle()));
+			tempStand.n(true);
+			tempStand.setInvisible(true);
+			tempStand.setCustomNameVisible(true);
+			tempStand.setArms(true);
+			tempStand.setCustomName(text[i]);
+			tempStand.setGravity(false);
+
+			DataWatcher dw = tempStand.getDataWatcher();
 			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', text[i]));
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStands[i]), dw, false);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
@@ -111,7 +117,7 @@ public class AltarManager implements Listener {
 		PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 
 		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.darkzoneData.altarXP);
-		int difference = info.darkzoneLevelIncrease - altarLevel;
+		int difference = info.getDarkzoneLevel() - altarLevel;
 		String altarPercent = DarkzoneLeveling.getReductionPercent(pitPlayer);
 
 		String color = difference > 0 ? "&c-" : "&a+";
@@ -120,7 +126,7 @@ public class AltarManager implements Listener {
 
 		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
 		setText(player, new String[] {
-				"&5Darkzone Level: " + decimalFormat.format(info.darkzoneLevelIncrease),
+				"&5Darkzone Level: " + decimalFormat.format(info.getDarkzoneLevel()),
 				"&8&m----------------------",
 				"&4&lAltar Level",
 				"&4" + decimalFormat.format(altarLevel) + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
@@ -173,6 +179,13 @@ public class AltarManager implements Listener {
 	}
 
 	public static void activateAltar(Player player) {
+		if(PitSim.isDev()) {
+			int ticks = AltarRewards.getTurmoilTicks(player);
+			double turmoilMultiplier = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player) ? ticks * 0.1 : 1;
+			AltarRewards.rewardPlayer(player, turmoilMultiplier);
+			return;
+		}
+
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.taintedSouls -= AltarPedestal.getTotalCost(player);
 		pitPlayer.stats.soulsSacrificed += AltarPedestal.getTotalCost(player);
@@ -213,7 +226,13 @@ public class AltarManager implements Listener {
 			PacketPlayOutSpawnEntity spawnPacket = new PacketPlayOutSpawnEntity(((CraftEntity) textStand).getHandle(), 78);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawnPacket);
 
-			DataWatcher dw = ((CraftEntity)textStand).getHandle().getDataWatcher().clone();
+			EntityArmorStand tempStand = new EntityArmorStand((((CraftWorld) MapManager.getDarkzone()).getHandle()));
+			tempStand.n(true);
+			tempStand.setInvisible(true);
+			tempStand.setArms(true);
+			tempStand.setGravity(false);
+
+			DataWatcher dw = tempStand.getDataWatcher();
 			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStand), dw, true);
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
 		}
@@ -223,7 +242,7 @@ public class AltarManager implements Listener {
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
 
 		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.darkzoneData.altarXP);
-		int difference = prestigeInfo.darkzoneLevelIncrease - altarLevel;
+		int difference = prestigeInfo.getDarkzoneLevel() - altarLevel;
 		if(difference <= 0) return 0;
 		return 100 - 100 * Math.pow(0.99, difference);
 	}

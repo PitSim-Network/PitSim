@@ -11,13 +11,14 @@ import org.bukkit.util.Vector;
 import java.util.Random;
 
 public class LeechParticle extends AIParticle {
-	public State state = State.IDLE;
-	public int timesToIdle = 0;
-	public int ticksUntilGoal = 0;
+	public State state;
+	public int timesToIdle;
+	public int ticksUntilGoal;
 	public Vector stepVector;
 
 	public LeechParticle(Player owner) {
 		super(owner, null, getIdleLocation(owner));
+		setIdle();
 	}
 
 	@Override

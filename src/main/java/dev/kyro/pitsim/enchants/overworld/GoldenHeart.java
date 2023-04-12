@@ -20,7 +20,7 @@ public class GoldenHeart extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onAttack(KillEvent killEvent) {
+	public void onKill(KillEvent killEvent) {
 		if(!killEvent.isKillerPlayer()) return;
 
 		int enchantLvl = killEvent.getKillerEnchantLevel(this);

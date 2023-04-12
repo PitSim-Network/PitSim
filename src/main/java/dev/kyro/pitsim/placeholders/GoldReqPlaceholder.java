@@ -20,7 +20,7 @@ public class GoldReqPlaceholder implements APAPIPlaceholder {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		double goldReq = prestigeInfo.goldReq;
+		double goldReq = prestigeInfo.getGoldReq();
 
 		if(goldReq - pitPlayer.goldGrinded <= 0) return "&aDONE!";
 		else return (NumberFormat.getNumberInstance(Locale.US).format(goldReq - pitPlayer.goldGrinded)) + "g";

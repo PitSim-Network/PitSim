@@ -151,7 +151,10 @@ public class PitSim extends JavaPlugin {
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.STANDALONE;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
 
-		if(status.isDarkzone()) DarkzoneManager.clearEntities();
+		if(status.isDarkzone()) {
+			DarkzoneManager.loadChunks();
+			DarkzoneManager.clearEntities();
+		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PlayerManager.addRealPlayer(onlinePlayer.getUniqueId());
@@ -594,6 +597,8 @@ public class PitSim extends JavaPlugin {
 		new ResetCommand(betaCommand, "reset");
 		new GodCommand(betaCommand, "god");
 		new SkillsCommand(betaCommand, "skills");
+		new AltarCommand(betaCommand, "altar");
+		new PrestigeCommand(betaCommand, "prestige");
 		new MassEnchantCommand(betaCommand, "me");
 		new FastTravelCommand(betaCommand, "ft");
 
@@ -627,7 +632,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("view").setExecutor(new ViewCommand());
 		getCommand("music").setExecutor(new MusicCommand());
-		getCommand("migrate").setExecutor(new MigrateCommand());
+//		getCommand("migrate").setExecutor(new MigrateCommand());
 		getCommand("pass").setExecutor(new PassCommand());
 		getCommand("quests").setExecutor(new QuestsCommand());
 		SettingsCommand settingsCommand = new SettingsCommand();

@@ -497,11 +497,14 @@ public class DarkzoneManager implements Listener {
 		return null;
 	}
 
-	public static void clearEntities() {
+	public static void loadChunks() {
+		mapChunks.clear();
 		Location middle = new Location(MapManager.getDarkzone(), 372, 0, -88);
-		for(int i = -250; i < 250; i+= 16) {
-			Location chunkLoc = middle.clone().add(i, 0, i);
-			mapChunks.add(chunkLoc.getChunk());
+		for(int x = -250; x < 250; x+= 16) {
+			for(int z = -250; z < 250; z+= 16) {
+				Location chunkLoc = middle.clone().add(x, 0, z);
+				mapChunks.add(chunkLoc.getChunk());
+			}
 		}
 
 		Location auctionRoom = new Location(MapManager.getDarkzone(), 178, 0, -1009);
@@ -514,6 +517,9 @@ public class DarkzoneManager implements Listener {
 		for(Chunk mapChunk : mapChunks) {
 			mapChunk.load();
 		}
+	}
+
+	public static void clearEntities() {
 
 		for(Entity entity : MapManager.getDarkzone().getEntities()) {
 			if(entity instanceof Player) continue;
