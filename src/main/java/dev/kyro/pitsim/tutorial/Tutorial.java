@@ -3,6 +3,7 @@ package dev.kyro.pitsim.tutorial;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
@@ -169,15 +170,17 @@ public abstract class Tutorial {
 				List<TutorialObjective> tutorialObjectives = TutorialObjective.getObjectives(getTutorialClass());
 				tutorialObjectives.removeAll(data.completedObjectives);
 				for(TutorialObjective objective : tutorialObjectives) {
+					if(Math.random() < 0.4) continue;
 					TutorialObjective.ParticleBox particleBox = objective.getParticleBox();
 
-					if(particleBox.yOffset < 2 && Math.random() < 0.4) continue;
 					Location location = particleBox.location.clone();
-					double random = Math.random() * 2 - 1;
+					int repetitions = (int) (particleBox.height + particleBox.length + particleBox.width) / 2;
 
-					location.add(random * particleBox.length, Math.random() * particleBox.height,
-							random * particleBox.width);
-					pitPlayer.player.playEffect(location, Effect.HAPPY_VILLAGER, 1);
+					for(int i = 0; i < repetitions; i++) {
+						Location finalLocation = location.clone().add(Misc.randomOffset(particleBox.length), Math.random() * particleBox.height,
+								Misc.randomOffset(particleBox.width));
+						pitPlayer.player.playEffect(finalLocation, Effect.HAPPY_VILLAGER, 1);
+					}
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);

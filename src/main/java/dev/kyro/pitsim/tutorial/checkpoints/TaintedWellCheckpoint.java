@@ -9,7 +9,7 @@ import org.bukkit.Location;
 public class TaintedWellCheckpoint extends NPCCheckpoint {
 	public TaintedWellCheckpoint() {
 		super(TutorialObjective.TAINTED_WELL, new Location(MapManager.getDarkzone(),
-				189.5, 92, -105.5, 13, 0));
+				188.5, 92, -101.5, 13, 0));
 	}
 
 	@Override

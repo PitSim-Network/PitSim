@@ -9,7 +9,7 @@ import org.bukkit.Location;
 public class ProgressionCheckpoint extends NPCCheckpoint {
 	public ProgressionCheckpoint() {
 		super(TutorialObjective.PROGRESSION, new Location(MapManager.getDarkzone(),
-				191.5, 91, -87.5, 13, 0));
+				190.5, 91, -86.5, 13, 0));
 	}
 
 	@Override

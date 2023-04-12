@@ -8,15 +8,15 @@ import java.util.List;
 
 public enum TutorialObjective {
 	//Overworld
-	PERKS(OverworldTutorial.class, "perks", "&ePerks and Killstreaks", new ParticleBox(2, 2, 1, 2.3)),
-	KITS(OverworldTutorial.class, "kits", "&eKits",  new ParticleBox(2, 1, 1, 1.3)),
-	PRESTIGE(OverworldTutorial.class, "prestige", "&ePrestige and Renown",  new ParticleBox(2, 2, 1, 2.3)),
-	KEEPER(OverworldTutorial.class, "keeper", "&2The Keeper",  new ParticleBox(2, 2, 1, 2.2)),
-	PASS(OverworldTutorial.class, "pass", "&3Battle Pass",  new ParticleBox(2, 2, 1, 2.3)),
+	PERKS(OverworldTutorial.class, "perks", "&ePerks and Killstreaks", new ParticleBox(2, 2, 1)),
+	KITS(OverworldTutorial.class, "kits", "&eKits",  new ParticleBox(2, 1, 1)),
+	PRESTIGE(OverworldTutorial.class, "prestige", "&ePrestige and Renown",  new ParticleBox(2, 2, 1)),
+	KEEPER(OverworldTutorial.class, "keeper", "&2The Keeper",  new ParticleBox(2, 2, 1)),
+	PASS(OverworldTutorial.class, "pass", "&3Battle Pass",  new ParticleBox(2, 2, 1)),
 
 	//Darkzone
-	TAINTED_WELL(DarkzoneTutorial.class, "tainted", "&5Tainted Well",  new ParticleBox(2, 2, 1, 2.3)),
-	PROGRESSION(DarkzoneTutorial.class, "progression", "&5Main Progression",  new ParticleBox(2, 2, 1, 2.3)),
+	TAINTED_WELL(DarkzoneTutorial.class, "tainted", "&5Tainted Well",  new ParticleBox(10, 10, 10)),
+		PROGRESSION(DarkzoneTutorial.class, "progression", "&5Main Progression",  new ParticleBox(7, 7, 10)),
 	;
 
 	public final Class<? extends Tutorial> tutorialClass;
@@ -57,8 +57,8 @@ public enum TutorialObjective {
 		else if(this == PRESTIGE) return MapManager.currentMap.getPrestigeNPCSpawn();
 		else if(this == KEEPER) return MapManager.currentMap.getKeeperNPCSpawn();
 		else if(this == PASS) return MapManager.currentMap.getPassNPCSpawn();
-		else if(this == TAINTED_WELL) return MapManager.getDarkzoneSpawn();
-		else if(this == PROGRESSION) return MapManager.getDarkzoneSpawn();
+		else if(this == TAINTED_WELL) return new Location(MapManager.getDarkzone(), 186.5, 91, -105.5);
+		else if(this == PROGRESSION) return new Location(MapManager.getDarkzone(), 188.5, 91, -83);
 		return null;
 	}
 
@@ -68,19 +68,15 @@ public enum TutorialObjective {
 		public double width;
 		public double length;
 
-		public double yOffset;
-
-		public ParticleBox(Location location, double height, double width, double length, double yOffset) {
-			this(height, width, length, yOffset);
+		public ParticleBox(Location location, double height, double width, double length) {
+			this(height, width, length);
 			this.location = location;
 		}
 
-		public ParticleBox(double height, double width, double length, double yOffset) {
+		public ParticleBox(double height, double width, double length) {
 			this.height = height;
 			this.width = width;
 			this.length = length;
-
-			this.yOffset = yOffset;
 		}
 	}
 }

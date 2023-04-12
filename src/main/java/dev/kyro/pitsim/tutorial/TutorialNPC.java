@@ -7,6 +7,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
+import net.citizensnpcs.npc.ai.CitizensNavigator;
 import net.citizensnpcs.trait.LookClose;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
@@ -64,8 +65,13 @@ public class TutorialNPC implements Listener {
 	}
 
 	public void walkToCheckPoint(NPCCheckpoint checkpoint) {
-		npc.getNavigator().setTarget(checkpoint.location);
-		npc.getNavigator().getDefaultParameters().distanceMargin(0);
+		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
+		navigator.getDefaultParameters()
+				.distanceMargin(0.1)
+				.pathDistanceMargin(0.1);
+		navigator.setTarget(checkpoint.location);
+
+		System.out.println(navigator.getDefaultParameters().distanceMargin() + " " + navigator.getDefaultParameters().pathDistanceMargin());
 
 		new BukkitRunnable() {
 			@Override

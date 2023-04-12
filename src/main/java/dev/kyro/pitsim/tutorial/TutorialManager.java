@@ -19,7 +19,7 @@ public class TutorialManager implements Listener {
 	public static List<NPCCheckpoint> checkpoints = new ArrayList<>();
 	public static Map<Player, Location> lastLocationMap = new HashMap<>();
 
-	public static final int DARKZONE_OBJECTIVE_DISTANCE = 8;
+	public static final int DARKZONE_OBJECTIVE_DISTANCE = 7;
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
@@ -31,7 +31,7 @@ public class TutorialManager implements Listener {
 
 		if(!darkzoneTutorial.isInObjective) {
 			for(NPCCheckpoint checkpoint : checkpoints) {
-				if(checkpoint.location.distance(player.getLocation()) > DARKZONE_OBJECTIVE_DISTANCE) continue;
+				if(checkpoint.objective.getParticleBox().location.distance(player.getLocation()) > DARKZONE_OBJECTIVE_DISTANCE) continue;
 				if(darkzoneTutorial.data.completedObjectives.contains(checkpoint.objective)) continue;
 				if(darkzoneTutorial.tutorialNPC.getCheckpoint() == checkpoint) continue;
 
