@@ -93,13 +93,13 @@ public class RewardCommand implements CommandExecutor {
 				return false;
 			case "scythe":
 				for(int i = 0; i < amount; i++) {
-					ItemStack scythe = MysticFactory.getJewelItem(MysticType.TAINTED_SCYTHE);
+					ItemStack scythe = MysticFactory.getFreshItem(MysticType.TAINTED_SCYTHE, null);
 					AUtil.giveItemSafely(player, scythe);
 				}
 				return false;
 			case "chestplate":
 				for(int i = 0; i < amount; i++) {
-					ItemStack chestplate = MysticFactory.getJewelItem(MysticType.TAINTED_CHESTPLATE);
+					ItemStack chestplate = MysticFactory.getFreshItem(MysticType.TAINTED_CHESTPLATE, null);
 					AUtil.giveItemSafely(player, chestplate);
 				}
 				return false;
