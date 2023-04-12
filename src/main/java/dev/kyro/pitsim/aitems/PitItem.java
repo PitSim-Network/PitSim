@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
@@ -34,8 +34,9 @@ public abstract class PitItem implements Listener {
 	public boolean isProtDiamond;
 	public boolean isShopDiamond;
 	public boolean isMystic;
+	public boolean isTutorialItem;
 
-	public AuctionCategory auctionCategory;
+	public MarketCategory marketCategory;
 
 	public PitItem() {
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);
@@ -53,10 +54,12 @@ public abstract class PitItem implements Listener {
 
 	public void defaultUpdateItem(ItemStack itemStack) {
 		if(!isThisItem(itemStack)) throw new RuntimeException();
-		if(hasLastServer) {
-			NBTItem nbtItem = new NBTItem(itemStack, true);
-			nbtItem.setString(NBTTag.ITEM_LAST_SERVER.getRef(), PitSim.status.name());
-		}
+		NBTItem nbtItem = new NBTItem(itemStack, true);
+		if(hasLastServer) nbtItem.setString(NBTTag.ITEM_LAST_SERVER.getRef(), PitSim.status.name());
+
+		if(isTutorialItem) nbtItem.setBoolean(NBTTag.IS_TUTORIAL_ITEM.getRef(), true);
+		else nbtItem.removeKey(NBTTag.IS_TUTORIAL_ITEM.getRef());
+
 	}
 
 	public ItemStack buildItem(ItemStack itemStack) {
@@ -85,6 +88,8 @@ public abstract class PitItem implements Listener {
 		nbtItem.setString(NBTTag.CUSTOM_ITEM.getRef(), getNBTID());
 		if(hasUUID) nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
 		if(hasLastServer) nbtItem.setString(NBTTag.ITEM_LAST_SERVER.getRef(), PitSim.status.name());
+		if(isTutorialItem) nbtItem.setBoolean(NBTTag.IS_TUTORIAL_ITEM.getRef(), true);
+		else nbtItem.removeKey(NBTTag.IS_TUTORIAL_ITEM.getRef());
 		return nbtItem.getItem();
 	}
 

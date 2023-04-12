@@ -1,13 +1,19 @@
 package dev.kyro.pitsim.tutorial;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -48,12 +54,33 @@ public class TutorialManager implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void onCommandSend(PlayerCommandPreprocessEvent event) {
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(!pitPlayer.darkzoneTutorial.isActive()) return;
+		if(event.getMessage().startsWith("/trade")) {
+			event.setCancelled(true);
+			AOutput.error(player, "&cYou must complete the tutorial before trading!");
+			Sounds.NO.play(player);
+			return;
+		}
+	}
+
+	public static boolean isTutorialItem(ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack)) return false;
+		PitItem pitItem = ItemFactory.getItem(itemStack);
+		if(pitItem == null) return false;
+		return pitItem.isTutorialItem;
+	}
+
 	public static NPCCheckpoint getCheckpoint(TutorialObjective objective) {
 		for(NPCCheckpoint checkpoint : checkpoints) {
 			if(checkpoint.objective == objective) return checkpoint;
 		}
 		return null;
 	}
+
 
 	public static NPCCheckpoint getCheckpoint(int index) {
 		return checkpoints.get(index);

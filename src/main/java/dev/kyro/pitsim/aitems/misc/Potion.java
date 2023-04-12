@@ -3,7 +3,7 @@ package dev.kyro.pitsim.aitems.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -18,7 +18,7 @@ public class Potion extends PitItem {
 		hasDropConfirm = true;
 		hideExtra = true;
 		unbreakable = true;
-		auctionCategory = AuctionCategory.POTIONS;
+		marketCategory = MarketCategory.POTIONS;
 	}
 
 	@Override

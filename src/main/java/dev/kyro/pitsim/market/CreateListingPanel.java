@@ -175,7 +175,7 @@ public class CreateListingPanel extends AGUIPanel {
 			ItemStack item = event.getCurrentItem();
 			PitItem pitItem = ItemFactory.getItem(item);
 
-			if(pitItem == null || pitItem.auctionCategory == null) {
+			if(pitItem == null || pitItem.marketCategory == null || pitItem.isTutorialItem) {
 				Sounds.NO.play(player);
 			} else {
 

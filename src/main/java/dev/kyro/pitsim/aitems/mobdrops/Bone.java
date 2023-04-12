@@ -6,7 +6,7 @@ import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.events.KillEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,7 +24,7 @@ public class Bone extends BrewingIngredient implements TemporaryItem {
 	public Bone() {
 		super(2, "XP Boost", ChatColor.AQUA, PotionType.SPEED);
 		hasDropConfirm = true;
-		auctionCategory = AuctionCategory.DARKZONE_DROPS;
+		marketCategory = MarketCategory.DARKZONE_DROPS;
 	}
 
 	@Override

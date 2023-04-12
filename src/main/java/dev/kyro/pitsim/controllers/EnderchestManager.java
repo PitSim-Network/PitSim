@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.storage.EnderchestGUI;
 import org.bukkit.ChatColor;
@@ -24,7 +25,8 @@ public class EnderchestManager implements Listener {
 	public void onOpen(InventoryOpenEvent event) {
 		if(event.getInventory().getType().equals(InventoryType.ENDER_CHEST) && !event.getPlayer().isOp()) {
 			event.getPlayer().closeInventory();
-			if(ShutdownManager.enderchestDisabled) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) event.getPlayer());
+			if(ShutdownManager.enderchestDisabled || pitPlayer.darkzoneTutorial.isActive()) {
 				AOutput.error(event.getPlayer(), "&cYou may not open the Enderchest right now.");
 				event.setCancelled(true);
 				return;

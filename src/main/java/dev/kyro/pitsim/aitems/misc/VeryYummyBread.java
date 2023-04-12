@@ -7,7 +7,7 @@ import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.ActionBarManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -46,7 +46,7 @@ public class VeryYummyBread extends StaticPitItem implements TemporaryItem {
 	}
 
 	public VeryYummyBread() {
-		auctionCategory = AuctionCategory.MISC;
+		marketCategory = MarketCategory.MISC;
 	}
 
 	@Override

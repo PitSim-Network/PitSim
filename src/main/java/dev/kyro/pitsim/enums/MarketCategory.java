@@ -1,11 +1,9 @@
 package dev.kyro.pitsim.enums;
 
-import dev.kyro.pitsim.market.SortQuery;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.checkerframework.checker.units.qual.A;
 
-public enum AuctionCategory {
+public enum MarketCategory {
 	ALL(Material.GRASS, "All Items", ChatColor.YELLOW),
 //	feathers, gems, shards, etc
 	PURE_RELATED(Material.CACTUS, "Pure", ChatColor.AQUA),
@@ -23,13 +21,13 @@ public enum AuctionCategory {
 	public final Material displayMaterial;
 	public final String displayName;
 	public final ChatColor color;
-	AuctionCategory(Material displayMaterial, String displayName, ChatColor color) {
+	MarketCategory(Material displayMaterial, String displayName, ChatColor color) {
 		this.displayMaterial = displayMaterial;
 		this.displayName = displayName;
 		this.color = color;
 	}
 
-	public AuctionCategory getNext() {
+	public MarketCategory getNext() {
 		return values()[(ordinal() + 1) % values().length];
 	}
 }

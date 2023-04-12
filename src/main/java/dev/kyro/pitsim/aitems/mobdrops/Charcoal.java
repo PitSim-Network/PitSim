@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.DamageManager;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -26,7 +26,7 @@ public class Charcoal extends BrewingIngredient implements TemporaryItem {
 		super(7, "Wither", ChatColor.DARK_GRAY, PotionType.WEAKNESS);
 		hasDropConfirm = true;
 		itemData = 1;
-		auctionCategory = AuctionCategory.DARKZONE_DROPS;
+		marketCategory = MarketCategory.DARKZONE_DROPS;
 	}
 
 	@Override
