@@ -29,7 +29,7 @@ public class UpgradeManager implements Listener {
 	public static ChatColor getChatColor(Player player, RenownUpgrade upgrade) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		ChatColor chatColor = ChatColor.YELLOW;
-		if(isMaxed(player, upgrade)) {
+		if(hasUpgrade(player, upgrade)) {
 			chatColor = ChatColor.GREEN;
 		} else if(pitPlayer.renown < getNextCost(player, upgrade)) {
 			chatColor = ChatColor.RED;

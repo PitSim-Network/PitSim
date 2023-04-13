@@ -70,7 +70,7 @@ public class PitZombie extends PitMob {
 
 	@Override
 	public int getDroppedSouls() {
-		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_SOULS);
+		return DarkzoneBalancing.getAttributeAsRandomInt(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_SOULS);
 	}
 
 	@Override

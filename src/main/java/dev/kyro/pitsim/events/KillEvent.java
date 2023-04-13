@@ -123,7 +123,7 @@ public class KillEvent extends Event {
 	}
 
 	public int getFinalSouls() {
-		if(!isKillerRealPlayer) return 0;
+		if(!isKillerRealPlayer || !shouldLoseItems) return 0;
 		double soulsLost = this.soulsLost;
 		for(Double soulMultiplier : soulMultipliers) soulsLost *= soulMultiplier;
 		return (int) Math.min(Math.ceil(soulsLost), getDeadPitPlayer().taintedSouls);

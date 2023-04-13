@@ -584,7 +584,7 @@ public class DamageManager implements Listener {
 		String soulsLostString = "";
 		if(PitSim.status.isDarkzone() && deadIsRealPlayer){
 			int finalSouls = killEvent.getFinalSouls();
-			if(finalSouls != 0) soulsLostString = " &f-" + finalSouls + " soul" + (finalSouls == 1 ? "" : "s");
+			if(finalSouls != 0) soulsLostString = " &f-" + finalSouls + " soul" + Misc.s(finalSouls);
 		}
 		if(killType == KillType.KILL && killerIsPlayer) {
 			death = PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), "&c&lDEATH!&7 by %luckperms_prefix%" +

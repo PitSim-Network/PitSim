@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 public class KillWolvesQuest extends PassQuest {
 
 	public KillWolvesQuest() {
-		super("&c&lCave Spider Slayer", "killcavespiders", QuestType.WEEKLY);
+		super("&c&lWolf Slayer", "killwolves", QuestType.WEEKLY);
 		weight = PassManager.DARKZONE_KILL_QUEST_WEIGHT;
 	}
 
