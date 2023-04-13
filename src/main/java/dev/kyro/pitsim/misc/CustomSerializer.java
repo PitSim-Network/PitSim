@@ -1,9 +1,13 @@
 package dev.kyro.pitsim.misc;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.ItemManager;
+import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.enums.NBTTag;
 import net.minecraft.server.v1_8_R3.MojangsonParseException;
 import net.minecraft.server.v1_8_R3.MojangsonParser;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -115,6 +119,15 @@ public class CustomSerializer {
 					if(informUUID != null && !oldStack.equals(itemStack)) {
 						ItemManager.updatedItems.putIfAbsent(informUUID, new ArrayList<>());
 						ItemManager.updatedItems.get(informUUID).add(itemStack);
+					}
+				}
+
+				MysticType type = MysticType.getMysticType(itemStack);
+				if(type == MysticType.TAINTED_CHESTPLATE || type == MysticType.TAINTED_SCYTHE) {
+					NBTItem nbt = new NBTItem(itemStack, true);
+					if(nbt.hasKey(NBTTag.IS_JEWEL.getRef())) {
+						nbt.removeKey(NBTTag.IS_JEWEL.getRef());
+						EnchantManager.setItemLore(itemStack, null);
 					}
 				}
 			}
