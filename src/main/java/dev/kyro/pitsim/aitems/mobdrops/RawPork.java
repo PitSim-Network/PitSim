@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,7 +21,7 @@ public class RawPork extends BrewingIngredient implements TemporaryItem {
 	public RawPork() {
 		super(6, "Regeneration", ChatColor.RED, PotionType.INSTANT_HEAL);
 		hasDropConfirm = true;
-		auctionCategory = AuctionCategory.DARKZONE_DROPS;
+		marketCategory = MarketCategory.DARKZONE_DROPS;
 	}
 
 	@Override

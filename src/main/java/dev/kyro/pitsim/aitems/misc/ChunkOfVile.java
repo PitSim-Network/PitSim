@@ -8,7 +8,7 @@ import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.VileGUI;
 import dev.kyro.pitsim.misc.Misc;
@@ -29,7 +29,7 @@ public class ChunkOfVile extends StaticPitItem {
 
 	public ChunkOfVile() {
 		hasDropConfirm = true;
-		auctionCategory = AuctionCategory.PURE_RELATED;
+		marketCategory = MarketCategory.PURE_RELATED;
 	}
 
 	@Override

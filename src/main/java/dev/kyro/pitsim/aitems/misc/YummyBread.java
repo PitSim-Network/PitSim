@@ -6,7 +6,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
@@ -23,7 +23,7 @@ public class YummyBread extends StaticPitItem implements TemporaryItem {
 	public static Map<Player, Integer> breadStacks = new HashMap<>();
 
 	public YummyBread() {
-		auctionCategory = AuctionCategory.MISC;
+		marketCategory = MarketCategory.MISC;
 	}
 
 	@Override

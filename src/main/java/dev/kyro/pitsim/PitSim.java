@@ -96,8 +96,7 @@ import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.settings.scoreboard.*;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.tutorial.TutorialManager;
-import dev.kyro.pitsim.tutorial.checkpoints.ProgressionCheckpoint;
-import dev.kyro.pitsim.tutorial.checkpoints.TaintedWellCheckpoint;
+import dev.kyro.pitsim.tutorial.checkpoints.*;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -941,6 +940,9 @@ public class PitSim extends JavaPlugin {
 	public static void registerNPCCheckpoints() {
 		new TaintedWellCheckpoint();
 		new ProgressionCheckpoint();
+		new AltarCheckpoint();
+		new BrewingCheckpoint();
+		new MarketShopCheckpoint();
 	}
 
 	private void loadConfig() {

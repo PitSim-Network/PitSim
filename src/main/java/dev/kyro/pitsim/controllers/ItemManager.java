@@ -13,6 +13,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.TutorialManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -88,8 +89,9 @@ public class ItemManager implements Listener {
 		Player player = (Player) event.getWhoClicked();
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
-		if(pitItem == null || !pitItem.hasDropConfirm) return;
-		if(pitItem.isMystic && !MysticFactory.isImportant(itemStack)) return;
+		if(pitItem == null) return;
+		if(!pitItem.hasDropConfirm && !pitItem.isTutorialItem) return;
+		if(pitItem.isMystic && !MysticFactory.isImportant(itemStack) && !pitItem.isTutorialItem) return;
 
 		event.setCancelled(true);
 		player.updateInventory();
@@ -151,6 +153,13 @@ public class ItemManager implements Listener {
 		if(ShutdownManager.isShuttingDown) {
 			event.setCancelled(true);
 			AOutput.send(player, "&c&lERROR!&7 You cannot drop items while the server is shutting down");
+			return;
+		}
+
+		if(TutorialManager.isTutorialItem(itemStack)) {
+			event.setCancelled(true);
+			AOutput.error(player, "&cYou cannot drop tutorial items!");
+			Sounds.NO.play(player);
 			return;
 		}
 

@@ -6,7 +6,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.GuildIntegrationManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -22,7 +22,7 @@ public class CorruptedFeather extends StaticPitItem {
 
 	public CorruptedFeather() {
 		hasDropConfirm = true;
-		auctionCategory = AuctionCategory.PURE_RELATED;
+		marketCategory = MarketCategory.PURE_RELATED;
 	}
 
 	@Override

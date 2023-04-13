@@ -33,13 +33,6 @@ public class TutorialNPC implements Listener {
 
 		currentCheckpoint = null;
 
-//		new BukkitRunnable() {
-//			@Override
-//			public void run() {
-//				walkToCheckPoint(TutorialManager.getCheckpoint(0));
-//			}
-//		}.runTaskLater(PitSim.INSTANCE, 20);
-
 		Bukkit.getServer().getPluginManager().registerEvents(this, PitSim.INSTANCE);
 	}
 
@@ -68,7 +61,8 @@ public class TutorialNPC implements Listener {
 		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
 		navigator.getDefaultParameters()
 				.distanceMargin(0.1)
-				.pathDistanceMargin(0.1);
+				.pathDistanceMargin(0.1)
+				.destinationTeleportMargin(-1);
 		navigator.setTarget(checkpoint.location);
 
 		System.out.println(navigator.getDefaultParameters().distanceMargin() + " " + navigator.getDefaultParameters().pathDistanceMargin());

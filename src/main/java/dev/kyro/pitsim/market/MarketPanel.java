@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.misc.HeadLib;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -23,7 +23,7 @@ public class MarketPanel extends AGUIPanel {
 
 	public SortQuery.PrimarySortType sortType = SortQuery.PrimarySortType.PRICE_HIGH;
 	public SortQuery.ListingFilter listingFilter = SortQuery.ListingFilter.ALL;
-	public AuctionCategory auctionCategory = AuctionCategory.ALL;
+	public MarketCategory marketCategory = MarketCategory.ALL;
 	public SortQuery sortQuery;
 	public String searchParameter = "";
 	public int page = 0;
@@ -35,7 +35,7 @@ public class MarketPanel extends AGUIPanel {
 
 	public MarketPanel(AGUI gui) {
 		super(gui);
-		this.sortQuery = new SortQuery(sortType, SortQuery.ListingFilter.ALL, AuctionCategory.ALL, "");
+		this.sortQuery = new SortQuery(sortType, SortQuery.ListingFilter.ALL, MarketCategory.ALL, "");
 
 		for(Integer glassSlot : glassSlots) {
 			getInventory().setItem(glassSlot, new AItemStackBuilder(Material.STAINED_GLASS_PANE,1, 15).setName(" ").getItemStack());
@@ -123,13 +123,13 @@ public class MarketPanel extends AGUIPanel {
 
 	public void updateAuctionCategoryItemStack() {
 		ALoreBuilder loreBuilder = new ALoreBuilder("");
-		for(AuctionCategory value : AuctionCategory.values()) {
-			String toAdd = (value == auctionCategory ? "&7\u27a4 " : "") + value.color + (value == auctionCategory ? "&l" : "") + value.displayName;
+		for(MarketCategory value : MarketCategory.values()) {
+			String toAdd = (value == marketCategory ? "&7\u27a4 " : "") + value.color + (value == marketCategory ? "&l" : "") + value.displayName;
 			loreBuilder.addLore(toAdd);
 		}
 		loreBuilder.addLore("", "&eClick to cycle");
 
-		AItemStackBuilder sortBuilder = new AItemStackBuilder(auctionCategory.displayMaterial)
+		AItemStackBuilder sortBuilder = new AItemStackBuilder(marketCategory.displayMaterial)
 				.setName("&eChange Item Category")
 				.setLore(loreBuilder.getLore());
 
@@ -177,7 +177,7 @@ public class MarketPanel extends AGUIPanel {
 
 		if(event.getSlot() == 0) {
 			sortType = sortType.getNext();
-			sortQuery = new SortQuery(sortType, listingFilter, auctionCategory, searchParameter);
+			sortQuery = new SortQuery(sortType, listingFilter, marketCategory, searchParameter);
 			Sounds.HELMET_TICK.play(player);
 			updateSortItemStack();
 			page = 0;
@@ -186,7 +186,7 @@ public class MarketPanel extends AGUIPanel {
 
 		if(event.getSlot() == 9) {
 			listingFilter = listingFilter.getNext();
-			sortQuery = new SortQuery(sortType, listingFilter, auctionCategory, searchParameter);
+			sortQuery = new SortQuery(sortType, listingFilter, marketCategory, searchParameter);
 			Sounds.HELMET_TICK.play(player);
 			updateListingFilterItemStack();
 			page = 0;
@@ -194,8 +194,8 @@ public class MarketPanel extends AGUIPanel {
 		}
 
 		if(event.getSlot() == 18) {
-			auctionCategory = auctionCategory.getNext();
-			sortQuery = new SortQuery(sortType, listingFilter, auctionCategory, searchParameter);
+			marketCategory = marketCategory.getNext();
+			sortQuery = new SortQuery(sortType, listingFilter, marketCategory, searchParameter);
 			Sounds.HELMET_TICK.play(player);
 			updateAuctionCategoryItemStack();
 			page = 0;
@@ -207,7 +207,7 @@ public class MarketPanel extends AGUIPanel {
 				SignPrompt.promptPlayer(player, "", "^^^^^^", "Enter Search", "Prompt", input -> {
 					openPanel(this);
 					searchParameter = input.replaceAll("\"", "");
-					sortQuery = new SortQuery(sortType, listingFilter, auctionCategory, searchParameter);
+					sortQuery = new SortQuery(sortType, listingFilter, marketCategory, searchParameter);
 					updateSearchItemStack();
 					page = 0;
 					calculateListings();
@@ -223,7 +223,7 @@ public class MarketPanel extends AGUIPanel {
 				});
 			} else if(event.isRightClick()) {
 				searchParameter = "";
-				sortQuery = new SortQuery(sortType, listingFilter, auctionCategory, searchParameter);
+				sortQuery = new SortQuery(sortType, listingFilter, marketCategory, searchParameter);
 				Sounds.HELMET_TICK.play(player);
 				updateSearchItemStack();
 				page = 0;
