@@ -16,6 +16,7 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +27,6 @@ import java.util.Map;
 
 public class SelfCheckout extends PitEnchant {
 	public static SelfCheckout INSTANCE;
-	public static final int LIVES_ON_USE = 3;
 
 	public SelfCheckout() {
 		super("Self-Checkout", true, ApplyType.PANTS,
@@ -64,20 +64,15 @@ public class SelfCheckout extends PitEnchant {
 			return;
 		}
 
-		itemStack = temporaryItem.damage(itemStack, LIVES_ON_USE).getItemStack();
+		itemStack = temporaryItem.damage(itemStack, getLivesOnUse()).getItemStack();
 		killEvent.getKillerPlayer().getEquipment().setLeggings(itemStack);
 		killEvent.getKillerPlayer().updateInventory();
 
-		String scoMessage = "&9&lSCO!&7 Self-Checkout pants activated";
-		int renown = 1;
-//		int renown = Math.min((killEvent.getKillerPitPlayer().getKills() + 1) / 300, 4);
-		if(renown != 0) {
-			killEvent.getKillerPitPlayer().renown += renown;
-			EarnRenownQuest.INSTANCE.gainRenown(killEvent.getKillerPitPlayer(), renown);
-			scoMessage += " giving &e" + renown + " renown";
-		}
+		killEvent.getKillerPitPlayer().renown += getRenown();
+		EarnRenownQuest.INSTANCE.gainRenown(killEvent.getKillerPitPlayer(), getRenown());
 
-		AOutput.send(killEvent.getKillerPlayer(), scoMessage);
+		AOutput.send(killEvent.getKillerPlayer(), "&9&lSCO!&7 Self-Checkout pants activated giving &e" +
+				Formatter.formatRenown(getRenown()));
 		DamageManager.death(killEvent.getKiller(), KillModifier.SELF_CHECKOUT);
 	}
 
@@ -86,9 +81,9 @@ public class SelfCheckout extends PitEnchant {
 		return new ALoreBuilder(
 				"&7On kill, if you have a killstreak", "&7of at least 200, &eExplode:",
 				"&e\u25a0 &7Die! Keep lives on &3Jewel &7items",
-				"&a\u25a0 &7Gain &e+1 renown",
+				"&a\u25a0 &7Gain &e+" + Formatter.formatRenown(getRenown()),
 //				"&a\u25a0 &7Gain &e+1 renown &7for every 300 killstreak (max 4)",
-				"&c\u25a0 &7Lose &c" + LIVES_ON_USE + " lives &7on this item"
+				"&c\u25a0 &7Lose &c" + getLivesOnUse() + " lives &7on this item"
 		).getLore();
 	}
 
@@ -96,5 +91,13 @@ public class SelfCheckout extends PitEnchant {
 	public String getSummary() {
 		return getDisplayName(false, true) + " &7is an enchant that allows you to " +
 				"save the lives on &3Jewels&7, while also giving you &eRenown";
+	}
+
+	public int getRenown() {
+		return 2;
+	}
+
+	public int getLivesOnUse() {
+		return 3;
 	}
 }
