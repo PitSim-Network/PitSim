@@ -59,6 +59,7 @@ public class Bipolar extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
+		if(!attackEvent.getAttackerPitPlayer().hasManaUnlocked()) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
@@ -85,6 +86,9 @@ public class Bipolar extends PitEnchant {
 
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0) return;
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(!pitPlayer.hasManaUnlocked()) return;
 
 		Cooldown cooldown = getCooldown(player, 20 * 5);
 		if(cooldown.isOnCooldown()) {
