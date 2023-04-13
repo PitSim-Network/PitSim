@@ -3,17 +3,23 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUIManager;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.enchants.overworld.BulletTime;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.storage.EnderchestGUI;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.time.LocalDate;
@@ -38,6 +44,24 @@ public class MiscManager implements Listener {
 						"&7Click to go to the next page"
 				)).getItemStack();
 		AGUIManager.setDefaultItemStacks(back, previousPage, nextPage);
+	}
+
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		Block block = event.getClickedBlock();
+		if(block.getType() != Material.ENDER_CHEST) return;
+		event.setCancelled(true);
+
+		if(ShutdownManager.enderchestDisabled) {
+			AOutput.error(player, "&c&lERROR!&7 You may not open the Enderchest right now!");
+			return;
+		}
+
+		EnderchestGUI gui = new EnderchestGUI(player, player.getUniqueId());
+		gui.open();
+		Sounds.ENDERCHEST_OPEN.play(player);
 	}
 
 	@EventHandler

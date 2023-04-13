@@ -672,7 +672,6 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new CombatManager(), this);
 		getServer().getPluginManager().registerEvents(new SpawnManager(), this);
 		getServer().getPluginManager().registerEvents(new ItemRename(), this);
-		getServer().getPluginManager().registerEvents(new EnderchestManager(), this);
 		getServer().getPluginManager().registerEvents(new AFKManager(), this);
 		getServer().getPluginManager().registerEvents(new TotallyLegitGem(), this);
 		getServer().getPluginManager().registerEvents(new BlobManager(), this);

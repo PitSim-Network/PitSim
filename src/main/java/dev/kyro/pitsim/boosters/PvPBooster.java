@@ -19,7 +19,7 @@ public class PvPBooster extends Booster {
 	public ItemStack getBaseDisplayStack() {
 		return new AItemStackBuilder(Material.GOLD_SWORD)
 				.setLore(new PitLoreBuilder(
-						"&7All players can use &3Jewel &7items without losing lives"
+						"&7All players can use items without losing lives. Also prevents losing &fsouls &7on death"
 				)).getItemStack();
 	}
 }

@@ -77,7 +77,7 @@ public class PitIronGolemBoss extends PitBoss {
 
 	@Override
 	public int getDroppedSouls() {
-		return DarkzoneBalancing.getAttributeAsInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_SOULS);
+		return DarkzoneBalancing.getAttributeAsRandomInt(getSubLevelType(), DarkzoneBalancing.Attribute.BOSS_SOULS);
 	}
 
 	@Override

@@ -51,6 +51,8 @@ public class MysticFactory {
 			mysticStack = ItemFactory.getItem(MysticPants.class).getItem(pantColor);
 		}
 
+		if(isJewel && type.isTainted()) throw new RuntimeException("You cannot create a tainted jewel item");
+
 		if(isJewel) {
 			NBTItem nbtItem = new NBTItem(mysticStack);
 			nbtItem.setBoolean(NBTTag.IS_JEWEL.getRef(), true);

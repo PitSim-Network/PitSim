@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.Player;
@@ -30,7 +31,10 @@ public abstract class TieredRenownUpgrade extends RenownUpgrade {
 		boolean hasUpgrade = UpgradeManager.hasUpgrade(player, this);
 		int tier = UpgradeManager.getTier(player, this);
 		PitLoreBuilder loreBuilder = new PitLoreBuilder();
-		if(hasUpgrade) loreBuilder.addLongLine("&7Current: " + getCurrentEffect(tier));
+		if(hasUpgrade) {
+			loreBuilder.addLongLine("&7Current: " + getCurrentEffect(tier));
+			loreBuilder.addLongLine("&7Tier: &a" + AUtil.toRoman(tier), false);
+		}
 		loreBuilder.attemptAddSpacer();
 		loreBuilder.addLore("&7Each Tier:");
 		loreBuilder.addLongLine(getEffectPerTier(), false);

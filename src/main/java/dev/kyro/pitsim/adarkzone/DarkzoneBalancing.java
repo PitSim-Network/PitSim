@@ -45,8 +45,16 @@ public class DarkzoneBalancing {
 		return subLevel.getIndex() + 1;
 	}
 
-	public static int getAttributeAsInt(SubLevelType type, Attribute attribute) {
-		return (int) Math.floor(getAttribute(type, attribute));
+	public static int getAttributeAsInt(SubLevelType subLevelType, Attribute attribute) {
+		return (int) Math.floor(getAttribute(subLevelType, attribute));
+	}
+
+	public static int getAttributeAsRandomInt(SubLevelType subLevelType, Attribute attribute) {
+		double doubleReward = getAttribute(subLevelType, attribute);
+		int intReward = (int) Math.floor(doubleReward);
+		doubleReward -= intReward;
+		if(Math.random() < doubleReward) intReward++;
+		return intReward;
 	}
 
 	public static double getAttribute(SubLevelType subLevelType, Attribute attribute) {
@@ -56,10 +64,10 @@ public class DarkzoneBalancing {
 	public enum Attribute {
 		BOSS_DAMAGE(5, 1.5),
 		BOSS_HEALTH(40, 1.5),
-		BOSS_SOULS(15, 1.4),
+		BOSS_SOULS(15, 1.35),
 		MOB_DAMAGE(8.5, 1.5),
 		MOB_HEALTH(11.25, 1.5),
-		MOB_SOULS(5, 1.3),
+		MOB_SOULS(7, 1.2),
 		;
 
 		private final double baseValue;
