@@ -617,7 +617,7 @@ public class EnchantManager implements Listener {
 
 	public static Map<PitEnchant, Integer> readEnchantsOnEquipment(PitEquipment pitEquipment) {
 		List<ItemStack> equipmentList = pitEquipment.getAsList();
-		Map<PitEnchant, Integer> playerEnchantMap = new HashMap<>();
+		LinkedHashMap<PitEnchant, Integer> playerEnchantMap = new LinkedHashMap<>();
 		for(int i = 0; i < equipmentList.size(); i++) {
 			ItemStack equipmentPiece = equipmentList.get(i);
 			if(Misc.isAirOrNull(equipmentPiece)) continue;
@@ -634,12 +634,12 @@ public class EnchantManager implements Listener {
 		return playerEnchantMap;
 	}
 
-	public static Map<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack) {
-		return getEnchantsOnItem(itemStack, new HashMap<>());
+	public static LinkedHashMap<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack) {
+		return getEnchantsOnItem(itemStack, new LinkedHashMap<>());
 	}
 
-	public static Map<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack, Map<PitEnchant, Integer> currentEnchantMap) {
-		Map<PitEnchant, Integer> itemEnchantMap = new HashMap<>();
+	public static LinkedHashMap<PitEnchant, Integer> getEnchantsOnItem(ItemStack itemStack, LinkedHashMap<PitEnchant, Integer> currentEnchantMap) {
+		LinkedHashMap<PitEnchant, Integer> itemEnchantMap = new LinkedHashMap<>();
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.isMystic || MysticFactory.isBroken(itemStack)) return itemEnchantMap;
 		NBTItem nbtItem = new NBTItem(itemStack);

@@ -405,7 +405,7 @@ public class DarkzoneManager implements Listener {
 		pitMob.kill(null);
 	}
 
-	public static void createSoulExplosion(Map<UUID, Double> damageMap, Location location, int souls, boolean largeExplosion) {
+	public static void createSoulExplosion(LinkedHashMap<UUID, Double> damageMap, Location location, int souls, boolean largeExplosion) {
 		for(Integer stackSize : Misc.createDistribution(souls, 3.0 / 5.0)) {
 			Location spawnLocation = location.clone().add(Misc.randomOffset(2), Misc.randomOffsetPositive(2), Misc.randomOffset(2));
 			ItemStack soulStack = ItemFactory.getItem(SoulPickup.class).getItem(stackSize);

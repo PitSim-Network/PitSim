@@ -20,12 +20,12 @@ public class DropPool {
 
 	public void mobDistribution(Player killer, PitMob deadMob) {
 		if(killer == null) return;
-		Map<UUID, Double> weightedMap = new HashMap<>();
+		LinkedHashMap<UUID, Double> weightedMap = new LinkedHashMap<>();
 		weightedMap.put(killer.getUniqueId(), 1.0);
 		distributeRewards(weightedMap);
 	}
 
-	public void bossDistribution(Map<UUID, Double> damageMap, Player killer, PitBoss deadBoss) {
+	public void bossDistribution(LinkedHashMap<UUID, Double> damageMap, Player killer, PitBoss deadBoss) {
 		double totalDamage = 0;
 		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) totalDamage += entry.getValue();
 		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {
@@ -42,7 +42,7 @@ public class DropPool {
 		distributeRewards(damageMap);
 	}
 
-	public void distributeRewards(Map<UUID, Double> weightedMap) {
+	public void distributeRewards(LinkedHashMap<UUID, Double> weightedMap) {
 		List<Player> playersGivenItems = new ArrayList<>();
 		List<ItemStack> rewards = new ArrayList<>();
 		for(Map.Entry<ItemStack, Range> entry : commonItems.entrySet()) {

@@ -26,8 +26,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 public abstract class PitMob implements Listener {
@@ -87,7 +86,7 @@ public abstract class PitMob implements Listener {
 
 	public void kill(PitPlayer pitKiller) {
 		Player killer = pitKiller == null ? null : pitKiller.player;
-		Map<UUID, Double> damageMap = new HashMap<>();
+		LinkedHashMap<UUID, Double> damageMap = new LinkedHashMap<>();
 		if(killer != null) damageMap.put(killer.getUniqueId(), 1.0);
 		if(mobStatus == MobStatus.STANDARD) {
 			dropPool.mobDistribution(killer, this);

@@ -16,10 +16,10 @@ public abstract class BlockRainAbility extends PitBossAbility {
 
 	public int radius;
 	public int blockCount;
-	public Map<BlockData, Double> blocks;
+	public LinkedHashMap<BlockData, Double> blocks;
 	public double damage;
 
-	public BlockRainAbility(double routineWeight, int radius, int blockCount, Map<BlockData, Double> blocks, double damage) {
+	public BlockRainAbility(double routineWeight, int radius, int blockCount, LinkedHashMap<BlockData, Double> blocks, double damage) {
 		super(routineWeight);
 		this.radius = radius;
 		this.blockCount = blockCount;
@@ -31,7 +31,7 @@ public abstract class BlockRainAbility extends PitBossAbility {
 		super(routineWeight);
 		this.radius = radius;
 		this.blockCount = blockCount;
-		this.blocks = new HashMap<>();
+		this.blocks = new LinkedHashMap<>();
 		this.damage = damage;
 
 		blocks.put(block, 1.0);
@@ -136,7 +136,7 @@ public abstract class BlockRainAbility extends PitBossAbility {
 		return solidIndex + 1;
 	}
 
-	public BlockData getBlock(Map<BlockData, Double> blockMap) {
+	public BlockData getBlock(LinkedHashMap<BlockData, Double> blockMap) {
 		return Misc.weightedRandom(blockMap);
 	}
 }

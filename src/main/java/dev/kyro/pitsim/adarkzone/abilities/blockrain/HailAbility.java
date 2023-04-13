@@ -12,11 +12,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class HailAbility extends BlockRainAbility {
-	public static Map<BlockData, Double> blockMap = getBlocks();
+	public static LinkedHashMap<BlockData, Double> blockMap = getBlocks();
 
 	public HailAbility(double routineWeight, int radius, int blockCount, double damage) {
 		super(routineWeight, radius, blockCount, blockMap, damage);
@@ -37,8 +36,8 @@ public class HailAbility extends BlockRainAbility {
 		}
 	}
 
-	public static Map<BlockData, Double> getBlocks() {
-		Map<BlockData, Double> blocks = new HashMap<>();
+	public static LinkedHashMap<BlockData, Double> getBlocks() {
+		LinkedHashMap<BlockData, Double> blocks = new LinkedHashMap<>();
 		blocks.put(new BlockData(Material.SNOW_BLOCK, (byte) 0), 1.0);
 		blocks.put(new BlockData(Material.ICE, (byte) 0), 1.0);
 		return blocks;
