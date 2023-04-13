@@ -373,15 +373,10 @@ public class PlayerManager implements Listener {
 		int maxBounty = 20_000;
 		if(Math.random() < 0.1 && killingNon == null && pitKiller.bounty < maxBounty) {
 
-			int amount = (int) Math.floor(Math.random() * 5 + 1) * 200;
-			if(pitKiller.bounty + amount > maxBounty) {
-				amount = maxBounty - pitKiller.bounty;
-				pitKiller.bounty = maxBounty;
-			} else {
-				pitKiller.bounty += amount;
-				ChatTriggerManager.sendBountyInfo(pitKiller);
-			}
-			String message = "&6&lBOUNTY!&7 bump &6&l" + amount + "g&7 on %luckperms_prefix%" + killEvent.getKillerPlayer().getDisplayName() +
+			int bountyBump = (int) Math.floor(Math.random() * 5 + 1) * 200;
+			pitKiller.bounty = Math.min(pitKiller.bounty + bountyBump, maxBounty);
+			ChatTriggerManager.sendBountyInfo(pitKiller);
+			String message = "&6&lBOUNTY!&7 bump &6&l" + bountyBump + "g&7 on %luckperms_prefix%" + killEvent.getKillerPlayer().getDisplayName() +
 					"&7 for high streak";
 			if(!pitKiller.bountiesDisabled)
 				AOutput.send(killEvent.getKiller(), PlaceholderAPI.setPlaceholders(killEvent.getKillerPlayer(), message));
