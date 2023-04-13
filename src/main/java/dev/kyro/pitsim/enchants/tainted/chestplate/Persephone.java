@@ -394,7 +394,7 @@ public class Persephone extends PitEnchant {
 		}
 
 		public static FlowerType random() {
-			Map<FlowerType, Double> weightedMap = new HashMap<>();
+			LinkedHashMap<FlowerType, Double> weightedMap = new LinkedHashMap<>();
 			for(FlowerType value : values()) weightedMap.put(value, value.weight);
 			return Misc.weightedRandom(weightedMap);
 		}

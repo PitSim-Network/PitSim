@@ -71,7 +71,7 @@ public class TaintedEnchanting {
 		if(previousTier == 0) {
 			int tokens;
 
-			Map<Integer, Double> tokenChance = new HashMap<>();
+			LinkedHashMap<Integer, Double> tokenChance = new LinkedHashMap<>();
 			tokenChance.put(1, TIER_1_TOKENS_1);
 			tokenChance.put(2, TIER_1_TOKENS_2);
 			tokens = Misc.weightedRandom(tokenChance);
@@ -79,7 +79,7 @@ public class TaintedEnchanting {
 			for(int i = 0; i < tokens; i++) {
 				Map<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(itemStack);
 
-				Map<PitEnchant, Double> randomEnchantMap = new HashMap<>();
+				LinkedHashMap<PitEnchant, Double> randomEnchantMap = new LinkedHashMap<>();
 				for(Map.Entry<PitEnchant, Integer> entry : enchantsOnItem.entrySet()) {
 					randomEnchantMap.put(entry.getKey(), 1.0);
 				}
@@ -98,7 +98,7 @@ public class TaintedEnchanting {
 
 		} else {
 			int newTokens;
-			Map<Integer, Double> enchantRandom = new HashMap<>();
+			LinkedHashMap<Integer, Double> enchantRandom = new LinkedHashMap<>();
 
 			double tokens1 = 0;
 			double tokens2 = 0;
@@ -131,9 +131,8 @@ public class TaintedEnchanting {
 			newTokens = Misc.weightedRandom(enchantRandom);
 
 			for(int i = 0; i < newTokens; i++) {
-				Map<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(itemStack);
-
-				Map<PitEnchant, Double> randomEnchantMap = new HashMap<>();
+				LinkedHashMap<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(itemStack);
+				LinkedHashMap<PitEnchant, Double> randomEnchantMap = new LinkedHashMap<>();
 				for(Map.Entry<PitEnchant, Integer> entry : enchantsOnItem.entrySet()) {
 					if(entry.getValue() < (previousTier == 3 ? 4 : 3)) {
 						if(previousTier >= 2 || (previousTier == 1 && !entry.getKey().isRare)) randomEnchantMap.put(entry.getKey(), 1.0);
@@ -141,7 +140,7 @@ public class TaintedEnchanting {
 				}
 
 				if(randomEnchantMap.size() < 3) {
-					Map<Integer, Double> randomRarityMap = new HashMap<>();
+					LinkedHashMap<Integer, Double> randomRarityMap = new LinkedHashMap<>();
 
 					double common = 0;
 					double uncommon = 0;

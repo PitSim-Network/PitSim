@@ -12,11 +12,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class FirestormAbility extends BlockRainAbility {
-	public static Map<BlockData, Double> blockMap = getBlocks();
+	public static LinkedHashMap<BlockData, Double> blockMap = getBlocks();
 
 	public FirestormAbility(double routineWeight, int radius, int blockCount, double damage) {
 		super(routineWeight, radius, blockCount, blockMap, damage);
@@ -52,8 +51,8 @@ public class FirestormAbility extends BlockRainAbility {
 		}
 	}
 
-	public static Map<BlockData, Double> getBlocks() {
-		Map<BlockData, Double> blocks = new HashMap<>();
+	public static LinkedHashMap<BlockData, Double> getBlocks() {
+		LinkedHashMap<BlockData, Double> blocks = new LinkedHashMap<>();
 		blocks.put(new BlockData(Material.FIRE, (byte) 0), 1.0);
 		blocks.put(new BlockData(Material.NETHER_BRICK, (byte) 0), 1.0);
 		return blocks;

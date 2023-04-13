@@ -98,7 +98,7 @@ public abstract class PitBoss {
 	}
 
 	public PitBossAbility getRoutineAbility() {
-		Map<PitBossAbility, Double> routineAbilityMap = new HashMap<>(this.routineAbilityMap);
+		LinkedHashMap<PitBossAbility, Double> routineAbilityMap = new LinkedHashMap<>(this.routineAbilityMap);
 		for(Map.Entry<PitBossAbility, Double> entry : new ArrayList<>(routineAbilityMap.entrySet()))
 			if(!entry.getKey().shouldExecuteRoutine()) routineAbilityMap.remove(entry.getKey());
 		if(routineAbilityMap.isEmpty()) return null;
@@ -180,7 +180,7 @@ public abstract class PitBoss {
 	}
 
 	public void kill(Player killer) {
-		HashMap<UUID, Double> sortedDamageMap = getSortedDamageMap();
+		LinkedHashMap<UUID, Double> sortedDamageMap = getSortedDamageMap();
 		List<Player> onlineDamagers = new ArrayList<>();
 		for(Map.Entry<UUID, Double> entry : sortedDamageMap.entrySet()) {
 			Player player = Bukkit.getPlayer(entry.getKey());
@@ -275,7 +275,7 @@ public abstract class PitBoss {
 		}
 	}
 
-	public HashMap<UUID, Double> getSortedDamageMap() {
+	public LinkedHashMap<UUID, Double> getSortedDamageMap() {
 		LinkedHashMap<UUID, Double> sortedDamageMap = new LinkedHashMap<>();
 		damageMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.forEachOrdered(entry -> sortedDamageMap.put(entry.getKey(), entry.getValue()));

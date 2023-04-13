@@ -288,11 +288,11 @@ public class Misc {
 		return tabComplete;
 	}
 
-	public static <T> T weightedRandom(Map<T, Double> weightedMap) {
+	public static <T> T weightedRandom(LinkedHashMap<T, Double> weightedMap) {
 		return weightedRandom(weightedMap, -1);
 	}
 
-	public static <T> T weightedRandom(Map<T, Double> weightedMap, long seed) {
+	public static <T> T weightedRandom(LinkedHashMap<T, Double> weightedMap, long seed) {
 		if(weightedMap.isEmpty()) throw new RuntimeException();
 		// Normalize the weights
 		double sum = 0.0;
