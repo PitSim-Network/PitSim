@@ -169,6 +169,7 @@ public class ItemManager implements Listener {
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem != null && pitPlayer.megastreak.isOnMega()) {
 			if(pitItem instanceof YummyBread || pitItem instanceof VeryYummyBread) {
+				event.setCancelled(true);
 				AOutput.error(player, "&c&lERROR!&7 You cannot drop bread while on a megastreak");
 				return;
 			}
