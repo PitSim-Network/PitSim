@@ -368,7 +368,7 @@ public class DarkzoneManager implements Listener {
 	 * distrubutes rewards
 	 * @param killEvent
 	 */
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onEntityDeath(KillEvent killEvent) {
 
 		PitBoss deadBoss = BossManager.getPitBoss(killEvent.getDead());
