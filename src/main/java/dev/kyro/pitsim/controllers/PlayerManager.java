@@ -373,7 +373,7 @@ public class PlayerManager implements Listener {
 		int maxBounty = 20_000;
 		if(Math.random() < 0.1 && killingNon == null && pitKiller.bounty < maxBounty) {
 
-			int bountyBump = (int) Math.floor(Math.random() * 5 + 1) * 200;
+			int bountyBump = (new Random().nextInt(5) + 1) * 200;
 			pitKiller.bounty = Math.min(pitKiller.bounty + bountyBump, maxBounty);
 			ChatTriggerManager.sendBountyInfo(pitKiller);
 			String message = "&6&lBOUNTY!&7 bump &6&l" + bountyBump + "g&7 on %luckperms_prefix%" + killEvent.getKillerPlayer().getDisplayName() +
