@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 public class KillBlazesQuest extends PassQuest {
 
 	public KillBlazesQuest() {
-		super("&c&lMagma Cube Slayer", "killmagmacubes", QuestType.WEEKLY);
+		super("&c&lBlaze Slayer", "killblazes", QuestType.WEEKLY);
 		weight = PassManager.DARKZONE_KILL_QUEST_WEIGHT;
 	}
 
