@@ -18,7 +18,7 @@ public enum TutorialObjective {
 	TAINTED_WELL(DarkzoneTutorial.class, "tainted", "&5Tainted Well",  new ParticleBox(10, 10, 10)),
 	PROGRESSION(DarkzoneTutorial.class, "progression", "&5Main Progression",  new ParticleBox(7, 7, 10)),
 	MARKET_SHOP(DarkzoneTutorial.class, "market-shop", "&3Market &7and &bShop",  new ParticleBox(7, 7, 10)),
-	ALTAR(DarkzoneTutorial.class, "altar", "&5Tainted Altar",  new ParticleBox(10, 20, 20)),
+	ALTAR(DarkzoneTutorial.class, "altar", "&5Tainted Altar",  new ParticleBox(10, 12, 12)),
 	BREWING(DarkzoneTutorial.class, "brewing", "&dBrewing",  new ParticleBox(7, 7, 10)),
 	;
 

@@ -15,6 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -167,7 +168,7 @@ public abstract class Tutorial {
 					cancel();
 					return;
 				}
-				List<TutorialObjective> tutorialObjectives = TutorialObjective.getObjectives(getTutorialClass());
+				List<TutorialObjective> tutorialObjectives = new ArrayList<>(TutorialObjective.getObjectives(getTutorialClass()));
 				tutorialObjectives.removeAll(data.completedObjectives);
 				for(TutorialObjective objective : tutorialObjectives) {
 					if(Math.random() < 0.4) continue;
