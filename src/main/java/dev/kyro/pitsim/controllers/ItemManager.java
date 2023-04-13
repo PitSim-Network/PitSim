@@ -13,7 +13,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.tutorial.TutorialManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -90,8 +89,8 @@ public class ItemManager implements Listener {
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null) return;
-		if(!pitItem.hasDropConfirm && !pitItem.isTutorialItem) return;
-		if(pitItem.isMystic && !MysticFactory.isImportant(itemStack) && !pitItem.isTutorialItem) return;
+		if(!pitItem.hasDropConfirm && !ItemFactory.isTutorialItem(itemStack)) return;
+		if(pitItem.isMystic && !MysticFactory.isImportant(itemStack) && !ItemFactory.isTutorialItem(itemStack)) return;
 
 		event.setCancelled(true);
 		player.updateInventory();
@@ -156,7 +155,7 @@ public class ItemManager implements Listener {
 			return;
 		}
 
-		if(TutorialManager.isTutorialItem(itemStack)) {
+		if(!ItemFactory.isTutorialItem(itemStack)) {
 			event.setCancelled(true);
 			AOutput.error(player, "&cYou cannot drop tutorial items!");
 			Sounds.NO.play(player);

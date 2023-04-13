@@ -34,7 +34,6 @@ public abstract class PitItem implements Listener {
 	public boolean isProtDiamond;
 	public boolean isShopDiamond;
 	public boolean isMystic;
-	public boolean isTutorialItem;
 
 	public MarketCategory marketCategory;
 
@@ -43,9 +42,11 @@ public abstract class PitItem implements Listener {
 	}
 
 	public abstract String getNBTID();
+
 	public abstract List<String> getRefNames();
 
 	public abstract ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem);
+
 	public abstract boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem);
 
 	public void updateItem(ItemStack itemStack) {
@@ -56,10 +57,6 @@ public abstract class PitItem implements Listener {
 		if(!isThisItem(itemStack)) throw new RuntimeException();
 		NBTItem nbtItem = new NBTItem(itemStack, true);
 		if(hasLastServer) nbtItem.setString(NBTTag.ITEM_LAST_SERVER.getRef(), PitSim.status.name());
-
-		if(isTutorialItem) nbtItem.setBoolean(NBTTag.IS_TUTORIAL_ITEM.getRef(), true);
-		else nbtItem.removeKey(NBTTag.IS_TUTORIAL_ITEM.getRef());
-
 	}
 
 	public ItemStack buildItem(ItemStack itemStack) {
@@ -88,8 +85,6 @@ public abstract class PitItem implements Listener {
 		nbtItem.setString(NBTTag.CUSTOM_ITEM.getRef(), getNBTID());
 		if(hasUUID) nbtItem.setString(NBTTag.ITEM_UUID.getRef(), UUID.randomUUID().toString());
 		if(hasLastServer) nbtItem.setString(NBTTag.ITEM_LAST_SERVER.getRef(), PitSim.status.name());
-		if(isTutorialItem) nbtItem.setBoolean(NBTTag.IS_TUTORIAL_ITEM.getRef(), true);
-		else nbtItem.removeKey(NBTTag.IS_TUTORIAL_ITEM.getRef());
 		return nbtItem.getItem();
 	}
 
@@ -127,3 +122,5 @@ public abstract class PitItem implements Listener {
 		return (TemporaryItem) this;
 	}
 }
+
+

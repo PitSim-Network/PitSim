@@ -40,4 +40,17 @@ public class ItemFactory {
 		if(pitItem == null) return false;
 		return pitItem.getClass() == clazz;
 	}
+
+
+	public static void setTutorialItem(ItemStack itemStack, boolean tutorialItem) {
+		NBTItem nbtItem = new NBTItem(itemStack);
+		if(tutorialItem) nbtItem.setBoolean(NBTTag.IS_TUTORIAL_ITEM.getRef(), true);
+		else nbtItem.removeKey(NBTTag.IS_TUTORIAL_ITEM.getRef());
+	}
+
+	public static boolean isTutorialItem(ItemStack itemStack) {
+		if(getItem(itemStack) == null) return false;
+		NBTItem nbtItem = new NBTItem(itemStack);
+		return nbtItem.hasKey(NBTTag.IS_TUTORIAL_ITEM.getRef());
+	}
 }
