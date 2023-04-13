@@ -289,6 +289,10 @@ public class Misc {
 	}
 
 	public static <T> T weightedRandom(Map<T, Double> weightedMap) {
+		return weightedRandom(weightedMap, -1);
+	}
+
+	public static <T> T weightedRandom(Map<T, Double> weightedMap, long seed) {
 		if(weightedMap.isEmpty()) throw new RuntimeException();
 		// Normalize the weights
 		double sum = 0.0;
@@ -296,8 +300,11 @@ public class Misc {
 		Map<T, Double> normalizedWeights = new HashMap<>();
 		for(Map.Entry<T, Double> entry : weightedMap.entrySet()) normalizedWeights.put(entry.getKey(), entry.getValue() / sum);
 
+//		Create Random
+		Random random = seed == -1 ? new Random() : new Random(seed);
+
 		// Select a random number between 0 and 1
-		double rand = Math.random();
+		double rand = random.nextDouble();
 
 		// Find the element corresponding to the random number
 		double total = 0.0;
