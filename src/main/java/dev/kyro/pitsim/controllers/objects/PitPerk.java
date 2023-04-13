@@ -20,7 +20,7 @@ import java.util.List;
 public abstract class PitPerk implements Listener, Summarizable {
 	public String displayName;
 	public String refName;
-	public Class<RenownUpgrade> renownUpgradeClass;
+	public Class<? extends RenownUpgrade> renownUpgradeClass;
 
 	public PitPerk(String displayName, String refName) {
 		this(displayName, refName, null);
