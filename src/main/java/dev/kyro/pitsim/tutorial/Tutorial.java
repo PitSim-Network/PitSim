@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -28,6 +29,8 @@ public abstract class Tutorial {
 	protected BossBar bossBar;
 	protected BukkitTask particleRunnable;
 	public boolean isInObjective = false;
+
+	public List<BukkitTask> delayedTasks = new ArrayList<>();
 
 	public abstract Class<? extends Tutorial> getTutorialClass();
 	public abstract void sendStartMessages();
@@ -150,13 +153,13 @@ public abstract class Tutorial {
 	}
 
 	public void sendMessage(String text, long ticks) {
-		new BukkitRunnable() {
+		delayedTasks.add(new BukkitRunnable() {
 			@Override
 			public void run() {
 				Sounds.TUTORIAL_MESSAGE.play(pitPlayer.player);
 				AOutput.send(pitPlayer.player, text);
 			}
-		}.runTaskLater(PitSim.INSTANCE, ticks);
+		}.runTaskLater(PitSim.INSTANCE, ticks));
 	}
 
 	private void startRunnable() {
@@ -190,8 +193,23 @@ public abstract class Tutorial {
 	public void endTutorial() {
 		Audience audience = PitSim.adventure.player(uuid);
 		audience.hideBossBar(bossBar);
+		if(particleRunnable != null) particleRunnable.cancel();
+		for(BukkitTask runnable : delayedTasks) runnable.cancel();
 		bossBar = null;
 		onTutorialEnd();
+	}
+
+	public Player getPlayer() {
+		return pitPlayer.player;
+	}
+
+	public void delayTask(Runnable task, long ticks) {
+		delayedTasks.add(new BukkitRunnable() {
+			@Override
+			public void run() {
+				task.run();
+			}
+		}.runTaskLater(PitSim.INSTANCE, ticks));
 	}
 
 }

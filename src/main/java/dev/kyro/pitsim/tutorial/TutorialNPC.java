@@ -101,10 +101,16 @@ public class TutorialNPC implements Listener {
 
 		if(currentCheckpoint.canSatisfy(tutorial)) {
 			currentCheckpoint.onSatisfy(tutorial, currentCheckpoint.getSatisfyDelay());
-		} else currentCheckpoint.onEngage(tutorial, currentCheckpoint.getEngageDelay());
+		} else if(currentCheckpoint.canEngage(tutorial)) currentCheckpoint.onEngage(tutorial, currentCheckpoint.getEngageDelay());
+		else tutorial.sendMessage("&cPlease remove some items from your inventory to continue", 0);
 	}
 
 	public void setCheckpoint(NPCCheckpoint checkpoint) {
+		if(!checkpoint.canEngage(tutorial)) {
+			tutorial.sendMessage("&cPlease remove some items from your inventory to continue", 0);
+			return;
+		}
+
 		currentCheckpoint = checkpoint;
 		walkToCheckPoint(checkpoint);
 		checkpoint.onEngage(tutorial, checkpoint.getEngageDelay());

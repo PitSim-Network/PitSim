@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
@@ -425,6 +426,7 @@ public class TaintedWell implements Listener {
 		
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		
 		if(block.getType() != Material.ENCHANTMENT_TABLE || player.getWorld() != Bukkit.getWorld("darkzone")) return;
 		event.setCancelled(true);
@@ -442,6 +444,12 @@ public class TaintedWell implements Listener {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 40L);
 
+			return;
+		}
+
+		if(pitPlayer.darkzoneTutorial.isActive() && !ItemFactory.isTutorialItem(player.getItemInHand())) {
+			AOutput.error(player, "You may currently only enchant tutorial items!");
+			Sounds.NO.play(player);
 			return;
 		}
 
@@ -555,6 +563,8 @@ public class TaintedWell implements Listener {
 		int cost;
 
 		if(tier >= getMaxTier(player)) return -1;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.darkzoneTutorial.isActive()) return -1;
 
 		switch(tier + 1) {
 		case 1:

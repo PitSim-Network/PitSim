@@ -419,6 +419,9 @@ public class EnchantManager implements Listener {
 			if(nbtItem.getBoolean(NBTTag.IS_VENOM.getRef())) {
 				loreBuilder.addLore("&7", "&5Enchants require heresy", "&5As strong as leather");
 			}
+			if(ItemFactory.isTutorialItem(itemStack)) {
+				loreBuilder.addLore("&7", "&cTutorial Item");
+			}
 		}
 
 		itemMeta.setLore(loreBuilder.getLore());
