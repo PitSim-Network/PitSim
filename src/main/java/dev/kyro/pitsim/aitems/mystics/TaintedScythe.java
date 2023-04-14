@@ -57,6 +57,7 @@ public class TaintedScythe extends StaticPitItem implements TemporaryItem {
 				"&7Used in the tainted well",
 				"",
 				"&7Kept on death"
+
 		).getLore();
 	}
 

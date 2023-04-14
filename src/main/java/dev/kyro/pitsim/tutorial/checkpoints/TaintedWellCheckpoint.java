@@ -6,8 +6,10 @@ import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.mystics.TaintedChestplate;
 import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
+import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -18,6 +20,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +33,8 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
 		tutorial.delayTask(() -> giveFreshItems(tutorial.getPlayer()), getEngageDelay());
+		TaintedWell.tutorialReset(tutorial.getPlayer());
+
 		tutorial.sendMessage("You can now access the Tainted Well", 0);
 		tutorial.sendMessage("This is a special area where you can get special items", 20);
 		tutorial.sendMessage("You can access the Tainted Well by typing &b/tw", 40);
@@ -66,11 +71,11 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 		boolean hasChestplate = false;
 		boolean hasScythe = false;
 
-		List<ItemStack> items = Arrays.asList(player.getInventory().getContents());
+		List<ItemStack> items = new ArrayList<>(Arrays.asList(player.getInventory().getContents()));
 		items.addAll(Arrays.asList(player.getInventory().getArmorContents()));
 
 		for(ItemStack itemStack : items) {
-			if(ItemFactory.isTutorialItem(itemStack)) continue;
+			if(!ItemFactory.isTutorialItem(itemStack)) continue;
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			if(pitItem == null) continue;
 			NBTItem nbtItem = new NBTItem(itemStack);
@@ -107,10 +112,12 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 	public void giveFreshItems(Player player) {
 		ItemStack scythe = MysticFactory.getFreshItem(MysticType.TAINTED_SCYTHE, null);
 		ItemFactory.setTutorialItem(scythe, true);
+		EnchantManager.setItemLore(scythe, player);
 		AUtil.giveItemSafely(player, scythe);
 
 		ItemStack chestplate = MysticFactory.getFreshItem(MysticType.TAINTED_CHESTPLATE, null);
 		ItemFactory.setTutorialItem(chestplate, true);
-		player.getInventory().setChestplate(chestplate);
+		EnchantManager.setItemLore(chestplate, player);
+		AUtil.giveItemSafely(player, chestplate);
 	}
 }

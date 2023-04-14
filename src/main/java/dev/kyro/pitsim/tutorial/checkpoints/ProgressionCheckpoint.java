@@ -38,6 +38,11 @@ public class ProgressionCheckpoint extends NPCCheckpoint {
 	}
 
 	@Override
+	public boolean canEngage(Tutorial tutorial) {
+		return true;
+	}
+
+	@Override
 	public boolean canSatisfy(Tutorial tutorial) {
 		return true;
 	}

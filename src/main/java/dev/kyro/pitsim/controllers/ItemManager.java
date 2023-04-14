@@ -155,7 +155,7 @@ public class ItemManager implements Listener {
 			return;
 		}
 
-		if(!ItemFactory.isTutorialItem(itemStack)) {
+		if(ItemFactory.isTutorialItem(itemStack)) {
 			event.setCancelled(true);
 			AOutput.error(player, "&cYou cannot drop tutorial items!");
 			Sounds.NO.play(player);

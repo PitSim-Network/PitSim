@@ -41,6 +41,7 @@ public abstract class NPCCheckpoint {
 
 			player.updateInventory();
 
+			tutorial.isInObjective = true;
 
 			new BukkitRunnable() {
 				@Override
