@@ -191,6 +191,8 @@ public abstract class Tutorial {
 	}
 
 	public void endTutorial() {
+		if(!isActive()) return;
+
 		Audience audience = PitSim.adventure.player(uuid);
 		audience.hideBossBar(bossBar);
 		if(particleRunnable != null) particleRunnable.cancel();

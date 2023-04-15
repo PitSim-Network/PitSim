@@ -8,11 +8,11 @@ import java.util.List;
 
 public enum TutorialObjective {
 	//Overworld
-	PERKS(OverworldTutorial.class, "perks", "&ePerks and Killstreaks", new ParticleBox(2, 2, 1)),
-	KITS(OverworldTutorial.class, "kits", "&eKits",  new ParticleBox(2, 1, 1)),
-	PRESTIGE(OverworldTutorial.class, "prestige", "&ePrestige and Renown",  new ParticleBox(2, 2, 1)),
-	KEEPER(OverworldTutorial.class, "keeper", "&2The Keeper",  new ParticleBox(2, 2, 1)),
-	PASS(OverworldTutorial.class, "pass", "&3Battle Pass",  new ParticleBox(2, 2, 1)),
+	PERKS(OverworldTutorial.class, "perks", "&ePerks and Killstreaks", new ParticleBox(2, 1.5, 1.5)),
+	KITS(OverworldTutorial.class, "kits", "&eKits",  new ParticleBox(1, 1, 1)),
+	PRESTIGE(OverworldTutorial.class, "prestige", "&ePrestige and Renown",  new ParticleBox(2, 1.5, 1.5)),
+	KEEPER(OverworldTutorial.class, "keeper", "&2The Keeper",  new ParticleBox(2, 1.5, 1.5)),
+	PASS(OverworldTutorial.class, "pass", "&3Battle Pass",  new ParticleBox(2, 1.5, 1.5)),
 
 	//Darkzone
 	TAINTED_WELL(DarkzoneTutorial.class, "tainted", "&5Tainted Well",  new ParticleBox(10, 10, 10)),
