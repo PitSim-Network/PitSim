@@ -32,7 +32,7 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
-		tutorial.delayTask(() -> giveFreshItems(tutorial.getPlayer()), getEngageDelay());
+		tutorial.delayTask(() -> giveFreshItems(tutorial), getEngageDelay());
 
 		tutorial.sendMessage("You can now access the Tainted Well", 0);
 		tutorial.sendMessage("This is a special area where you can get special items", 20);
@@ -90,7 +90,7 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 	}
 
 	@Override
-	public void onDisengage(Tutorial tutorial) {
+	public void onCheckPointDisengage(Tutorial tutorial) {
 		TaintedWell.tutorialReset(tutorial.getPlayer());
 	}
 
@@ -113,7 +113,13 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 		player.updateInventory();
 	}
 
-	public void giveFreshItems(Player player) {
+	public void giveFreshItems(Tutorial tutorial) {
+		Player player = tutorial.getPlayer();
+		if(Misc.getEmptyInventorySlots(player) < 2) {
+			tutorial.sendMessage("&cYou do not have enough inventory space to continue the tutorial! Create more before talking to me again", 5);
+			return;
+		}
+
 		ItemStack scythe = MysticFactory.getFreshItem(MysticType.TAINTED_SCYTHE, null);
 		ItemFactory.setTutorialItem(scythe, true);
 		EnchantManager.setItemLore(scythe, player);

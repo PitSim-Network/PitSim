@@ -26,6 +26,7 @@ public class AltarVoucherReward {
 	public int amount;
 	public List<BukkitTask> bukkitTaskList = new ArrayList<>();
 	public Map<EntityItem, Integer> items = new HashMap<>();
+	public BukkitTask despawnRunnable;
 
 	public AltarVoucherReward(Player player, int amount) {
 		this.player = player;
@@ -73,7 +74,7 @@ public class AltarVoucherReward {
 			}.runTaskTimer(PitSim.INSTANCE, 0, 5));
 		}
 
-		new BukkitRunnable() {
+		despawnRunnable = new BukkitRunnable() {
 			@Override
 			public void run() {
 				despawnReward();
@@ -87,6 +88,7 @@ public class AltarVoucherReward {
 			despawn(entry.getKey());
 		}
 
+		despawnRunnable.cancel();
 		for(BukkitTask task : bukkitTaskList) task.cancel();
 	}
 

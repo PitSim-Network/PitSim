@@ -232,7 +232,7 @@ public abstract class AltarPedestal implements Listener {
 			}
 		}
 
-		public void restorePlayer(Player player) {
+		public void     restorePlayer(Player player) {
 			if(!storedTemporaryReward.containsKey(player.getUniqueId())) return;
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 

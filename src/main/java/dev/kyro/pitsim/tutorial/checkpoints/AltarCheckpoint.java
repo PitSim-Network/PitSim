@@ -55,7 +55,7 @@ public class AltarCheckpoint extends NPCCheckpoint {
 	}
 
 	@Override
-	public void onDisengage(Tutorial tutorial) {
+	public void onCheckPointDisengage(Tutorial tutorial) {
 		for(AltarPedestal.AltarReward value : AltarPedestal.AltarReward.values()) {
 			value.restorePlayer(tutorial.getPlayer());
 		}

@@ -18,7 +18,7 @@ public abstract class NPCCheckpoint {
 		public abstract boolean canEngage(Tutorial tutorial);
 		public abstract boolean canSatisfy(Tutorial tutorial);
 
-		public abstract void onDisengage(Tutorial tutorial);
+		public abstract void onCheckPointDisengage(Tutorial tutorial);
 	
 		public NPCCheckpoint(TutorialObjective objective, Location location) {
 			this.objective = objective;
@@ -29,17 +29,7 @@ public abstract class NPCCheckpoint {
 
 		public void onEngage(Tutorial tutorial, int delay) {
 			Player player = tutorial.getPlayer();
-			for(int i = 0; i < player.getInventory().getContents().length; i++) {
-				ItemStack content = player.getInventory().getContents()[i];
-				if(ItemFactory.isTutorialItem(content)) player.getInventory().setItem(i, null);
-			}
-
-			for(int i = 0; i < player.getInventory().getArmorContents().length; i++) {
-				ItemStack[] contents = player.getInventory().getArmorContents();
-				ItemStack content = player.getInventory().getArmorContents()[i];
-				if(ItemFactory.isTutorialItem(content)) contents[i] = null;
-				player.getInventory().setArmorContents(contents);
-			}
+			removeTutorialItems(player);
 
 			player.updateInventory();
 
@@ -54,8 +44,29 @@ public abstract class NPCCheckpoint {
 			onCheckpointEngage(tutorial);
 		}
 
+		public void onDisengage(Tutorial tutorial) {
+			removeTutorialItems(tutorial.getPlayer());
+			onCheckPointDisengage(tutorial);
+		}
+
 		public void onSatisfy(Tutorial tutorial, int delay) {
 			onCheckpointSatisfy(tutorial);
 			tutorial.completeObjective(objective, delay);
+		}
+
+		public static void removeTutorialItems(Player player) {
+			for(int i = 0; i < player.getInventory().getContents().length; i++) {
+				ItemStack content = player.getInventory().getContents()[i];
+				if(ItemFactory.isTutorialItem(content)) player.getInventory().setItem(i, null);
+			}
+
+			for(int i = 0; i < player.getInventory().getArmorContents().length; i++) {
+				ItemStack[] contents = player.getInventory().getArmorContents();
+				ItemStack content = player.getInventory().getArmorContents()[i];
+				if(ItemFactory.isTutorialItem(content)) contents[i] = null;
+				player.getInventory().setArmorContents(contents);
+			}
+
+			player.updateInventory();
 		}
 	}

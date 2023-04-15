@@ -47,7 +47,7 @@ public class BrewingCheckpoint extends NPCCheckpoint {
 	}
 
 	@Override
-	public void onDisengage(Tutorial tutorial) {
+	public void onCheckPointDisengage(Tutorial tutorial) {
 
 	}
 }
