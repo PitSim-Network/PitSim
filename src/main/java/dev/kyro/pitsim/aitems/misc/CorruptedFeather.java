@@ -8,7 +8,9 @@ import dev.kyro.pitsim.controllers.GuildIntegrationManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
+import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -56,14 +58,20 @@ public class CorruptedFeather extends StaticPitItem {
 		).getLore();
 	}
 
-	public boolean useCorruptedFeather(LivingEntity killer, Player dead) {
+	public boolean useCorruptedFeather(KillEvent killEvent) {
+		LivingEntity killer = killEvent.getKiller();
+		Player dead = killEvent.getDeadPlayer();
+
 		for(int i = 0; i < 9; i++) {
 			ItemStack itemStack = dead.getInventory().getItem(i);
 			if(!isThisItem(itemStack)) continue;
 
-			AOutput.send(dead, "&5&lCORRUPTED FEATHER! &7Ingredients protected.");
+			AOutput.send(dead, "&5&lCORRUPTED FEATHER! &7Inventory protected!");
 			if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
-			else dead.getInventory().setItem(i, null);
+			else {
+				dead.getInventory().setItem(i, null);
+				killEvent.getDeadInventoryWrapper().removeItem(PlayerItemLocation.slot(i));
+			}
 			dead.updateInventory();
 			Sounds.FUNKY_FEATHER.play(dead);
 
