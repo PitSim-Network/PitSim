@@ -44,6 +44,6 @@ public class GoldAndBoosted extends PitEnchant {
 	}
 
 	public int getDamage(int enchantLvl) {
-		return enchantLvl * 9 + 7;
+		return enchantLvl * 11 + 1;
 	}
 }

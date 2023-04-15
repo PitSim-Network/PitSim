@@ -6,7 +6,6 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
@@ -74,12 +73,6 @@ public class ChunkOfVile extends StaticPitItem {
 
 		if(!UpgradeManager.hasUpgrade(player, Withercraft.INSTANCE)) {
 			AOutput.error(player, "&c&lERROR!&7 You must first unlock Withercraft from the renown shop before using this item!");
-			Sounds.ERROR.play(player);
-			return;
-		}
-
-		if(MapManager.inDarkzone(player)) {
-			AOutput.error(player, "&c&lERROR!&7 You cannot repair items while in the darkzone!");
 			Sounds.ERROR.play(player);
 			return;
 		}

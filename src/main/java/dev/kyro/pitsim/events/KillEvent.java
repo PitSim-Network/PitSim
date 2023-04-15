@@ -88,7 +88,7 @@ public class KillEvent extends Event {
 		if(isDeadRealPlayer) this.soulsLost = getBaseSouls(getDeadPitPlayer());
 
 		if(isDeadPlayer) deadInventoryWrapper = new WrapperPlayerInventory(getDeadPlayer());
-		checkLoseLives();
+		 checkLoseLives();
 	}
 
 	public int getFinalXp() {
@@ -136,9 +136,9 @@ public class KillEvent extends Event {
 		if(DivineIntervention.attemptDivine(getDeadPlayer())) return;
 
 		if(PitSim.status.isOverworld()) {
-			if(ItemFactory.getItem(FunkyFeather.class).useFeather(killer, getDeadPlayer())) return;
+			if(ItemFactory.getItem(FunkyFeather.class).useFeather(this)) return;
 		} else {
-			if(ItemFactory.getItem(CorruptedFeather.class).useCorruptedFeather(killer, getDeadPlayer())) return;
+			if(ItemFactory.getItem(CorruptedFeather.class).useCorruptedFeather(this)) return;
 		}
 
 		shouldLoseItems = true;

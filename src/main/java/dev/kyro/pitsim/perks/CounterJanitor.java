@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
+import dev.kyro.pitsim.upgrades.UnlockFirstStrike;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +16,7 @@ public class CounterJanitor extends PitPerk {
 
 	public CounterJanitor() {
 		super("Counter-Janitor", "counter-janitor");
+		renownUpgradeClass = UnlockFirstStrike.class;
 		INSTANCE = this;
 	}
 
