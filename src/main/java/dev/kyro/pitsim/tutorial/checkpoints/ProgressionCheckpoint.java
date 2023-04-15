@@ -1,10 +1,15 @@
 package dev.kyro.pitsim.tutorial.checkpoints;
 
+import dev.kyro.pitsim.adarkzone.progression.MainProgressionPanel;
+import dev.kyro.pitsim.adarkzone.progression.MainProgressionUnlock;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.tutorial.NPCCheckpoint;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class ProgressionCheckpoint extends NPCCheckpoint {
 	public ProgressionCheckpoint() {
@@ -44,6 +49,18 @@ public class ProgressionCheckpoint extends NPCCheckpoint {
 
 	@Override
 	public boolean canSatisfy(Tutorial tutorial) {
+		Player player = tutorial.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+		for(MainProgressionUnlock tutorialUnlock : MainProgressionPanel.tutorialUnlocks) {
+			if(!ProgressionManager.isUnlocked(pitPlayer, tutorialUnlock)) return false;
+		}
+
 		return true;
+	}
+
+	@Override
+	public void onDisengage(Tutorial tutorial) {
+
 	}
 }

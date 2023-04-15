@@ -17,6 +17,8 @@ public abstract class NPCCheckpoint {
 		public abstract int getSatisfyDelay();
 		public abstract boolean canEngage(Tutorial tutorial);
 		public abstract boolean canSatisfy(Tutorial tutorial);
+
+		public abstract void onDisengage(Tutorial tutorial);
 	
 		public NPCCheckpoint(TutorialObjective objective, Location location) {
 			this.objective = objective;

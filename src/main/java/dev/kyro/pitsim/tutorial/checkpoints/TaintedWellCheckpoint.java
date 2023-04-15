@@ -33,7 +33,6 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
 		tutorial.delayTask(() -> giveFreshItems(tutorial.getPlayer()), getEngageDelay());
-		TaintedWell.tutorialReset(tutorial.getPlayer());
 
 		tutorial.sendMessage("You can now access the Tainted Well", 0);
 		tutorial.sendMessage("This is a special area where you can get special items", 20);
@@ -88,6 +87,11 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 		}
 
 		return hasChestplate && hasScythe;
+	}
+
+	@Override
+	public void onDisengage(Tutorial tutorial) {
+		TaintedWell.tutorialReset(tutorial.getPlayer());
 	}
 
 	public void removeTutorialTag(Player player) {

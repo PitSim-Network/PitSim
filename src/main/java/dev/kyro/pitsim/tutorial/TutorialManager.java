@@ -7,6 +7,7 @@ import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -23,7 +24,7 @@ public class TutorialManager implements Listener {
 
 	public static final int DARKZONE_OBJECTIVE_DISTANCE = 7;
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);

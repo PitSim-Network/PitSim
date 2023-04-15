@@ -2,6 +2,7 @@ package dev.kyro.pitsim.tutorial;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.misc.MinecraftSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -101,18 +102,25 @@ public class TutorialNPC implements Listener {
 
 		if(currentCheckpoint.canSatisfy(tutorial)) {
 			currentCheckpoint.onSatisfy(tutorial, currentCheckpoint.getSatisfyDelay());
-		} else if(currentCheckpoint.canEngage(tutorial)) currentCheckpoint.onEngage(tutorial, currentCheckpoint.getEngageDelay());
+		} else if(currentCheckpoint.canEngage(tutorial) && !TaintedWell.playerItems.containsKey(tutorial.pitPlayer.player)) engage(currentCheckpoint);
 		else tutorial.sendMessage("&cPlease remove some items from your inventory to continue", 0);
 	}
 
 	public void setCheckpoint(NPCCheckpoint checkpoint) {
-		if(!checkpoint.canEngage(tutorial)) {
+		if(!checkpoint.canEngage(tutorial) || TaintedWell.playerItems.containsKey(tutorial.pitPlayer.player)) {
 			tutorial.sendMessage("&cPlease remove some items from your inventory to continue", 0);
 			return;
 		}
 
+
+
 		currentCheckpoint = checkpoint;
 		walkToCheckPoint(checkpoint);
+		engage(checkpoint);
+	}
+
+	public void engage(NPCCheckpoint checkpoint) {
+		currentCheckpoint.onDisengage(tutorial);
 		checkpoint.onEngage(tutorial, checkpoint.getEngageDelay());
 	}
 

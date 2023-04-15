@@ -16,9 +16,19 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainProgressionPanel extends AGUIPanel {
 	public ProgressionGUI progressionGUI;
 	public PitPlayer pitPlayer;
+
+	public static final List<MainProgressionUnlock> tutorialUnlocks = new ArrayList<>();
+
+	static {
+		tutorialUnlocks.add(ProgressionManager.getMainProgressionUnlock(2, 3));
+		tutorialUnlocks.add(ProgressionManager.getMainProgressionUnlock(2, 2));
+	}
 
 	public MainProgressionPanel(AGUI gui) {
 		super(gui);
@@ -62,6 +72,7 @@ public class MainProgressionPanel extends AGUIPanel {
 				Sounds.NO.play(player);
 			} else if(state == UnlockState.NEXT_TO_UNLOCK) {
 				int cost = ProgressionManager.getUnlockCost(pitPlayer, unlock);
+				if(tutorialUnlocks.contains(unlock)) cost = 0;
 				if(pitPlayer.taintedSouls < cost) {
 					Lang.NOT_ENOUGH_SOULS.send(player);
 					return;

@@ -14,7 +14,11 @@ public class Formatter {
 	}
 
 	public static String formatSouls(int souls) {
-		return translate("&f" + commaFormat.format(souls) + " Soul" + Misc.s(souls));
+		return formatSouls(souls, true);
+	}
+
+	public static String formatSouls(int souls, boolean color) {
+		return (color ? "&f" : "") + translate(commaFormat.format(souls) + " Soul" + Misc.s(souls));
 	}
 
 	public static String formatGoldFull(double amount) {

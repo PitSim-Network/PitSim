@@ -46,4 +46,9 @@ public class AltarCheckpoint extends NPCCheckpoint {
 	public boolean canSatisfy(Tutorial tutorial) {
 		return true;
 	}
+
+	@Override
+	public void onDisengage(Tutorial tutorial) {
+
+	}
 }
