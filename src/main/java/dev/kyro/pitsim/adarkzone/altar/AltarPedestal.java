@@ -31,9 +31,7 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class AltarPedestal implements Listener {
 	public static List<AltarPedestal> altarPedestals = new ArrayList<>();
@@ -100,6 +98,8 @@ public abstract class AltarPedestal implements Listener {
 	}
 
 	public void activate(Player player) {
+		if(PitPlayer.getPitPlayer(player).darkzoneTutorial.isActive()) return;
+
 		if(!isUnlocked(player)) {
 			DataWatcher dw = ((CraftEntity)stand).getHandle().getDataWatcher();
 			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', "&c&lLOCKED!"));
@@ -194,6 +194,10 @@ public abstract class AltarPedestal implements Listener {
 		public final AltarPedestal pedestal;
 		public final double base;
 
+		public final Map<UUID, Integer> storedTemporaryReward = new HashMap<>();
+		public static final List<AltarRenownReward> renownRewards = new ArrayList<>();
+		public static final List<AltarVoucherReward> voucherRewards = new ArrayList<>();
+
 		AltarReward(AltarPedestal pedestal, double base) {
 			this.pedestal = pedestal;
 			this.base = base;
@@ -206,6 +210,10 @@ public abstract class AltarPedestal implements Listener {
 
 		public void rewardPlayer(Player player, int amount) {
 			if(amount == 0) return;
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			restorePlayer(player);
+			if(pitPlayer.darkzoneTutorial.isActive()) storedTemporaryReward.put(player.getUniqueId(), amount);
+
 			switch(this) {
 				case ALTAR_XP:
 					AltarXPReward reward = new AltarXPReward(player, amount);
@@ -214,12 +222,47 @@ public abstract class AltarPedestal implements Listener {
 				case RENOWN:
 					AltarRenownReward renownReward = new AltarRenownReward(player, amount);
 					renownReward.spawn(AltarManager.CONFIRM_LOCATION.clone().add(0, 2.5, 0));
+					renownRewards.add(renownReward);
 					break;
 				case VOUCHERS:
 					AltarVoucherReward heresyReward = new AltarVoucherReward(player, amount);
 					heresyReward.spawn(AltarManager.CONFIRM_LOCATION.clone().add(0, 2.5, 0));
+					voucherRewards.add(heresyReward);
 					break;
 			}
+		}
+
+		public void restorePlayer(Player player) {
+			if(!storedTemporaryReward.containsKey(player.getUniqueId())) return;
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
+			switch(this) {
+				case ALTAR_XP:
+					pitPlayer.darkzoneData.altarXP -= storedTemporaryReward.get(player.getUniqueId());
+					break;
+				case RENOWN:
+					List<AltarRenownReward> renownToRemove = new ArrayList<>();
+					pitPlayer.renown -= storedTemporaryReward.get(player.getUniqueId());
+					for(AltarRenownReward renownReward : renownRewards) {
+						if(renownReward.player != player) continue;
+						renownReward.despawnReward();
+						renownToRemove.add(renownReward);
+					}
+					renownRewards.removeAll(renownToRemove);
+					break;
+				case VOUCHERS:
+					pitPlayer.darkzoneData.demonicVouchers -= storedTemporaryReward.get(player.getUniqueId());
+					List<AltarVoucherReward> vouchersToRemove = new ArrayList<>();
+					for(AltarVoucherReward voucherReward : voucherRewards) {
+						if(voucherReward.player != player) continue;
+						voucherReward.despawnReward();
+						vouchersToRemove.add(voucherReward);
+					}
+
+					voucherRewards.removeAll(vouchersToRemove);
+					break;
+			}
+			storedTemporaryReward.remove(player.getUniqueId());
 		}
 	}
 

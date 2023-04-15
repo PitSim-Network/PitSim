@@ -174,9 +174,9 @@ public class PitPlayer {
 	public TutorialData darkzoneTutorialData = new TutorialData();
 
 	@Exclude
-	public OverworldTutorial overworldTutorial = new OverworldTutorial(overworldTutorialData, this);
+	public OverworldTutorial overworldTutorial;
 	@Exclude
-	public DarkzoneTutorial darkzoneTutorial = new DarkzoneTutorial(darkzoneTutorialData, this);
+	public DarkzoneTutorial darkzoneTutorial;
 
 	public ScoreboardData scoreboardData = new ScoreboardData();
 	private PassData passData = new PassData();
@@ -427,6 +427,9 @@ public class PitPlayer {
 		this.player = player;
 
 		ChatColorPanel.playerChatColors.put(player, chatColor);
+
+		overworldTutorial = new OverworldTutorial(this);
+		darkzoneTutorial = new DarkzoneTutorial(this);
 
 		if(megastreakRef.equals("nomegastreak")) this.megastreak = new NoMegastreak(this);
 		else if(megastreakRef.equals("beastmode")) this.megastreak = new Beastmode(this);

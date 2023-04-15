@@ -76,14 +76,17 @@ public class AltarRenownReward {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Map.Entry<EntityItem, Integer> entry : items.entrySet()) {
-					reward(entry.getValue());
-					despawn(entry.getKey());
-				}
-
-				for(BukkitTask task : bukkitTaskList) task.cancel();
+				despawnReward();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 30 * 20);
+	}
+
+	public void despawnReward() {
+		for(Map.Entry<EntityItem, Integer> entry : items.entrySet()) {
+			reward(entry.getValue());
+			despawn(entry.getKey());
+			for(BukkitTask task : bukkitTaskList) task.cancel();
+		}
 	}
 
 	public void despawn(EntityItem item) {

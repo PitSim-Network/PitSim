@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public abstract class Tutorial {
 
-	protected final TutorialData data;
+	public final TutorialData data;
 
 	protected UUID uuid;
 	protected PitPlayer pitPlayer;

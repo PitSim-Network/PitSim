@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial.checkpoints;
 
+import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.tutorial.NPCCheckpoint;
 import dev.kyro.pitsim.tutorial.Tutorial;
@@ -22,6 +23,12 @@ public class AltarCheckpoint extends NPCCheckpoint {
 
 	@Override
 	public void onCheckpointSatisfy(Tutorial tutorial) {
+		tutorial.delayTask(() -> {
+			for(AltarPedestal.AltarReward value : AltarPedestal.AltarReward.values()) {
+				value.storedTemporaryReward.remove(tutorial.getPlayer().getUniqueId());
+			}
+		}, getSatisfyDelay());
+
 		tutorial.sendMessage("You have accessed the Altar", 0);
 		tutorial.sendMessage("You can now access the Altar by typing &b/altar", 20);
 		tutorial.sendMessage("You can also access the Altar by clicking the &bAltar &7item in your inventory", 40);
@@ -39,16 +46,18 @@ public class AltarCheckpoint extends NPCCheckpoint {
 
 	@Override
 	public boolean canEngage(Tutorial tutorial) {
-		return true	;
-	}
-
-	@Override
-	public boolean canSatisfy(Tutorial tutorial) {
 		return true;
 	}
 
 	@Override
-	public void onDisengage(Tutorial tutorial) {
+	public boolean canSatisfy(Tutorial tutorial) {
+		return AltarPedestal.AltarReward.ALTAR_XP.storedTemporaryReward.containsKey(tutorial.getPlayer().getUniqueId());
+	}
 
+	@Override
+	public void onDisengage(Tutorial tutorial) {
+		for(AltarPedestal.AltarReward value : AltarPedestal.AltarReward.values()) {
+			value.restorePlayer(tutorial.getPlayer());
+		}
 	}
 }

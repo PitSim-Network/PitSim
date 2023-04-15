@@ -112,15 +112,13 @@ public class TutorialNPC implements Listener {
 			return;
 		}
 
-
-
+		if(currentCheckpoint != null) currentCheckpoint.onDisengage(tutorial);
 		currentCheckpoint = checkpoint;
 		walkToCheckPoint(checkpoint);
 		engage(checkpoint);
 	}
 
 	public void engage(NPCCheckpoint checkpoint) {
-		currentCheckpoint.onDisengage(tutorial);
 		checkpoint.onEngage(tutorial, checkpoint.getEngageDelay());
 	}
 

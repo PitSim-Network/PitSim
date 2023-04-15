@@ -1,14 +1,15 @@
 package dev.kyro.pitsim.tutorial;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 
 public class DarkzoneTutorial extends Tutorial {
 
 	public TutorialNPC tutorialNPC;
 
-	public DarkzoneTutorial(TutorialData data, PitPlayer pitPlayer) {
-		super(data, pitPlayer);
+	public DarkzoneTutorial(PitPlayer pitPlayer) {
+		super(pitPlayer.darkzoneTutorialData, pitPlayer);
 
 		tutorialNPC = null;
 	}
@@ -45,6 +46,10 @@ public class DarkzoneTutorial extends Tutorial {
 
 	@Override
 	public void onTutorialEnd() {
+		for(AltarPedestal.AltarReward value : AltarPedestal.AltarReward.values()) {
+			value.restorePlayer(pitPlayer.player);
+		}
+
 		if(tutorialNPC != null) {
 			tutorialNPC.remove();
 			tutorialNPC = null;

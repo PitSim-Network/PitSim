@@ -6,8 +6,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class OverworldTutorial extends Tutorial {
 
-	public OverworldTutorial(TutorialData data, PitPlayer pitPlayer) {
-		super(data, pitPlayer);
+	public OverworldTutorial(PitPlayer pitPlayer) {
+		super(pitPlayer.overworldTutorialData, pitPlayer);
 	}
 
 	@Deprecated
