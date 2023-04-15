@@ -19,8 +19,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TutorialNPC implements Listener {
-	public static final String NPC_SKIN_NAME = "wiji1";
-	public static final String NPC_NAME = "tutorial";
+	public static final String NPC_SKIN_NAME = "DarkzoneTutorial";
+	public static final String NPC_NAME = "&6&lTOUR GUIDE";
 	public static final Location NPC_SPAWN_LOCATION = MapManager.getDarkzoneSpawn();
 
 	public NPC npc;
