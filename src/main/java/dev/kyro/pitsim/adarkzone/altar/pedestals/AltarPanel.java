@@ -140,9 +140,6 @@ public class AltarPanel extends AGUIPanel {
 	}
 
 	public boolean isTutorial() {
-		System.out.println(pitPlayer.darkzoneTutorialData.hashCode());
-		System.out.println(pitPlayer.darkzoneTutorial.data.hashCode());
-
 		return pitPlayer.darkzoneTutorial.isActive() &&
 				!pitPlayer.darkzoneTutorial.data.completedObjectives.contains(TutorialObjective.ALTAR);
 
