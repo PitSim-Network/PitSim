@@ -40,6 +40,11 @@ public class OverworldTutorial extends Tutorial {
 	}
 
 	@Override
+	public int getCompletionTicks() {
+		return 210;
+	}
+
+	@Override
 	public boolean isActive() {
 		return pitPlayer.prestige <= 1 && data.completedObjectives.size() < getObjectiveSize() && PitSim.status.isOverworld();
 	}

@@ -21,7 +21,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class TutorialNPC implements Listener {
 	public static final String NPC_SKIN_NAME = "DarkzoneTutorial";
 	public static final String NPC_NAME = "&6&lTOUR GUIDE";
-	public static final Location NPC_SPAWN_LOCATION = MapManager.getDarkzoneSpawn();
+	public static final Location NPC_SPAWN_LOCATION = new Location(MapManager.getDarkzone(), 188.5, 91, -93.5, 90, 0);
+	public static final Location NPC_END_LOCATION = new Location(MapManager.getDarkzone(), 202.5, 91, -94.5, 90, 0);
 
 	public NPC npc;
 	public Tutorial tutorial;
@@ -58,13 +59,13 @@ public class TutorialNPC implements Listener {
 		npc.destroy();
 	}
 
-	public void walkToCheckPoint(NPCCheckpoint checkpoint) {
+	public void walkToCheckPoint(Location location) {
 		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
 		navigator.getDefaultParameters()
 				.distanceMargin(0.1)
 				.pathDistanceMargin(0.1)
 				.destinationTeleportMargin(-1);
-		navigator.setTarget(checkpoint.location);
+		navigator.setTarget(location);
 
 		System.out.println(navigator.getDefaultParameters().distanceMargin() + " " + navigator.getDefaultParameters().pathDistanceMargin());
 
@@ -76,7 +77,7 @@ public class TutorialNPC implements Listener {
 					return;
 				}
 
-				if(npc.getEntity().getLocation().distance(checkpoint.location) <= 2) {
+				if(npc.getEntity().getLocation().distance(location) <= 2) {
 					cancel();
 					npc.getNavigator().setTarget(null, true);
 					npc.faceLocation(tutorial.pitPlayer.player.getLocation());
@@ -96,7 +97,7 @@ public class TutorialNPC implements Listener {
 		boolean hasCompleted = tutorial.data.completedObjectives.contains(currentCheckpoint.objective);
 
 		if(hasCompleted) {
-			tutorial.sendMessage("You have already completed this objective", 0);
+			tutorial.sendMessage(tutorial.getProceedMessage(), 0);
 			return;
 		}
 
@@ -114,7 +115,7 @@ public class TutorialNPC implements Listener {
 
 		if(currentCheckpoint != null) currentCheckpoint.onDisengage(tutorial);
 		currentCheckpoint = checkpoint;
-		walkToCheckPoint(checkpoint);
+		walkToCheckPoint(checkpoint.location);
 		engage(checkpoint);
 	}
 

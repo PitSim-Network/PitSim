@@ -20,27 +20,27 @@ public class ProgressionCheckpoint extends NPCCheckpoint {
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
 		tutorial.sendMessage("&eHere is the &5&lDarkzone Progression &eShop!", 0);
-		tutorial.sendMessage("&eThis will be your main way of unlocking content here in the &5Darkzone&e.", 40);
-		tutorial.sendMessage("&eYou can purchase &6Upgrades &efor &fTainted Souls&e, which are gained from killing &cMobs &eand &4Bosses&e.", 80);
-		tutorial.sendMessage("&eGo ahead and &6unlock &ethe first two &6upgrades &elabeled &a&lFREE!&e.", 120);
-		tutorial.sendMessage("&eTalk to me again once you've done so.", 160);
-		tutorial.sendMessage("&6&nIf you already have these unlocked, talk to me again.", 200);
+		tutorial.sendMessage("&eThis will be your main way of unlocking content here in the &5Darkzone&e.", 60);
+		tutorial.sendMessage("&eYou can purchase &6Upgrades &efor &fTainted Souls&e, which are gained from killing &cMobs &eand &4Bosses&e.", 120);
+		tutorial.sendMessage("&eGo ahead and &6unlock &ethe first two &6upgrades &elabeled &a&lFREE!&e.", 180);
+		tutorial.sendMessage("&eTalk to me again once you've done so.", 240);
+		tutorial.sendMessage("&6&nIf you already have these unlocked, talk to me again.", 300);
 	}
 
 	@Override
 	public void onCheckpointSatisfy(Tutorial tutorial) {
 		tutorial.sendMessage("&eNice job!", 0);
-		tutorial.sendMessage("&eThis is the main place where you'll be spending your &fSouls&e, so you'll be back here soon!", 40);
+		tutorial.sendMessage("&eThis is the main place where you'll be spending your &fSouls&e, so you'll be back here soon!", 60);
 	}
 
 	@Override
 	public int getEngageDelay() {
-		return 200;
+		return 300;
 	}
 
 	@Override
 	public int getSatisfyDelay() {
-		return 40;
+		return 60;
 	}
 
 	@Override

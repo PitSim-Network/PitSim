@@ -21,17 +21,33 @@ public class DarkzoneTutorial extends Tutorial {
 
 	@Override
 	public void sendStartMessages() {
-
+		if(data.completedObjectives.size() == 0) {
+			sendMessage("&eHey! Welcome to the &5Darkzone&e!", 60);
+			sendMessage("&eBefore you leave &fspawn&e, I'll show you everything you need to know!", 110);
+		} else {
+			sendMessage("&eWelcome back to the &5Darkzone&e!", 60);
+			sendMessage("&eI'll show you to the areas you missed last time.", 110);
+		}
+		sendMessage("&eWalk around to the &aGreen Highlighted Areas &eand I'll explain their uses!", 160);
 	}
 
 	@Override
 	public int getStartTicks() {
-		return 0;
+		return 160;
 	}
 
 	@Override
 	public void sendCompletionMessages() {
+		tutorialNPC.walkToCheckPoint(TutorialNPC.NPC_END_LOCATION);
+		sendMessage("&eThat's all I have to show you! You're ready to explore the &5Darkzone&e!", 40);
+		sendMessage("&eIf you need any help, you can always ask in chat or join &f&ndiscord.pitsim.net&e.", 100);
+		sendMessage("&eAfter leaving spawn, make sure to head over to the &cMonster Caves &eto start getting &fSouls&e.", 160);
+		sendMessage("&eWith that being said, good luck on your journey!", 220);
+	}
 
+	@Override
+	public int getCompletionTicks() {
+		return 220;
 	}
 
 	@Override

@@ -24,29 +24,29 @@ public class MarketShopCheckpoint extends NPCCheckpoint {
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
 		tutorial.sendMessage("&eHere is the &b&lTainted Shop &eand the &3&lPlayer Market&e!", 0);
-		tutorial.sendMessage("&eThese are the primary places for buying &5Darkzone Items &efor &fSouls&e.", 40);
-		tutorial.sendMessage("&eYou can buy and sell items with &aOther Players &ein the &3&lPlayer Market&e.", 80);
-		tutorial.sendMessage("&eAnd at the &b&lTainted Shop &eyou can buy specific items!", 120);
-		tutorial.sendMessage("&eGo ahead and &6buy &ethe &bDiamond Leggings &efrom the &b&lTainted Shop&e.", 160);
-		tutorial.sendMessage("&eTalk to me again once you've done so.", 200);
+		tutorial.sendMessage("&eThese are the primary places for buying &5Darkzone Items &efor &fSouls&e.", 60);
+		tutorial.sendMessage("&eYou can buy and sell items with &aOther Players &ein the &3&lPlayer Market&e.", 120);
+		tutorial.sendMessage("&eAnd at the &b&lTainted Shop &eyou can buy specific items!", 180);
+		tutorial.sendMessage("&eGo ahead and &6buy &ethe &bDiamond Leggings &efrom the &b&lTainted Shop&e.", 240);
+		tutorial.sendMessage("&eTalk to me again once you've done so.", 300);
 	}
 
 	@Override
 	public void onCheckpointSatisfy(Tutorial tutorial) {
 		tutorial.delayTask(() -> removeTutorialTag(tutorial.getPlayer()), getSatisfyDelay());
 		tutorial.sendMessage("&eGreat!", 0);
-		tutorial.sendMessage("&eNow use those leggings to stay protected since your &dMystic Pants &ewon't work here!", 40);
-		tutorial.sendMessage("&eDon't forget to come back and check out the &3&lPlayer Market &eonce you have some more &fSouls&e.", 80);
+		tutorial.sendMessage("&eNow use those leggings to stay protected since your &dMystic Pants &ewon't work here!", 60);
+		tutorial.sendMessage("&eDon't forget to come back and check out the &3&lPlayer Market &eonce you have some more &fSouls&e.", 120);
 	}
 
 	@Override
 	public int getEngageDelay() {
-		return 200;
+		return 300;
 	}
 
 	@Override
 	public int getSatisfyDelay() {
-		return 80;
+		return 120;
 	}
 
 	@Override

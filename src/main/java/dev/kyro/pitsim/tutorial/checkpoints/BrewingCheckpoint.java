@@ -15,25 +15,25 @@ public class BrewingCheckpoint extends NPCCheckpoint {
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
 		tutorial.sendMessage("&eHere is the &d&lBrewing Area&e!", 0);
-		tutorial.sendMessage("&eHere you can brew &dPotions &eusing &cMob Drops&e.", 20);
-		tutorial.sendMessage("You can also access the Brewing area by clicking the &bBrewing &7item in your inventory", 40);
+		tutorial.sendMessage("&eHere you can brew &dPotions &eusing &cMob Drops&e.", 60);
+		tutorial.sendMessage("&ePotions currently have &f10 Unique Effects &efor use in both the &aOverworld &e and &5Darkzone&e.", 120);
+		tutorial.sendMessage("&eThe potion system will soon be reworked, so hold tight.", 180);
+		tutorial.sendMessage("&eInteract with me to continue.", 240);
 	}
 
 	@Override
 	public void onCheckpointSatisfy(Tutorial tutorial) {
-		tutorial.sendMessage("You have accessed the Brewing area", 0);
-		tutorial.sendMessage("You can now access the Brewing area by typing &b/brewing", 20);
-		tutorial.sendMessage("You can also access the Brewing area by clicking the &bBrewing &7item in your inventory", 40);
+
 	}
 
 	@Override
 	public int getEngageDelay() {
-		return 60;
+		return 240;
 	}
 
 	@Override
 	public int getSatisfyDelay() {
-		return 60;
+		return 0;
 	}
 
 	@Override

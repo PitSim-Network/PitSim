@@ -36,6 +36,7 @@ public abstract class Tutorial {
 	public abstract void sendStartMessages();
 	public abstract int getStartTicks();
 	public abstract void sendCompletionMessages();
+	public abstract int getCompletionTicks();
 	public abstract boolean isActive();
 	public abstract void onStart();
 	public abstract void onTutorialEnd();
@@ -113,7 +114,7 @@ public abstract class Tutorial {
 							Sounds.LEVEL_UP.play(pitPlayer.player);
 							onTutorialEnd();
 						}
-					}.runTaskLater(PitSim.INSTANCE, 30);
+					}.runTaskLater(PitSim.INSTANCE, getCompletionTicks() + 20);
 
 					sendCompletionMessages();
 
@@ -123,7 +124,7 @@ public abstract class Tutorial {
 							Audience audience = PitSim.adventure.player(uuid);
 							audience.hideBossBar(bossBar);
 						}
-					}.runTaskLater(PitSim.INSTANCE, 60);
+					}.runTaskLater(PitSim.INSTANCE, getCompletionTicks() + 60);
 				}
 				isInObjective = false;
 			}

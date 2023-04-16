@@ -35,30 +35,30 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 		tutorial.delayTask(() -> giveFreshItems(tutorial), 120);
 
 		tutorial.sendMessage("&eHere we have the &5&lTainted Well&e.", 0);
-		tutorial.sendMessage("&eThis is where you can enchant the various &aFresh Items &efound around the Darkzone.", 40);
-		tutorial.sendMessage("&eHow about you give it a try?", 80);
-		tutorial.sendMessage("&dEnchant &ethe &5Scythe &eand &5Chestplate &eI've given you to &fTier II&e.", 120);
-		tutorial.sendMessage("&eYou can do this by right clicking the &5&lTainted Well &eand right-clicking the &aEnchant &ebutton.", 160);
-		tutorial.sendMessage("&eMake sure to enchant each item twice in order to get it to &fTier II&e.", 200);
-		tutorial.sendMessage("&eNext, use the &cRemove Item &ebutton to reclaim your item.", 240);
-		tutorial.sendMessage("&eOnce you have done this to &aBoth Items&e, come back to me and I will give you your next task.", 280);
+		tutorial.sendMessage("&eThis is where you can enchant the various &aFresh Items &efound around the Darkzone.", 60);
+		tutorial.sendMessage("&eHow about you give it a try?", 120);
+		tutorial.sendMessage("&dEnchant &ethe &5Scythe &eand &5Chestplate &eI've given you to &fTier II&e.", 180);
+		tutorial.sendMessage("&eYou can do this by right clicking the &5&lTainted Well &eand right-clicking the &aEnchant &ebutton.", 240);
+		tutorial.sendMessage("&eMake sure to enchant each item twice in order to get it to &fTier II&e.", 300);
+		tutorial.sendMessage("&eNext, use the &cRemove Item &ebutton to reclaim your item.", 360);
+		tutorial.sendMessage("&eOnce you have done this to &aBoth Items&e, come back to me and I will give you your next task.", 420);
 	}
 
 	@Override
 	public void onCheckpointSatisfy(Tutorial tutorial) {
 		tutorial.delayTask(() -> removeTutorialTag(tutorial.getPlayer()), getSatisfyDelay());
 		tutorial.sendMessage("&eNicely done!", 0);
-		tutorial.sendMessage("&eYou can keep those items, as you'll be needing them on your &5Darkzone &eadventure.", 40);
+		tutorial.sendMessage("&eYou can keep those items, as you'll be needing them on your &5Darkzone &eadventure.", 60);
 	}
 
 	@Override
 	public int getEngageDelay() {
-		return 280;
+		return 420;
 	}
 
 	@Override
 	public int getSatisfyDelay() {
-		return 40;
+		return 60;
 	}
 
 	@Override
