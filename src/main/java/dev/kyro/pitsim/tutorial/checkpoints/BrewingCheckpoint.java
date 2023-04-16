@@ -14,8 +14,8 @@ public class BrewingCheckpoint extends NPCCheckpoint {
 
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
-		tutorial.sendMessage("Brewing is a special area where you can get special items", 0);
-		tutorial.sendMessage("You can access the Brewing area by typing &b/brewing", 20);
+		tutorial.sendMessage("&eHere is the &d&lBrewing Area&e!", 0);
+		tutorial.sendMessage("&eHere you can brew &dPotions &eusing &cMob Drops&e.", 20);
 		tutorial.sendMessage("You can also access the Brewing area by clicking the &bBrewing &7item in your inventory", 40);
 	}
 
