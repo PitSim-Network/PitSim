@@ -9,7 +9,6 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.FastTravelDestination;
 import dev.kyro.pitsim.adarkzone.FastTravelManager;
-import dev.kyro.pitsim.controllers.CombatManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -87,16 +86,8 @@ public class FastTravelPanel extends AGUIPanel {
 	}
 
 	@Override
-	public void onOpen(InventoryOpenEvent event) {
-		if(CombatManager.isInCombat(player)) {
-			AOutput.error(event.getPlayer(), "&cYou cannot use this while in combat!");
-			Sounds.NO.play(player);
-			event.setCancelled(true);
-		}
-	}
+	public void onOpen(InventoryOpenEvent event) {}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) {
-
-	}
+	public void onClose(InventoryCloseEvent event) {}
 }
