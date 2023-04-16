@@ -23,28 +23,30 @@ public class MarketShopCheckpoint extends NPCCheckpoint {
 
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
-		tutorial.sendMessage("You can now access the Market Shop", 0);
-		tutorial.sendMessage("This is a special area where you can get special items", 20);
-		tutorial.sendMessage("You can access the Market Shop by typing &b/ms", 40);
-		tutorial.sendMessage("You can also access the Market Shop by clicking the &bMarket Shop &7item in your inventory", 60);
+		tutorial.sendMessage("&eHere is the &b&lTainted Shop &eand the &3&lPlayer Market&e!", 0);
+		tutorial.sendMessage("&eThese are the primary places for buying &5Darkzone Items &efor &fSouls&e.", 40);
+		tutorial.sendMessage("&eYou can buy and sell items with &aOther Players &ein the &3&lPlayer Market&e.", 80);
+		tutorial.sendMessage("&eAnd at the &b&lTainted Shop &eyou can buy specific items!", 120);
+		tutorial.sendMessage("&eGo ahead and &6buy &ethe &bDiamond Leggings &efrom the &b&lTainted Shop&e.", 160);
+		tutorial.sendMessage("&eTalk to me again once you've done so.", 200);
 	}
 
 	@Override
 	public void onCheckpointSatisfy(Tutorial tutorial) {
 		tutorial.delayTask(() -> removeTutorialTag(tutorial.getPlayer()), getSatisfyDelay());
-		tutorial.sendMessage("You have accessed the Market Shop", 0);
-		tutorial.sendMessage("You can now access the Market Shop by typing &b/ms", 20);
-		tutorial.sendMessage("You can also access the Market Shop by clicking the &bMarket Shop &7item in your inventory", 40);
+		tutorial.sendMessage("&eGreat!", 0);
+		tutorial.sendMessage("&eNow use those leggings to stay protected since your &dMystic Pants &ewon't work here!", 40);
+		tutorial.sendMessage("&eDon't forget to come back and check out the &3&lPlayer Market &eonce you have some more &fSouls&e.", 80);
 	}
 
 	@Override
 	public int getEngageDelay() {
-		return 60;
+		return 200;
 	}
 
 	@Override
 	public int getSatisfyDelay() {
-		return 60;
+		return 80;
 	}
 
 	@Override

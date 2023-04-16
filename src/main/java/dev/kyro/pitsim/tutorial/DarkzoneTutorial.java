@@ -55,4 +55,9 @@ public class DarkzoneTutorial extends Tutorial {
 			tutorialNPC = null;
 		}
 	}
+
+	@Override
+	public String getProceedMessage() {
+		return "&6&nGo ahead and choose another area to explore. I'll meet you over there!";
+	}
 }

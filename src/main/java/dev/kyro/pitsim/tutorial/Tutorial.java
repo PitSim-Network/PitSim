@@ -40,6 +40,8 @@ public abstract class Tutorial {
 	public abstract void onStart();
 	public abstract void onTutorialEnd();
 
+	public abstract String getProceedMessage();
+
 	@Deprecated
 	public Tutorial(FileConfiguration playerData) {
 		this.data = new TutorialData();

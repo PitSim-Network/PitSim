@@ -53,4 +53,9 @@ public class OverworldTutorial extends Tutorial {
 	public void onTutorialEnd() {
 
 	}
+
+	@Override
+	public String getProceedMessage() {
+		return null;
+	}
 }

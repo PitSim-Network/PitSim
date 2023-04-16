@@ -19,27 +19,28 @@ public class ProgressionCheckpoint extends NPCCheckpoint {
 
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
-		tutorial.sendMessage("Progression is the main way to get better items", 0);
-		tutorial.sendMessage("You can progress by completing objectives", 20);
-		tutorial.sendMessage("You can see your objectives by typing &b/objectives", 40);
-		tutorial.sendMessage("You can also see your objectives by clicking the &bObjectives &7item in your inventory", 60);
+		tutorial.sendMessage("&eHere is the &5&lDarkzone Progression &eShop!", 0);
+		tutorial.sendMessage("&eThis will be your main way of unlocking content here in the &5Darkzone&e.", 40);
+		tutorial.sendMessage("&eYou can purchase &6Upgrades &efor &fTainted Souls&e, which are gained from killing &cMobs &eand &4Bosses&e.", 80);
+		tutorial.sendMessage("&eGo ahead and &6unlock &ethe first two &6upgrades &elabeled &a&lFREE!&e.", 120);
+		tutorial.sendMessage("&eTalk to me again once you've done so.", 160);
+		tutorial.sendMessage("&6&nIf you already have these unlocked, talk to me again.", 200);
 	}
 
 	@Override
 	public void onCheckpointSatisfy(Tutorial tutorial) {
-		tutorial.sendMessage("You have completed an objective", 0);
-		tutorial.sendMessage("You can see your objectives by typing &b/objectives", 20);
-		tutorial.sendMessage("You can also see your objectives by clicking the &bObjectives &7item in your inventory", 40);
+		tutorial.sendMessage("&eNice job!", 0);
+		tutorial.sendMessage("&eThis is the main place where you'll be spending your &fSouls&e, so you'll be back here soon!", 40);
 	}
 
 	@Override
 	public int getEngageDelay() {
-		return 60;
+		return 200;
 	}
 
 	@Override
 	public int getSatisfyDelay() {
-		return 60;
+		return 40;
 	}
 
 	@Override

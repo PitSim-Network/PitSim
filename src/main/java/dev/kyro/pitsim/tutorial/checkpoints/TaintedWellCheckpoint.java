@@ -32,30 +32,33 @@ public class TaintedWellCheckpoint extends NPCCheckpoint {
 
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
-		tutorial.delayTask(() -> giveFreshItems(tutorial), getEngageDelay());
+		tutorial.delayTask(() -> giveFreshItems(tutorial), 120);
 
-		tutorial.sendMessage("You can now access the Tainted Well", 0);
-		tutorial.sendMessage("This is a special area where you can get special items", 20);
-		tutorial.sendMessage("You can access the Tainted Well by typing &b/tw", 40);
-		tutorial.sendMessage("You can also access the Tainted Well by clicking the &bTainted Well &7item in your inventory", 60);
+		tutorial.sendMessage("&eHere we have the &5&lTainted Well&e.", 0);
+		tutorial.sendMessage("&eThis is where you can enchant the various &aFresh Items &efound around the Darkzone.", 40);
+		tutorial.sendMessage("&eHow about you give it a try?", 80);
+		tutorial.sendMessage("&dEnchant &ethe &5Scythe &eand &5Chestplate &eI've given you to &fTier II&e.", 120);
+		tutorial.sendMessage("&eYou can do this by right clicking the &5&lTainted Well &eand right-clicking the &aEnchant &ebutton.", 160);
+		tutorial.sendMessage("&eMake sure to enchant each item twice in order to get it to &fTier II&e.", 200);
+		tutorial.sendMessage("&eNext, use the &cRemove Item &ebutton to reclaim your item.", 240);
+		tutorial.sendMessage("&eOnce you have done this to &aBoth Items&e, come back to me and I will give you your next task.", 280);
 	}
 
 	@Override
 	public void onCheckpointSatisfy(Tutorial tutorial) {
 		tutorial.delayTask(() -> removeTutorialTag(tutorial.getPlayer()), getSatisfyDelay());
-		tutorial.sendMessage("You have accessed the Tainted Well", 0);
-		tutorial.sendMessage("You can now access the Tainted Well by typing &b/tw", 20);
-		tutorial.sendMessage("You can also access the Tainted Well by clicking the &bTainted Well &7item in your inventory", 40);
+		tutorial.sendMessage("&eNicely done!", 0);
+		tutorial.sendMessage("&eYou can keep those items, as you'll be needing them on your &5Darkzone &eadventure.", 40);
 	}
 
 	@Override
 	public int getEngageDelay() {
-		return 60;
+		return 280;
 	}
 
 	@Override
 	public int getSatisfyDelay() {
-		return 60;
+		return 40;
 	}
 
 	@Override
