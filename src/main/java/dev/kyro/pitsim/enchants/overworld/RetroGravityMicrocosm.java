@@ -56,6 +56,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
+		if(attackEvent.getAttacker() == attackEvent.getDefender()) return;
 
 		int attackerEnchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		int defenderEnchantLvl = attackEvent.getDefenderEnchantLevel(this);
