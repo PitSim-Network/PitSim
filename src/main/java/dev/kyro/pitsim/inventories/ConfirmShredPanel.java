@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.inventories;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
@@ -7,7 +8,10 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
+import dev.kyro.pitsim.aitems.PitItem;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -68,6 +72,22 @@ public class ConfirmShredPanel extends AGUIPanel {
 			int soulsGained = shredValue.getRandomSouls();
 
 			player.getInventory().remove(item);
+			NBTItem nbtItem = new NBTItem(item);
+			boolean removed = false;
+
+			for(int i = 0; i < player.getInventory().getContents().length; i++) {
+				PitItem pitItem = ItemFactory.getItem(player.getInventory().getContents()[i]);
+				if(pitItem == null || !pitItem.hasUUID) continue;
+				NBTItem invNBTItem = new NBTItem(player.getInventory().getContents()[i]);
+				if(invNBTItem.getString(NBTTag.ITEM_UUID.getRef()).equals(nbtItem.getString(NBTTag.ITEM_UUID.getRef()))) {
+					player.getInventory().setItem(i, null);
+					removed = true;
+					break;
+				}
+			}
+
+			if(!removed) throw new RuntimeException("Could not remove item from inventory!");
+
 			player.updateInventory();
 
 			Sounds.JEWEL_SHRED1.play(player);

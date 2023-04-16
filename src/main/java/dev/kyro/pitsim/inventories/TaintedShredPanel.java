@@ -1,38 +1,35 @@
 package dev.kyro.pitsim.inventories;
 
-import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
-import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.gui.APagedGUIPanel;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.mystics.TaintedChestplate;
 import dev.kyro.pitsim.aitems.mystics.TaintedScythe;
 import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class TaintedShredPanel extends AGUIPanel {
+public class TaintedShredPanel extends APagedGUIPanel {
 	public TaintedShredPanel(AGUI gui) {
 		super(gui);
-		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 
-		int slot = 9;
+		addBackButton(getRows() * 9 - 5);
+		buildInventory();
+	}
 
-		for(int i = 0; i < player.getInventory().getContents().length; i++) {
-			ItemStack itemStack = player.getInventory().getItem(i);
-			if(Misc.isAirOrNull(itemStack)) continue;
-			itemStack = itemStack.clone();
+	@Override
+	public void addItems() {
 
-			while(slot % 9 == 0 || slot % 9 == 8) slot++;
+		for(ItemStack invItem : player.getInventory()) {
+			if(Misc.isAirOrNull(invItem)) continue;
+			ItemStack itemStack = invItem.clone();
 
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			if(!MysticFactory.isJewel(itemStack, true) && !(pitItem instanceof TaintedScythe) &&
@@ -43,57 +40,25 @@ public class TaintedShredPanel extends AGUIPanel {
 			ALoreBuilder lore = new ALoreBuilder(itemStack.getItemMeta().getLore());
 			lore.addLore("",
 					"&eClick to Shred for &f" + shredValue.getLowSouls() + "&7-&f" + shredValue.getHighSouls() + " Souls"
-					);
+			);
 
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			itemMeta.setLore(lore.getLore());
 			itemStack.setItemMeta(itemMeta);
 
-			NBTItem nbtItem = new NBTItem(itemStack, true);
-			nbtItem.setInteger(NBTTag.INVENTORY_INDEX.getRef(), i);
-
-			getInventory().setItem(slot, itemStack);
-			slot++;
+			addItem(() -> itemStack, event -> openPanel(new ConfirmShredPanel(gui, itemStack, shredValue)));
 		}
+	}
 
-		getInventory().setItem(49, new AItemStackBuilder(Material.ARROW)
-				.setName("&eBack")
-				.setLore(new ALoreBuilder(
-						"&7to home menu"
-				))
-				.getItemStack());
-
+	@Override
+	public void setInventory() {
+		super.setInventory();
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7, false);
 	}
 
 	@Override
 	public String getName() {
 		return "Shred Items";
-	}
-
-	@Override
-	public int getRows() {
-		return 6;
-	}
-
-	@Override
-	public void onClick(InventoryClickEvent event) {
-		if(event.getClickedInventory().getHolder() != this) return;
-		ItemStack clicked = event.getCurrentItem();
-		if(Misc.isAirOrNull(clicked)) return;
-
-		if(event.getSlot() == 49) {
-			openPreviousGUI();
-			return;
-		}
-
-		NBTItem nbtItem = new NBTItem(clicked, true);
-		int inventoryIndex = nbtItem.getInteger(NBTTag.INVENTORY_INDEX.getRef());
-		ItemStack realItem = player.getInventory().getItem(inventoryIndex).clone();
-
-		DarkzoneBalancing.ShredValue shredValue = DarkzoneBalancing.ShredValue.getShredValue(ItemFactory.getItem(realItem));
-		if(shredValue == null) return;
-
-		openPanel(new ConfirmShredPanel(gui, realItem, shredValue));
 	}
 
 	@Override
