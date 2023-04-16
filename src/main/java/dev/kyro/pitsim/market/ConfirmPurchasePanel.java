@@ -69,7 +69,7 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 		BukkitRunnable bid = new BukkitRunnable() {
 			@Override
 			public void run() {
-				AOutput.send(player, "&a&lMARKET &7Bid successfully placed!");
+				AOutput.send(player, "&a&lMARKET!&7 Bid successfully placed!");
 				Sounds.SUCCESS.play(player);
 				int soulsToTake = price - listing.bidMap.getOrDefault(player.getUniqueId(), 0);
 
@@ -81,7 +81,7 @@ public class ConfirmPurchasePanel extends AGUIPanel {
 		BukkitRunnable buy = new BukkitRunnable() {
 			@Override
 			public void run() {
-				AOutput.send(player, "&a&lMARKET &7Purchased " + listing.itemData.getItemMeta().getDisplayName() + (amount > 1 ? " &8x" + amount : ""));
+				AOutput.send(player, "&a&lMARKET!&7 Purchased " + listing.itemData.getItemMeta().getDisplayName() + (amount > 1 ? " &8x" + amount : ""));
 				PitPlayer.getPitPlayer(player).taintedSouls -= price;
 
 				ItemStack item = listing.itemData.clone();

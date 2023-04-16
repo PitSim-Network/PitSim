@@ -88,6 +88,16 @@ public class MarketListing implements Serializable {
 		}
 	}
 
+	public int getItemsSold() {
+		return stackBIN ? originalStock - itemData.getAmount() : 1;
+	}
+
+	public int getTaxedSouls() {
+		int initialSouls = stackBIN ? binPrice : claimableSouls;
+		int claimableSouls = (int) (initialSouls * 0.9);
+		return claimableSouls * getItemsSold();
+	}
+
 	public int getHighestBid() {
 		int highest = 0;
 		for(Integer value : bidMap.values()) {

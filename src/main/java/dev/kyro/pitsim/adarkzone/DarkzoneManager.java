@@ -197,7 +197,7 @@ public class DarkzoneManager implements Listener {
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		for(Map.Entry<PitEnchant, Integer> entry : EnchantManager.getEnchantsOnPlayer(player).entrySet()) {
+		for(Map.Entry<PitEnchant, Integer> entry : new ArrayList<>(EnchantManager.getEnchantsOnPlayer(player).entrySet())) {
 			PitEnchant pitEnchant = entry.getKey();
 			int enchantLvl = entry.getValue();
 			if(!(pitEnchant instanceof PitEnchantSpell)) continue;

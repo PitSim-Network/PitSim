@@ -8,6 +8,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -162,25 +163,28 @@ public class YourListingsPanel extends AGUIPanel {
 
 			MarketListing listing = combined.get(listIndex);
 			if(!firstIterationComplete) {
-				AItemStackBuilder soulBuilder = new AItemStackBuilder(Material.INK_SACK, listing.ownerUUID.equals(player.getUniqueId())
-						? listing.claimableSouls : listing.bidMap.get(player.getUniqueId()), 7)
+				AItemStackBuilder soulBuilder = new AItemStackBuilder(Material.INK_SACK, 1, 7)
 						.setName("&fClaimable Souls");
 
 				ALoreBuilder loreBuilder;
 				if(listing.ownerUUID.equals(player.getUniqueId())) {
 					loreBuilder = new ALoreBuilder(
-							"&7Sold: " + listing.itemData.getItemMeta().getDisplayName() + (listing.stackBIN ? " &8x" + (listing.originalStock - listing.itemData.getAmount()) : ""),
-							"&7Price: &f" + (listing.stackBIN ? listing.binPrice + " Souls &8(Per Item)" : listing.claimableSouls + " Souls"),
-							listing.stackBIN ? "&7Total Price: &f" + (listing.claimableSouls) + " Souls" : "&7Sold to: &f" +
+							"&7Sold: " + listing.itemData.getItemMeta().getDisplayName() + (listing.stackBIN ? " &8x" + listing.getItemsSold() : ""),
+							"&7Sold For: &f&m" + (listing.stackBIN ? listing.binPrice + " Souls&8 (Per Item)" : listing.claimableSouls + " Souls"),
+							"&7After Tax: &f" + (listing.stackBIN ? (listing.getTaxedSouls() / listing.getItemsSold()) +
+									" Souls &8(Per Item)" : listing.getTaxedSouls() + " Souls"),
+							listing.stackBIN ? "&7Total Souls: &f" + listing.getTaxedSouls() + " Souls" : "&7Sold to: &f" +
 									(listing.buyerDisplayName),
 							"",
 							"&eClick to claim Souls!"
 					);
 				} else {
+					int returnedSouls = listing.bidMap.get(player.getUniqueId());
+					soulBuilder.getItemStack().setAmount(returnedSouls);
 					loreBuilder = new ALoreBuilder(
 							"&7Item: " + listing.itemData.getItemMeta().getDisplayName(),
 							"&7Winner: " + listing.buyerDisplayName,
-							"&7Your Bid: &f" + listing.bidMap.get(player.getUniqueId()) + " Souls",
+							"&7Your Bid: " + Formatter.formatSouls(returnedSouls),
 							"",
 							"&eClick to claim Souls!"
 					);
@@ -250,10 +254,10 @@ public class YourListingsPanel extends AGUIPanel {
 			Runnable success = new BukkitRunnable() {
 				@Override
 				public void run() {
-					int amount = listing.ownerUUID.equals(player.getUniqueId()) ? listing.claimableSouls : listing.bidMap.get(player.getUniqueId());
-					AOutput.send(player, "&a&lMARKET &7Claimed &f" + amount + " Souls");
+					int claimedSouls = listing.getTaxedSouls();
+					AOutput.send(player, "&a&lMARKET!&7 Claimed &f" + claimedSouls + " Souls");
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-					pitPlayer.taintedSouls += amount;
+					pitPlayer.taintedSouls += claimedSouls;
 					if(listing.ownerUUID.equals(player.getUniqueId())) pitPlayer.stats.listingsSold++;
 					Sounds.RENOWN_SHOP_PURCHASE.play(player);
 					placeClaimables();
@@ -270,7 +274,7 @@ public class YourListingsPanel extends AGUIPanel {
 			Runnable success = new BukkitRunnable() {
 				@Override
 				public void run() {
-					AOutput.send(player, "&a&lMARKET &7Claimed " + listing.itemData.getItemMeta().getDisplayName() + (listing.stackBIN ? " &8x" + (listing.itemData.getAmount()) : ""));
+					AOutput.send(player, "&a&lMARKET!&7 Claimed " + listing.itemData.getItemMeta().getDisplayName() + (listing.stackBIN ? " &8x" + (listing.itemData.getAmount()) : ""));
 					AUtil.giveItemSafely(player, listing.itemData, true);
 					Sounds.RENOWN_SHOP_PURCHASE.play(player);
 					if(listing.ownerUUID != player.getUniqueId()) PitPlayer.getPitPlayer(player).stats.listingsClaimed++;

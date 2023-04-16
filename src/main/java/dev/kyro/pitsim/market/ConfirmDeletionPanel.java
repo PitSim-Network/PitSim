@@ -59,7 +59,7 @@ public class ConfirmDeletionPanel extends AGUIPanel {
 		BukkitRunnable delete = new BukkitRunnable() {
 			@Override
 			public void run() {
-				AOutput.send(player, "&a&lMARKET &7Listing successfully deleted!");
+				AOutput.send(player, "&a&lMARKET!&7 Listing successfully deleted!");
 				Sounds.SUCCESS.play(player);
 
 				new BukkitRunnable() {

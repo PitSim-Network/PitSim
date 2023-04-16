@@ -20,6 +20,7 @@ public class BalanceCommand implements CommandExecutor {
 		if(!player.isOp() || args.length < 1) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			AOutput.send(player, "&6&lGOLD!&7 You have &6" + Formatter.formatGoldFull(pitPlayer.gold) + "g");
+			AOutput.send(player, "&f&lSOULS!&7 You have &f" + Formatter.formatSouls(pitPlayer.taintedSouls));
 			return false;
 		}
 
@@ -31,6 +32,7 @@ public class BalanceCommand implements CommandExecutor {
 
 		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 		AOutput.send(player, "&6&lGOLD!&7 " + Misc.getDisplayName(target) + " &7has &6" + Formatter.formatGoldFull(pitTarget.gold) + "g");
+		AOutput.send(player, "&f&lSOULS!&7 " + Misc.getDisplayName(target) + " &7has &f" + Formatter.formatSouls(pitTarget.taintedSouls));
 		return false;
 	}
 }

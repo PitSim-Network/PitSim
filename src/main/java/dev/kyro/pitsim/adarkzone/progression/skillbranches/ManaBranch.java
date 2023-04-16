@@ -36,6 +36,8 @@ public class ManaBranch extends SkillBranch {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
+		if(killEvent.getAttackEvent().getAttacker() != killEvent.getAttackEvent().getRealDamager() ||
+				killEvent.getWrapperEvent().hasAttackInfo()) return;
 		boolean hasFirstPath = ProgressionManager.isUnlocked(killEvent.getKillerPitPlayer(), this, MajorUnlockPosition.FIRST_PATH);
 		if(hasFirstPath && Misc.isEntity(killEvent.getDead(), PitEntityType.PIT_MOB))
 			killEvent.getKillerPitPlayer().giveMana(getMobKillMana());
@@ -46,7 +48,7 @@ public class ManaBranch extends SkillBranch {
 	}
 
 	public static int getMobKillMana() {
-		return 5;
+		return 4;
 	}
 
 	public static int shieldDownManaIncrease() {
@@ -139,7 +141,8 @@ public class ManaBranch extends SkillBranch {
 			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.SKULL_ITEM, 1, 2)
 						.setLore(new ALoreBuilder(
-								"&7Gain &b+" + getMobKillMana() + " mana &7on mob kill"
+								"&7Gain &b+" + getMobKillMana() + " mana &7on melee",
+								"&7mob kill"
 						))
 						.getItemStack();
 			}

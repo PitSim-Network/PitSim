@@ -135,7 +135,7 @@ public class CreateListingPanel extends AGUIPanel {
 					@Override
 					public void run() {
 						Sounds.SUCCESS.play(player);
-						AOutput.send(player, "&a&lMARKET &7Listing created!");
+						AOutput.send(player, "&a&lMARKET!&7 Listing created!");
 					}
 				};
 
