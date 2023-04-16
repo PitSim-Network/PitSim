@@ -14,6 +14,7 @@ public enum NBTTag {
 	ITEM_JEWEL_ENCHANT("pr-jewel-enchant"),
 	ITEM_LAST_SERVER("pr-last-server"),
 
+	IS_LOCKED("pr-islocked"),
 	IS_JEWEL("pr-isjewel"),
 	IS_GEMMED("pr-isgemmed"),
 	SAVED_PANTS_COLOR("pr-saved-color"), // for when item is broken (but is kept up to date all the time)

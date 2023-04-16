@@ -38,6 +38,7 @@ public class Inferno extends PitEnchant {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isAttackerPlayer()) return;
 		if(!canApply(attackEvent)) return;
+		if(attackEvent.getAttacker() == attackEvent.getDefender() || attackEvent.getArrow() != null) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
@@ -60,7 +61,7 @@ public class Inferno extends PitEnchant {
 					fireDamageMap.remove(attackEvent.getDefender());
 					return;
 				}
-				DamageManager.createIndirectAttack(null, attackEvent.getDefender(), 5);
+				DamageManager.createIndirectAttack(null, attackEvent.getDefender(), getDamage(enchantLvl));
 				count++;
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20L, 20);
@@ -81,8 +82,12 @@ public class Inferno extends PitEnchant {
 				"sets your opponents &6ablaze";
 	}
 
+	public static int getDamage(int enchantLvl) {
+		return 8;
+	}
+
 	public static int getManaCost(int enchantLvl) {
-		return Math.max(16 - enchantLvl * 2, 0);
+		return 14;
 	}
 
 	public static int getFireSeconds(int enchantLvl) {

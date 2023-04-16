@@ -46,7 +46,7 @@ public class ComboMana extends PitEnchant {
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
 				"&7Every &e" + Misc.ordinalWords(getStrikes(enchantLvl)) + " &7melee strike gain &b+" + getMana(enchantLvl) +
-				" mana"
+				"[]mana"
 		).getLore();
 	}
 
@@ -57,7 +57,7 @@ public class ComboMana extends PitEnchant {
 	}
 
 	public int getMana(int enchantLvl) {
-		return enchantLvl * 2 + 4;
+		return enchantLvl * 2 + 2;
 	}
 
 	public int getStrikes(int enchantLvl) {

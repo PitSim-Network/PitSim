@@ -65,7 +65,7 @@ public class Ethereal extends PitEnchant {
 	}
 
 	public static int getHealingPercent(int enchantLvl) {
-		if(enchantLvl == 1) return 25;
-		return enchantLvl * 15 + 5;
+		if(enchantLvl == 1) return 15;
+		return enchantLvl * 9 + 3;
 	}
 }

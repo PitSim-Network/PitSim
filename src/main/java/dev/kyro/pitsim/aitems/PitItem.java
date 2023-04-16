@@ -51,12 +51,12 @@ public abstract class PitItem implements Listener {
 		defaultUpdateItem(itemStack);
 	}
 
-	public void defaultUpdateItem(ItemStack itemStack) {
+	public boolean defaultUpdateItem(ItemStack itemStack) {
 		if(!isThisItem(itemStack)) throw new RuntimeException();
-		if(hasLastServer) {
-			NBTItem nbtItem = new NBTItem(itemStack, true);
-			nbtItem.setString(NBTTag.ITEM_LAST_SERVER.getRef(), PitSim.status.name());
-		}
+		NBTItem nbtItem = new NBTItem(itemStack, true);
+		if(nbtItem.hasKey(NBTTag.IS_LOCKED.getRef())) return false;
+		if(hasLastServer) nbtItem.setString(NBTTag.ITEM_LAST_SERVER.getRef(), PitSim.status.name());
+		return true;
 	}
 
 	public ItemStack buildItem(ItemStack itemStack) {

@@ -317,6 +317,7 @@ public class EnchantManager implements Listener {
 		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
 
 		NBTItem nbtItem = new NBTItem(itemStack);
+		if(nbtItem.hasKey(NBTTag.IS_LOCKED.getRef())) return;
 
 		NBTList<String> enchantOrder = nbtItem.getStringList(NBTTag.MYSTIC_ENCHANT_ORDER.getRef());
 		NBTCompound itemEnchants = nbtItem.getCompound(NBTTag.MYSTIC_ENCHANTS.getRef());
@@ -400,15 +401,15 @@ public class EnchantManager implements Listener {
 				Integer enchantLvl = itemEnchants.getInteger(key);
 				if(enchant == null) continue;
 
-				loreBuilder.addLore("&f");
-				loreBuilder.addLore(enchant.getDisplayName(displayUncommon, overrideDisableCheck) + enchantLevelToRoman(enchantLvl));
-				loreBuilder.addLore(enchant.getDescription(enchantLvl, overrideDisableCheck));
+//				loreBuilder.addLore("&f");
+//				loreBuilder.addLore(enchant.getDisplayName(displayUncommon, overrideDisableCheck) + enchantLevelToRoman(enchantLvl));
+//				loreBuilder.addLore(enchant.getDescription(enchantLvl, overrideDisableCheck));
 
-//				for(int i = 0; i < 4; i++) {
-//					loreBuilder.addLore("&f");
-//					loreBuilder.addLore(enchant.getDisplayName(displayUncommon) + enchantLevelToRoman(i + 1));
-//					loreBuilder.addLore(enchant.getDescription(i + 1));
-//				}
+				for(int i = 0; i < 4; i++) {
+					loreBuilder.addLore("&f");
+					loreBuilder.addLore(enchant.getDisplayName(displayUncommon) + enchantLevelToRoman(i + 1));
+					loreBuilder.addLore(enchant.getDescription(i + 1));
+				}
 			}
 			if(isJewel) {
 				PitEnchant jewelEnchant = getEnchant(nbtItem.getString(NBTTag.ITEM_JEWEL_ENCHANT.getRef()));

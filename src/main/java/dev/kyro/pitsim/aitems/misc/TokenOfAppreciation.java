@@ -61,7 +61,7 @@ public class TokenOfAppreciation extends PitItem {
 
 	@Override
 	public void updateItem(ItemStack itemStack) {
-		defaultUpdateItem(itemStack);
+		if(!defaultUpdateItem(itemStack)) return;
 
 		itemStack.setType(getMaterial());
 		new AItemStackBuilder(itemStack)

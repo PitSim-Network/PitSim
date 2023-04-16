@@ -81,7 +81,7 @@ public class TaintedScythe extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public void updateItem(ItemStack itemStack) {
-		defaultUpdateItem(itemStack);
+		if(!defaultUpdateItem(itemStack)) return;
 		boolean hasLives = MysticFactory.hasLives(itemStack);
 
 		NBTItem nbtItem = new NBTItem(itemStack);

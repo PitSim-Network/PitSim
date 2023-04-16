@@ -80,7 +80,7 @@ public class MysticSword extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public void updateItem(ItemStack itemStack) {
-		defaultUpdateItem(itemStack);
+		if(!defaultUpdateItem(itemStack)) return;
 		boolean isJewel = MysticFactory.isJewel(itemStack, false);
 		boolean isJewelComplete = MysticFactory.isJewel(itemStack, true);
 

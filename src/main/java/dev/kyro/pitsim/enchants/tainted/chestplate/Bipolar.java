@@ -140,7 +140,7 @@ public class Bipolar extends PitEnchant {
 	}
 
 	public static int getDamageIncrease(int enchantLvl) {
-		return enchantLvl * 5 + 10;
+		return enchantLvl * 5 + 5;
 	}
 
 	public static int getSpeedAmplifier(int enchantLvl) {
@@ -148,7 +148,7 @@ public class Bipolar extends PitEnchant {
 	}
 
 	public static int getDamageDecrease(int enchantLvl) {
-		return enchantLvl * 5;
+		return Math.max(66 - enchantLvl * 11, 0);
 	}
 
 	public static int getRegenerationAmplifier(int enchantLvl) {
