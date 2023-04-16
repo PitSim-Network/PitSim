@@ -143,7 +143,7 @@ public class ElectricShock extends PitEnchantSpell {
 
 	@Override
 	public int getManaCost(int enchantLvl) {
-		return 20;
+		return 25;
 	}
 
 	@Override
