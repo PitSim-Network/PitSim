@@ -10,7 +10,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.upgrades.UnlockFirstStrike;
+import dev.kyro.pitsim.upgrades.UnlockStreaker;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class Streaker extends PitPerk {
 
 	public Streaker() {
 		super("Streaker", "streaker");
-		renownUpgradeClass = UnlockFirstStrike.class;
+		renownUpgradeClass = UnlockStreaker.class;
 		INSTANCE = this;
 	}
 

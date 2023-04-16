@@ -3,7 +3,6 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.perks.NoPerk;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
