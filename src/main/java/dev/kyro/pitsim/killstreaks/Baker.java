@@ -33,6 +33,7 @@ public class Baker extends Killstreak {
 		double random = Math.random();
 		if(random > 0.9) ItemFactory.getItem(VeryYummyBread.class).giveItem(player, 1);
 		else ItemFactory.getItem(YummyBread.class).giveItem(player, 1);
+		player.updateInventory();
 		Sounds.BREAD_GIVE.play(player);
 	}
 
