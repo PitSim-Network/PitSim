@@ -62,6 +62,7 @@ public class TutorialNPC implements Listener {
 	public void walkToCheckPoint(Location location) {
 		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
 		navigator.getDefaultParameters()
+				.stuckAction(null)
 				.distanceMargin(0.1)
 				.pathDistanceMargin(0.1)
 				.destinationTeleportMargin(-1);

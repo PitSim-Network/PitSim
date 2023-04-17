@@ -25,7 +25,7 @@ public class MarketShopCheckpoint extends NPCCheckpoint {
 	public void onCheckpointEngage(Tutorial tutorial) {
 		tutorial.sendMessage("&eHere is the &b&lTainted Shop &eand the &3&lPlayer Market&e!", 0);
 		tutorial.sendMessage("&eThese are the primary places for buying &5Darkzone Items &efor &fSouls&e.", 60);
-		tutorial.sendMessage("&eYou can buy and sell items with &aOther Players &ein the &3&lPlayer Market&e.", 120);
+		tutorial.sendMessage("&eYou can buy and sell items with other &aPlayers &ein the &3&lPlayer Market&e.", 120);
 		tutorial.sendMessage("&eAnd at the &b&lTainted Shop &eyou can buy specific items!", 180);
 		tutorial.sendMessage("&eGo ahead and &6buy &ethe &bDiamond Leggings &efrom the &b&lTainted Shop&e.", 240);
 		tutorial.sendMessage("&eTalk to me again once you've done so.", 300);

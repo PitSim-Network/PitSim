@@ -19,7 +19,7 @@ public class AltarCheckpoint extends NPCCheckpoint {
 		tutorial.sendMessage("&eAs you may have seen, the &4&lAltar &eslowly steals your &aOverworld &6Gold &eand &bXP&e.", 60);
 		tutorial.sendMessage("&eTo regain your resources, sacrifice &fSouls &eto it.", 120);
 		tutorial.sendMessage("&eBy doing this, you may also gain rewards such as &4Demonic Vouchers &eand Renown.", 180);
-		tutorial.sendMessage("&eRight-click the &3End-Frame &eto open the &4&lAltar &eand sacrifice some &fSouls&e.", 240);
+		tutorial.sendMessage("&eRight-click the &3Portal-Frame &eto open the &4&lAltar &eand sacrifice some &fSouls&e.", 240);
 		tutorial.sendMessage("&eCome speak to me once you've done so.", 300);
 	}
 

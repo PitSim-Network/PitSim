@@ -353,7 +353,7 @@ public class TaintedWell implements Listener {
 
 			removeButtons(player);
 
-			pitPlayer.taintedSouls -= cost;
+			if(cost > 0) pitPlayer.taintedSouls -= cost;
 			ItemStack freshItem = playerItems.get(player);
 
 			PitItem pitItem = ItemFactory.getItem(freshItem);
@@ -448,7 +448,7 @@ public class TaintedWell implements Listener {
 		}
 
 		if(pitPlayer.darkzoneTutorial.isActive() && !ItemFactory.isTutorialItem(player.getItemInHand())) {
-			AOutput.error(player, "You may currently only enchant tutorial items!");
+			AOutput.error(player, "&c&lERROR! &7You can only enchant tutorial items right now!");
 			Sounds.NO.play(player);
 			return;
 		}

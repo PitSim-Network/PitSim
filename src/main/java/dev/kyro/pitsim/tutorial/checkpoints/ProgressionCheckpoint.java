@@ -19,7 +19,7 @@ public class ProgressionCheckpoint extends NPCCheckpoint {
 
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
-		tutorial.sendMessage("&eHere is the &5&lDarkzone Progression &eShop!", 0);
+		tutorial.sendMessage("&eHere is the &5&lDarkzone Progression&e Shop!", 0);
 		tutorial.sendMessage("&eThis will be your main way of unlocking content here in the &5Darkzone&e.", 60);
 		tutorial.sendMessage("&eYou can purchase &6Upgrades &efor &fTainted Souls&e, which are gained from killing &cMobs &eand &4Bosses&e.", 120);
 		tutorial.sendMessage("&eGo ahead and &6unlock &ethe first two &6upgrades &elabeled &a&lFREE!&e.", 180);
