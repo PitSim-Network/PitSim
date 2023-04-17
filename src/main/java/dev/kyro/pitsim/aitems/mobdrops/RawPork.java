@@ -74,13 +74,12 @@ public class RawPork extends BrewingIngredient implements TemporaryItem {
 				PitPlayer.getPitPlayer(player).heal((Double) getPotency(potency) * 2);
 				tickMap.put(entry.getKey(), 5 * 20);
 			} else tickMap.put(entry.getKey(), entry.getValue() - 1);
-
 		}
 	}
 
 	@Override
 	public Object getPotency(BrewingIngredient potencyIngredient) {
-		return 0.5 * potencyIngredient.tier;
+		return 0.4 * potencyIngredient.tier;
 	}
 
 	@Override

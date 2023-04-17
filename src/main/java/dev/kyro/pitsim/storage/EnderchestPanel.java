@@ -61,7 +61,7 @@ public class EnderchestPanel extends AGUIPanel {
 
 		if(!profile.isLoaded() || profile.isSaving()) return;
 
-		EnderchestPage enderchestPage = profile.getEnderchestPage(slot - 8);
+		EnderchestPage enderchestPage = profile.getEnderchestPage(slot - 9);
 
 		if(StorageManager.isEditing(player)) {
 			EditSession session = StorageManager.getSession(player);
@@ -79,16 +79,16 @@ public class EnderchestPanel extends AGUIPanel {
 		EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
 
 		for(int i = 9; i < 27; i++) {
-			int page = (i - 9) + 1;
+			int pageIndex = (i - 9);
 
-			EnderchestPage enderchestPage = profile.getEnderchestPage(page);
+			EnderchestPage enderchestPage = profile.getEnderchestPage(pageIndex);
 			AItemStackBuilder stackBuilder = new AItemStackBuilder(enderchestPage.getDisplayItem())
 					.setName(enderchestPage.getName());
 			ALoreBuilder lore = new ALoreBuilder();
 
 			int accessiblePages = profile.getUUID().equals(player.getUniqueId()) ? rank.pages : StorageManager.MAX_ENDERCHEST_PAGES;
 
-			if(page <= accessiblePages) {
+			if(pageIndex + 1 <= accessiblePages) {
 				lore.addLore(
 						"&7Status: &aUnlocked",
 						"&7Items: &d" + enderchestPage.getItemCount() + "&7/&d" + StorageManager.ENDERCHEST_ITEM_SLOTS
@@ -98,7 +98,7 @@ public class EnderchestPanel extends AGUIPanel {
 				stackBuilder.getItemStack().setType(Material.BARRIER);
 				lore.addLore(
 						"&7Status: &cLocked",
-						"&7Required Rank: " + EnderchestGUI.EnderchestPages.getMinimumRequiredRank(page).rankName,
+						"&7Required Rank: " + EnderchestGUI.EnderchestPages.getMinimumRequiredRank(pageIndex + 1).rankName,
 						"&7Store: &d&nstore.pitsim.net"
 				);
 			}

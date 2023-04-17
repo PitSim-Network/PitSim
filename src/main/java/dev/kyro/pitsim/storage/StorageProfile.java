@@ -41,7 +41,7 @@ public class StorageProfile {
 		saveData(logout);
 	}
 
-	public void setData(PluginMessage message) {
+	public void loadData(PluginMessage message) {
 		List<String> strings = message.getStrings();
 		for(int i = 0; i < 36; i++) inventory[i] = deserialize(strings.remove(0), uuid);
 		for(int i = 0; i < 4; i++) armor[i] = deserialize(strings.remove(0), uuid);

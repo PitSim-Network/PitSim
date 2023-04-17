@@ -149,18 +149,13 @@ public class StorageManager implements Listener {
 			StorageProfile profile = getProfile(uuid);
 
 			profile.receiveSaveConfirmation(message);
-		}
-
-		if(strings.get(0).equals("PLAYER DATA")) {
-			UUID uuid = UUID.fromString(strings.get(1));
+		} else if(strings.get(0).equals("PLAYER DATA")) {
+			strings.remove(0);
+			UUID uuid = UUID.fromString(strings.remove(0));
 
 			StorageProfile profile = getProfile(uuid);
-			message.getStrings().remove(0);
-			message.getStrings().remove(0);
-			profile.setData(message);
-		}
-
-		if(strings.get(0).equals("PROMPT EDIT MENU")) {
+			profile.loadData(message);
+		} else if(strings.get(0).equals("PROMPT EDIT MENU")) {
 			UUID staffUUID = UUID.fromString(strings.get(1));
 
 			Player player = Bukkit.getPlayer(staffUUID);
@@ -228,14 +223,14 @@ public class StorageManager implements Listener {
 
 			if(slot == ENDERCHEST_ITEM_SLOTS + 9 && enderchestPage.getIndex() > 0) {
 				if(isEditing(player)) getSession(player).playerClosed = false;
-				player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() + 1).getInventory());
+				player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() - 1).getInventory());
 				if(isEditing(player)) getSession(player).playerClosed = true;
 				event.setCancelled(true);
 			} else if(slot == ENDERCHEST_ITEM_SLOTS + 17 && enderchestPage.getIndex() + 1 < MAX_ENDERCHEST_PAGES) {
 				EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
 				if(enderchestPage.getIndex() + 1 >= rank.pages && !isEditing(player)) continue;
 				if(isEditing(player)) getSession(player).playerClosed = false;
-				player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() - 1).getInventory());
+				player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() + 1).getInventory());
 				if(isEditing(player)) getSession(player).playerClosed = true;
 			} else if(slot == ENDERCHEST_ITEM_SLOTS + 13) {
 				if(isEditing(player)) getSession(player).playerClosed = false;

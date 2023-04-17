@@ -76,6 +76,7 @@ public class CustomSerializer {
 
 	@SuppressWarnings("deprecation")
 	public static ItemStack deserialize(String itemString, UUID informUUID, boolean updateItem) {
+		if(itemString == null || itemString.isEmpty()) return new ItemStack(Material.AIR);
 		String[] stringArr = itemString.split("\t");
 		ItemStack itemStack = new ItemStack(Material.getMaterial(stringArr[0]), Integer.parseInt(stringArr[1]));
 		itemStack.setDurability((short) Integer.parseInt(stringArr[2]));

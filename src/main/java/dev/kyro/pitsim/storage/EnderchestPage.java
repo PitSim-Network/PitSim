@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.storage;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUIManager;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
@@ -37,33 +38,40 @@ public class EnderchestPage {
 		isWardrobeEnabled = booleans.remove(0);
 		for(int i = 0; i < items.length; i++) items[i] = StorageProfile.deserialize(strings.remove(0), profile.getUUID());
 
-		createInventory(message);
+		createInventory();
 	}
 
-	public void createInventory(PluginMessage message) {
-		List<String> strings = message.getStrings();
-
-		this.inventory = PitSim.INSTANCE.getServer().createInventory(null, 45, "Enderchest - Page " + (index + 1));
-
-		for(int i = 0; i < items.length; i++) inventory.setItem(i + 9, StorageProfile.deserialize(strings.remove(0), profile.getUUID()));
+	public void createInventory() {
+		this.inventory = PitSim.INSTANCE.getServer().createInventory(null,
+				StorageManager.ENDERCHEST_ITEM_SLOTS + 18, "Enderchest - Page " + (index + 1));
+		for(int i = 0; i < items.length; i++) inventory.setItem(i + 9, items[i]);
 
 		ItemStack borderStack = new AItemStackBuilder(Material.STAINED_GLASS_PANE, 1, 15)
 				.setName(" ")
 				.getItemStack();
 
 		for(int i = 0; i < inventory.getSize(); i++) {
-			if(i > 9 && i < inventory.getSize() - 8) continue;
+			if(i >= 9 && i < inventory.getSize() - 9) continue;
 			inventory.setItem(i, borderStack);
 		}
 
-		inventory.setItem(StorageManager.ENDERCHEST_ITEM_SLOTS / 9 + 13, AGUIManager.getBackItemStack());
-		if(index == 0)
-			inventory.setItem(StorageManager.ENDERCHEST_ITEM_SLOTS / 9 + 9, AGUIManager.getPreviousPageItemStack());
-		if(index == StorageManager.MAX_ENDERCHEST_PAGES)
-			inventory.setItem(StorageManager.ENDERCHEST_ITEM_SLOTS / 9 + 17, AGUIManager.getNextPageItemStack());
+		ItemStack homeStack = new AItemStackBuilder(Material.COMPASS, index + 1)
+				.setName("&5Back to Menu")
+				.setLore(new ALoreBuilder(
+						"&7Click to return to",
+						"&7the main menu"
+				)).getItemStack();
+		inventory.setItem(StorageManager.ENDERCHEST_ITEM_SLOTS + 13, homeStack);
+		if(index != 0)
+			inventory.setItem(StorageManager.ENDERCHEST_ITEM_SLOTS + 9, AGUIManager.getPreviousPageItemStack());
+		if(index + 1 != StorageManager.MAX_ENDERCHEST_PAGES)
+			inventory.setItem(StorageManager.ENDERCHEST_ITEM_SLOTS + 17, AGUIManager.getNextPageItemStack());
 	}
 
 	public void writeData(PluginMessage message, boolean isLogout) {
+		message.writeString(name)
+				.writeString(CustomSerializer.serialize(displayItem))
+				.writeBoolean(isWardrobeEnabled);
 		for(ItemStack item : items) message.writeString(StorageProfile.serialize(profile.getOfflinePlayer(), item, isLogout));
 	}
 

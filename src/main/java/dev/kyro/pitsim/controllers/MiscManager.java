@@ -31,17 +31,20 @@ public class MiscManager implements Listener {
 		ItemStack back = new AItemStackBuilder(Material.ARROW)
 				.setName("&aBack")
 				.setLore(new ALoreBuilder(
-						"&7Click to open the previous screen"
+						"&7Click to open the",
+						"&7previous screen"
 				)).getItemStack();
 		ItemStack previousPage = new AItemStackBuilder(Material.ARROW)
 				.setName("&aPrevious Page")
 				.setLore(new ALoreBuilder(
-						"&7Click to go to the previous page"
+						"&7Click to go to the",
+						"&7previous page"
 				)).getItemStack();
 		ItemStack nextPage = new AItemStackBuilder(Material.ARROW)
 				.setName("&aNext Page")
 				.setLore(new ALoreBuilder(
-						"&7Click to go to the next page"
+						"&7Click to go to the",
+						"&7next page"
 				)).getItemStack();
 		AGUIManager.setDefaultItemStacks(back, previousPage, nextPage);
 	}
