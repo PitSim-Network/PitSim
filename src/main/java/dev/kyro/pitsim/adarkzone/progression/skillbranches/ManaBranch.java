@@ -36,7 +36,7 @@ public class ManaBranch extends SkillBranch {
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(killEvent.getAttackEvent().getAttacker() != killEvent.getAttackEvent().getRealDamager() ||
+		if(killEvent.getAttackEvent() == null || killEvent.getAttackEvent().getAttacker() != killEvent.getAttackEvent().getRealDamager() ||
 				killEvent.getWrapperEvent().hasAttackInfo()) return;
 		boolean hasFirstPath = ProgressionManager.isUnlocked(killEvent.getKillerPitPlayer(), this, MajorUnlockPosition.FIRST_PATH);
 		if(hasFirstPath && Misc.isEntity(killEvent.getDead(), PitEntityType.PIT_MOB))
