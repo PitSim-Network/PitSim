@@ -224,12 +224,6 @@ public class ProxyMessaging implements Listener {
 			}
 		}
 
-		if(strings.size() >= 2 && strings.get(0).equals("MIGRATE")) {
-			UUID uuid = UUID.fromString(strings.get(1));
-
-			migrate(uuid);
-		}
-
 		if(strings.size() >= 2 && strings.get(0).equals("REQUEST SWITCH")) {
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);
@@ -427,13 +421,6 @@ public class ProxyMessaging implements Listener {
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
-	}
-
-	public static void migrate(UUID uuid) {
-		PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(uuid).getUniqueId());
-		pitPlayer.save(false, false);
-
-		StorageManager.getInitialProfile(uuid);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

@@ -41,12 +41,12 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 					}
 
 					for(int i = 9; i < inventory.getSize(); i++) {
-						session.getStorageProfile().cachedInventory[i - 9] = inventory.getItem(i);
+						session.getStorageProfile().inventory[i - 9] = inventory.getItem(i);
 					}
 
 					if(session.getEditType() == EditType.ONLINE) {
 						Player onlinePlayer = Bukkit.getPlayer(session.getPlayerUUID());
-						onlinePlayer.getInventory().setContents(session.getStorageProfile().cachedInventory);
+						onlinePlayer.getInventory().setContents(session.getStorageProfile().inventory);
 						onlinePlayer.getInventory().setArmorContents(session.getStorageProfile().armor);
 						onlinePlayer.updateInventory();
 					}
@@ -77,7 +77,7 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 		}
 
 		for(int i = 9; i < inventory.getSize(); i++) {
-			inventory.setItem(i, session.getStorageProfile().cachedInventory[i - 9]);
+			inventory.setItem(i, session.getStorageProfile().inventory[i - 9]);
 		}
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.ENDER_CHEST);

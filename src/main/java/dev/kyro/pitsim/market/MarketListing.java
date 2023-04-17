@@ -3,8 +3,8 @@ package dev.kyro.pitsim.market;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Formatter;
-import dev.kyro.pitsim.storage.StorageProfile;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.Serializable;
@@ -55,7 +55,7 @@ public class MarketListing implements Serializable {
 		startingBid = ints.get(0);
 		binPrice = ints.get(1);
 		stackBIN = booleans.get(0);
-		itemData = StorageProfile.deserialize(strings.get(3));
+		itemData = CustomSerializer.deserializeDirectly(strings.get(3));
 		listingLength = longs.get(0);
 		creationTime = longs.get(1);
 

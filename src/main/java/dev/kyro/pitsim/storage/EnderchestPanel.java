@@ -11,8 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
@@ -22,6 +20,8 @@ public class EnderchestPanel extends AGUIPanel {
 
 	public EnderchestPanel(AGUI gui, UUID storagePlayer) {
 		super(gui);
+
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 15);
 
 		profile = StorageManager.getProfile(storagePlayer);
 	}
@@ -38,33 +38,20 @@ public class EnderchestPanel extends AGUIPanel {
 
 	@Override
 	public void onClick(InventoryClickEvent event) {
-
-		EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
-
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		int accessiblePages = rank.pages;
-
-		if(!profile.getUUID().equals(player.getUniqueId())) accessiblePages = StorageProfile.ENDERCHEST_MAX_PAGES;
+		EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
+		int accessiblePages = profile.getUUID().equals(player.getUniqueId()) ? rank.pages : StorageManager.MAX_ENDERCHEST_PAGES;
 
 		if(slot == 8 && !player.getUniqueId().equals(profile.getUUID())) {
 			EditSession session = StorageManager.getSession(player);
 			session.playerClosed = false;
 			player.openInventory(session.inventory.getInventory());
 			session.playerClosed = true;
-//			new BukkitRunnable() {
-//				@Override
-//				public void run() {
-//					EditSession session = StorageManager.getSession(player);
-//					session.playerClosed = false;
-//					player.openInventory(session.inventory.getInventory());
-//					session.playerClosed = true;
-//				}
-//			}.runTaskLater(PitSim.INSTANCE, 2);
 		}
 
-		if(slot < 9 || slot >= 27) return;
+		if(slot < 9 || slot >= StorageManager.MAX_ENDERCHEST_PAGES + 9) return;
 
 		if((slot - 9) + 1 > accessiblePages) {
 			event.setCancelled(true);
@@ -72,55 +59,43 @@ public class EnderchestPanel extends AGUIPanel {
 			return;
 		}
 
-		if(!profile.hasData() || profile.isSaving()) return;
+		if(!profile.isLoaded() || profile.isSaving()) return;
 
-		Inventory inventory = profile.getEnderchestPage(slot - 8);
+		EnderchestPage enderchestPage = profile.getEnderchestPage(slot - 8);
 
 		if(StorageManager.isEditing(player)) {
 			EditSession session = StorageManager.getSession(player);
 			session.playerClosed = false;
-			player.openInventory(inventory);
+			player.openInventory(enderchestPage.getInventory());
 			session.playerClosed = true;
 			return;
 		}
 
-		player.openInventory(inventory);
+		player.openInventory(enderchestPage.getInventory());
 	}
 
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
 		EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
 
-		for(int i = 0; i < 9; i++) {
-			getInventory().setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
-		}
-
-		for(int i = 27; i < 36; i++) {
-			getInventory().setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
-		}
-
 		for(int i = 9; i < 27; i++) {
 			int page = (i - 9) + 1;
 
-			AItemStackBuilder stackBuilder;
+			EnderchestPage enderchestPage = profile.getEnderchestPage(page);
+			AItemStackBuilder stackBuilder = new AItemStackBuilder(enderchestPage.getDisplayItem())
+					.setName(enderchestPage.getName());
 			ALoreBuilder lore = new ALoreBuilder();
-			String enderchestName = "&5&lENDERCHEST &7Page " + (i - 8);
 
-			int accessiblePages = rank.pages;
-
-			if(!profile.getUUID().equals(player.getUniqueId())) accessiblePages = StorageProfile.ENDERCHEST_MAX_PAGES;
+			int accessiblePages = profile.getUUID().equals(player.getUniqueId()) ? rank.pages : StorageManager.MAX_ENDERCHEST_PAGES;
 
 			if(page <= accessiblePages) {
-				stackBuilder = new AItemStackBuilder(Material.ENDER_CHEST);
-				stackBuilder.setName(enderchestName);
 				lore.addLore(
 						"&7Status: &aUnlocked",
-						"&7Items: &d" + profile.getEnderchestItemCount(page) + "&7/&d27"
+						"&7Items: &d" + enderchestPage.getItemCount() + "&7/&d" + StorageManager.ENDERCHEST_ITEM_SLOTS
 				);
 				Misc.addEnchantGlint(stackBuilder.getItemStack());
 			} else {
-				stackBuilder = new AItemStackBuilder(Material.BARRIER);
-				stackBuilder.setName(enderchestName);
+				stackBuilder.getItemStack().setType(Material.BARRIER);
 				lore.addLore(
 						"&7Status: &cLocked",
 						"&7Required Rank: " + EnderchestGUI.EnderchestPages.getMinimumRequiredRank(page).rankName,

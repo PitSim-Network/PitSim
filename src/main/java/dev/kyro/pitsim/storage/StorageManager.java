@@ -19,7 +19,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -28,6 +27,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class StorageManager implements Listener {
+	public static final int MAX_ENDERCHEST_PAGES = 18;
+	public static final int ENDERCHEST_ITEM_SLOTS = 36;
+
 	protected static final List<StorageProfile> profiles = new ArrayList<>();
 	protected static final List<EditSession> editSessions = new ArrayList<>();
 
@@ -38,7 +40,6 @@ public class StorageManager implements Listener {
 
 		StorageProfile profile = new StorageProfile(player.getUniqueId());
 		profiles.add(profile);
-
 		return profile;
 	}
 
@@ -53,28 +54,12 @@ public class StorageManager implements Listener {
 		return profile;
 	}
 
-	public static StorageProfile getInitialProfile(UUID uuid) {
-		StorageProfile profile = new StorageProfile(uuid, 18);
-		profiles.add(profile);
-
-		return profile;
-	}
-
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerJoinEvent event) {
 		if(PitSim.getStatus() == PitSim.ServerStatus.STANDALONE) return;
 
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
-		profile.playerHasBeenOnline = true;
-
-		boolean hasItem = false;
-		for(int i = 0; i < 36; i++) {
-			ItemStack itemStack = player.getInventory().getItem(i);
-			if(Misc.isAirOrNull(itemStack)) continue;
-			hasItem = true;
-			break;
-		}
 
 //		Disabled because the deletion/clear method was disabled
 //		if(hasItem || !Misc.isAirOrNull(player.getInventory().getHelmet()) ||
@@ -84,13 +69,13 @@ public class StorageManager implements Listener {
 //			Misc.alertDiscord("@everyone " + player.getName() + " logged in to server " + PitSim.serverName + " with items in their inventory");
 //		}
 
-		if(!profile.hasData()) {
+		if(!profile.isLoaded()) {
 			player.kickPlayer(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");
 			return;
 		}
 
 		player.setItemOnCursor(null);
-		player.getInventory().setContents(profile.getCachedInventory());
+		player.getInventory().setContents(profile.getInventory());
 		player.getInventory().setArmorContents(profile.getArmor());
 		player.updateInventory();
 	}
@@ -98,7 +83,7 @@ public class StorageManager implements Listener {
 	public static void quitInitiate(Player player) {
 		StorageProfile profile = getProfile(player);
 
-		profile.cachedInventory = player.getInventory().getContents();
+		profile.inventory = player.getInventory().getContents();
 		profile.armor = player.getInventory().getArmorContents();
 	}
 
@@ -112,7 +97,8 @@ public class StorageManager implements Listener {
 //		file.delete();
 
 //		player.getInventory().clear();
-//		player.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
+//		player.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR),
+//		new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
 	}
 
 	public static boolean isEditing(Player player) {
@@ -165,10 +151,6 @@ public class StorageManager implements Listener {
 			profile.receiveSaveConfirmation(message);
 		}
 
-//		if(strings.get(0).equals("LOAD REQUEST")) {
-//
-//		}
-
 		if(strings.get(0).equals("PLAYER DATA")) {
 			UUID uuid = UUID.fromString(strings.get(1));
 
@@ -208,82 +190,65 @@ public class StorageManager implements Listener {
 	public void onPickup(PlayerPickupItemEvent event) {
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
-		if(profile.hasData() && profile.isSaving()) {
-			event.setCancelled(true);
-		}
+		if(profile.isLoaded() && profile.isSaving()) event.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent event) {
 		Player player = event.getPlayer();
 		StorageProfile profile = getProfile(player);
-		if(profile.hasData() && profile.isSaving()) {
-			event.setCancelled(true);
-		}
+		if(profile.isLoaded() && profile.isSaving()) event.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onClick(InventoryDragEvent event) {
 		Player player = (Player) event.getWhoClicked();
 		StorageProfile profile = getProfile(player);
-		if(profile.hasData() && profile.isSaving()) {
-			event.setCancelled(true);
-		}
+		if(profile.isLoaded() && profile.isSaving()) event.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
+		int slot = event.getSlot();
+
 		StorageProfile profile;
 		if(isEditing(player)) {
 			profile = Objects.requireNonNull(getSession(player)).getStorageProfile();
 		} else profile = getProfile(player);
 
-		if(profile.hasData() && profile.isSaving()) {
+		if(profile.isLoaded() && profile.isSaving()) {
 			event.setCancelled(true);
 			return;
 		}
 
-		if(profile.enderChest == null) return;
+		for(EnderchestPage enderchestPage : profile.enderchestPages) {
+			Inventory inventory = enderchestPage.getInventory();
+			if(!inventory.equals(event.getClickedInventory())) continue;
 
-		for(int i = 0; i < profile.enderChest.length; i++) {
-			Inventory inv = profile.enderChest[i];
-
-			if(inv.equals(event.getClickedInventory())) {
-
-				if(event.getSlot() == 36 && i > 0) {
-					if(isEditing(player)) getSession(player).playerClosed = false;
-					player.openInventory(profile.enderChest[i - 1]);
-					if(isEditing(player)) getSession(player).playerClosed = true;
-					event.setCancelled(true);
-					return;
-				}
-
+			if(slot == ENDERCHEST_ITEM_SLOTS + 9 && enderchestPage.getIndex() > 0) {
+				if(isEditing(player)) getSession(player).playerClosed = false;
+				player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() + 1).getInventory());
+				if(isEditing(player)) getSession(player).playerClosed = true;
+				event.setCancelled(true);
+			} else if(slot == ENDERCHEST_ITEM_SLOTS + 17 && enderchestPage.getIndex() + 1 < MAX_ENDERCHEST_PAGES) {
 				EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
-
-				if(event.getSlot() == 44 && (i + 1) < StorageProfile.ENDERCHEST_MAX_PAGES) {
-					if(i + 2 <= rank.pages || isEditing(player)) {
-						if(isEditing(player)) getSession(player).playerClosed = false;
-						player.openInventory(profile.enderChest[i + 1]);
-						if(isEditing(player)) getSession(player).playerClosed = true;
-						event.setCancelled(true);
-						return;
-					}
-				}
-
-				if(event.getSlot() == 40) {
-					if(isEditing(player)) getSession(player).playerClosed = false;
-					EnderchestGUI gui = new EnderchestGUI(player, profile.getUUID());
-					gui.open();
-					if(isEditing(player)) getSession(player).playerClosed = true;
-					event.setCancelled(true);
-					return;
-				}
-
-				if(event.getSlot() < 9 || event.getSlot() > 35) {
-					event.setCancelled(true);
-				}
+				if(enderchestPage.getIndex() + 1 >= rank.pages && !isEditing(player)) continue;
+				if(isEditing(player)) getSession(player).playerClosed = false;
+				player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() - 1).getInventory());
+				if(isEditing(player)) getSession(player).playerClosed = true;
+			} else if(slot == ENDERCHEST_ITEM_SLOTS + 13) {
+				if(isEditing(player)) getSession(player).playerClosed = false;
+				new EnderchestGUI(player, profile.getUUID()).open();
+				if(isEditing(player)) getSession(player).playerClosed = true;
+			} else if(slot < 9 || slot > 35) {
+//				Does not run the else return
+			} else {
+				return;
 			}
+
+			event.setCancelled(true);
+			player.updateInventory();
 		}
 	}
 
@@ -294,32 +259,25 @@ public class StorageManager implements Listener {
 		EditSession session = getSession(player);
 		StorageProfile profile = session.getStorageProfile();
 
-		if(profile.enderChest == null) return;
-		for(int i = 0; i < profile.enderChest.length; i++) {
-			Inventory inv = profile.enderChest[i];
-			if(!inv.equals(event.getInventory())) continue;
-			if(session.playerClosed) {
-				session.end();
-			}
+		for(EnderchestPage enderchestPage : profile.getEnderchestPages()) {
+			if(!enderchestPage.getInventory().equals(event.getInventory())) continue;
+			if(session.playerClosed) session.end();
 		}
 	}
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
-		EditSession endSession = null;
+		Player player = event.getPlayer();
 
+		EditSession endSession = null;
 		for(EditSession editSession : new ArrayList<>(editSessions)) {
-			if(editSession.getPlayerUUID().equals(event.getPlayer().getUniqueId()) && editSession.getEditType() == EditType.ONLINE) {
+			if(editSession.getPlayerUUID().equals(player.getUniqueId()) && editSession.getEditType() == EditType.ONLINE) {
 				endSession = editSession;
 				AOutput.error(editSession.getStaffMember(), "&cYour session ended because the player logged out!");
 				editSession.getStaffMember().closeInventory();
 			}
-
-			if(editSession.getStaffMember() == event.getPlayer()) {
-				endSession = editSession;
-			}
+			if(editSession.getStaffMember() == player) endSession = editSession;
 		}
-
 		if(endSession != null) endSession.end();
 	}
 }
