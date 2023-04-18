@@ -10,6 +10,7 @@ import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class UberInsurance extends TieredRenownUpgrade {
 		INSTANCE = this;
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOW)
 	public void onKill(KillEvent killEvent) {
 		if(!killEvent.isDeadPlayer() || !isApplicable(killEvent.getDeadPlayer())) return;
 		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : new ArrayList<>(killEvent.getVulnerableItems().entrySet())) {
