@@ -926,6 +926,8 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new IronIngot());
 		ItemFactory.registerItem(new EnderPearl());
 
+		ItemFactory.registerItem(new TheCakeIsALie());
+
 		ItemFactory.registerItem(new Potion());
 	}
 

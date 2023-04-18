@@ -15,7 +15,7 @@ public class ShopHomePanel extends AGUIPanel {
 
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 
-		getInventory().setItem(11, new AItemStackBuilder(Material.DIAMOND_LEGGINGS)
+		getInventory().setItem(11, new AItemStackBuilder(Material.DOUBLE_PLANT)
 				.setName("&eItem Shop")
 				.setLore(new ALoreBuilder(
 						"&7Buy items for &fSouls",

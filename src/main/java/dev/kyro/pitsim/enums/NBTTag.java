@@ -31,6 +31,7 @@ public enum NBTTag {
 	SOUL_AMOUNT("pr-soul-amount"),
 	COOKIE_GIVER("pr-cookie-giver"),
 	COOKIE_RECEIVER("pr-cookie-receiver"),
+	CAKE_USAGES("pr-cake-usages"),
 
 	GHELMET_GOLD("pr-ghelm-gold"),
 	GHELMET_ABILITY("pr-ghelm-ability"),

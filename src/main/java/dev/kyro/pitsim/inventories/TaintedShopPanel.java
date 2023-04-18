@@ -40,7 +40,7 @@ public class TaintedShopPanel extends AGUIPanel {
 		for(DarkzoneBalancing.ShopItem value : DarkzoneBalancing.ShopItem.values()) {
 			while(slot % 9 == 0 || slot % 9 == 8) slot++;
 
-			ItemStack itemStack = value.getItem();
+			ItemStack itemStack = value.getItemStack();
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			int cost = value.getSoulCost();
 			ALoreBuilder lore = new ALoreBuilder(itemMeta.getLore());
@@ -99,7 +99,7 @@ public class TaintedShopPanel extends AGUIPanel {
 		Sounds.RENOWN_SHOP_PURCHASE.play(player);
 
 		pitPlayer.taintedSouls -= shopItem.getSoulCost();
-		AUtil.giveItemSafely(player, shopItem.getItem());
+		AUtil.giveItemSafely(player, shopItem.getItemStack());
 
 		placeItems();
 	}

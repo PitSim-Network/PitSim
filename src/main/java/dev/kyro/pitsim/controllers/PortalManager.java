@@ -1,7 +1,5 @@
 package dev.kyro.pitsim.controllers;
 
-import dev.kyro.arcticapi.data.APlayer;
-import dev.kyro.arcticapi.data.APlayerData;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.brewing.PotionManager;
@@ -12,7 +10,6 @@ import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,25 +33,29 @@ public class PortalManager implements Listener {
 		event.setCancelled(true);
 
 		Player player = event.getPlayer();
+		attemptServerSwitch(player);
+	}
+
+	public static void attemptServerSwitch(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(pitPlayer.prestige < 5 && !player.isOp()) {
 			player.setVelocity(new Vector(3, 1, 0));
-			AOutput.error(event.getPlayer(), "&5&lDARKZONE &7You must be atleast prestige &eV &7to enter!");
-			Sounds.NO.play(event.getPlayer());
+			AOutput.error(player, "&5&lDARKZONE &7You must be atleast prestige &eV &7to enter!");
+			Sounds.NO.play(player);
 			return;
 		}
 
 		if(pitPlayer.megastreak.isOnMega() && !player.isOp()) {
 			player.setVelocity(new Vector(3, 1, 0));
-			AOutput.error(event.getPlayer(), "&5&lDARKZONE &7You cannot be on a megastreak and enter the darkzone!");
-			Sounds.NO.play(event.getPlayer());
+			AOutput.error(player, "&5&lDARKZONE &7You cannot be on a megastreak and enter the darkzone!");
+			Sounds.NO.play(player);
 			return;
 		}
 
 		if(CombatManager.isInCombat(player) && !player.isOp()) {
 			player.setVelocity(new Vector(3, 1, 0));
-			AOutput.error(event.getPlayer(), "&5&lDARKZONE &7You cannot be in combat and enter the darkzone!");
-			Sounds.NO.play(event.getPlayer());
+			AOutput.error(player, "&5&lDARKZONE &7You cannot be in combat and enter the darkzone!");
+			Sounds.NO.play(player);
 			return;
 		}
 
@@ -68,14 +69,13 @@ public class PortalManager implements Listener {
 		}
 		if(hasHopper && !player.isOp()) {
 			player.setVelocity(new Vector(3, 1, 0));
-			AOutput.error(event.getPlayer(), "&c&lYOU WISH!&7 Kill that hopper first :P");
-			Sounds.NO.play(event.getPlayer());
+			AOutput.error(player, "&c&lYOU WISH!&7 Kill that hopper first :P");
+			Sounds.NO.play(player);
 			return;
 		}
 
 		if(PitSim.getStatus() == PitSim.ServerStatus.STANDALONE) {
 			Location playerLoc = player.getLocation();
-
 			PotionManager.bossBars.remove(player);
 
 			Location teleportLoc;
@@ -102,13 +102,6 @@ public class PortalManager implements Listener {
 			player.setHealth(player.getMaxHealth());
 
 			if(player.getWorld() == Bukkit.getWorld("darkzone")) {
-				APlayer aPlayer = APlayerData.getPlayerData(player);
-				FileConfiguration playerData = aPlayer.playerData;
-				if(!playerData.contains("darkzonepreview")) {
-//					CutsceneManager.play(player);
-					return;
-				}
-
 				Misc.sendTitle(player, "&d&k||&5&lDarkzone&d&k||", 40);
 				Misc.sendSubTitle(player, "", 40);
 				AOutput.send(player, "&7You have been sent to the &d&k||&5&lDarkzone&d&k||&7.");
@@ -122,7 +115,7 @@ public class PortalManager implements Listener {
 			return;
 		}
 
-		LobbySwitchManager.setSwitchingPlayer(event.getPlayer());
+		LobbySwitchManager.setSwitchingPlayer(player);
 
 		if(PitSim.getStatus().isDarkzone()) {
 			ProxyMessaging.switchPlayer(player, 0);
@@ -139,6 +132,5 @@ public class PortalManager implements Listener {
 				if(!MapManager.inDarkzone(event.getPlayer())) MusicManager.stopPlaying(event.getPlayer());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
-
 	}
 }

@@ -91,6 +91,7 @@ class GodPanel extends AGUIPanel {
 		addItem(ItemFactory.getItem(AncientGemShard.class).getItem(64));
 		addItem(ItemFactory.getItem(YummyBread.class).getItem(64));
 		addItem(ItemFactory.getItem(VeryYummyBread.class).getItem(64));
+		addItem(ItemFactory.getItem(TheCakeIsALie.class).getItem());
 
 		addItem(ItemFactory.getItem(RottenFlesh.class).getItem(64));
 		addItem(ItemFactory.getItem(Bone.class).getItem(64));
