@@ -156,6 +156,6 @@ public class ElectricShock extends PitEnchantSpell {
 	}
 
 	public static double getBounceRange() {
-		return 10;
+		return 8;
 	}
 }
