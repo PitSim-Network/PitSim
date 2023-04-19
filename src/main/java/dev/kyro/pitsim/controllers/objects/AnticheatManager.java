@@ -7,8 +7,6 @@ import org.bukkit.event.Listener;
 public abstract class AnticheatManager implements Listener {
 	public abstract void exemptPlayer(Player player, long ms, FlagType... flags);
 
-
-
 	public enum FlagType {
 		ALL(null, null),
 		SIMULATION("simulation", "MOVEMENT"),
@@ -34,7 +32,6 @@ public abstract class AnticheatManager implements Listener {
 			for(FlagType flag : values()) if(flag != ALL && flag.polarName.equalsIgnoreCase(polarName)) return flag;
 			return null;
 		}
-
 	}
 }
 
