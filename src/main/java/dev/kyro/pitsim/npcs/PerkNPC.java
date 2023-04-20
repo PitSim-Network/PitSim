@@ -43,7 +43,7 @@ public class PerkNPC extends PitNPC {
 			return;
 		}
 
-		Tutorial tutorial = pitPlayer.tutorial;
+		Tutorial tutorial = pitPlayer.overworldTutorial;
 		if(tutorial.isInObjective) return;
 		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PERKS)) {
 

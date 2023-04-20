@@ -44,7 +44,9 @@ import dev.kyro.pitsim.perks.*;
 import dev.kyro.pitsim.settings.scoreboard.ScoreboardData;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.storage.StorageProfile;
-import dev.kyro.pitsim.tutorial.Tutorial;
+import dev.kyro.pitsim.tutorial.DarkzoneTutorial;
+import dev.kyro.pitsim.tutorial.OverworldTutorial;
+import dev.kyro.pitsim.tutorial.TutorialData;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -167,7 +169,15 @@ public class PitPlayer {
 	public boolean darkzoneCutscene = false;
 
 	public PlayerStats stats = new PlayerStats();
-	public Tutorial tutorial = new Tutorial();
+
+	public TutorialData overworldTutorialData = new TutorialData();
+	public TutorialData darkzoneTutorialData = new TutorialData();
+
+	@Exclude
+	public OverworldTutorial overworldTutorial;
+	@Exclude
+	public DarkzoneTutorial darkzoneTutorial;
+
 	public ScoreboardData scoreboardData = new ScoreboardData();
 	private PassData passData = new PassData();
 	public DarkzoneData darkzoneData = new DarkzoneData();
@@ -272,6 +282,11 @@ public class PitPlayer {
 
 		if(isInitialized) {
 			PotionManager.savePotions(this, finalSave);
+
+			if(finalSave) {
+				darkzoneTutorial.endTutorial();
+				overworldTutorial.endTutorial();
+			}
 
 			megastreakRef = megastreak.getRefNames().get(0);
 
@@ -379,7 +394,7 @@ public class PitPlayer {
 			boosters.put(booster.refName, playerData.getInt("boosters." + booster.refName));
 
 		stats = new PlayerStats(this, playerData);
-		tutorial = new Tutorial(this, playerData);
+		overworldTutorial = new OverworldTutorial(playerData);
 //			updateXPBar();
 
 		for(int i = 0; i < brewingSessions.size(); i++) {
@@ -412,6 +427,9 @@ public class PitPlayer {
 		this.player = player;
 
 		ChatColorPanel.playerChatColors.put(player, chatColor);
+
+		overworldTutorial = new OverworldTutorial(this);
+		darkzoneTutorial = new DarkzoneTutorial(this);
 
 		if(megastreakRef.equals("nomegastreak")) this.megastreak = new NoMegastreak(this);
 		else if(megastreakRef.equals("beastmode")) this.megastreak = new Beastmode(this);
@@ -449,9 +467,10 @@ public class PitPlayer {
 		}
 
 		this.stats.init(this);
-		this.tutorial.init(this);
 		this.scoreboardData.init(this);
 		this.shield.init(this);
+		this.overworldTutorial.attemptStart();
+		this.darkzoneTutorial.attemptStart();
 		updateXPBar();
 
 		this.isInitialized = true;

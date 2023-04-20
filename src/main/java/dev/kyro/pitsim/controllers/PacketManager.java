@@ -15,10 +15,13 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
 import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.effects.PacketBlock;
 import dev.kyro.pitsim.misc.packets.WrapperPlayClientBlockDig;
 import dev.kyro.pitsim.misc.packets.WrapperPlayServerBlockChange;
 import dev.kyro.pitsim.misc.packets.WrapperPlayServerEntityTeleport;
+import dev.kyro.pitsim.misc.packets.WrapperPlayServerNamedEntitySpawn;
+import dev.kyro.pitsim.tutorial.DarkzoneTutorial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -154,6 +157,27 @@ public class PacketManager implements Listener {
 							}
 						}.runTask(PitSim.INSTANCE);
 
+					}
+				});
+
+		protocolManager.addPacketListener(
+				new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.NAMED_ENTITY_SPAWN) {
+					@Override
+					public void onPacketSending(PacketEvent event) {
+						WrapperPlayServerNamedEntitySpawn wrapper = new WrapperPlayServerNamedEntitySpawn(event.getPacket());
+						Entity entity = wrapper.getEntity(event);
+
+						for(Player player : Bukkit.getOnlinePlayers()) {
+							if(event.getPlayer() == player) continue;
+
+							PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+							DarkzoneTutorial tutorial = pitPlayer.darkzoneTutorial;
+							if(tutorial == null || tutorial.tutorialNPC == null) continue;
+							if(tutorial.tutorialNPC.npc.getEntity() == entity) {
+								event.setCancelled(true);
+								return;
+							}
+						}
 					}
 				});
 	}

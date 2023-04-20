@@ -9,7 +9,7 @@ import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import org.bukkit.Material;
@@ -29,7 +29,7 @@ public class MysticPants extends StaticPitItem implements TemporaryItem {
 		hideExtra = true;
 		unbreakable = true;
 		isMystic = true;
-		auctionCategory = AuctionCategory.OVERWORLD_GEAR;
+		marketCategory = MarketCategory.OVERWORLD_GEAR;
 	}
 
 	@Override

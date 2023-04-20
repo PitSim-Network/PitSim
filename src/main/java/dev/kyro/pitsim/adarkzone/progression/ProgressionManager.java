@@ -163,6 +163,7 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static int getUnlockCost(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
+		if(MainProgressionPanel.tutorialUnlocks.contains(unlock)) return 0;
 		int unlocks = pitPlayer.darkzoneData.mainProgressionUnlocks.size();
 		int cost = (unlocks + 1) * DarkzoneBalancing.MAIN_PROGRESSION_COST_PER;
 		if(unlock instanceof MainProgressionMajorUnlock) cost *= DarkzoneBalancing.MAIN_PROGRESSION_MAJOR_MULTIPLIER;
@@ -188,6 +189,10 @@ public class ProgressionManager implements Listener {
 										   int currentSouls, int cost, boolean alwaysDisplayCost) {
 		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
 		String costString = Formatter.formatSouls(cost);
+		if(object instanceof MainProgressionUnlock) {
+			if(MainProgressionPanel.tutorialUnlocks.contains(object)) costString = "&f&m" + Formatter.formatSouls(cost, false) + "&a&l FREE!";
+		}
+
 		if(unlockState == UnlockState.LOCKED) {
 			if(alwaysDisplayCost) loreBuilder.addLore(
 					"&7Unlock Cost: " + costString,
@@ -200,7 +205,7 @@ public class ProgressionManager implements Listener {
 					"&7Current Souls: &f" + decimalFormat.format(currentSouls),
 					""
 			);
-			if(currentSouls < cost) {
+			if(currentSouls < getCost(object, cost)) {
 				loreBuilder.addLore("&cNot enough souls");
 			} else {
 				loreBuilder.addLore("&eClick to purchase!");
@@ -212,6 +217,11 @@ public class ProgressionManager implements Listener {
 				loreBuilder.addLore("&aAlready unlocked!");
 			}
 		}
+	}
+
+	public static int getCost(Object object, int cost) {
+		if(object instanceof MainProgressionUnlock && MainProgressionPanel.tutorialUnlocks.contains(object)) return 0;
+		else return cost;
 	}
 
 	public static <T extends SkillBranch> T getSkillBranch(Class<T> clazz) {

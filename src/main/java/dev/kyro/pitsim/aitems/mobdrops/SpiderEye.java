@@ -8,7 +8,7 @@ import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ public class SpiderEye extends BrewingIngredient implements TemporaryItem {
 	public SpiderEye() {
 		super(3, "Cleanse", ChatColor.WHITE, PotionType.INVISIBILITY);
 		hasDropConfirm = true;
-		auctionCategory = AuctionCategory.DARKZONE_DROPS;
+		marketCategory = MarketCategory.DARKZONE_DROPS;
 	}
 
 	@Override

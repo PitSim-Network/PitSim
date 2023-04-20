@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
@@ -48,7 +49,7 @@ public class TaintedWell implements Listener {
 	public static Map<Player, ArmorStand> enchantStands;
 	public static Map<UUID, Integer> enchantCostStands;
 	public static List<Player> enchantingPlayers;
-	private static Map<Player, ItemStack> playerItems;
+	public static Map<Player, ItemStack> playerItems;
 	public static Map<UUID, Integer> yawMap = new HashMap<>();
 	public static Map<UUID, Double> velocityMap = new HashMap<>();
 
@@ -144,7 +145,7 @@ public class TaintedWell implements Listener {
 		if(wellLocation == null) return;
 		if(wellLocation.getChunk() == null) return;
 		wellLocation.getChunk().load();
-		
+
 		wellStand = wellLocation.getWorld().spawn(wellLocation.clone().add(0.5, 0.5, 0.5), ArmorStand.class);
 		wellStand.setArms(true);
 		wellStand.setVisible(false);
@@ -185,7 +186,7 @@ public class TaintedWell implements Listener {
 	public static void placeItemInWell(Player player, ItemStack itemStack) {
 		playerItems.put(player, itemStack);
 		player.getInventory().remove(itemStack);
-		
+
 		PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(getStandID(wellStand), 0, CraftItemStack.asNMSCopy(itemStack));
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
 		showButtons(player, getEnchantCost(getTier(itemStack), player));
@@ -201,7 +202,7 @@ public class TaintedWell implements Listener {
 		removeStand.setCustomName(ChatColor.RED + "Remove Item");
 		removeStand.setCustomNameVisible(true);
 		removeStands.put(player, removeStand);
-		
+
 		ArmorStand enchantStand = wellLocation.getWorld().spawn(spawnLoc, ArmorStand.class);
 		enchantStand.setGravity(false);
 		enchantStand.setArms(true);
@@ -218,20 +219,20 @@ public class TaintedWell implements Listener {
 				((CraftPlayer)player).getHandle().playerConnection.sendPacket(enchantPacket);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
-		
+
 		PacketPlayOutSpawnEntityLiving spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving) ((CraftEntity)removeStand).getHandle());
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawn);
-		
+
 		PacketPlayOutSpawnEntityLiving enchantSpawn = new PacketPlayOutSpawnEntityLiving((EntityLiving)((CraftEntity)enchantStand).getHandle());
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(enchantSpawn);
-		
+
 		removeStand.teleport(removeStand.getLocation().clone().subtract(2.0, 0.0, 0.0));
-		
+
 		PacketPlayOutEntityTeleport tpPacket = new PacketPlayOutEntityTeleport(((CraftEntity)removeStand).getHandle());
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpPacket);
-		
+
 		enchantStand.teleport(enchantStand.getLocation().clone().add(2.0, 0.0, 0.0));
-		
+
 		PacketPlayOutEntityTeleport tpRemovePacket = new PacketPlayOutEntityTeleport(((CraftEntity)enchantStand).getHandle());
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpRemovePacket);
 
@@ -306,16 +307,16 @@ public class TaintedWell implements Listener {
 		Map<PitEnchant, Integer> previousEnchants;
 
 		if(enchantingPlayers.contains(player)) return;
-		
+
 		if(!enchant) {
 			setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well", ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW + "Right-Click with an Item!");
 			ItemStack item = playerItems.get(player);
-			
+
 			AUtil.giveItemSafely(player, item, true);
-			
+
 			playerItems.remove(player);
 			enchantingPlayers.remove(player);
-			
+
 			PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(getStandID(wellStand), 0, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR)));
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
 			removeButtons(player);
@@ -352,7 +353,7 @@ public class TaintedWell implements Listener {
 
 			removeButtons(player);
 
-			pitPlayer.taintedSouls -= cost;
+			if(cost > 0) pitPlayer.taintedSouls -= cost;
 			ItemStack freshItem = playerItems.get(player);
 
 			PitItem pitItem = ItemFactory.getItem(freshItem);
@@ -422,10 +423,11 @@ public class TaintedWell implements Listener {
 	public static void onEnchantingTableClick(PlayerInteractEvent event) {
 		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		if(!event.getClickedBlock().getLocation().equals(wellLocation)) return;
-		
+
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
-		
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+
 		if(block.getType() != Material.ENCHANTMENT_TABLE || player.getWorld() != Bukkit.getWorld("darkzone")) return;
 		event.setCancelled(true);
 		if(playerItems.containsKey(event.getPlayer()) || Misc.isAirOrNull(player.getItemInHand())) return;
@@ -442,6 +444,12 @@ public class TaintedWell implements Listener {
 				}
 			}.runTaskLater(PitSim.INSTANCE, 40L);
 
+			return;
+		}
+
+		if(pitPlayer.darkzoneTutorial.isActive() && !ItemFactory.isTutorialItem(player.getItemInHand())) {
+			AOutput.error(player, "&c&lERROR! &7You can only enchant tutorial items right now!");
+			Sounds.NO.play(player);
 			return;
 		}
 
@@ -555,6 +563,8 @@ public class TaintedWell implements Listener {
 		int cost;
 
 		if(tier >= getMaxTier(player)) return -1;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.darkzoneTutorial.isActive()) return -1;
 
 		switch(tier + 1) {
 		case 1:
@@ -591,5 +601,19 @@ public class TaintedWell implements Listener {
 	@EventHandler
 	public void onArmorStandEquip(PlayerArmorStandManipulateEvent event) {
 		event.setCancelled(true);
+	}
+
+	public static void tutorialReset(Player player) {
+		ItemStack itemStack = TaintedWell.playerItems.get(player);
+		if(itemStack == null) return;
+		TaintedWell.playerItems.remove(player);
+		TaintedWell.removeButtons(player);
+		TaintedWell.setText(player, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Tainted Well",
+				ChatColor.GRAY + "Enchant Mystic Items found", ChatColor.GRAY + "in the Darkzone here", ChatColor.YELLOW
+						+ "Right-Click with an Item!");
+
+		PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(getStandID(wellStand), 0,
+				CraftItemStack.asNMSCopy(new ItemStack(Material.AIR)));
+		((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
 	}
 }

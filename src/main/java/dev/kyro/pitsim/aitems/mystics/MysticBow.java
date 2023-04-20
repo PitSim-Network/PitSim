@@ -9,7 +9,7 @@ import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
@@ -30,7 +30,7 @@ public class MysticBow extends StaticPitItem implements TemporaryItem {
 		unbreakable = true;
 		hasEnchantGlint = true;
 		isMystic = true;
-		auctionCategory = AuctionCategory.OVERWORLD_GEAR;
+		marketCategory = MarketCategory.OVERWORLD_GEAR;
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +19,7 @@ public class ProtHelmet extends StaticPitItem implements TemporaryItem {
 		hasDropConfirm = true;
 		hideExtra = true;
 		isProtDiamond = true;
-		auctionCategory = AuctionCategory.MISC;
+		marketCategory = MarketCategory.MISC;
 
 		itemEnchants.put(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
 	}

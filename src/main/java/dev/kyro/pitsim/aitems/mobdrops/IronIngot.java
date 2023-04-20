@@ -6,7 +6,7 @@ import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.brewing.PotionManager;
 import dev.kyro.pitsim.brewing.objects.BrewingIngredient;
 import dev.kyro.pitsim.brewing.objects.PotionEffect;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
@@ -25,7 +25,7 @@ public class IronIngot extends BrewingIngredient implements TemporaryItem {
 	public IronIngot() {
 		super(9, "Defense", ChatColor.BLUE, PotionType.NIGHT_VISION);
 		hasDropConfirm = true;
-		auctionCategory = AuctionCategory.DARKZONE_DROPS;
+		marketCategory = MarketCategory.DARKZONE_DROPS;
 	}
 
 	@Override
