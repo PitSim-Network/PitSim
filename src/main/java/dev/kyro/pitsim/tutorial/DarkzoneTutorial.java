@@ -28,7 +28,7 @@ public class DarkzoneTutorial extends Tutorial {
 	public void sendStartMessages() {
 		if(data.completedObjectives.size() == 0) {
 			sendMessage("&eHey! Welcome to the &5Darkzone&e!", 60);
-			sendMessage("&eBefore you leave &fspawn&e, I'll show you everything you need to know!", 110);
+			sendMessage("&eBefore you leave &fSpawn&e, I'll show you everything you need to know!", 110);
 		} else if(TutorialManager.isOnLastObjective(pitPlayer.player)) {
 			delayTask(() -> {
 				sendNPCToLastCheckpoint();
