@@ -67,7 +67,7 @@ public class TutorialManager implements Listener {
 			if(attackEvent.getAttackerPitPlayer().darkzoneTutorial.isActive()) {
 				AOutput.error(attacker, "&c&lERROR! &7You cannot attack while in the tutorial!");
 			} else {
-				AOutput.error(defender, "&c&lERROR! &7This player cannot be attacked since they are in the tutorial!");
+				AOutput.error(attacker, "&c&lERROR! &7This player cannot be attacked since they are in the tutorial!");
 			}
 			Sounds.NO.play(attacker);
 			attackEvent.setCancelled(true);

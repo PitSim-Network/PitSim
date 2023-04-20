@@ -120,7 +120,7 @@ public class AltarPanel extends AGUIPanel {
 				return;
 			}
 
-			AltarManager.activateAltar(player);
+			AltarManager.activateAltar(player, totalCost);
 			player.closeInventory();
 		}
 	}

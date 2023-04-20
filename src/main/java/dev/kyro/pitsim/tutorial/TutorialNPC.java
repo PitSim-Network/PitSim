@@ -140,6 +140,8 @@ public class TutorialNPC implements Listener {
 				continue;
 			}
 
+			if(midpoint.location.distance(checkpoint.location) > npc.getEntity().getLocation().distance(checkpoint.location)) continue;
+
 			if(midpoint.location.distance(npc.getEntity().getLocation()) < currentLocation.distance(npc.getEntity().getLocation())) {
 				currentMidpoint = midpoint;
 				currentLocation = midpoint.location;

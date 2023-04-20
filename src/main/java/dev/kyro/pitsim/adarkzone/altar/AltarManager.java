@@ -178,7 +178,7 @@ public class AltarManager implements Listener {
 		altarAnimation.onQuit();
 	}
 
-	public static void activateAltar(Player player) {
+	public static void activateAltar(Player player, int costOverride) {
 		if(PitSim.isDev()) {
 			int ticks = AltarRewards.getTurmoilTicks(player);
 			double turmoilMultiplier = AltarPedestal.getPedestal(TurmoilPedestal.class).isActivated(player) ? ticks * 0.1 : 1;
@@ -187,8 +187,8 @@ public class AltarManager implements Listener {
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.taintedSouls -= AltarPedestal.getTotalCost(player);
-		pitPlayer.stats.soulsSacrificed += AltarPedestal.getTotalCost(player);
+		pitPlayer.taintedSouls -= (costOverride > -1 ? costOverride : AltarPedestal.getTotalCost(player));
+		pitPlayer.stats.soulsSacrificed += (costOverride >= -1 ? costOverride : AltarPedestal.getTotalCost(player));
 
 		List<AltarPedestal> pedestals = new ArrayList<>();
 		for(AltarPedestal pedestal : AltarPedestal.altarPedestals) {

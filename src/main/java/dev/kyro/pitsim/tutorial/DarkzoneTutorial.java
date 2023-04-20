@@ -2,10 +2,8 @@ package dev.kyro.pitsim.tutorial;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
-import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffectType;
 
@@ -51,10 +49,10 @@ public class DarkzoneTutorial extends Tutorial {
 	public void sendCompletionMessages() {
 		sendMessage("&eThat's all I have to show you! You're ready to explore the &5Darkzone&e!", 40);
 		sendMessage("&eIf you need any help, you can always ask in chat or join &f&ndiscord.pitsim.net&e.", 100);
-		sendMessage("&eAfter leaving spawn, make sure to head over to the &cMonster Caves &eto start getting &fSouls&e.", 160);
+		sendMessage("&eNow, proceed into the &cMonster Caves &eto start getting &fSouls&e.", 160);
 		sendMessage("&eWith that being said, good luck on your journey!", 220);
 
-		tutorialNPC.npc.getNavigator().setTarget(new Location(MapManager.getDarkzone(), 292, 78, -130));
+//		tutorialNPC.npc.getNavigator().setTarget(new Location(MapManager.getDarkzone(), 292, 78, -130));
 	}
 
 	@Override
