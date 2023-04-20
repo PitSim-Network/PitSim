@@ -6,14 +6,14 @@ import org.bukkit.entity.Player;
 public class TaintedShopGUI extends AGUI {
 
 	ShopHomePanel homePanel;
-	TaintedShredPanel shredPanel;
+	ShredPanel shredPanel;
 	TaintedShopPanel shopPanel;
 
 	public TaintedShopGUI(Player player) {
 		super(player);
 
 		homePanel = new ShopHomePanel(this);
-		shredPanel = new TaintedShredPanel(this);
+		shredPanel = new ShredPanel(this);
 		shopPanel = new TaintedShopPanel(this);
 
 		setHomePanel(homePanel);

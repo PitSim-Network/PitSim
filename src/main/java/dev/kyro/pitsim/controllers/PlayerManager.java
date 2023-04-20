@@ -293,16 +293,26 @@ public class PlayerManager implements Listener {
 		pitPlayer.lastCommand = System.currentTimeMillis();
 
 		if(player.isOp()) return;
+
+		if(pitPlayer.darkzoneTutorial.isActive()) {
+			event.setCancelled(true);
+			AOutput.error(player, "&c&lERROR!&7 You cannot trade while in a tutorial");
+			return;
+		}
+
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade")) {
 			int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
 			if(pitPlayer.level < levelRequired) {
 				event.setCancelled(true);
 				AOutput.error(player, "&c&lERROR!&7 You cannot trade until you are level " + levelRequired);
+				return;
 			}
 		}
+
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/invsee")) {
 			event.setCancelled(true);
 			AOutput.send(player, "&c&lOUTDATED!&7 Please use /view <player> instead");
+			return;
 		}
 	}
 
