@@ -32,7 +32,7 @@ public class TaintedShopPanel extends APagedGUIPanel {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		for(DarkzoneBalancing.ShopItem value : DarkzoneBalancing.ShopItem.values()) {
-			ItemStack itemStack = value.getItem();
+			ItemStack itemStack = value.getItemStack();
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			int cost = isTutorial(value) ? 0 : value.getSoulCost();
 			ALoreBuilder lore = new ALoreBuilder(itemMeta.getLore());
@@ -63,7 +63,7 @@ public class TaintedShopPanel extends APagedGUIPanel {
 				Sounds.RENOWN_SHOP_PURCHASE.play(player);
 
 				pitPlayer.taintedSouls -= updatedCost;
-				ItemStack item = value.getItem();
+				ItemStack item = value.getItemStack();
 
 				if(isTutorial(value)) {
 					NPCCheckpoint.removeTutorialItems(player);
