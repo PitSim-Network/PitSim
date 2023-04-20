@@ -294,12 +294,6 @@ public class PlayerManager implements Listener {
 
 		if(player.isOp()) return;
 
-		if(pitPlayer.darkzoneTutorial.isActive()) {
-			event.setCancelled(true);
-			AOutput.error(player, "&c&lERROR!&7 You cannot trade while in a tutorial");
-			return;
-		}
-
 		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade")) {
 			int levelRequired = 100 - TheWay.INSTANCE.getLevelReduction(pitPlayer.player);
 			if(pitPlayer.level < levelRequired) {

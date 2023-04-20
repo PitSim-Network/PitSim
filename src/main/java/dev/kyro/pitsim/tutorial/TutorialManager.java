@@ -8,6 +8,7 @@ import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -78,7 +79,7 @@ public class TutorialManager implements Listener {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.darkzoneTutorial.isActive()) return;
-		if(event.getMessage().startsWith("/trade")) {
+		if(ChatColor.stripColor(event.getMessage()).toLowerCase().startsWith("/trade")) {
 			event.setCancelled(true);
 			AOutput.error(player, "&cYou must complete the tutorial before trading!");
 			Sounds.NO.play(player);
