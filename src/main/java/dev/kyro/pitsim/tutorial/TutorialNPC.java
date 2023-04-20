@@ -122,10 +122,6 @@ public class TutorialNPC implements Listener {
 			}
 		});
 
-		for(BukkitRunnable runningTask : runningTasks) {
-			System.out.println(runningTask);
-		}
-
 		runningTasks.get(0).runTaskTimer(PitSim.INSTANCE, 0, 10);
 	}
 
@@ -187,7 +183,6 @@ public class TutorialNPC implements Listener {
 	}
 
 	public void engage(NPCCheckpoint checkpoint) {
-		System.out.println(hashCode());
 		checkpoint.onEngage(tutorial, checkpoint.getEngageDelay());
 	}
 
