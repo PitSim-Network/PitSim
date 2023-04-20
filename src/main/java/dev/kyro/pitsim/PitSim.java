@@ -95,6 +95,8 @@ import dev.kyro.pitsim.pitmaps.XmasMap;
 import dev.kyro.pitsim.placeholders.*;
 import dev.kyro.pitsim.settings.scoreboard.*;
 import dev.kyro.pitsim.storage.StorageManager;
+import dev.kyro.pitsim.tutorial.TutorialManager;
+import dev.kyro.pitsim.tutorial.checkpoints.*;
 import dev.kyro.pitsim.upgrades.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -305,6 +307,7 @@ public class PitSim extends JavaPlugin {
 		registerKits();
 		registerCosmetics();
 		registerScoreboardOptions();
+		registerNPCCheckpoints();
 
 		PassManager.registerPasses();
 		HelpManager.registerIntentsAndPages();
@@ -339,6 +342,10 @@ public class PitSim extends JavaPlugin {
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+
+			pitPlayer.overworldTutorial.endTutorial();
+			pitPlayer.darkzoneTutorial.endTutorial();
+
 
 //			disable cosmetics
 			if(!VanishAPI.isInvisible(onlinePlayer)) {
@@ -712,6 +719,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ActionBarManager(), this);
 		getServer().getPluginManager().registerEvents(new HelpManager(), this);
 		getServer().getPluginManager().registerEvents(new VoucherManager(), this);
+		getServer().getPluginManager().registerEvents(new TutorialManager(), this);
 		if(!PitSim.isDev()) getServer().getPluginManager().registerEvents(new StatisticsManager(), this);
 
 		if(getStatus().isDarkzone()) {
@@ -929,6 +937,15 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new TheCakeIsALie());
 
 		ItemFactory.registerItem(new Potion());
+	}
+
+	public static void registerNPCCheckpoints() {
+		new TaintedWellCheckpoint();
+		new ProgressionCheckpoint();
+		new AltarCheckpoint();
+		new BrewingCheckpoint();
+		new MarketShopCheckpoint();
+		new CaveCheckpoint();
 	}
 
 	private void loadConfig() {

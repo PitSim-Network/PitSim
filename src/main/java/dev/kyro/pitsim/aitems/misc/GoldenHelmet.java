@@ -9,7 +9,7 @@ import dev.kyro.pitsim.controllers.HelmetSystem;
 import dev.kyro.pitsim.controllers.objects.HelmetAbility;
 import dev.kyro.pitsim.controllers.objects.HelmetManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +26,7 @@ public class GoldenHelmet extends PitItem {
 		hasDropConfirm = true;
 		hideExtra = true;
 		unbreakable = true;
-		auctionCategory = AuctionCategory.MISC;
+		marketCategory = MarketCategory.MISC;
 	}
 
 	@Override

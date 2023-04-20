@@ -1,51 +1,43 @@
 package dev.kyro.pitsim.inventories;
 
-import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
-import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.gui.APagedGUIPanel;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.NPCCheckpoint;
+import dev.kyro.pitsim.tutorial.TutorialObjective;
 import org.bukkit.Material;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class TaintedShopPanel extends AGUIPanel {
+public class TaintedShopPanel extends APagedGUIPanel {
+
 	public TaintedShopPanel(AGUI gui) {
 		super(gui);
-		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 
-		getInventory().setItem(31, new AItemStackBuilder(Material.ARROW)
-				.setName("&eBack")
-				.setLore(new ALoreBuilder(
-						"&7to home menu"
-				))
-				.getItemStack());
-
-		placeItems();
+		addBackButton(getRows() * 9 - 5);
+		buildInventory();
 	}
 
-	public void placeItems() {
+	@Override
+	public void addItems() {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		int slot = 9;
 
 		for(DarkzoneBalancing.ShopItem value : DarkzoneBalancing.ShopItem.values()) {
-			while(slot % 9 == 0 || slot % 9 == 8) slot++;
-
 			ItemStack itemStack = value.getItemStack();
 			ItemMeta itemMeta = itemStack.getItemMeta();
-			int cost = value.getSoulCost();
+			int cost = isTutorial(value) ? 0 : value.getSoulCost();
 			ALoreBuilder lore = new ALoreBuilder(itemMeta.getLore());
 			lore.addLore("",
-					"&7Cost: &f" + cost + " Soul" + Misc.s(cost),
+					"&7Cost: &f" + (isTutorial(value) ? "&m" : "") + cost + " Soul" + Misc.s(cost) + (isTutorial(value) ? "&a&l FREE!" : ""),
 					"&7You have: &f" + pitPlayer.taintedSouls + " Soul" + Misc.s(pitPlayer.taintedSouls),
 					"",
 					pitPlayer.taintedSouls < cost ? "&cNot enough souls!" : "&eClick to purchase!"
@@ -53,55 +45,46 @@ public class TaintedShopPanel extends AGUIPanel {
 			itemMeta.setLore(lore.getLore());
 			itemStack.setItemMeta(itemMeta);
 
-			NBTItem nbtItem = new NBTItem(itemStack, true);
-			nbtItem.setInteger(NBTTag.INVENTORY_INDEX.getRef(), value.ordinal());
+			addItem(() -> itemStack, event -> {
+				int updatedCost = isTutorial(value) ? 0 : value.getSoulCost();
 
-			getInventory().setItem(slot, itemStack);
+				if(pitPlayer.taintedSouls < updatedCost) {
+					Sounds.NO.play(player);
+					return;
+				}
 
-			slot++;
+				if(Misc.getEmptyInventorySlots(player) < 1) {
+					Sounds.NO.play(player);
+					AOutput.error(player, "You don't have enough space in your inventory!");
+					player.closeInventory();
+					return;
+				}
+
+				Sounds.RENOWN_SHOP_PURCHASE.play(player);
+
+				pitPlayer.taintedSouls -= updatedCost;
+				ItemStack item = value.getItemStack();
+
+				if(isTutorial(value)) {
+					NPCCheckpoint.removeTutorialItems(player);
+				}
+
+				if(isTutorial(value)) ItemFactory.setTutorialItem(item, true);
+				AUtil.giveItemSafely(player, item);
+				setInventory();
+			});
 		}
+	}
+
+	@Override
+	public void setInventory() {
+		super.setInventory();
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7, false);
 	}
 
 	@Override
 	public String getName() {
 		return "Tainted Shop";
-	}
-
-	@Override
-	public int getRows() {
-		return 4;
-	}
-
-	@Override
-	public void onClick(InventoryClickEvent event) {
-		if(event.getClickedInventory().getHolder() != this) return;
-
-		if(event.getSlot() == 31) {
-			openPreviousGUI();
-			return;
-		}
-
-		ItemStack itemStack = event.getCurrentItem();
-		if(Misc.isAirOrNull(itemStack)) return;
-
-		NBTItem nbtItem = new NBTItem(itemStack, true);
-		if(!nbtItem.hasKey(NBTTag.INVENTORY_INDEX.getRef())) return;
-
-		int index = nbtItem.getInteger(NBTTag.INVENTORY_INDEX.getRef());
-		DarkzoneBalancing.ShopItem shopItem = DarkzoneBalancing.ShopItem.values()[index];
-
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.taintedSouls < shopItem.getSoulCost()) {
-			Sounds.NO.play(player);
-			return;
-		}
-
-		Sounds.RENOWN_SHOP_PURCHASE.play(player);
-
-		pitPlayer.taintedSouls -= shopItem.getSoulCost();
-		AUtil.giveItemSafely(player, shopItem.getItemStack());
-
-		placeItems();
 	}
 
 	@Override
@@ -112,5 +95,15 @@ public class TaintedShopPanel extends AGUIPanel {
 	@Override
 	public void onClose(InventoryCloseEvent event) {
 
+	}
+
+	public boolean isTutorial(DarkzoneBalancing.ShopItem item) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(pitPlayer.darkzoneTutorial.tutorialNPC == null || pitPlayer.darkzoneTutorial.tutorialNPC.getCheckpoint() == null) return false;
+
+
+		return pitPlayer.darkzoneTutorial.isActive() && item == DarkzoneBalancing.ShopItem.DIAMOND_LEGGINGS &&
+				pitPlayer.darkzoneTutorial.tutorialNPC.getCheckpoint().objective == TutorialObjective.MARKET_SHOP
+				&& !pitPlayer.darkzoneTutorial.data.completedObjectives.contains(TutorialObjective.MARKET_SHOP);
 	}
 }

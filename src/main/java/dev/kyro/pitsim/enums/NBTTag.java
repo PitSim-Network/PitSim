@@ -13,6 +13,7 @@ public enum NBTTag {
 	ITEM_JEWEL_KILLS("pr-jewel-kills"),
 	ITEM_JEWEL_ENCHANT("pr-jewel-enchant"),
 	ITEM_LAST_SERVER("pr-last-server"),
+	IS_TUTORIAL_ITEM("pr-istutorial"),
 
 	IS_LOCKED("pr-islocked"),
 	IS_JEWEL("pr-isjewel"),

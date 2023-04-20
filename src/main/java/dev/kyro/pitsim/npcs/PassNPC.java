@@ -6,8 +6,8 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitNPC;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
+import dev.kyro.pitsim.tutorial.Tutorial;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -43,7 +43,7 @@ public class PassNPC extends PitNPC {
 			return;
 		}
 
-		Tutorial tutorial = pitPlayer.tutorial;
+		Tutorial tutorial = pitPlayer.overworldTutorial;
 		if(tutorial.isInObjective) return;
 		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PASS)) {
 

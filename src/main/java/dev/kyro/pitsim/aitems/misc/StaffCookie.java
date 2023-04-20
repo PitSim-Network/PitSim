@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -27,7 +27,7 @@ public class StaffCookie extends PitItem {
 	public StaffCookie() {
 		hasUUID = true;
 		hasDropConfirm = true;
-		auctionCategory = AuctionCategory.MISC;
+		marketCategory = MarketCategory.MISC;
 	}
 
 	@Override

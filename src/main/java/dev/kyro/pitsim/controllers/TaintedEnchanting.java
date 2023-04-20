@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.math.BigInteger;
 import java.util.*;
 
 public class TaintedEnchanting {
@@ -52,6 +53,9 @@ public class TaintedEnchanting {
 	public static final double TIER_4_RARE = 0.1;
 
 	public static ItemStack enchantItem(ItemStack itemStack, Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		long seed = pitPlayer.darkzoneTutorial.isActive() ? toSeededLong(player.getUniqueId()) : -1;
+
 		PitItem pitItem = ItemFactory.getItem(itemStack);
 		if(pitItem == null || !pitItem.isMystic ||
 				pitItem.getTemporaryType(itemStack) != TemporaryItem.TemporaryType.LOOSES_LIVES_ON_DEATH) return null;
@@ -66,15 +70,13 @@ public class TaintedEnchanting {
 		int previousDurableTier = -1;
 		int durableTier = 0;
 
-		Map<PitEnchant, Integer> previousEnchants = EnchantManager.getEnchantsOnItem(itemStack);
-
 		if(previousTier == 0) {
 			int tokens;
 
 			LinkedHashMap<Integer, Double> tokenChance = new LinkedHashMap<>();
 			tokenChance.put(1, TIER_1_TOKENS_1);
 			tokenChance.put(2, TIER_1_TOKENS_2);
-			tokens = Misc.weightedRandom(tokenChance);
+			tokens = Misc.weightedRandom(tokenChance, seed);
 
 			for(int i = 0; i < tokens; i++) {
 				Map<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(itemStack);
@@ -84,10 +86,10 @@ public class TaintedEnchanting {
 					randomEnchantMap.put(entry.getKey(), 1.0);
 				}
 
-				PitEnchant randomEnchant = getRandomEnchant(type, new ArrayList<>(randomEnchantMap.keySet()), 0);
+				PitEnchant randomEnchant = getRandomEnchant(type, new ArrayList<>(randomEnchantMap.keySet()), 0, seed);
 				randomEnchantMap.put(randomEnchant, (double) 1);
 
-				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
+				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap, seed);
 				int newTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
 				try {
 					itemStack = EnchantManager.addEnchant(itemStack, selectedEnchant, newTier + 1, false);
@@ -128,7 +130,7 @@ public class TaintedEnchanting {
 			enchantRandom.put(2, tokens2);
 			enchantRandom.put(3, tokens3);
 			enchantRandom.put(4, tokens4);
-			newTokens = Misc.weightedRandom(enchantRandom);
+			newTokens = Misc.weightedRandom(enchantRandom, seed);
 
 			for(int i = 0; i < newTokens; i++) {
 				LinkedHashMap<PitEnchant, Integer> enchantsOnItem = EnchantManager.getEnchantsOnItem(itemStack);
@@ -173,11 +175,11 @@ public class TaintedEnchanting {
 						if(!usedEnchants.contains(enchant)) usedEnchants.add(enchant);
 					}
 
-					PitEnchant randomEnchant = getRandomEnchant(type, new ArrayList<>(usedEnchants), Misc.weightedRandom(randomRarityMap));
+					PitEnchant randomEnchant = getRandomEnchant(type, new ArrayList<>(usedEnchants), Misc.weightedRandom(randomRarityMap, seed), seed);
 					randomEnchantMap.put(randomEnchant, (double) (3 - enchantsOnItem.size()));
 				}
 
-				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap);
+				PitEnchant selectedEnchant = Misc.weightedRandom(randomEnchantMap, seed);
 				if(selectedEnchant instanceof Durable) {
 					if(previousDurableTier == -1) previousDurableTier = enchantsOnItem.getOrDefault(selectedEnchant, 0);
 					durableTier++;
@@ -191,8 +193,6 @@ public class TaintedEnchanting {
 				}
 			}
 		}
-
-		int previousMaxLives = temporaryItem.getMaxLives(itemStack);
 
 		nbtItem = new NBTItem(itemStack, true);
 		nbtItem.setInteger(NBTTag.TAINTED_TIER.getRef(), previousTier + 1);
@@ -211,19 +211,18 @@ public class TaintedEnchanting {
 		return itemStack;
 	}
 
-	public static PitEnchant getRandomEnchant(MysticType type, List<PitEnchant> existingEnchants, int enchantRarity) {
+	public static PitEnchant getRandomEnchant(MysticType type, List<PitEnchant> existingEnchants, int enchantRarity, long seed) {
 		List<PitEnchant> enchantPool = new ArrayList<>(EnchantManager.getEnchants(type));
-		List<PitEnchant> rarityPool = new ArrayList<>();
+		LinkedHashMap<PitEnchant, Double> rarityPool = new LinkedHashMap<>();
 		for(PitEnchant enchant : enchantPool) {
 			int rarity = 0;
 			if(enchant.isUncommonEnchant) rarity = 1;
 			if(enchant.isRare) rarity = 2;
 
-			if(rarity == enchantRarity && !existingEnchants.contains(enchant)) rarityPool.add(enchant);
+			if(rarity == enchantRarity && !existingEnchants.contains(enchant)) rarityPool.put(enchant, 0D);
 		}
 
-		Random random = new Random();
-		return rarityPool.get(random.nextInt(rarityPool.size()));
+		return Misc.weightedRandom(rarityPool, seed);
 	}
 
 	public static String getTitle(Map<PitEnchant, Integer> existingEnchants, Map<PitEnchant, Integer> newEnchants, int previousLives, int currentLives) {
@@ -278,5 +277,11 @@ public class TaintedEnchanting {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 			if(!pitPlayer.playerChatDisabled) onlinePlayer.sendMessage(message);
 		}
+	}
+
+	public static long toSeededLong(UUID uuid) {
+		byte[] bytes = uuid.toString().getBytes();
+		BigInteger bigInteger = new BigInteger(bytes);
+		return bigInteger.longValue();
 	}
 }
