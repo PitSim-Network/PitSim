@@ -4,6 +4,7 @@ import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.diamond.DiamondLeggings;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.tutorial.Midpoint;
 import dev.kyro.pitsim.tutorial.NPCCheckpoint;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
@@ -18,7 +19,7 @@ import java.util.List;
 public class MarketShopCheckpoint extends NPCCheckpoint {
 	public MarketShopCheckpoint() {
 		super(TutorialObjective.MARKET_SHOP, new Location(MapManager.getDarkzone(),
-				205.5, 91, -86.5, 13, 0));
+				205.5, 91, -86.5, 13, 0), Midpoint.SPAWN1);
 	}
 
 	@Override

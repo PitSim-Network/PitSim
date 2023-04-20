@@ -5,6 +5,7 @@ import dev.kyro.pitsim.adarkzone.progression.MainProgressionUnlock;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.tutorial.Midpoint;
 import dev.kyro.pitsim.tutorial.NPCCheckpoint;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
@@ -14,7 +15,7 @@ import org.bukkit.entity.Player;
 public class ProgressionCheckpoint extends NPCCheckpoint {
 	public ProgressionCheckpoint() {
 		super(TutorialObjective.PROGRESSION, new Location(MapManager.getDarkzone(),
-				190.5, 91, -86.5, 13, 0));
+				190.5, 91, -86.5, 13, 0), Midpoint.SPAWN1);
 	}
 
 	@Override

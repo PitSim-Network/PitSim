@@ -20,6 +20,7 @@ public enum TutorialObjective {
 	MARKET_SHOP(DarkzoneTutorial.class, "market-shop", "&3Market &7and &bShop",  new ParticleBox(7, 7, 10)),
 	ALTAR(DarkzoneTutorial.class, "altar", "&5Tainted Altar",  new ParticleBox(10, 12, 12)),
 	BREWING(DarkzoneTutorial.class, "brewing", "&dBrewing",  new ParticleBox(7, 7, 10)),
+	MONSTER_CAVES(DarkzoneTutorial.class, "monster-caves", "&cMonster Caves",  new ParticleBox(15, 10, 10)),
 	;
 
 	public final Class<? extends Tutorial> tutorialClass;
@@ -65,6 +66,7 @@ public enum TutorialObjective {
 		else if(this == MARKET_SHOP) return new Location(MapManager.getDarkzone(), 202.5, 91, -83);
 		else if(this == ALTAR) return new Location(MapManager.getDarkzone(), 221.5, 92, -83.5);
 		else if(this == BREWING) return new Location(MapManager.getDarkzone(), 222.5, 91, -104);
+		else if(this == MONSTER_CAVES) return new Location(MapManager.getDarkzone(), 276.5, 91, -121.5);
 		return null;
 	}
 

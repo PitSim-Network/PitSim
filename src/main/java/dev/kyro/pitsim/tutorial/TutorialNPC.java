@@ -18,6 +18,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TutorialNPC implements Listener {
 	public static final String NPC_SKIN_NAME = "DarkzoneTutorial";
 	public static final String NPC_NAME = "&6&lTOUR GUIDE";
@@ -48,6 +51,7 @@ public class TutorialNPC implements Listener {
 			npc.addTrait(LookClose.class);
 			npc.getTrait(LookClose.class).setRange(10);
 			npc.getTrait(LookClose.class).toggle();
+			npc.setProtected(true);
 
 			SkinTrait skinTrait = CitizensAPI.getTraitFactory().getTrait(SkinTrait.class);
 			npc.addTrait(skinTrait);
@@ -59,18 +63,48 @@ public class TutorialNPC implements Listener {
 		npc.destroy();
 	}
 
-	public void walkToCheckPoint(Location location) {
+	public void walkToCheckPoint(NPCCheckpoint checkpoint) {
 		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
 		navigator.getDefaultParameters()
-				.stuckAction(null)
 				.distanceMargin(0.1)
 				.pathDistanceMargin(0.1)
 				.destinationTeleportMargin(-1);
-		navigator.setTarget(location);
 
-		System.out.println(navigator.getDefaultParameters().distanceMargin() + " " + navigator.getDefaultParameters().pathDistanceMargin());
+		List<Midpoint> completedMidpoints = new ArrayList<>();
+		List<BukkitRunnable> runningTasks = new ArrayList<>();
 
-		new BukkitRunnable() {
+		for(int i = 0; i < checkpoint.midpoints.length; i++) {
+			Midpoint currentMidpoint = getMidpoint(checkpoint, completedMidpoints);
+			if(currentMidpoint == null) break;
+
+			runningTasks.add(new BukkitRunnable() {
+				@Override
+				public void run() {
+					if(!npc.isSpawned()) {
+						cancel();
+						return;
+					}
+
+					navigator.setTarget(currentMidpoint.location);
+
+					if(npc.getEntity().getLocation().distance(currentMidpoint.location) <= 2) {
+						cancel();
+					}
+				}
+
+				public void cancel() {
+					super.cancel();
+					runningTasks.remove(this);
+					if(runningTasks.size() > 0) {
+						runningTasks.get(0).runTaskTimer(PitSim.INSTANCE, 0, 10);
+					}
+				}
+			});
+
+			completedMidpoints.add(currentMidpoint);
+		}
+
+		runningTasks.add(new BukkitRunnable() {
 			@Override
 			public void run() {
 				if(!npc.isSpawned()) {
@@ -78,13 +112,45 @@ public class TutorialNPC implements Listener {
 					return;
 				}
 
-				if(npc.getEntity().getLocation().distance(location) <= 2) {
+				navigator.setTarget(checkpoint.location);
+
+				if(npc.getEntity().getLocation().distance(checkpoint.location) <= 2) {
 					cancel();
 					npc.getNavigator().setTarget(null, true);
 					npc.faceLocation(tutorial.pitPlayer.player.getLocation());
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 0, 10);
+		});
+
+		for(BukkitRunnable runningTask : runningTasks) {
+			System.out.println(runningTask);
+		}
+
+		runningTasks.get(0).runTaskTimer(PitSim.INSTANCE, 0, 10);
+	}
+
+	public Midpoint getMidpoint(NPCCheckpoint checkpoint, List<Midpoint> completedMidpoints) {
+		Midpoint[] midpoints = checkpoint.midpoints;
+		if(checkpoint.location.distance(npc.getEntity().getLocation()) < 20) return null;
+
+		Midpoint currentMidpoint = null;
+		Location currentLocation = checkpoint.location;
+
+		for(Midpoint midpoint : midpoints) {
+			if(completedMidpoints.contains(midpoint)) continue;
+
+			if(currentMidpoint == null) {
+				currentMidpoint = midpoint;
+				continue;
+			}
+
+			if(midpoint.location.distance(npc.getEntity().getLocation()) < currentLocation.distance(npc.getEntity().getLocation())) {
+				currentMidpoint = midpoint;
+				currentLocation = midpoint.location;
+			}
+		}
+
+		return currentMidpoint;
 	}
 
 	@EventHandler
@@ -116,11 +182,12 @@ public class TutorialNPC implements Listener {
 
 		if(currentCheckpoint != null) currentCheckpoint.onDisengage(tutorial);
 		currentCheckpoint = checkpoint;
-		walkToCheckPoint(checkpoint.location);
+		walkToCheckPoint(checkpoint);
 		engage(checkpoint);
 	}
 
 	public void engage(NPCCheckpoint checkpoint) {
+		System.out.println(hashCode());
 		checkpoint.onEngage(tutorial, checkpoint.getEngageDelay());
 	}
 

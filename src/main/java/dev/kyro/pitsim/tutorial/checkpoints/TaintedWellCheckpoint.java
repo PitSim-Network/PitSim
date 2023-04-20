@@ -13,6 +13,7 @@ import dev.kyro.pitsim.controllers.TaintedWell;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.tutorial.Midpoint;
 import dev.kyro.pitsim.tutorial.NPCCheckpoint;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
@@ -27,7 +28,7 @@ import java.util.List;
 public class TaintedWellCheckpoint extends NPCCheckpoint {
 	public TaintedWellCheckpoint() {
 		super(TutorialObjective.TAINTED_WELL, new Location(MapManager.getDarkzone(),
-				188.5, 92, -101.5, 13, 0));
+				188.5, 92, -101.5, 13, 0), Midpoint.SPAWN1);
 	}
 
 	@Override

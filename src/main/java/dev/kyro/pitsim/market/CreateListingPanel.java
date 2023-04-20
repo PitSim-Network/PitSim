@@ -6,9 +6,11 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -125,8 +127,7 @@ public class CreateListingPanel extends AGUIPanel {
 			}
 
 			if(slot == 40) {
-				if(selectedItem == null || (!auctionEnabled && !binEnabled) || (auctionEnabled && !isBidValid()) ||
-						(binEnabled && !isBinValid()) || EnchantManager.isIllegalItem(selectedItem)) {
+				if(!isValidItem(selectedItem)) {
 					Sounds.NO.play(player);
 					return;
 				}
@@ -447,5 +448,13 @@ public class CreateListingPanel extends AGUIPanel {
 
 	public int getMaxDurationDays() {
 		return player.hasPermission("group.unthinkable") ? 7 : 3;
+	}
+
+	public boolean isValidItem(ItemStack selectedItem) {
+		MysticType type = MysticType.getMysticType(selectedItem);
+		if(type != null && !type.isTainted() && !MysticFactory.isJewel(selectedItem, false)) return false;
+
+		return !(selectedItem == null || (!auctionEnabled && !binEnabled) || (auctionEnabled && !isBidValid()) ||
+				(binEnabled && !isBinValid()) || EnchantManager.isIllegalItem(selectedItem));
 	}
 }

@@ -45,6 +45,11 @@ public class OverworldTutorial extends Tutorial {
 	}
 
 	@Override
+	public void onObjectiveComplete(TutorialObjective objective) {
+
+	}
+
+	@Override
 	public boolean isActive() {
 		return pitPlayer.prestige <= 1 && data.completedObjectives.size() < getObjectiveSize() && PitSim.status.isOverworld();
 	}

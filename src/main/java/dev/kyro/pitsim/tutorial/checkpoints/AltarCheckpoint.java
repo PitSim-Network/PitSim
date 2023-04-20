@@ -2,6 +2,7 @@ package dev.kyro.pitsim.tutorial.checkpoints;
 
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.tutorial.Midpoint;
 import dev.kyro.pitsim.tutorial.NPCCheckpoint;
 import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
@@ -10,7 +11,7 @@ import org.bukkit.Location;
 public class AltarCheckpoint extends NPCCheckpoint {
 	public AltarCheckpoint() {
 		super(TutorialObjective.ALTAR, new Location(MapManager.getDarkzone(),
-				218.5, 91, -88.5, 13, 0));
+				218.5, 91, -88.5, 13, 0), Midpoint.SPAWN1);
 	}
 
 	@Override

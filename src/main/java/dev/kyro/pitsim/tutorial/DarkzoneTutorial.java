@@ -2,7 +2,12 @@ package dev.kyro.pitsim.tutorial;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.misc.Misc;
+import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.potion.PotionEffectType;
 
 public class DarkzoneTutorial extends Tutorial {
 
@@ -24,6 +29,12 @@ public class DarkzoneTutorial extends Tutorial {
 		if(data.completedObjectives.size() == 0) {
 			sendMessage("&eHey! Welcome to the &5Darkzone&e!", 60);
 			sendMessage("&eBefore you leave &fspawn&e, I'll show you everything you need to know!", 110);
+		} else if(TutorialManager.isOnLastObjective(pitPlayer.player)) {
+			delayTask(() -> {
+				sendNPCToLastCheckpoint();
+				sendMessage(getProceedMessage(), 0);
+			}, 60);
+
 		} else {
 			sendMessage("&eWelcome back to the &5Darkzone&e!", 60);
 			sendMessage("&eI'll show you to the areas you missed last time.", 110);
@@ -38,16 +49,29 @@ public class DarkzoneTutorial extends Tutorial {
 
 	@Override
 	public void sendCompletionMessages() {
-		tutorialNPC.walkToCheckPoint(TutorialNPC.NPC_END_LOCATION);
 		sendMessage("&eThat's all I have to show you! You're ready to explore the &5Darkzone&e!", 40);
 		sendMessage("&eIf you need any help, you can always ask in chat or join &f&ndiscord.pitsim.net&e.", 100);
 		sendMessage("&eAfter leaving spawn, make sure to head over to the &cMonster Caves &eto start getting &fSouls&e.", 160);
 		sendMessage("&eWith that being said, good luck on your journey!", 220);
+
+		tutorialNPC.npc.getNavigator().setTarget(new Location(MapManager.getDarkzone(), 292, 78, -130));
 	}
 
 	@Override
 	public int getCompletionTicks() {
 		return 220;
+	}
+
+	@Override
+	public void onObjectiveComplete(TutorialObjective objective) {
+		if(TutorialManager.isOnLastObjective(pitPlayer.player)) {
+
+			NPCCheckpoint checkpoint = TutorialManager.getCheckpoint(TutorialObjective.MONSTER_CAVES);
+			assert checkpoint != null;
+			tutorialNPC.walkToCheckPoint(checkpoint);
+
+			Misc.applyPotionEffect((LivingEntity) tutorialNPC.npc.getEntity(), PotionEffectType.SPEED, 999999, 1, false, false);
+		}
 	}
 
 	@Override
@@ -74,6 +98,16 @@ public class DarkzoneTutorial extends Tutorial {
 
 	@Override
 	public String getProceedMessage() {
-		return "&6&nGo ahead and choose another area to explore. I'll meet you over there!";
+		if(TutorialManager.isOnLastObjective(pitPlayer.player)) {
+			return "&6&nCome meet me at the &c&nMonster Caves &6&noutside of spawn for your final objective!";
+		} else return "&6&nGo ahead and choose another area to explore. I'll meet you over there!";
+	}
+
+	public void sendNPCToLastCheckpoint() {
+		NPCCheckpoint checkpoint = TutorialManager.getCheckpoint(TutorialObjective.MONSTER_CAVES);
+		assert checkpoint != null;
+		tutorialNPC.walkToCheckPoint(checkpoint);
+
+		Misc.applyPotionEffect((LivingEntity) tutorialNPC.npc.getEntity(), PotionEffectType.SPEED, 999999, 1, false, false);
 	}
 }

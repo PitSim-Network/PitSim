@@ -37,6 +37,7 @@ public abstract class Tutorial {
 	public abstract int getStartTicks();
 	public abstract void sendCompletionMessages();
 	public abstract int getCompletionTicks();
+	public abstract void onObjectiveComplete(TutorialObjective objective);
 	public abstract boolean isActive();
 	public abstract void onStart();
 	public abstract void onTutorialEnd();
@@ -67,10 +68,10 @@ public abstract class Tutorial {
 		System.out.println(3);
 		onStart();
 
+		sendStartMessages();
 		if(!data.hasStartedTutorial) {
 			isInObjective = true;
 			data.hasStartedTutorial = true;
-			sendStartMessages();
 
 			new BukkitRunnable() {
 				@Override
@@ -102,6 +103,7 @@ public abstract class Tutorial {
 				data.completedObjectives.add(objective);
 				updateBossBar();
 				AOutput.send(pitPlayer.player, "&a&lTUTORIAL!&7 Completed objective: " + objective.display);
+				onObjectiveComplete(objective);
 				Sounds.LEVEL_UP.play(pitPlayer.player);
 
 				if(data.completedObjectives.size() == getObjectiveSize()) {

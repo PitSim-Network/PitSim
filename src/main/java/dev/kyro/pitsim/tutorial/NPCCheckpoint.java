@@ -12,6 +12,7 @@ public abstract class NPCCheckpoint {
 
 	public final TutorialObjective objective;
 	public final Location location;
+	public final Midpoint[] midpoints;
 
 	protected abstract void onCheckpointEngage(Tutorial tutorial);
 	protected abstract void onCheckpointSatisfy(Tutorial tutorial);
@@ -22,9 +23,10 @@ public abstract class NPCCheckpoint {
 
 	public abstract void onCheckPointDisengage(Tutorial tutorial);
 
-	public NPCCheckpoint(TutorialObjective objective, Location location) {
+	public NPCCheckpoint(TutorialObjective objective, Location location, Midpoint... midpoints) {
 		this.objective = objective;
 		this.location = location;
+		this.midpoints = midpoints;
 
 		TutorialManager.checkpoints.add(this);
 	}
@@ -53,10 +55,13 @@ public abstract class NPCCheckpoint {
 
 	public void onSatisfy(Tutorial tutorial, int delay) {
 		onCheckpointSatisfy(tutorial);
-		String proceedMessage = tutorial.getProceedMessage();
-		if(displayProceedMessage(tutorial)) tutorial.sendMessage(proceedMessage, delay + PROCEED_MESSAGE_DELAY);
 
-		tutorial.completeObjective(objective, (long) (delay + (displayProceedMessage(tutorial) ? PROCEED_MESSAGE_DELAY * 1.5 : 0)));
+		if(displayProceedMessage(tutorial)) tutorial.delayTask(() -> {
+			String proceedMessage = tutorial.getProceedMessage();
+			if(proceedMessage != null) tutorial.sendMessage(proceedMessage, 0);
+		}, (long) (delay + PROCEED_MESSAGE_DELAY * 1.5));
+
+		tutorial.completeObjective(objective, (long) (delay + (displayProceedMessage(tutorial) ? PROCEED_MESSAGE_DELAY : 0)));
 	}
 
 	public static void removeTutorialItems(Player player) {

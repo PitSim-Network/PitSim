@@ -943,6 +943,7 @@ public class PitSim extends JavaPlugin {
 		new AltarCheckpoint();
 		new BrewingCheckpoint();
 		new MarketShopCheckpoint();
+		new CaveCheckpoint();
 	}
 
 	private void loadConfig() {

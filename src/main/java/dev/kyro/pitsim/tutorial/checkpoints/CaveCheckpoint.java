@@ -7,18 +7,18 @@ import dev.kyro.pitsim.tutorial.Tutorial;
 import dev.kyro.pitsim.tutorial.TutorialObjective;
 import org.bukkit.Location;
 
-public class BrewingCheckpoint extends NPCCheckpoint {
-	public BrewingCheckpoint() {
-		super(TutorialObjective.BREWING, new Location(MapManager.getDarkzone(),
-				218, 91, -99.5, 13, 0), Midpoint.SPAWN1);
+public class CaveCheckpoint extends NPCCheckpoint {
+	public CaveCheckpoint() {
+		super(TutorialObjective.MONSTER_CAVES, new Location(MapManager.getDarkzone(),
+				276.5, 91, -117.5, 13, 0), Midpoint.ENTRANCE, Midpoint.SPAWN1, Midpoint.SPAWN2, Midpoint.EXIT, Midpoint.PATH1, Midpoint.PATH2);
 	}
 
 	@Override
 	public void onCheckpointEngage(Tutorial tutorial) {
-		tutorial.sendMessage("&eHere is the &d&lBrewing Area&e!", 0);
-		tutorial.sendMessage("&eHere you can brew &dPotions &eusing &cMob Drops&e.", 60);
-		tutorial.sendMessage("&ePotions currently have &f10 Unique Effects &efor use in both the &aOverworld &e and &5Darkzone&e.", 120);
-		tutorial.sendMessage("&eThe potion system will soon be reworked, so hold tight.", 180);
+		tutorial.sendMessage("&eWelcome to the &cMonster Caves&e!", 0);
+		tutorial.sendMessage("&eHere you can fight monsters to gain &fSouls&e.", 60);
+		tutorial.sendMessage("&eThe caves consist of &410 Levels&e, each containing a unique &4Boss Fight&e.", 120);
+		tutorial.sendMessage("&eUse the &fSouls &eearned here back in &5Spawn &eto progress through the different &4Levels&e.", 180);
 		tutorial.sendMessage("&eInteract with me to continue.", 240);
 	}
 
