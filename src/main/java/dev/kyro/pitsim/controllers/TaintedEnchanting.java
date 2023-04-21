@@ -219,7 +219,7 @@ public class TaintedEnchanting {
 			if(enchant.isUncommonEnchant) rarity = 1;
 			if(enchant.isRare) rarity = 2;
 
-			if(rarity == enchantRarity && !existingEnchants.contains(enchant)) rarityPool.put(enchant, 0D);
+			if(rarity == enchantRarity && !existingEnchants.contains(enchant)) rarityPool.put(enchant, 1D);
 		}
 
 		return Misc.weightedRandom(rarityPool, seed);
