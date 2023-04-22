@@ -17,7 +17,6 @@ public class TableManager {
 						new TableColumn(Integer.class, "souls")
 				));
 
-
 	}
 
 	protected static void registerTable(SQLTable table) {

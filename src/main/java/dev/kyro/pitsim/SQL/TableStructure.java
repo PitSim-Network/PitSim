@@ -85,7 +85,7 @@ public class TableStructure {
 
 	private String getColumnTypeName(TableColumn column) {
 		System.out.println(column.getType());
-		CLAZZ clazz = CLAZZ.valueOf(column.getType().getSimpleName());
+		Clazz clazz = Clazz.valueOf(column.getType().getSimpleName());
 		switch(clazz) {
 			case String:
 				return "VARCHAR(50)";
@@ -146,9 +146,13 @@ public class TableStructure {
 
 	}
 
-	enum CLAZZ {
-		String, Integer, Long, Double, Float, Boolean;
-
+	enum Clazz {
+		String,
+		Integer,
+		Long,
+		Double,
+		Float,
+		Boolean;
 	}
 }
 
