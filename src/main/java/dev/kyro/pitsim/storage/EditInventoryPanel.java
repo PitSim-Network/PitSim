@@ -37,17 +37,17 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 
 				if(!playerEdit || session.getEditType() != EditType.ONLINE) {
 					for(int i = 1; i < 5; i++) {
-						session.getStorageProfile().armor[i - 1] = inventory.getItem(i);
+						session.getStorageProfile().getArmor()[i - 1] = inventory.getItem(i);
 					}
 
 					for(int i = 9; i < inventory.getSize(); i++) {
-						session.getStorageProfile().inventory[i - 9] = inventory.getItem(i);
+						session.getStorageProfile().getInventory()[i - 9] = inventory.getItem(i);
 					}
 
 					if(session.getEditType() == EditType.ONLINE) {
 						Player onlinePlayer = Bukkit.getPlayer(session.getPlayerUUID());
-						onlinePlayer.getInventory().setContents(session.getStorageProfile().inventory);
-						onlinePlayer.getInventory().setArmorContents(session.getStorageProfile().armor);
+						onlinePlayer.getInventory().setContents(session.getStorageProfile().getInventory());
+						onlinePlayer.getInventory().setArmorContents(session.getStorageProfile().getArmor());
 						onlinePlayer.updateInventory();
 					}
 				} else {
@@ -73,11 +73,11 @@ public class EditInventoryPanel implements InventoryHolder, Listener {
 		inventory = Bukkit.createInventory(this, 9 * 5, "Player Inventory");
 
 		for(int i = 1; i < 5; i++) {
-			inventory.setItem(i, session.getStorageProfile().armor[i - 1]);
+			inventory.setItem(i, session.getStorageProfile().getArmor()[i - 1]);
 		}
 
 		for(int i = 9; i < inventory.getSize(); i++) {
-			inventory.setItem(i, session.getStorageProfile().inventory[i - 9]);
+			inventory.setItem(i, session.getStorageProfile().getInventory()[i - 9]);
 		}
 
 		AItemStackBuilder builder = new AItemStackBuilder(Material.ENDER_CHEST);

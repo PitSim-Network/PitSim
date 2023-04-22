@@ -83,7 +83,7 @@ public class EnderchestPanel extends AGUIPanel {
 
 			EnderchestPage enderchestPage = profile.getEnderchestPage(pageIndex);
 			AItemStackBuilder stackBuilder = new AItemStackBuilder(enderchestPage.getDisplayItem())
-					.setName(enderchestPage.getName());
+					.setName("&5&lENDERCHEST &7Page " + (enderchestPage.getIndex() + 1));
 			ALoreBuilder lore = new ALoreBuilder();
 
 			int accessiblePages = profile.getUUID().equals(player.getUniqueId()) ? rank.pages : StorageManager.MAX_ENDERCHEST_PAGES;

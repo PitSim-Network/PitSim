@@ -29,6 +29,7 @@ import java.util.UUID;
 public class StorageManager implements Listener {
 	public static final int MAX_ENDERCHEST_PAGES = 18;
 	public static final int ENDERCHEST_ITEM_SLOTS = 36;
+	public static final int OUTFITS = 9;
 
 	protected static final List<StorageProfile> profiles = new ArrayList<>();
 	protected static final List<EditSession> editSessions = new ArrayList<>();
@@ -83,8 +84,8 @@ public class StorageManager implements Listener {
 	public static void quitInitiate(Player player) {
 		StorageProfile profile = getProfile(player);
 
-		profile.inventory = player.getInventory().getContents();
-		profile.armor = player.getInventory().getArmorContents();
+		profile.setInventory(player.getInventory().getContents());
+		profile.setArmor(player.getInventory().getArmorContents());
 	}
 
 	public static void quitCleanup(Player player) {
@@ -217,7 +218,7 @@ public class StorageManager implements Listener {
 			return;
 		}
 
-		for(EnderchestPage enderchestPage : profile.enderchestPages) {
+		for(EnderchestPage enderchestPage : profile.getEnderchestPages()) {
 			Inventory inventory = enderchestPage.getInventory();
 			if(!inventory.equals(event.getClickedInventory())) continue;
 

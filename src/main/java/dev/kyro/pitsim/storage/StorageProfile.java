@@ -21,9 +21,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class StorageProfile {
-	protected ItemStack[] inventory = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
-	protected ItemStack[] armor = new ItemStack[4];
-	protected EnderchestPage[] enderchestPages = new EnderchestPage[StorageManager.MAX_ENDERCHEST_PAGES];
+	private ItemStack[] inventory = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
+	private ItemStack[] armor = new ItemStack[4];
+	private final EnderchestPage[] enderchestPages = new EnderchestPage[StorageManager.MAX_ENDERCHEST_PAGES];
+	private final Outfit[] outfits = new Outfit[9];
 
 	private final UUID uuid;
 	private BukkitTask saveTask;
@@ -46,6 +47,7 @@ public class StorageProfile {
 		for(int i = 0; i < 36; i++) inventory[i] = deserialize(strings.remove(0), uuid);
 		for(int i = 0; i < 4; i++) armor[i] = deserialize(strings.remove(0), uuid);
 		for(int i = 0; i < enderchestPages.length; i++) enderchestPages[i] = new EnderchestPage(this, message);
+		for(int i = 0; i < StorageManager.OUTFITS; i++) outfits[i] = new Outfit(this, message);
 		isLoaded = true;
 	}
 
@@ -61,7 +63,6 @@ public class StorageProfile {
 		if(StorageManager.isEditing(uuid) && Bukkit.getPlayer(uuid) != null) return;
 		if(StorageManager.isBeingEdited(uuid) && Bukkit.getPlayer(uuid) != null) return;
 
-		for(EnderchestPage enderchestPage : enderchestPages) enderchestPage.writeData(message, isLogout);
 		if(getOnlinePlayer() != null) {
 			for(ItemStack itemStack : getOnlinePlayer().getInventory()) message.writeString(serialize(getOfflinePlayer(), itemStack, isLogout));
 			for(ItemStack itemStack : getOnlinePlayer().getInventory().getArmorContents()) message.writeString(serialize(getOfflinePlayer(), itemStack, isLogout));
@@ -69,6 +70,7 @@ public class StorageProfile {
 			for(ItemStack itemStack : inventory) message.writeString(serialize(getOfflinePlayer(), itemStack, isLogout));
 			for(ItemStack itemStack : armor) message.writeString(serialize(getOfflinePlayer(), itemStack, isLogout));
 		}
+		for(EnderchestPage enderchestPage : enderchestPages) enderchestPage.writeData(message, isLogout);
 
 		saving = true;
 		saveTask = new BukkitRunnable() {
@@ -101,9 +103,19 @@ public class StorageProfile {
 		return inventory;
 	}
 
+	public void setInventory(ItemStack[] inventory) {
+		if(!isLoaded) throw new DataNotLoadedException();
+		this.inventory = inventory;
+	}
+
 	public ItemStack[] getArmor() {
 		if(!isLoaded) throw new DataNotLoadedException();
 		return armor;
+	}
+
+	public void setArmor(ItemStack[] armor) {
+		if(!isLoaded) throw new DataNotLoadedException();
+		this.armor = armor;
 	}
 
 	public EnderchestPage[] getEnderchestPages() {

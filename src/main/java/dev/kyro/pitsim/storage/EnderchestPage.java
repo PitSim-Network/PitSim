@@ -32,7 +32,6 @@ public class EnderchestPage {
 
 		index = integers.remove(0);
 		name = strings.remove(0);
-		if(name.isEmpty()) name = "&5&lENDERCHEST &7Page " + (index + 1);
 		displayItem = CustomSerializer.deserializeDirectly(strings.remove(0));
 		if(Misc.isAirOrNull(displayItem)) displayItem = new AItemStackBuilder(Material.ENDER_CHEST).getItemStack();
 		isWardrobeEnabled = booleans.remove(0);
