@@ -1,5 +1,7 @@
 package dev.kyro.pitsim.commands;
 
+import dev.kyro.pitsim.SQL.SQLTable;
+import dev.kyro.pitsim.SQL.TableManager;
 import net.minecraft.server.v1_8_R3.EntityItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,10 +27,17 @@ public class ATestCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if(!(sender instanceof Player)) return false;
-		Player player = (Player) sender;
-		if(!player.isOp()) return false;
-		
+		if((sender instanceof Player)) return false;
+//		Player player = (Player) sender;
+//		if(!player.isOp()) return false;
+
+		TableManager.registerTables();
+
+		SQLTable table = TableManager.getTable("development");
+		assert table != null;
+		table.insertRow(UUID.randomUUID().toString(), 34, System.currentTimeMillis(), false, 6);
+
+//
 		return false;
 	}
 
