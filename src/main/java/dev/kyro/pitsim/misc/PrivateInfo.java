@@ -226,4 +226,5 @@ public class PrivateInfo {
 	public static final List<String> WHITELISTED_IPS = new ArrayList<>(Arrays.asList("/***REMOVED***", "/***REMOVED***"));
 	public static final String ALERTS_WEBHOOK = "***REMOVED***";
 	public static final String PLAYER_DATA_SQL_PASSWORD = "***REMOVED***";
+	public static final String DEVELOPMENT_SQL_PASSWORD = "***REMOVED***";
 }

@@ -1,13 +1,14 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.pitsim.aitems.PitItem;
-import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.diamond.DiamondLeggings;
+import dev.kyro.pitsim.aitems.misc.TheCakeIsALie;
 import dev.kyro.pitsim.aitems.mystics.*;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 public class DarkzoneBalancing {
 	public static final double SCYTHE_DAMAGE = 7.5;
@@ -65,7 +66,7 @@ public class DarkzoneBalancing {
 		BOSS_DAMAGE(5, 1.5),
 		BOSS_HEALTH(40, 1.5),
 		BOSS_SOULS(15, 1.35),
-		MOB_DAMAGE(8.5, 1.5),
+		MOB_DAMAGE(8, 1.5),
 		MOB_HEALTH(11.25, 1.5),
 		MOB_SOULS(7, 1.2),
 		;
@@ -128,19 +129,20 @@ public class DarkzoneBalancing {
 	}
 
 	public enum ShopItem {
-		DIAMOND_LEGGINGS(DiamondLeggings.class, 10),
+		DIAMOND_LEGGINGS(() -> ItemFactory.getItem(DiamondLeggings.class).getItem(), 10),
+		CAKE(() -> ItemFactory.getItem(TheCakeIsALie.class).getItem(), 100),
 		;
 
-		private Class<? extends StaticPitItem> item;
-		private int soulCost;
+		private final Supplier<ItemStack> itemStack;
+		private final int soulCost;
 
-		ShopItem(Class<? extends StaticPitItem> item, int soulCost) {
-			this.item = item;
+		ShopItem(Supplier<ItemStack> itemStack, int soulCost) {
+			this.itemStack = itemStack;
 			this.soulCost = soulCost;
 		}
 
-		public ItemStack getItem() {
-			return ItemFactory.getItem(item).getItem();
+		public ItemStack getItemStack() {
+			return itemStack.get();
 		}
 
 		public int getSoulCost() {

@@ -8,7 +8,7 @@ import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.Misc;
@@ -31,7 +31,7 @@ public class TaintedChestplate extends StaticPitItem implements TemporaryItem {
 		unbreakable = true;
 		hasEnchantGlint = true;
 		isMystic = true;
-		auctionCategory = AuctionCategory.DARKZONE_GEAR;
+		marketCategory = MarketCategory.DARKZONE_GEAR;
 	}
 
 	@Override

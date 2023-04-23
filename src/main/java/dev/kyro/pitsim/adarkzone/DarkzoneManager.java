@@ -36,6 +36,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -47,10 +48,10 @@ import java.util.*;
 public class DarkzoneManager implements Listener {
 	public static List<SubLevel> subLevels = new ArrayList<>();
 	public static List<Hologram> holograms = new ArrayList<>();
+	public static List<Chunk> mapChunks = new ArrayList<>();
 
 	public static List<Player> regenCooldownList = new ArrayList<>();
-
-	public static List<Chunk> mapChunks = new ArrayList<>();
+	public static List<UUID> freshSoftCooldownList = new ArrayList<>();
 
 	public DarkzoneManager() {
 		SubLevel subLevel;
@@ -178,6 +179,23 @@ public class DarkzoneManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 
 		FastTravelManager.init();
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		putOnSoftFreshCooldownList(player);
+	}
+
+	public static void putOnSoftFreshCooldownList(Player player) {
+		if(freshSoftCooldownList.contains(player.getUniqueId())) return;
+		freshSoftCooldownList.add(player.getUniqueId());
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				freshSoftCooldownList.remove(player.getUniqueId());
+			}
+		}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(20 * 60 * 2) + 20 * 60 * 3 + 1);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

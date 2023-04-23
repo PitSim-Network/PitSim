@@ -5,6 +5,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,7 @@ public class Parasite extends PitEnchant {
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
 
-		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), 20);
+		Cooldown cooldown = getCooldown(attackEvent.getAttackerPlayer(), getCooldownTicks(enchantLvl));
 		if(cooldown.isOnCooldown()) return;
 		else cooldown.restart();
 
@@ -37,8 +38,10 @@ public class Parasite extends PitEnchant {
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
+		double seconds = getCooldownTicks(enchantLvl) / 20.0;
 		return new PitLoreBuilder(
-				"&7Heal &c" + Misc.getHearts(getHealing(enchantLvl)) + " &7on arrow hit (1s cooldown)"
+				"&7Heal &c" + Misc.getHearts(getHealing(enchantLvl)) + " &7on arrow hit (" +
+						Formatter.decimalCommaFormat.format(seconds) + "s cooldown)"
 		).getLore();
 	}
 
@@ -49,6 +52,11 @@ public class Parasite extends PitEnchant {
 	}
 
 	public double getHealing(int enchantLvl) {
-		return Math.floor(Math.pow(enchantLvl, 1.4)) * 0.5;
+		if(enchantLvl == 1) return 1;
+		return enchantLvl - 0.5;
+	}
+
+	public int getCooldownTicks(int enchantLvL) {
+		return 30;
 	}
 }

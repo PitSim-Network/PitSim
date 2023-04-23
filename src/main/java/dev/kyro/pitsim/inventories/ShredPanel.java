@@ -16,8 +16,8 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class TaintedShredPanel extends APagedGUIPanel {
-	public TaintedShredPanel(AGUI gui) {
+public class ShredPanel extends APagedGUIPanel {
+	public ShredPanel(AGUI gui) {
 		super(gui);
 
 		addBackButton(getRows() * 9 - 5);
@@ -26,10 +26,10 @@ public class TaintedShredPanel extends APagedGUIPanel {
 
 	@Override
 	public void addItems() {
-
 		for(ItemStack invItem : player.getInventory()) {
 			if(Misc.isAirOrNull(invItem)) continue;
 			ItemStack itemStack = invItem.clone();
+			if(ItemFactory.isTutorialItem(itemStack)) continue;
 
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			if(!MysticFactory.isJewel(itemStack, true) && !(pitItem instanceof TaintedScythe) &&
@@ -62,12 +62,8 @@ public class TaintedShredPanel extends APagedGUIPanel {
 	}
 
 	@Override
-	public void onOpen(InventoryOpenEvent event) {
-
-	}
+	public void onOpen(InventoryOpenEvent event) {}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) {
-
-	}
+	public void onClose(InventoryCloseEvent event) {}
 }

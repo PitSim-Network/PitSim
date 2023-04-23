@@ -66,7 +66,7 @@ public class DamageBranch extends SkillBranch {
 	}
 
 	public static double getMaxNearSpawnerMultiplier() {
-		return 1.3;
+		return 1.4;
 	}
 
 	public static double getMobBossDamageIncrease() {

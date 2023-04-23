@@ -88,8 +88,9 @@ public class ItemManager implements Listener {
 		Player player = (Player) event.getWhoClicked();
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
-		if(pitItem == null || !pitItem.hasDropConfirm) return;
-		if(pitItem.isMystic && !MysticFactory.isImportant(itemStack)) return;
+		if(pitItem == null) return;
+		if(!pitItem.hasDropConfirm && !ItemFactory.isTutorialItem(itemStack)) return;
+		if(pitItem.isMystic && !MysticFactory.isImportant(itemStack) && !ItemFactory.isTutorialItem(itemStack)) return;
 
 		event.setCancelled(true);
 		player.updateInventory();
@@ -151,6 +152,13 @@ public class ItemManager implements Listener {
 		if(ShutdownManager.isShuttingDown) {
 			event.setCancelled(true);
 			AOutput.send(player, "&c&lERROR!&7 You cannot drop items while the server is shutting down");
+			return;
+		}
+
+		if(ItemFactory.isTutorialItem(itemStack)) {
+			event.setCancelled(true);
+			AOutput.error(player, "&cYou cannot drop tutorial items!");
+			Sounds.NO.play(player);
 			return;
 		}
 

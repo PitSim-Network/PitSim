@@ -13,6 +13,7 @@ public enum NBTTag {
 	ITEM_JEWEL_KILLS("pr-jewel-kills"),
 	ITEM_JEWEL_ENCHANT("pr-jewel-enchant"),
 	ITEM_LAST_SERVER("pr-last-server"),
+	IS_TUTORIAL_ITEM("pr-istutorial"),
 
 	IS_LOCKED("pr-islocked"),
 	IS_JEWEL("pr-isjewel"),
@@ -31,6 +32,7 @@ public enum NBTTag {
 	SOUL_AMOUNT("pr-soul-amount"),
 	COOKIE_GIVER("pr-cookie-giver"),
 	COOKIE_RECEIVER("pr-cookie-receiver"),
+	CAKE_USAGES("pr-cake-usages"),
 
 	GHELMET_GOLD("pr-ghelm-gold"),
 	GHELMET_ABILITY("pr-ghelm-ability"),

@@ -37,7 +37,7 @@ public class PrestigeNPC extends PitNPC {
 	public void onClick(Player player) {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		Tutorial tutorial = pitPlayer.tutorial;
+		Tutorial tutorial = pitPlayer.overworldTutorial;
 		if(tutorial.isInObjective) return;
 		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PRESTIGE)) {
 

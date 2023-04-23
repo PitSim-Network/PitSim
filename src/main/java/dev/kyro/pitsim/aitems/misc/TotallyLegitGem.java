@@ -3,7 +3,7 @@ package dev.kyro.pitsim.aitems.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.inventories.GemGUI;
 import org.bukkit.Material;
@@ -21,7 +21,7 @@ public class TotallyLegitGem extends StaticPitItem {
 
 	public TotallyLegitGem() {
 		hasDropConfirm = true;
-		auctionCategory = AuctionCategory.PURE_RELATED;
+		marketCategory = MarketCategory.PURE_RELATED;
 	}
 
 	@Override

@@ -81,28 +81,48 @@ public class DamageManager implements Listener {
 	}
 
 	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage) {
-		createIndirectAttack(fakeAttacker, defender, damage, null);
+		createIndirectAttack(fakeAttacker, defender, damage, null, null);
 	}
 
-	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage, Consumer<AttackEvent.Apply> callback) {
+	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage,
+											Map<PitEnchant, Integer> overrideAttackerEnchantMap,
+											Map<PitEnchant, Integer> overrideDefenderEnchantMap) {
+		createIndirectAttack(fakeAttacker, defender, damage, overrideAttackerEnchantMap, overrideDefenderEnchantMap, null);
+	}
+
+	public static void createIndirectAttack(LivingEntity fakeAttacker, LivingEntity defender, double damage,
+											Map<PitEnchant, Integer> overrideAttackerEnchantMap,
+											Map<PitEnchant, Integer> overrideDefenderEnchantMap,
+											Consumer<AttackEvent.Apply> callback) {
 		assert defender != null;
 		if(!Misc.isValidMobPlayerTarget(defender)) return;
 
-		attackInfoMap.put(defender, new AttackInfo(AttackInfo.AttackType.FAKE_INDIRECT, fakeAttacker, callback));
+		attackInfoMap.put(defender, new AttackInfo(AttackInfo.AttackType.FAKE_INDIRECT, fakeAttacker,
+				overrideAttackerEnchantMap, overrideDefenderEnchantMap, callback));
 		EntityDamageEvent event = new EntityDamageEvent(defender, EntityDamageEvent.DamageCause.CUSTOM, damage);
 		Bukkit.getPluginManager().callEvent(event);
 		if(!event.isCancelled()) defender.damage(event.getDamage());
 	}
 
 	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage) {
-		createDirectAttack(attacker, defender, damage, null);
+		createDirectAttack(attacker, defender, damage, null, null, null);
 	}
 
-	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage, Consumer<AttackEvent.Apply> callback) {
+	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage,
+										  Map<PitEnchant, Integer> overrideAttackerEnchantMap,
+										  Map<PitEnchant, Integer> overrideDefenderEnchantMap) {
+		createDirectAttack(attacker, defender, damage, overrideAttackerEnchantMap, overrideDefenderEnchantMap, null);
+	}
+
+	public static void createDirectAttack(LivingEntity attacker, LivingEntity defender, double damage,
+										  Map<PitEnchant, Integer> overrideAttackerEnchantMap,
+										  Map<PitEnchant, Integer> overrideDefenderEnchantMap,
+										  Consumer<AttackEvent.Apply> callback) {
 		assert attacker != null && defender != null;
 		if(!Misc.isValidMobPlayerTarget(defender)) return;
 
-		attackInfoMap.put(defender, new AttackInfo(AttackInfo.AttackType.FAKE_DIRECT, null, callback));
+		attackInfoMap.put(defender, new AttackInfo(AttackInfo.AttackType.FAKE_DIRECT, null,
+				overrideAttackerEnchantMap, overrideDefenderEnchantMap, callback));
 
 		defender.damage(damage, attacker);
 	}
@@ -207,8 +227,6 @@ public class DamageManager implements Listener {
 		if(defender instanceof ArmorStand) return;
 		if(defender instanceof Slime && !(defender instanceof MagmaCube)) return;
 
-		Map<PitEnchant, Integer> defenderEnchantMap = EnchantManager.getEnchantsOnPlayer(defender);
-
 		boolean fakeHit = false;
 
 		Non attackingNon = NonManager.getNon(attacker);
@@ -283,14 +301,21 @@ public class DamageManager implements Listener {
 		AttackEvent.Pre preEvent;
 
 		Map<PitEnchant, Integer> attackerEnchantMap = new HashMap<>();
+		Map<PitEnchant, Integer> defenderEnchantMap = EnchantManager.getEnchantsOnPlayer(defender);
 		if(realDamager instanceof Projectile) {
 			for(Map.Entry<Projectile, Map<PitEnchant, Integer>> entry : projectileMap.entrySet()) {
 				if(!entry.getKey().equals(realDamager)) continue;
 				attackerEnchantMap = projectileMap.get(entry.getKey());
 				break;
 			}
-		} else if(realDamager instanceof LivingEntity) {
+		} if(realDamager instanceof LivingEntity) {
 			attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(attacker);
+		}
+
+		if(event.hasAttackInfo()) {
+			AttackInfo attackInfo = event.getAttackInfo();
+			if(attackInfo.hasOverrideAttackerEnchantMap()) attackerEnchantMap = attackInfo.getOverrideAttackerEnchantMap();
+			if(attackInfo.hasOverrideDefenderEnchantMap()) defenderEnchantMap = attackInfo.getOverrideDefenderEnchantMap();
 		}
 
 //		Remove disabled enchants
@@ -349,7 +374,7 @@ public class DamageManager implements Listener {
 			}
 		}
 
-		if(attackEvent.getWrapperEvent().getAttackInfo() != null) {
+		if(attackEvent.getWrapperEvent().hasAttackInfo()) {
 			AttackInfo attackInfo = attackEvent.getWrapperEvent().getAttackInfo();
 			if(attackInfo.getCallback() != null) attackInfo.getCallback().accept(attackEvent);
 		}

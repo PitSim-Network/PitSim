@@ -26,6 +26,7 @@ public class AltarRenownReward {
 	public int amount;
 	public List<BukkitTask> bukkitTaskList = new ArrayList<>();
 	public Map<EntityItem, Integer> items = new HashMap<>();
+	public BukkitTask despawnRunnable;
 
 	public AltarRenownReward(Player player, int amount) {
 		this.player = player;
@@ -73,17 +74,22 @@ public class AltarRenownReward {
 			}.runTaskTimer(PitSim.INSTANCE, 0, 5));
 		}
 
-		new BukkitRunnable() {
+		despawnRunnable = new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Map.Entry<EntityItem, Integer> entry : items.entrySet()) {
-					reward(entry.getValue());
-					despawn(entry.getKey());
-				}
-
-				for(BukkitTask task : bukkitTaskList) task.cancel();
+				despawnReward();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 30 * 20);
+	}
+
+	public void despawnReward() {
+		for(Map.Entry<EntityItem, Integer> entry : items.entrySet()) {
+			reward(entry.getValue());
+			despawn(entry.getKey());
+		}
+
+		despawnRunnable.cancel();
+		for(BukkitTask task : bukkitTaskList) task.cancel();
 	}
 
 	public void despawn(EntityItem item) {

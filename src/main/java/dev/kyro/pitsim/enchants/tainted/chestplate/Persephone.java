@@ -39,7 +39,7 @@ public class Persephone extends PitEnchant {
 	public static final int MAX_FLOWER_COUNT = 10;
 	public static final double FLOWER_SPAWN_RADIUS = 5;
 	public static final double EFFECT_RADIUS = 7;
-	public static final int DEFAULT_EFFECT_DURATION = 20 * 10;
+	public static final int DEFAULT_EFFECT_DURATION = 20 * 15;
 
 	public Persephone() {
 		super("Persephone", true, ApplyType.CHESTPLATES,
@@ -101,7 +101,8 @@ public class Persephone extends PitEnchant {
 						randomTarget.getWorld().strikeLightningEffect(randomTarget.getLocation());
 
 						double damage = PlayerManager.isRealPlayer(randomTarget) ? getLightningPlayerDamage() : getLightningMobDamage();
-						DamageManager.createIndirectAttack(entry.getKey(), randomTarget, 0, attackEvent -> attackEvent.trueDamage = damage);
+						DamageManager.createIndirectAttack(entry.getKey(), randomTarget, 0, null, null,
+								attackEvent -> attackEvent.trueDamage = damage);
 					}
 				}
 				count++;
@@ -222,7 +223,7 @@ public class Persephone extends PitEnchant {
 	}
 
 	public static double getHealing() {
-		return 0.5;
+		return 1;
 	}
 
 	public static double getShieldRegenMultiplier() {

@@ -59,6 +59,6 @@ public class Resilient extends PitEnchant {
 	}
 
 	public static int getManaReduction(int enchantLvl) {
-		return 50;
+		return 40;
 	}
 }

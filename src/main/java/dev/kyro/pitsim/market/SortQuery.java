@@ -2,31 +2,29 @@ package dev.kyro.pitsim.market;
 
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class SortQuery {
 
 	private final PrimarySortType primarySortType;
 	private final ListingFilter listingFilter;
-	private final AuctionCategory auctionCategory;
+	private final MarketCategory marketCategory;
 	private final String sortParameter;
 	private final MarketListing[] listings;
 
-	public SortQuery(PrimarySortType primarySortType, ListingFilter listingFilter, AuctionCategory auctionCategory, String sortParameter) {
+	public SortQuery(PrimarySortType primarySortType, ListingFilter listingFilter, MarketCategory marketCategory, String sortParameter) {
 
 		 this.primarySortType = primarySortType;
 		 this.listingFilter = listingFilter;
-		 this.auctionCategory = auctionCategory;
+		 this.marketCategory = marketCategory;
 		 this.sortParameter = sortParameter.replaceAll("\"", "");
 
-		 List<MarketListing> sortedListings = getSortedList(primarySortType, listingFilter, auctionCategory, sortParameter);
+		 List<MarketListing> sortedListings = getSortedList(primarySortType, listingFilter, marketCategory, sortParameter);
 		 listings = new MarketListing[sortedListings.size()];
 		 for(int i = 0; i < sortedListings.size(); i++) {
 			 listings[i] = sortedListings.get(i);
@@ -40,7 +38,7 @@ public class SortQuery {
 		return ListingFilter.BIN;
 	}
 
-	public List<MarketListing> getSortedList(PrimarySortType primarySortType, ListingFilter listingFilter, AuctionCategory auctionCategory, String sortParameter) {
+	public List<MarketListing> getSortedList(PrimarySortType primarySortType, ListingFilter listingFilter, MarketCategory marketCategory, String sortParameter) {
 		List<MarketListing> sortedList = new ArrayList<>();
 
 		listings:
@@ -53,10 +51,10 @@ public class SortQuery {
 
 			PitItem pitItem = ItemFactory.getItem(listing.itemData);
 			if(pitItem == null) continue;
-			AuctionCategory category = pitItem.auctionCategory;
+			MarketCategory category = pitItem.marketCategory;
 
-			if(auctionCategory != AuctionCategory.ALL && category != AuctionCategory.ALL) {
-				if(auctionCategory != category) continue;
+			if(marketCategory != MarketCategory.ALL && category != MarketCategory.ALL) {
+				if(marketCategory != category) continue;
 			}
 
 			if(sortParameter != null && !sortParameter.isEmpty()) {
@@ -183,8 +181,8 @@ public class SortQuery {
 		return listingFilter;
 	}
 
-	public AuctionCategory getAuctionCategory() {
-		return auctionCategory;
+	public MarketCategory getAuctionCategory() {
+		return marketCategory;
 	}
 
 	public MarketListing[] getListings() {
@@ -195,8 +193,8 @@ public class SortQuery {
 		return sortParameter;
 	}
 
-	public AuctionCategory getCategory() {
-		return auctionCategory;
+	public MarketCategory getCategory() {
+		return marketCategory;
 	}
 
 }

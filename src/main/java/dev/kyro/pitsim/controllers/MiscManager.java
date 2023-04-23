@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUIManager;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.BulletTime;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.Sounds;
@@ -52,12 +53,13 @@ public class MiscManager implements Listener {
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		Block block = event.getClickedBlock();
 		if(block.getType() != Material.ENDER_CHEST) return;
 		event.setCancelled(true);
 
-		if(ShutdownManager.enderchestDisabled) {
+		if(ShutdownManager.enderchestDisabled | pitPlayer.darkzoneTutorial.isActive()) {
 			AOutput.error(player, "&c&lERROR!&7 You may not open the Enderchest right now!");
 			return;
 		}

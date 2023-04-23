@@ -3,6 +3,7 @@ package dev.kyro.pitsim.storage;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.exceptions.DataNotLoadedException;
 import dev.kyro.pitsim.logging.LogManager;
@@ -228,6 +229,12 @@ public class StorageProfile {
 	public static String serialize(OfflinePlayer player, ItemStack itemStack, boolean isLogout) {
 		if(Misc.isAirOrNull(itemStack)) return "";
 //		return Base64.itemTo64(itemStack);
+
+		if(isLogout && ItemFactory.isTutorialItem(itemStack)) {
+			AOutput.log("Did not save tutorial item: " + Misc.stringifyItem(itemStack));
+			return "";
+		}
+
 		if(isLogout && EnchantManager.isIllegalItem(itemStack) && !player.isOp()) {
 			AOutput.log("Did not save illegal item: " + Misc.stringifyItem(itemStack));
 			LogManager.onIllegalItemRemoved(player, itemStack);

@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
@@ -35,7 +35,7 @@ public abstract class PitItem implements Listener {
 	public boolean isShopDiamond;
 	public boolean isMystic;
 
-	public AuctionCategory auctionCategory;
+	public MarketCategory marketCategory;
 
 	public PitItem() {
 		Bukkit.getPluginManager().registerEvents(this, PitSim.INSTANCE);

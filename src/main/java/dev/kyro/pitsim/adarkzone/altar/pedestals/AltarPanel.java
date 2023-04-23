@@ -8,6 +8,7 @@ import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.tutorial.TutorialObjective;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -22,6 +23,12 @@ public class AltarPanel extends AGUIPanel {
 
 	public AltarPanel(AGUI gui) {
 		super(gui);
+
+		if(isTutorial()) {
+			for(AltarPedestal altarPedestal : AltarPedestal.altarPedestals) {
+				if(altarPedestal.isActivated(player)) altarPedestal.deactivate(player, true);
+			}
+		}
 
 		setItems();
 	}
@@ -46,7 +53,9 @@ public class AltarPanel extends AGUIPanel {
 			slot += 2;
 		}
 
+		setCost();
 		String costStatus = totalCost > pitPlayer.taintedSouls ? "&cYou do not have enough souls!" : "&aClick to confirm your selections!";
+		boolean free = isTutorial();
 
 		ALoreBuilder loreBuilder = new ALoreBuilder("");
 		for(AltarPedestal altarPedestal : AltarPedestal.altarPedestals) {
@@ -55,7 +64,7 @@ public class AltarPanel extends AGUIPanel {
 		}
 		loreBuilder.addLore(
 				"",
-				"&7Total Cost: &f" + totalCost + " Souls",
+				"&7Total Cost: &f" + (free ? "&m" : "") +  totalCost + " Souls" + (free ? "&a&l FREE!" : ""),
 				"&7Your Souls: &f" + pitPlayer.taintedSouls + " Souls",
 				"",
 				costStatus
@@ -84,11 +93,13 @@ public class AltarPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
+		setCost();
+
 		for(int i = 0; i < AltarPedestal.altarPedestals.size(); i++) {
 			if(slot != i * 2) continue;
 			AltarPedestal pedestal = AltarPedestal.altarPedestals.get(i);
 
-			if(!pedestal.isUnlocked(player)) {
+			if(!pedestal.isUnlocked(player) || isTutorial()) {
 				Sounds.ERROR.play(player);
 				return;
 			}
@@ -99,7 +110,7 @@ public class AltarPanel extends AGUIPanel {
 				pedestal.activate(player);
 			}
 
-			totalCost = AltarPedestal.getTotalCost(player);
+			setCost();
 			setItems();
 		}
 
@@ -109,11 +120,9 @@ public class AltarPanel extends AGUIPanel {
 				return;
 			}
 
-			AltarManager.activateAltar(player);
+			AltarManager.activateAltar(player, totalCost);
 			player.closeInventory();
 		}
-
-
 	}
 
 	@Override
@@ -123,6 +132,16 @@ public class AltarPanel extends AGUIPanel {
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
+
+	}
+
+	public void setCost() {
+		totalCost = isTutorial() ? 0 : AltarPedestal.getTotalCost(player);
+	}
+
+	public boolean isTutorial() {
+		return pitPlayer.darkzoneTutorial.isActive() &&
+				!pitPlayer.darkzoneTutorial.data.completedObjectives.contains(TutorialObjective.ALTAR);
 
 	}
 }

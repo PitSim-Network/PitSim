@@ -19,6 +19,7 @@ import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.PlayerItemLocation;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class SelfCheckout extends PitEnchant {
 		INSTANCE = this;
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOW)
 	public void onScoDeath(KillEvent killEvent) {
 		if(!killEvent.hasKillModifier(KillModifier.SELF_CHECKOUT)) return;
 		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : new ArrayList<>(killEvent.getVulnerableItems().entrySet())) {

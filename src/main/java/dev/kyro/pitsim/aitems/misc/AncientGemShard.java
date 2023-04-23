@@ -3,7 +3,7 @@ package dev.kyro.pitsim.aitems.misc;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.aitems.StaticPitItem;
-import dev.kyro.pitsim.enums.AuctionCategory;
+import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +16,7 @@ public class AncientGemShard extends StaticPitItem {
 
 	public AncientGemShard() {
 		hasDropConfirm = true;
-		auctionCategory = AuctionCategory.PURE_RELATED;
+		marketCategory = MarketCategory.PURE_RELATED;
 	}
 
 	@Override

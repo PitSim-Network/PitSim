@@ -1,8 +1,9 @@
 package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.events.SpellUseEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -18,6 +19,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class MeteorSpell extends PitEnchantSpell {
 
@@ -52,10 +55,12 @@ public class MeteorSpell extends PitEnchantSpell {
 
 		double xOffset = Misc.randomOffset(10);
 		double zOffset = Misc.randomOffset(10);
-		int steps = 20;
+		int steps = 30;
 		Location targetLocation = target.getLocation();
 		Location effectLocation = targetLocation.clone().add(xOffset, 15, zOffset);
 		Vector step = effectLocation.toVector().subtract(targetLocation.toVector()).multiply(-1.0 / steps);
+
+		Map<PitEnchant, Integer> attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(player);
 
 		new BukkitRunnable() {
 			int count = 0;
@@ -63,7 +68,16 @@ public class MeteorSpell extends PitEnchantSpell {
 			public void run() {
 				if(count == steps) {
 					cancel();
-					Sounds.METEOR_2.play(effectLocation);
+					for(int i = 0; i < 10; i++) {
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								Sounds.METEOR_2.play(effectLocation);
+							}
+						}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(5));
+					}
+					for(int i = 0; i < 4; i++) effectLocation.getWorld().playEffect(effectLocation.clone()
+							.add(Misc.randomOffset(10), Misc.randomOffset(2), Misc.randomOffset(10)), Effect.EXPLOSION_HUGE, 1);
 
 					for(Entity entity : effectLocation.getWorld().getNearbyEntities(effectLocation, 3, 3, 3)) {
 						if(!Misc.isValidMobPlayerTarget(entity, player)) continue;
@@ -72,7 +86,8 @@ public class MeteorSpell extends PitEnchantSpell {
 						double distance = livingEntity.getLocation().distance(effectLocation);
 						if(distance > 3) continue;
 
-						DamageManager.createIndirectAttack(player, livingEntity, DarkzoneBalancing.SCYTHE_DAMAGE * 10);
+						DamageManager.createIndirectAttack(player, livingEntity, getDamage(event.getSpellLevel()),
+								attackerEnchantMap, null);
 					}
 				} else {
 					effectLocation.getWorld().playEffect(effectLocation, Effect.EXPLOSION_LARGE, 1);
@@ -91,7 +106,7 @@ public class MeteorSpell extends PitEnchantSpell {
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
 				"&7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, " +
-						"&7summoning a meteor that causes large damage to a single target"
+						"&7summoning a meteor that causes large damage to a single target (" + getCooldownSeconds(enchantLvl) + "s cooldown)"
 		).getLore();
 	}
 
@@ -108,6 +123,14 @@ public class MeteorSpell extends PitEnchantSpell {
 
 	@Override
 	public int getCooldownTicks(int enchantLvl) {
-		return 4;
+		return getCooldownSeconds(enchantLvl) * 20;
+	}
+
+	public static int getCooldownSeconds(int enchantLvl) {
+		return 15;
+	}
+
+	public static int getDamage(int enchantLvl) {
+		return 75;
 	}
 }

@@ -9,6 +9,9 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.FastTravelDestination;
 import dev.kyro.pitsim.adarkzone.FastTravelManager;
+import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
+import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
+import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.misc.Misc;
@@ -74,14 +77,17 @@ public class FastTravelPanel extends AGUIPanel {
 			return;
 		}
 
-		if(pitPlayer.taintedSouls < destination.cost) {
-			AOutput.error(event.getWhoClicked(), "&cYou do not have enough souls to travel to this location!");
-			Sounds.NO.play(player);
-			return;
+		boolean hasNoCost = ProgressionManager.isUnlocked(pitPlayer, SoulBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST_PATH);
+		if(!hasNoCost) {
+			if(pitPlayer.taintedSouls < destination.cost) {
+				AOutput.error(event.getWhoClicked(), "&cYou do not have enough souls to travel to this location!");
+				Sounds.NO.play(player);
+				return;
+			}
+			pitPlayer.taintedSouls -= destination.cost;
 		}
 
 		pitPlayer.stats.timesFastTraveled++;
-		pitPlayer.taintedSouls -= destination.cost;
 		destination.travel(player);
 	}
 

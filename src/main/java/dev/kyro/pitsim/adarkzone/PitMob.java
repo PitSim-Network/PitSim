@@ -104,13 +104,15 @@ public abstract class PitMob implements Listener {
 			}
 
 			if(pitKiller != null) {
-				double freshChance = (0.5 + (getSubLevel().getIndex() + 1) * 0.05) / 100.0;
+				double freshChance = 2 / 100.0;
+				if(DarkzoneManager.freshSoftCooldownList.contains(pitKiller.player.getUniqueId())) freshChance *= 0.1;
 				freshChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
 						pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.SECOND_PATH, "fresh-chance") / 100.0);
 				if(Math.random() < freshChance) {
 					MysticType mysticType = Math.random() < 0.5 ? MysticType.TAINTED_SCYTHE : MysticType.TAINTED_CHESTPLATE;
 					ItemStack dropStack = MysticFactory.getFreshItem(mysticType, null);
 					HypixelSound.play(pitKiller.player, mob.getLocation(), HypixelSound.Sound.FRESH_DROP);
+					DarkzoneManager.putOnSoftFreshCooldownList(pitKiller.player);
 
 					FakeItem fakeItem = new FakeItem(dropStack, mob.getLocation())
 							.removeAfter(20 * 60)

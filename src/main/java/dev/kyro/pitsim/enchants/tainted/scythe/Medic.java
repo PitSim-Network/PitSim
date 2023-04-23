@@ -47,7 +47,7 @@ public class Medic extends PitEnchantSpell {
 
 	@Override
 	public int getManaCost(int enchantLvl) {
-		return 50;
+		return 45;
 	}
 
 	@Override

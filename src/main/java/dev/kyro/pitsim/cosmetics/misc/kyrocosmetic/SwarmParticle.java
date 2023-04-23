@@ -53,7 +53,7 @@ public class SwarmParticle extends AIParticle {
 
 	public void setIdle() {
 		state = State.IDLE;
-		timesToIdle = new Random().nextInt(3) + 2;
+		timesToIdle = new Random().nextInt(4) + 2;
 		ticksUntilGoal = 0;
 	}
 

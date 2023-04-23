@@ -51,7 +51,7 @@ public class WorldBorderAbility extends PitBossAbility {
 					trappedPlayers.remove(nearbyPlayer);
 				}
 				for(Player trappedPlayer : trappedPlayers) {
-					DamageManager.createIndirectAttack(null, trappedPlayer, 0,
+					DamageManager.createIndirectAttack(null, trappedPlayer, 0, null, null,
 							attackEvent -> attackEvent.veryTrueDamage = 4);
 				}
 			}
