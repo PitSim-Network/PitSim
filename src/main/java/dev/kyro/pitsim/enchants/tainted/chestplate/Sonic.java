@@ -1,26 +1,62 @@
 package dev.kyro.pitsim.enchants.tainted.chestplate;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public
 class Sonic extends PitEnchant {
 	public static Sonic INSTANCE;
+	public static List<Player> sonicDisabledList = new ArrayList<>();
 
 	public Sonic() {
 		super("Sonic", true, ApplyType.CHESTPLATES,
 				"sonic", "fast");
 		isTainted = true;
 		INSTANCE = this;
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		int attackerEnchantLevel = attackEvent.getAttackerEnchantLevel(this);
+		int defenderEnchantLevel = attackEvent.getDefenderEnchantLevel(this);
+
+		if(attackerEnchantLevel != 0) {
+			sonicDisabledList.add(attackEvent.getAttackerPlayer());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					sonicDisabledList.remove(attackEvent.getAttackerPlayer());
+					attackEvent.getAttackerPitPlayer().updateWalkingSpeed();
+				}
+			}.runTaskLater(PitSim.INSTANCE, getDisableCooldownSeconds(attackerEnchantLevel) * 20L);
+			attackEvent.getAttackerPitPlayer().updateWalkingSpeed();
+		}
+
+		if(defenderEnchantLevel != 0) {
+			sonicDisabledList.add(attackEvent.getDefenderPlayer());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					sonicDisabledList.remove(attackEvent.getDefenderPlayer());
+					attackEvent.getDefenderPitPlayer().updateWalkingSpeed();
+				}
+			}.runTaskLater(PitSim.INSTANCE, getDisableCooldownSeconds(defenderEnchantLevel) * 20L);
+			attackEvent.getDefenderPitPlayer().updateWalkingSpeed();
+		}
 	}
 
 	@EventHandler
@@ -32,7 +68,7 @@ class Sonic extends PitEnchant {
 	}
 
 	public static float getWalkSpeedIncrease(PitPlayer pitPlayer) {
-		if(!INSTANCE.isEnabled() || !pitPlayer.hasManaUnlocked()) return 0;
+		if(!INSTANCE.isEnabled() || !pitPlayer.hasManaUnlocked() || sonicDisabledList.contains(pitPlayer.player)) return 0;
 
 		int enchantLvl = EnchantManager.getEnchantLevel(pitPlayer.player, INSTANCE);
 		if(enchantLvl == 0) return 0;
@@ -43,8 +79,10 @@ class Sonic extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Move &e" + getWalkSpeedIncrease(enchantLvl) + "% &7faster at all times. When worn, regain mana &b" +
-						getManaReduction(enchantLvl) + "% &7slower"
+				"&7Move &e" + getWalkSpeedIncrease(enchantLvl) + "% &7faster. When attacking or being attacked, " +
+						"this enchant disables for " + getDisableCooldownSeconds(enchantLvl) +
+						" second" + Misc.s(getDisableCooldownSeconds(enchantLvl)) +
+						". When worn, regain mana &b" + getManaReduction(enchantLvl) + "% &7slower"
 		).getLore();
 	}
 
@@ -52,6 +90,10 @@ class Sonic extends PitEnchant {
 	public String getSummary() {
 		return getDisplayName(false, true) + " &7is a &5Darkzone &7enchant that " +
 				"substantially increases your movement speed";
+	}
+
+	public static int getDisableCooldownSeconds(int enchantLvl) {
+		return 3;
 	}
 
 	public static int getWalkSpeedIncrease(int enchantLvl) {
