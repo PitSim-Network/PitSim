@@ -61,7 +61,9 @@ public class OutfitSettingsPanel extends AGUIPanel {
 						"&7Click to set the display item to the item that you are holding"
 				))
 				.getItemStack(), event -> {
-			outfit.setDisplayItem(player.getItemInHand().clone());
+			ItemStack itemStack = player.getItemInHand().clone();
+			itemStack.setAmount(1);
+			outfit.setDisplayItem(itemStack);
 			AOutput.send(player, "&2&lWARDROBE!&7 Updated the display item for &2Outfit " + (outfit.getIndex() + 1) + "&7!");
 			Sounds.SUCCESS.play(player);
 			openPreviousGUI();
