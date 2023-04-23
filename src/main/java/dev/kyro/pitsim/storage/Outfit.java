@@ -370,7 +370,7 @@ public class Outfit {
 
 	public static class RequestedItemInformation {
 		private final Map<PlayerItemLocation, Integer> itemSourceMap = new HashMap<>();
-		private ItemStack itemStack;
+		private ItemStack itemStack = new ItemStack(Material.AIR);
 		private final String identifier;
 		private UUID uuid;
 		private int requiredItems;
@@ -391,7 +391,7 @@ public class Outfit {
 
 		public void foundItem(List<PlayerItemLocation> emptySlots, List<ItemCandidate> candidates, ItemCandidate candidate) {
 			if(isFulfilled()) throw new RuntimeException();
-			if(itemStack == null) itemStack = candidate.itemStack;
+			if(Misc.isAirOrNull(itemStack)) itemStack = candidate.itemStack;
 			if(candidate.getAmountLeft() > requiredItems) {
 				itemSourceMap.put(candidate.getItemLocation(), requiredItems);
 				candidate.removeItems(requiredItems);
