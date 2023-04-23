@@ -97,7 +97,7 @@ public class OutfitSettingsPanel extends AGUIPanel {
 
 		ALoreBuilder setDarkzoneLore = new ALoreBuilder();
 		Consumer<InventoryClickEvent> setDarkzoneClick = event -> {
-			profile.setDefaultOverworldSet(outfit.getIndex());
+			profile.setDefaultDarkzoneSet(outfit.getIndex());
 			AOutput.send(player, "&2&lOUTFIT!&7 Set your default &5Darkzone &2Outfit &7to &2Outfit " + (outfit.getIndex() + 1));
 			Sounds.SUCCESS.play(player);
 			openPreviousGUI();
@@ -108,13 +108,13 @@ public class OutfitSettingsPanel extends AGUIPanel {
 					"&7as a default"
 			);
 			setDarkzoneClick = null;
-		} else if(profile.getDefaultOverworldSet() == -1) {
+		} else if(profile.getDefaultDarkzoneSet() == -1) {
 			setDarkzoneLore.addLore("&7Current: None!");
-		} else if(profile.getDefaultOverworldSet() == outfit.getIndex()) {
+		} else if(profile.getDefaultDarkzoneSet() == outfit.getIndex()) {
 			setDarkzoneLore.addLore("&7Current: &2This one!");
 			setDarkzoneClick = null;
 		} else {
-			setDarkzoneLore.addLore("&7Current: &2Outfit " + (profile.getDefaultOverworldSet() + 1));
+			setDarkzoneLore.addLore("&7Current: &2Outfit " + (profile.getDefaultDarkzoneSet() + 1));
 		}
 		ItemStack setDarkzoneBaseStack = new ItemStack(Material.STAINED_CLAY, 1, (short) 10);
 		if(!outfitState.isEquippable()) setDarkzoneBaseStack.setType(Material.BARRIER);
