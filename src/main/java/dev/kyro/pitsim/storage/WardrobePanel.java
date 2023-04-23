@@ -47,7 +47,7 @@ public class WardrobePanel extends AGUIPanel {
 					if(success) {
 						AOutput.send(player, "&2&lWARDROBE!&7 Equipped &2Outfit " + (outfit.getIndex() + 1) + "&7!");
 						Sounds.SUCCESS.play(player);
-						openPreviousGUI();
+						player.closeInventory();
 					}
 				}).setItem();
 			} else {

@@ -71,7 +71,11 @@ public class EnderchestPage {
 		message.writeString(name)
 				.writeString(CustomSerializer.serialize(displayItem))
 				.writeBoolean(isWardrobeEnabled);
-		for(ItemStack item : items) message.writeString(StorageProfile.serialize(profile.getOfflinePlayer(), item, isLogout));
+		for(int i = 0; i < StorageManager.ENDERCHEST_ITEM_SLOTS; i++) {
+			int inventorySlot = i + 9;
+			ItemStack itemStack = inventory.getItem(inventorySlot);
+			message.writeString(StorageProfile.serialize(profile.getOfflinePlayer(), itemStack, isLogout));
+		}
 	}
 
 	public int getItemCount() {

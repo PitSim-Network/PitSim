@@ -40,7 +40,7 @@ public class OutfitSettingsPanel extends AGUIPanel {
 			outfit.save();
 			AOutput.send(player, "&2&lWARDROBE!&2 Outfit " + (outfit.getIndex() + 1) + " &7saved!");
 			Sounds.SUCCESS.play(player);
-			openPreviousGUI();
+			player.closeInventory();
 		}).setItem();
 
 		addTaggedItem(11, () -> new AItemStackBuilder(Material.HOPPER)

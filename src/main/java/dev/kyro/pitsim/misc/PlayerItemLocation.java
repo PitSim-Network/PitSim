@@ -117,7 +117,7 @@ public class PlayerItemLocation {
 				break;
 			case ENDERCHEST:
 				StorageProfile profile = StorageManager.getProfile(player);
-				itemStack = profile.getEnderchestPage(page).getItems()[slot];
+				itemStack = profile.getEnderchestPage(page).getInventory().getItem(slot + 9);
 				break;
 			default:
 				throw new RuntimeException();
