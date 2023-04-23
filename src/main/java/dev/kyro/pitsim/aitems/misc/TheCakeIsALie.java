@@ -43,6 +43,11 @@ public class TheCakeIsALie extends PitItem {
 		return new ArrayList<>(Arrays.asList("cake"));
 	}
 
+	@Override
+	public int getMaxStackSize() {
+		return 1;
+	}
+
 	public Material getMaterial() {
 		return Material.CAKE;
 	}
