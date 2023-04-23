@@ -3,6 +3,7 @@ package dev.kyro.pitsim.storage;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.enums.RankInformation;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
@@ -228,8 +229,8 @@ public class StorageManager implements Listener {
 				if(isEditing(player)) getSession(player).playerClosed = true;
 				event.setCancelled(true);
 			} else if(slot == ENDERCHEST_ITEM_SLOTS + 17 && enderchestPage.getIndex() + 1 < MAX_ENDERCHEST_PAGES) {
-				EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
-				if(enderchestPage.getIndex() + 1 >= rank.pages && !isEditing(player)) continue;
+				RankInformation rank = RankInformation.getRank(player);
+				if(enderchestPage.getIndex() + 1 >= rank.enderchestPages && !isEditing(player)) continue;
 				if(isEditing(player)) getSession(player).playerClosed = false;
 				player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() + 1).getInventory());
 				if(isEditing(player)) getSession(player).playerClosed = true;

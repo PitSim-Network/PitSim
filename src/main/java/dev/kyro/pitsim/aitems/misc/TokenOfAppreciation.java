@@ -35,6 +35,11 @@ public class TokenOfAppreciation extends PitItem {
 		return new ArrayList<>(Arrays.asList("token", "tokenofappreciation"));
 	}
 
+	@Override
+	public int getMaxStackSize() {
+		return 1;
+	}
+
 	public Material getMaterial() {
 		return Material.MAGMA_CREAM;
 	}

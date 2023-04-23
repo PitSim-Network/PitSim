@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-// Enum needs to be mirrored in the proxy plugin
+// needs to be mirrored in the proxy plugin
 @SuppressWarnings("unused")
 public enum LogType {
 	TEST,

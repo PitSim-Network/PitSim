@@ -39,6 +39,11 @@ public class GoldenHelmet extends PitItem {
 		return new ArrayList<>(Arrays.asList("helmet", "goldenhelmet", "ghelm"));
 	}
 
+	@Override
+	public int getMaxStackSize() {
+		return 1;
+	}
+
 	public Material getMaterial() {
 		return Material.GOLD_HELMET;
 	}

@@ -16,6 +16,11 @@ public abstract class StaticPitItem extends PitItem {
 	public abstract List<String> getLore();
 
 	@Override
+	public int getMaxStackSize() {
+		return getMaterial().getMaxStackSize();
+	}
+
+	@Override
 	public void updateItem(ItemStack itemStack) {
 		if(!defaultUpdateItem(itemStack)) return;
 

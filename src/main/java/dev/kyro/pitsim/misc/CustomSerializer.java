@@ -22,6 +22,7 @@ import java.util.UUID;
 
 public class CustomSerializer {
 	public static String serialize(ItemStack itemStack) {
+		if(Misc.isAirOrNull(itemStack)) return "";
 		String[] parts = new String[7];
 		parts[0] = itemStack.getType().name();
 		parts[1] = Integer.toString(itemStack.getAmount());

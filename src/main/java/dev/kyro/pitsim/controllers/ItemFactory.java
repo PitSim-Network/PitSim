@@ -16,22 +16,26 @@ public class ItemFactory {
 		pitItems.add(pitItem);
 	}
 
+	public static boolean isPitItem(ItemStack itemStack) {
+		return getItem(itemStack) != null;
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T extends PitItem> T getItem(Class<T> clazz) {
 		for(PitItem pitItem : pitItems) if(pitItem.getClass() == clazz) return (T) pitItem;
 		throw new RuntimeException();
 	}
 
-	public static boolean isPitItem(ItemStack itemStack) {
-		return getItem(itemStack) != null;
-	}
-
 	public static PitItem getItem(ItemStack itemStack) {
 		if(Misc.isAirOrNull(itemStack)) return null;
 		NBTItem nbtItem = new NBTItem(itemStack);
 		if(!nbtItem.hasKey(NBTTag.CUSTOM_ITEM.getRef())) return null;
-		String itemTag = nbtItem.getString(NBTTag.CUSTOM_ITEM.getRef());
-		for(PitItem pitItem : pitItems) if(pitItem.getNBTID().equals(itemTag)) return pitItem;
+		String identifier = nbtItem.getString(NBTTag.CUSTOM_ITEM.getRef());
+		return getItem(identifier);
+	}
+
+	public static PitItem getItem(String identifier) {
+		for(PitItem pitItem : pitItems) if(pitItem.getNBTID().equals(identifier)) return pitItem;
 		return null;
 	}
 

@@ -1,11 +1,9 @@
 package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.pitsim.adarkzone.DarkzoneLeveling;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.misc.Formatter;
+import dev.kyro.pitsim.storage.EnderchestGUI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -42,12 +40,8 @@ public class KTestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
-		int startingLevel = Integer.parseInt(args[0]);
-		int endingLevel = startingLevel + Integer.parseInt(args[1]);
-
-		AOutput.send(player, "XP Required Between Levels " + startingLevel + " and " + endingLevel + ": " +
-				Formatter.commaFormat.format(DarkzoneLeveling.getXPToLevel(endingLevel) - DarkzoneLeveling.getXPToLevel(startingLevel)));
-
+		EnderchestGUI enderchestGUI = new EnderchestGUI(player, player.getUniqueId());
+		enderchestGUI.wardrobePanel.openPanel(enderchestGUI.wardrobePanel);
 
 //		for(Block block : getNearbyBlocks(player.getLocation(), 100)) {
 //			Block blockBelow = block.getRelative(0, -1, 0);

@@ -24,6 +24,9 @@ public class StorageProfile {
 	private ItemStack[] inventory = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
 	private ItemStack[] armor = new ItemStack[4];
 	private final EnderchestPage[] enderchestPages = new EnderchestPage[StorageManager.MAX_ENDERCHEST_PAGES];
+
+	private int defaultOverworldSet = -1;
+	private int defaultDarkzoneSet = -1;
 	private final Outfit[] outfits = new Outfit[9];
 
 	private final UUID uuid;
@@ -71,6 +74,8 @@ public class StorageProfile {
 			for(ItemStack itemStack : armor) message.writeString(serialize(getOfflinePlayer(), itemStack, isLogout));
 		}
 		for(EnderchestPage enderchestPage : enderchestPages) enderchestPage.writeData(message, isLogout);
+
+		for(Outfit outfit : outfits) outfit.writeData(message);
 
 		saving = true;
 		saveTask = new BukkitRunnable() {
@@ -126,6 +131,26 @@ public class StorageProfile {
 	public EnderchestPage getEnderchestPage(int index) {
 		if(!isLoaded) throw new DataNotLoadedException();
 		return enderchestPages[index];
+	}
+
+	public int getDefaultOverworldSet() {
+		return defaultOverworldSet;
+	}
+
+	public void setDefaultOverworldSet(int defaultOverworldSet) {
+		this.defaultOverworldSet = defaultOverworldSet;
+	}
+
+	public int getDefaultDarkzoneSet() {
+		return defaultDarkzoneSet;
+	}
+
+	public void setDefaultDarkzoneSet(int defaultDarkzoneSet) {
+		this.defaultDarkzoneSet = defaultDarkzoneSet;
+	}
+
+	public Outfit[] getOutfits() {
+		return outfits;
 	}
 
 	public static ItemStack deserialize(String string, UUID informUUID) {

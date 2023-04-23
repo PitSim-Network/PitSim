@@ -17,7 +17,7 @@ import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Formatter;
-import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
+import dev.kyro.pitsim.misc.PlayerItemLocation;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 

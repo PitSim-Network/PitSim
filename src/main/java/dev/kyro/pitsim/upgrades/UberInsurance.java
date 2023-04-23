@@ -6,7 +6,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
-import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
+import dev.kyro.pitsim.misc.PlayerItemLocation;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

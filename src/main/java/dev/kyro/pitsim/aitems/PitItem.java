@@ -43,6 +43,7 @@ public abstract class PitItem implements Listener {
 
 	public abstract String getNBTID();
 	public abstract List<String> getRefNames();
+	public abstract int getMaxStackSize();
 
 	public abstract ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem);
 	public abstract boolean isLegacyItem(ItemStack itemStack, NBTItem nbtItem);

@@ -10,7 +10,7 @@ import dev.kyro.pitsim.enums.AuctionCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
+import dev.kyro.pitsim.misc.PlayerItemLocation;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -70,7 +70,7 @@ public class CorruptedFeather extends StaticPitItem {
 			if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
 			else {
 				dead.getInventory().setItem(i, null);
-				killEvent.getDeadInventoryWrapper().removeItem(PlayerItemLocation.slot(i));
+				killEvent.getDeadInventoryWrapper().removeItem(PlayerItemLocation.inventory(i));
 			}
 			dead.updateInventory();
 			Sounds.FUNKY_FEATHER.play(dead);

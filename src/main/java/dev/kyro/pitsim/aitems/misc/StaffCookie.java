@@ -40,6 +40,11 @@ public class StaffCookie extends PitItem {
 		return new ArrayList<>(Arrays.asList("staffcookie", "cookie"));
 	}
 
+	@Override
+	public int getMaxStackSize() {
+		return 1;
+	}
+
 	public Material getMaterial() {
 		return Material.COOKIE;
 	}

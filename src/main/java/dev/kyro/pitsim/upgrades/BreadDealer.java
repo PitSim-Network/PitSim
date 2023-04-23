@@ -6,7 +6,7 @@ import dev.kyro.pitsim.aitems.misc.YummyBread;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
+import dev.kyro.pitsim.misc.PlayerItemLocation;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;

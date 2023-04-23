@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.enums.RankInformation;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,15 +16,21 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import java.util.UUID;
 
 public class EnderchestPanel extends AGUIPanel {
-
+	public EnderchestGUI enderchestGUI;
 	public StorageProfile profile;
 
 	public EnderchestPanel(AGUI gui, UUID storagePlayer) {
 		super(gui);
-
+		this.enderchestGUI = (EnderchestGUI) gui;
+		this.profile = StorageManager.getProfile(storagePlayer);
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 15);
 
-		profile = StorageManager.getProfile(storagePlayer);
+		if(!isAdminSession()) addTaggedItem(35, () -> new AItemStackBuilder(Material.ARMOR_STAND)
+				.setName("&2Wardrobe")
+				.setLore(new ALoreBuilder(
+						"&7Click to open your wardrobe"
+				))
+				.getItemStack(), event -> openPanel(enderchestGUI.wardrobePanel)).setItem();
 	}
 
 	@Override
@@ -41,10 +48,10 @@ public class EnderchestPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
-		int accessiblePages = profile.getUUID().equals(player.getUniqueId()) ? rank.pages : StorageManager.MAX_ENDERCHEST_PAGES;
+		RankInformation rank = RankInformation.getRank(player);
+		int accessiblePages = isAdminSession() ? StorageManager.MAX_ENDERCHEST_PAGES : rank.enderchestPages;
 
-		if(slot == 8 && !player.getUniqueId().equals(profile.getUUID())) {
+		if(slot == 8 && isAdminSession()) {
 			EditSession session = StorageManager.getSession(player);
 			session.playerClosed = false;
 			player.openInventory(session.inventory.getInventory());
@@ -76,7 +83,7 @@ public class EnderchestPanel extends AGUIPanel {
 
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
-		EnderchestGUI.EnderchestPages rank = EnderchestGUI.EnderchestPages.getRank(player);
+		RankInformation rank = RankInformation.getRank(player);
 
 		for(int i = 9; i < 27; i++) {
 			int pageIndex = (i - 9);
@@ -86,7 +93,7 @@ public class EnderchestPanel extends AGUIPanel {
 					.setName("&5&lENDERCHEST &7Page " + (enderchestPage.getIndex() + 1));
 			ALoreBuilder lore = new ALoreBuilder();
 
-			int accessiblePages = profile.getUUID().equals(player.getUniqueId()) ? rank.pages : StorageManager.MAX_ENDERCHEST_PAGES;
+			int accessiblePages = isAdminSession() ? StorageManager.MAX_ENDERCHEST_PAGES : rank.enderchestPages;
 
 			if(pageIndex + 1 <= accessiblePages) {
 				lore.addLore(
@@ -98,7 +105,7 @@ public class EnderchestPanel extends AGUIPanel {
 				stackBuilder.getItemStack().setType(Material.BARRIER);
 				lore.addLore(
 						"&7Status: &cLocked",
-						"&7Required Rank: " + EnderchestGUI.EnderchestPages.getMinimumRequiredRank(pageIndex + 1).rankName,
+						"&7Required Rank: " + RankInformation.getMinimumRankForPages(pageIndex + 1).rankName,
 						"&7Store: &d&nstore.pitsim.net"
 				);
 			}
@@ -106,7 +113,7 @@ public class EnderchestPanel extends AGUIPanel {
 			stackBuilder.setLore(lore);
 			getInventory().setItem(i, stackBuilder.getItemStack());
 
-			if(player.getUniqueId().equals(profile.getUUID())) continue;
+			if(!isAdminSession()) continue;
 
 			AItemStackBuilder builder = new AItemStackBuilder(Material.CHEST);
 			builder.setName("&6View Inventory");
@@ -121,5 +128,9 @@ public class EnderchestPanel extends AGUIPanel {
 
 		if(!session.playerClosed) return;
 		session.end();
+	}
+
+	public boolean isAdminSession() {
+		return !profile.getUUID().equals(player.getUniqueId());
 	}
 }

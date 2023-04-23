@@ -26,7 +26,12 @@ public class SoulPickup extends PitItem {
 
 	@Override
 	public List<String> getRefNames() {
-		return new ArrayList<>(Arrays.asList("gemshard", "shard"));
+		return new ArrayList<>(Arrays.asList("soulpickup"));
+	}
+
+	@Override
+	public int getMaxStackSize() {
+		return 64;
 	}
 
 	@Override

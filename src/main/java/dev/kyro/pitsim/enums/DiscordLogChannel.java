@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.enums;
 
-// Enum needs to be mirrored in the pitsim plugin
+// needs to be mirrored in the proxy plugin
 public enum DiscordLogChannel {
 	GOD_MENU_LOG_CHANNEL(1091234311291805837L),
 	;

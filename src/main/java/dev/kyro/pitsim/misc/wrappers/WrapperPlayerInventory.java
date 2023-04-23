@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.misc.wrappers;
 
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PlayerItemLocation;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -19,7 +20,7 @@ public class WrapperPlayerInventory {
 		this.player = player;
 		this.inventory = player.getInventory();
 
-		for(int i = 0; i < inventory.getSize(); i++) itemMap.put(PlayerItemLocation.slot(i), inventory.getItem(i));
+		for(int i = 0; i < inventory.getSize(); i++) itemMap.put(PlayerItemLocation.inventory(i), inventory.getItem(i));
 		itemMap.put(PlayerItemLocation.helmet(), inventory.getHelmet());
 		itemMap.put(PlayerItemLocation.chestplate(), inventory.getChestplate());
 		itemMap.put(PlayerItemLocation.leggings(), inventory.getLeggings());
@@ -48,7 +49,7 @@ public class WrapperPlayerInventory {
 
 	public void setInventory() {
 		for(int i = 0; i < 36; i++) {
-			ItemStack itemStack = getItem(PlayerItemLocation.slot(i));
+			ItemStack itemStack = getItem(PlayerItemLocation.inventory(i));
 			if(isSameStack(itemStack, inventory.getItem(i))) continue;
 			inventory.setItem(i, itemStack);
 		}

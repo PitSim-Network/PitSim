@@ -31,6 +31,11 @@ public class Potion extends PitItem {
 		return new ArrayList<>(Arrays.asList("pot", "potion", "pots", "potions"));
 	}
 
+	@Override
+	public int getMaxStackSize() {
+		return 1;
+	}
+
 	public Material getMaterial() {
 		return Material.POTION;
 	}

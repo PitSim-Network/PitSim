@@ -15,7 +15,7 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.KillType;
-import dev.kyro.pitsim.misc.wrappers.PlayerItemLocation;
+import dev.kyro.pitsim.misc.PlayerItemLocation;
 import dev.kyro.pitsim.misc.wrappers.WrapperPlayerInventory;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
 import org.bukkit.entity.LivingEntity;
