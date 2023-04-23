@@ -28,7 +28,7 @@ public class ShowCommand implements CommandExecutor {
 
 		Player player = (Player) sender;
 
-		if(!player.hasPermission("pitsim.show") && !player.isOp()) {
+		if(!player.hasPermission("pitsim.show") && !player.isOp() && !PitSim.isDev()) {
 			AOutput.error(player, "&cInsufficient Permissions");
 			return false;
 		}
