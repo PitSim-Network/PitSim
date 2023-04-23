@@ -238,7 +238,7 @@ public class StorageManager implements Listener {
 				if(isEditing(player)) getSession(player).playerClosed = false;
 				new EnderchestGUI(player, profile.getUUID()).open();
 				if(isEditing(player)) getSession(player).playerClosed = true;
-			} else if(slot < 9 || slot > 35) {
+			} else if(slot < 9 || slot > 44) {
 //				Does not run the else return
 			} else {
 				return;

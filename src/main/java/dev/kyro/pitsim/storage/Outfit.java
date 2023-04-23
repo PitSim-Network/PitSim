@@ -72,6 +72,7 @@ public class Outfit {
 		}
 		for(int i = 0; i < StorageManager.MAX_ENDERCHEST_PAGES; i++) {
 			EnderchestPage enderchestPage = profile.getEnderchestPage(i);
+			if(!enderchestPage.isWardrobeEnabled()) continue;
 			Inventory inventory = enderchestPage.getInventory();
 			for(int j = 0; j < StorageManager.ENDERCHEST_ITEM_SLOTS; j++) {
 				int inventorySlot = j + 9;
