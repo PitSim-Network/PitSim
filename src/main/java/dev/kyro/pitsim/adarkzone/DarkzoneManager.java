@@ -195,7 +195,7 @@ public class DarkzoneManager implements Listener {
 			public void run() {
 				freshSoftCooldownList.remove(player.getUniqueId());
 			}
-		}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(20 * 60) + 20 * 60 * 2 + 1);
+		}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(20 * 60 * 2) + 20 * 60 * 3 + 1);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
