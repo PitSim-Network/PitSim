@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
+import dev.kyro.pitsim.misc.PlayerItemLocation;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class WardrobePanel extends AGUIPanel {
 	public StorageProfile profile;
@@ -70,7 +72,11 @@ public class WardrobePanel extends AGUIPanel {
 				.setLore(new PitLoreBuilder(
 						"&7Puts your inventory and armor into your enderchest"
 				)).getItemStack(), event -> {
-			boolean success = profile.storeInvAndArmor(new HashMap<>(), new ArrayList<>(), true);
+			Map<PlayerItemLocation, ItemStack> proposedChanges = new HashMap<>();
+			boolean success = profile.storeInvAndArmor(proposedChanges, new ArrayList<>(), true);
+			for(Map.Entry<PlayerItemLocation, ItemStack> entry : proposedChanges.entrySet())
+				entry.getKey().setItem(profile.getUniqueID(), entry.getValue(), true);
+			player.updateInventory();
 			if(success) {
 				AOutput.send(player, "&2&lWARDROBE!&7 Moved your inventory and armor into your enderchest!");
 				Sounds.SUCCESS.play(player);

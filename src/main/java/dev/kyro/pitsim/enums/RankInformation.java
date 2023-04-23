@@ -15,7 +15,7 @@ public enum RankInformation {
 	MIRACULOUS("&bMiraculous", "group.miraculous", 10, 6),
 	UNTHINKABLE("&6Unthinkable", "group.unthinkable", 14, 7),
 	ETERNAL("&4Eternal", "pitsim.has-had-eternal", 18, 9),
-	DEVELOPER("&9Developer", "group.developer", 18, 7);
+	DEVELOPER("&9Developer", "group.developer", 18, 9);
 
 	public final String rankName;
 	public final String permission;

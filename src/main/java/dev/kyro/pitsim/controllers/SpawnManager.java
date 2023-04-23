@@ -124,12 +124,12 @@ public class SpawnManager implements Listener {
 		if(itemStack.getType() == Material.ENDER_CHEST || itemStack.getType() == Material.TRIPWIRE_HOOK) return;
 
 		PitItem pitItem = ItemFactory.getItem(itemStack);
-		if(pitItem == null || !pitItem.hasDropConfirm || !pitItem.destroyIfDroppedInSpawn) return;
+		if(pitItem == null || !pitItem.destroyIfDroppedInSpawn) return;
 		if(MysticFactory.isImportant(itemStack)) return;
 
 		event.getItemDrop().remove();
 		Sounds.NO.play(event.getPlayer());
-		AOutput.send(event.getPlayer(), "&c&lITEM DELETED!&7 Dropped in spawn area.");
+		AOutput.send(event.getPlayer(), "&c&lITEM DELETED!&7 Dropped in spawn area!");
 	}
 
 	public static boolean isInSpawn(Player player) {
@@ -150,11 +150,7 @@ public class SpawnManager implements Listener {
 		assert regions != null;
 		ApplicableRegionSet set = regions.getApplicableRegions((BukkitUtil.toVector(location)));
 
-		for(ProtectedRegion region : set) {
-			if(region.getId().contains("spawn") || region.getId().contains("auction") || region.getId().contains("darkzonespawn")) {
-				return true;
-			}
-		}
+		for(ProtectedRegion region : set) if(region.getId().contains("spawn") || region.getId().contains("auction")) return true;
 		return false;
 	}
 

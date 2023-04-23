@@ -900,6 +900,7 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new AncientGemShard());
 		ItemFactory.registerItem(new YummyBread());
 		ItemFactory.registerItem(new VeryYummyBread());
+		ItemFactory.registerItem(new Arrow());
 
 		ItemFactory.registerItem(new GoldenHelmet());
 		ItemFactory.registerItem(new SoulPickup());

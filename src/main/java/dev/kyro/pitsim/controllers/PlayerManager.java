@@ -12,6 +12,7 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
+import dev.kyro.pitsim.aitems.misc.Arrow;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
@@ -425,12 +426,12 @@ public class PlayerManager implements Listener {
 			if(!multipleStacks) {
 				if(firstArrow == -1) {
 					if(hasSpace) {
-						player.getInventory().addItem(new ItemStack(Material.ARROW, 32));
+						player.getInventory().addItem(ItemFactory.getItem(Arrow.class).getItem(32));
 					} else {
 						AOutput.error(player, "Please make room in your inventory for arrows");
 					}
 				} else {
-					player.getInventory().setItem(firstArrow, new ItemStack(Material.ARROW, 32));
+					player.getInventory().setItem(firstArrow, ItemFactory.getItem(Arrow.class).getItem(32));
 				}
 			}
 		}
