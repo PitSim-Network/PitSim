@@ -2,6 +2,8 @@ package dev.kyro.pitsim.enchants.tainted.scythe;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.events.SpellUseEvent;
 import dev.kyro.pitsim.misc.Misc;
@@ -17,6 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class MeteorSpell extends PitEnchantSpell {
@@ -57,6 +60,8 @@ public class MeteorSpell extends PitEnchantSpell {
 		Location effectLocation = targetLocation.clone().add(xOffset, 15, zOffset);
 		Vector step = effectLocation.toVector().subtract(targetLocation.toVector()).multiply(-1.0 / steps);
 
+		Map<PitEnchant, Integer> attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(player);
+
 		new BukkitRunnable() {
 			int count = 0;
 			@Override
@@ -81,7 +86,8 @@ public class MeteorSpell extends PitEnchantSpell {
 						double distance = livingEntity.getLocation().distance(effectLocation);
 						if(distance > 3) continue;
 
-						DamageManager.createIndirectAttack(player, livingEntity, getDamage(event.getSpellLevel()));
+						DamageManager.createIndirectAttack(player, livingEntity, getDamage(event.getSpellLevel()),
+								attackerEnchantMap, null);
 					}
 				} else {
 					effectLocation.getWorld().playEffect(effectLocation, Effect.EXPLOSION_LARGE, 1);

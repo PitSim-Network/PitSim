@@ -121,8 +121,8 @@ public class JudgementAbility extends HelmetAbility {
 					if(++count == 4) cancel();
 					Misc.strikeLightningForPlayers(attackEvent.getDefender().getLocation(), 10);
 					player.setNoDamageTicks(0);
-					DamageManager.createDirectAttack(attackEvent.getAttacker(), attackEvent.getDefender(),
-							0, newEvent -> newEvent.veryTrueDamage = 2);
+					DamageManager.createDirectAttack(attackEvent.getAttacker(), attackEvent.getDefender(), 0,
+							null, null, newEvent -> newEvent.veryTrueDamage = 2);
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 		}

@@ -3,10 +3,13 @@ package dev.kyro.pitsim.enchants.tainted.scythe;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.cosmetics.particles.FireworkSparkParticle;
 import dev.kyro.pitsim.events.SpellUseEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.MutableInteger;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -21,6 +24,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class ElectricShock extends PitEnchantSpell {
@@ -59,39 +63,41 @@ public class ElectricShock extends PitEnchantSpell {
 		List<Entity> excluded = new ArrayList<>();
 		excluded.add(player);
 		excluded.add(target);
-		chain(player, player, target, 0, getMaxBounces(event.getSpellLevel()), excluded);
+		Map<PitEnchant, Integer> attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(player);
+		chain(player, attackerEnchantMap, player, target, new MutableInteger(0), getMaxBounces(event.getSpellLevel()), excluded);
 		Sounds.ELECTRIC_SHOCK.play(player);
 	}
 
-	private static void chain(Player player, LivingEntity startingEntity, LivingEntity endingEntity, int bounceNumber, int maxBounces, List<Entity> excluded) {
+	private static void chain(Player player, Map<PitEnchant, Integer> attackerEnchantMap, LivingEntity startingEntity,
+							  LivingEntity endingEntity, MutableInteger currentBounce, int maxBounces, List<Entity> excluded) {
 		Location startLocation = startingEntity.getLocation().add(0, startingEntity.getEyeHeight(), 0);
 		Location endLocation = endingEntity.getLocation().add(0, endingEntity.getEyeHeight(), 0);
 		double distance = startLocation.distance(endLocation);
-		if(distance > getBounceRange() && bounceNumber != 0) return;
+		if(distance > getBounceRange() && currentBounce.getValue() != 0) return;
 		int steps = (int) Math.ceil(distance * 4);
 		double stepSize = distance / steps;
 		Vector stepVector = endLocation.toVector().subtract(startLocation.toVector()).normalize().multiply(stepSize);
 
 		Location drawLocation = startLocation.clone();
 		for(int i = 0; i <= steps; i++) {
-			if(i >= 2 || bounceNumber != 0) {
-				if(bounceNumber != 0 && Math.random() < 0.07) littleSpark(drawLocation.clone());
+			if(i >= 2 || currentBounce.getValue() != 0) {
+				if(currentBounce.getValue() != 0 && Math.random() < 0.07) littleSpark(drawLocation.clone());
 				drawEffect(drawLocation);
 			}
 			drawLocation.add(stepVector);
 		}
 
-		double damageMultiplier = 1 + 0.5 * ((maxBounces - bounceNumber) / (double) maxBounces * 3);
-		DamageManager.createIndirectAttack(player, endingEntity, DarkzoneBalancing.SCYTHE_DAMAGE * damageMultiplier);
+		double damageMultiplier = 1 + 0.5 * ((maxBounces - currentBounce.getValue()) / (double) maxBounces * 3);
+		DamageManager.createIndirectAttack(player, endingEntity, DarkzoneBalancing.SCYTHE_DAMAGE * damageMultiplier,
+				attackerEnchantMap, null);
 
-		if(bounceNumber >= maxBounces) return;
-		bounceNumber++;
-		int finalBounceNumber = bounceNumber;
 		for(LivingEntity possibleTarget : getPossibleTargets(endLocation, excluded)) {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					chain(player, endingEntity, possibleTarget, finalBounceNumber, maxBounces, excluded);
+					if(currentBounce.getValue() >= maxBounces) return;
+					currentBounce.increment();
+					chain(player, attackerEnchantMap, endingEntity, possibleTarget, currentBounce, maxBounces, excluded);
 				}
 			}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(9));
 		}
@@ -152,10 +158,10 @@ public class ElectricShock extends PitEnchantSpell {
 	}
 
 	public static int getMaxBounces(int enchantLvl) {
-		return enchantLvl;
+		return enchantLvl + 1;
 	}
 
 	public static double getBounceRange() {
-		return 8;
+		return 12;
 	}
 }

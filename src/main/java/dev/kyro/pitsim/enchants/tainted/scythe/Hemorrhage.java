@@ -50,6 +50,11 @@ public class Hemorrhage extends PitEnchant {
 			int count = 0;
 			@Override
 			public void run() {
+				if(attackEvent.getDefender().isDead()) {
+					cancel();
+					return;
+				}
+
 				if(++count == getSeconds(enchantLvl)) cancel();
 
 				attackEvent.getDefender().setHealth(Math.max(attackEvent.getDefender().getHealth() -
@@ -80,7 +85,7 @@ public class Hemorrhage extends PitEnchant {
 	}
 
 	public static double getBleedDamage(int enchantLvl) {
-		return 1;
+		return 1.5;
 	}
 
 	public static int getSeconds(int enchantLvl) {

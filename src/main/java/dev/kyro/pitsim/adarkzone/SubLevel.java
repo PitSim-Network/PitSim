@@ -88,7 +88,7 @@ public class SubLevel {
 			}
 		}
 
-		if(Math.random() < 0.25) {
+		if(Math.random() < 0.33) {
 			int newMobsNeeded = maxMobs - mobs.size();
 			for(int i = 0; i < Math.min(newMobsNeeded, 3); i++) {
 				if (!isBossSpawned) spawnMob(null, MobStatus.STANDARD);

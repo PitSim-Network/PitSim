@@ -43,7 +43,8 @@ public class LightningAbility extends PitBossAbility {
 				if(++count == strikes) cancel();
 				Misc.strikeLightningForPlayers(player.getLocation(), 40);
 				player.setNoDamageTicks(0);
-				DamageManager.createDirectAttack(getPitBoss().getBoss(), player, 0, newEvent -> newEvent.veryTrueDamage = damage);
+				DamageManager.createDirectAttack(getPitBoss().getBoss(), player, 0,
+						null, null, newEvent -> newEvent.veryTrueDamage = damage);
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
 	}

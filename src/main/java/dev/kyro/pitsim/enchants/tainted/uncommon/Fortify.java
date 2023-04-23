@@ -42,6 +42,6 @@ public class Fortify extends PitEnchant {
 	}
 
 	public static int getShieldIncrease(int enchantLvl) {
-		return enchantLvl * 20 + 10;
+		return enchantLvl * 30 + 10;
 	}
 }

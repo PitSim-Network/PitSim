@@ -3,6 +3,8 @@ package dev.kyro.pitsim.enchants.tainted.scythe;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitEnchantSpell;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.SpellUseEvent;
@@ -49,7 +51,8 @@ public class CleaveSpell extends PitEnchantSpell {
 							LivingEntity livingEntity = (LivingEntity) entity;
 							if(!Misc.isEntity(livingEntity, PitEntityType.REAL_PLAYER, PitEntityType.PIT_BOSS, PitEntityType.PIT_MOB)) continue;
 
-							DamageManager.createDirectAttack(cleaveEntity.attacker, livingEntity, DarkzoneBalancing.SCYTHE_DAMAGE, attackEvent -> {
+							DamageManager.createDirectAttack(cleaveEntity.attacker, livingEntity, DarkzoneBalancing.SCYTHE_DAMAGE,
+									cleaveEntity.attackerEnchantMap, null, attackEvent -> {
 								if(!attackEvent.isCancelled()) Sounds.CLEAVE3.play(cleaveEntity.attacker);
 							});
 						}
@@ -118,7 +121,7 @@ public class CleaveSpell extends PitEnchantSpell {
 
 	@Override
 	public int getManaCost(int enchantLvl) {
-		return Math.max(24 - enchantLvl * 4, 0);
+		return Math.max(20 - enchantLvl * 3 - 1, 0);
 	}
 
 	@Override
@@ -132,12 +135,14 @@ public class CleaveSpell extends PitEnchantSpell {
 		public Location spawnLocation;
 		public Vector velocity;
 		public int rotation = 0;
+		public Map<PitEnchant, Integer> attackerEnchantMap;
 
 		public CleaveEntity(Player attacker, ArmorStand armorStand, Location spawnLocation, Vector velocity) {
 			this.attacker = attacker;
 			this.armorStand = armorStand;
 			this.spawnLocation = spawnLocation;
 			this.velocity = velocity;
+			this.attackerEnchantMap = EnchantManager.getEnchantsOnPlayer(attacker);
 		}
 
 		public Vector getNextVelocity() {
