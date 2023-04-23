@@ -18,7 +18,6 @@ public class EnderchestPage {
 	private Inventory inventory;
 	private final int index;
 
-	private String name;
 	private ItemStack displayItem;
 	private boolean isWardrobeEnabled;
 	private final ItemStack[] items = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
@@ -31,11 +30,10 @@ public class EnderchestPage {
 		List<Boolean> booleans = message.getBooleans();
 
 		index = integers.remove(0);
-		name = strings.remove(0);
 		displayItem = CustomSerializer.deserializeDirectly(strings.remove(0));
 		if(Misc.isAirOrNull(displayItem)) displayItem = new AItemStackBuilder(Material.ENDER_CHEST).getItemStack();
 		isWardrobeEnabled = booleans.remove(0);
-		for(int i = 0; i < items.length; i++) items[i] = StorageProfile.deserialize(strings.remove(0), profile.getUUID());
+		for(int i = 0; i < items.length; i++) items[i] = StorageProfile.deserialize(strings.remove(0), profile.getUniqueID());
 
 		createInventory();
 	}
@@ -68,8 +66,7 @@ public class EnderchestPage {
 	}
 
 	public void writeData(PluginMessage message, boolean isLogout) {
-		message.writeString(name)
-				.writeString(CustomSerializer.serialize(displayItem))
+		message.writeString(CustomSerializer.serialize(displayItem))
 				.writeBoolean(isWardrobeEnabled);
 		for(int i = 0; i < StorageManager.ENDERCHEST_ITEM_SLOTS; i++) {
 			int inventorySlot = i + 9;
@@ -80,7 +77,11 @@ public class EnderchestPage {
 
 	public int getItemCount() {
 		int total = 0;
-		for(ItemStack itemStack : items) if(!Misc.isAirOrNull(itemStack)) total++;
+		for(int i = 0; i < StorageManager.ENDERCHEST_ITEM_SLOTS; i++) {
+			int inventorySlot = i + 9;
+			ItemStack itemStack = inventory.getItem(inventorySlot);
+			if(!Misc.isAirOrNull(itemStack)) total++;
+		}
 		return total;
 	}
 
@@ -92,12 +93,8 @@ public class EnderchestPage {
 		return index;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public String getDisplayName() {
+		return "&5&lENDERCHEST &7Page " + (getIndex() + 1);
 	}
 
 	public ItemStack getDisplayItem() {

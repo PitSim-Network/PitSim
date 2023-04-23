@@ -65,6 +65,7 @@ public class ArmorReduction {
 				return 3;
 			case IRON_LEGGINGS:
 				return 5;
+			case IRON_CHESTPLATE:
 			case DIAMOND_LEGGINGS:
 				return 6;
 			case DIAMOND_CHESTPLATE:

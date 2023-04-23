@@ -1,7 +1,9 @@
 package dev.kyro.pitsim.misc;
 
+import dev.kyro.pitsim.storage.EnderchestPage;
 import dev.kyro.pitsim.storage.StorageManager;
 import dev.kyro.pitsim.storage.StorageProfile;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -106,18 +108,20 @@ public class PlayerItemLocation {
 		return String.join("_", attributes);
 	}
 
-	public ItemStack getItem(Player player) {
+	public ItemStack getItem(UUID uuid, boolean useOnlinePlayer) {
+		Player player = Bukkit.getPlayer(uuid);
+		StorageProfile profile = StorageManager.getProfile(uuid);
 		ItemStack itemStack;
 		switch(location) {
 			case INVENTORY:
-				itemStack = player.getInventory().getItem(slot);
+				itemStack = useOnlinePlayer ? player.getInventory().getItem(slot) : profile.getInventory()[slot];
 				break;
 			case ARMOR:
-				itemStack = player.getInventory().getArmorContents()[slot];
+				itemStack = useOnlinePlayer ? player.getInventory().getArmorContents()[slot] : profile.getArmor()[slot];
 				break;
 			case ENDERCHEST:
-				StorageProfile profile = StorageManager.getProfile(player);
-				itemStack = profile.getEnderchestPage(page).getInventory().getItem(slot + 9);
+				EnderchestPage enderchestPage = profile.getEnderchestPage(page);
+				itemStack = useOnlinePlayer ? enderchestPage.getInventory().getItem(slot + 9) : enderchestPage.getItems()[slot];
 				break;
 			default:
 				throw new RuntimeException();
@@ -126,19 +130,29 @@ public class PlayerItemLocation {
 		return itemStack;
 	}
 
-	public void setItem(Player player, ItemStack itemStack) {
+	public void setItem(UUID uuid, ItemStack itemStack, boolean useOnlinePlayer) {
+		Player player = Bukkit.getPlayer(uuid);
+		StorageProfile profile = StorageManager.getProfile(uuid);
 		switch(location) {
 			case INVENTORY:
-				player.getInventory().setItem(slot, itemStack);
+				if(useOnlinePlayer) {
+					player.getInventory().setItem(slot, itemStack);
+				} else {
+					profile.getInventory()[slot] = itemStack;
+				}
 				break;
 			case ARMOR:
-				ItemStack[] armor = player.getInventory().getArmorContents();
-				armor[slot] = itemStack;
-				player.getInventory().setArmorContents(armor);
+				if(useOnlinePlayer) {
+					ItemStack[] armor = player.getInventory().getArmorContents();
+					armor[slot] = itemStack;
+					player.getInventory().setArmorContents(armor);
+				} else {
+					profile.getArmor()[slot] = itemStack;
+				}
 				break;
 			case ENDERCHEST:
-				StorageProfile profile = StorageManager.getProfile(player);
-				profile.getEnderchestPage(page).getInventory().setItem(slot + 9, itemStack);
+				EnderchestPage enderchestPage = profile.getEnderchestPage(page);
+				enderchestPage.getInventory().setItem(slot + 9, itemStack);
 		}
 	}
 

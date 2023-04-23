@@ -8,6 +8,8 @@ import dev.kyro.pitsim.exceptions.DataNotLoadedException;
 import dev.kyro.pitsim.logging.LogManager;
 import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PlayerItemLocation;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,6 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class StorageProfile {
@@ -47,6 +50,10 @@ public class StorageProfile {
 
 	public void loadData(PluginMessage message) {
 		List<String> strings = message.getStrings();
+		List<Integer> integers = message.getIntegers();
+
+		defaultOverworldSet = integers.remove(0);
+		defaultDarkzoneSet = integers.remove(0);
 		for(int i = 0; i < 36; i++) inventory[i] = deserialize(strings.remove(0), uuid);
 		for(int i = 0; i < 4; i++) armor[i] = deserialize(strings.remove(0), uuid);
 		for(int i = 0; i < enderchestPages.length; i++) enderchestPages[i] = new EnderchestPage(this, message);
@@ -61,7 +68,9 @@ public class StorageProfile {
 				.writeString("ITEM DATA SAVE")
 				.writeString(PitSim.serverName)
 				.writeString(uuid.toString())
-				.writeBoolean(isLogout);
+				.writeBoolean(isLogout)
+				.writeInt(defaultOverworldSet)
+				.writeInt(defaultDarkzoneSet);
 
 		if(StorageManager.isEditing(uuid) && Bukkit.getPlayer(uuid) != null) return;
 		if(StorageManager.isBeingEdited(uuid) && Bukkit.getPlayer(uuid) != null) return;
@@ -91,7 +100,65 @@ public class StorageProfile {
 		message.send();
 	}
 
-	public UUID getUUID() {
+	public boolean storeInvAndArmor(Map<PlayerItemLocation, ItemStack> proposedChanges, List<PlayerItemLocation> emptySlots,
+									boolean useOnlinePlayer) {
+		Player player = getOnlinePlayer();
+		loop:
+		for(PlayerItemLocation itemLocation : PlayerItemLocation
+				.getLocations(PlayerItemLocation.Location.INVENTORY, PlayerItemLocation.Location.ARMOR)) {
+			ItemStack itemStack = proposedChanges.containsKey(itemLocation) ? proposedChanges.get(itemLocation) :
+					itemLocation.getItem(getUniqueID(), useOnlinePlayer).clone();
+			proposedChanges.put(itemLocation, new ItemStack(Material.AIR));
+			if(Misc.isAirOrNull(itemStack)) continue;
+			System.out.println("checking to store: " + itemLocation.getIdentifier());
+			if(emptySlots.contains(itemLocation)) continue;
+			System.out.println("trying to store: " + itemLocation.getIdentifier());
+
+			int maxStackSize = itemStack.getMaxStackSize();
+
+			boolean foundAnyEnabled = false;
+			for(EnderchestPage enderchestPage : getEnderchestPages()) {
+				if(!enderchestPage.isWardrobeEnabled()) continue;
+				foundAnyEnabled = true;
+				for(PlayerItemLocation testLocation : PlayerItemLocation.enderchest(enderchestPage.getIndex())) {
+					ItemStack testStack = proposedChanges.containsKey(testLocation) ? proposedChanges.get(testLocation) :
+							testLocation.getItem(getUniqueID(), useOnlinePlayer).clone();
+					if(!testStack.isSimilar(itemStack)) continue;
+					int amountToAdd = Math.min(itemStack.getAmount(), maxStackSize - testStack.getAmount());
+					testStack.setAmount(testStack.getAmount() + amountToAdd);
+					itemStack.setAmount(Math.max(itemStack.getAmount() - amountToAdd, 0));
+					proposedChanges.put(testLocation, testStack);
+					System.out.println("found similar stack: " + testLocation.getIdentifier());
+					if(itemStack.getAmount() == 0) continue loop;
+				}
+			}
+
+			for(EnderchestPage enderchestPage : getEnderchestPages()) {
+				if(!enderchestPage.isWardrobeEnabled()) continue;
+				for(PlayerItemLocation testLocation : PlayerItemLocation.enderchest(enderchestPage.getIndex())) {
+					ItemStack testStack = proposedChanges.containsKey(testLocation) ? proposedChanges.get(testLocation) :
+							testLocation.getItem(getUniqueID(), useOnlinePlayer).clone();
+					if(!Misc.isAirOrNull(testStack)) continue;
+					proposedChanges.put(testLocation, itemStack);
+					System.out.println("found empty slot: " + testLocation.getIdentifier());
+					continue loop;
+				}
+			}
+
+			if(player != null) {
+				if(foundAnyEnabled) {
+					AOutput.error(player, "&c&lERROR!&7 Not enough space for your current inventory and armor");
+				} else {
+					AOutput.error(player, "&c&lERROR!&7 You do not have any enderchests with wardrobe enabled");
+				}
+				Sounds.NO.play(player);
+			}
+			return false;
+		}
+		return true;
+	}
+
+	public UUID getUniqueID() {
 		return uuid;
 	}
 

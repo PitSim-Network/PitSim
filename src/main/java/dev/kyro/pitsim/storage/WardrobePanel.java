@@ -12,6 +12,9 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class WardrobePanel extends AGUIPanel {
 	public StorageProfile profile;
 
@@ -43,7 +46,7 @@ public class WardrobePanel extends AGUIPanel {
 			}
 			if(outfitState.isEquippable()) {
 				addTaggedItem(i + 18, outfit::getStateItem, event -> {
-					boolean success = outfit.equip();
+					boolean success = outfit.equip(true);
 					if(success) {
 						AOutput.send(player, "&2&lWARDROBE!&7 Equipped &2Outfit " + (outfit.getIndex() + 1) + "&7!");
 						Sounds.SUCCESS.play(player);
@@ -61,6 +64,30 @@ public class WardrobePanel extends AGUIPanel {
 				}).setItem();
 			}
 		}
+
+		addTaggedItem(30, () -> new AItemStackBuilder(Material.HOPPER)
+				.setName("&cDump Inventory")
+				.setLore(new PitLoreBuilder(
+						"&7Puts your inventory and armor into your enderchest"
+				)).getItemStack(), event -> {
+			boolean success = profile.storeInvAndArmor(new HashMap<>(), new ArrayList<>(), true);
+			if(success) {
+				AOutput.send(player, "&2&lWARDROBE!&7 Moved your inventory and armor into your enderchest!");
+				Sounds.SUCCESS.play(player);
+			}
+		});
+
+		addTaggedItem(32, () -> new AItemStackBuilder(Material.BARRIER)
+				.setName("&cClear Defaults")
+				.setLore(new PitLoreBuilder(
+						"&7Clears default &aOverworld &7and &5Darkzone &7sets"
+				)).getItemStack(), event -> {
+			profile.setDefaultOverworldSet(-1);
+			profile.setDefaultDarkzoneSet(-1);
+			setInventory();
+			AOutput.send(player, "&2&lWARDROBE!&7 Cleared default &aOverworld &7and &5Darkzone &7sets!");
+			Sounds.SUCCESS.play(player);
+		});
 	}
 
 	@Override

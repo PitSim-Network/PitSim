@@ -36,8 +36,9 @@ public class StorageManager implements Listener {
 	protected static final List<EditSession> editSessions = new ArrayList<>();
 
 	public static StorageProfile getProfile(Player player) {
+		if(player == null) return null;
 		for(StorageProfile profile : profiles) {
-			if(profile.getUUID().equals(player.getUniqueId())) return profile;
+			if(profile.getUniqueID().equals(player.getUniqueId())) return profile;
 		}
 
 		StorageProfile profile = new StorageProfile(player.getUniqueId());
@@ -47,7 +48,7 @@ public class StorageManager implements Listener {
 
 	public static StorageProfile getProfile(UUID uuid) {
 		for(StorageProfile profile : profiles) {
-			if(profile.getUUID().equals(uuid)) return profile;
+			if(profile.getUniqueID().equals(uuid)) return profile;
 		}
 
 		StorageProfile profile = new StorageProfile(uuid);
@@ -157,6 +158,12 @@ public class StorageManager implements Listener {
 
 			StorageProfile profile = getProfile(uuid);
 			profile.loadData(message);
+
+			int index = PitSim.status.isOverworld() ? profile.getDefaultOverworldSet() : profile.getDefaultDarkzoneSet();
+			if(index != -1) {
+				Outfit outfit = profile.getOutfits()[index];
+				outfit.equip(false);
+			}
 		} else if(strings.get(0).equals("PROMPT EDIT MENU")) {
 			UUID staffUUID = UUID.fromString(strings.get(1));
 
@@ -236,7 +243,7 @@ public class StorageManager implements Listener {
 				if(isEditing(player)) getSession(player).playerClosed = true;
 			} else if(slot == ENDERCHEST_ITEM_SLOTS + 13) {
 				if(isEditing(player)) getSession(player).playerClosed = false;
-				new EnderchestGUI(player, profile.getUUID()).open();
+				new EnderchestGUI(player, profile.getUniqueID()).open();
 				if(isEditing(player)) getSession(player).playerClosed = true;
 			} else if(slot < 9 || slot > 44) {
 //				Does not run the else return

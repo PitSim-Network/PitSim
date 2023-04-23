@@ -7,8 +7,10 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.enums.RankInformation;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -70,19 +72,32 @@ public class EnderchestPanel extends AGUIPanel {
 
 		EnderchestPage enderchestPage = profile.getEnderchestPage(slot - 9);
 
-		if(StorageManager.isEditing(player)) {
-			EditSession session = StorageManager.getSession(player);
-			session.playerClosed = false;
-			player.openInventory(enderchestPage.getInventory());
-			session.playerClosed = true;
-			return;
-		}
+		if(event.getClick() == ClickType.LEFT || event.getClick() == ClickType.SHIFT_LEFT) {
+			if(StorageManager.isEditing(player)) {
+				EditSession session = StorageManager.getSession(player);
+				session.playerClosed = false;
+				player.openInventory(enderchestPage.getInventory());
+				session.playerClosed = true;
+				return;
+			}
 
-		player.openInventory(enderchestPage.getInventory());
+			player.openInventory(enderchestPage.getInventory());
+		} else if(event.getClick() == ClickType.RIGHT || event.getClick() == ClickType.RIGHT) {
+			if(StorageManager.isEditing(player)) return;
+			if(enderchestPage.isWardrobeEnabled()) {
+				AOutput.send(player, "&2&lWARDROBE!&7 Wardrobe &cdisabled &7for " + enderchestPage.getDisplayName());
+			} else {
+				AOutput.send(player, "&2&lWARDROBE!&7 Wardrobe &aenabled &7for " + enderchestPage.getDisplayName());
+			}
+			Sounds.SUCCESS.play(player);
+			enderchestPage.setWardrobeEnabled(!enderchestPage.isWardrobeEnabled());
+			setInventory();
+		}
 	}
 
 	@Override
-	public void onOpen(InventoryOpenEvent event) {
+	public void setInventory() {
+		super.setInventory();
 		RankInformation rank = RankInformation.getRank(player);
 
 		for(int i = 9; i < 27; i++) {
@@ -90,7 +105,7 @@ public class EnderchestPanel extends AGUIPanel {
 
 			EnderchestPage enderchestPage = profile.getEnderchestPage(pageIndex);
 			AItemStackBuilder stackBuilder = new AItemStackBuilder(enderchestPage.getDisplayItem())
-					.setName("&5&lENDERCHEST &7Page " + (enderchestPage.getIndex() + 1));
+					.setName(enderchestPage.getDisplayName());
 			ALoreBuilder lore = new ALoreBuilder();
 
 			int accessiblePages = isAdminSession() ? StorageManager.MAX_ENDERCHEST_PAGES : rank.enderchestPages;
@@ -98,7 +113,11 @@ public class EnderchestPanel extends AGUIPanel {
 			if(pageIndex + 1 <= accessiblePages) {
 				lore.addLore(
 						"&7Status: &aUnlocked",
-						"&7Items: &d" + enderchestPage.getItemCount() + "&7/&d" + StorageManager.ENDERCHEST_ITEM_SLOTS
+						"&7Wardrobe: " + (enderchestPage.isWardrobeEnabled() ? "&aEnabled" : "&cDisabled"),
+						"&7Items: &d" + enderchestPage.getItemCount() + "&7/&d" + StorageManager.ENDERCHEST_ITEM_SLOTS,
+						"",
+						"&eLeft-Click to open!",
+						"&eRight-Click to toggle wardrobe!"
 				);
 				Misc.addEnchantGlint(stackBuilder.getItemStack());
 			} else {
@@ -119,6 +138,12 @@ public class EnderchestPanel extends AGUIPanel {
 			builder.setName("&6View Inventory");
 			getInventory().setItem(8, builder.getItemStack());
 		}
+		updateInventory();
+	}
+
+	@Override
+	public void onOpen(InventoryOpenEvent event) {
+		setInventory();
 	}
 
 	@Override
@@ -131,6 +156,6 @@ public class EnderchestPanel extends AGUIPanel {
 	}
 
 	public boolean isAdminSession() {
-		return !profile.getUUID().equals(player.getUniqueId());
+		return !profile.getUniqueID().equals(player.getUniqueId());
 	}
 }

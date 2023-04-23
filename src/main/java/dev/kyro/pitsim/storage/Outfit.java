@@ -2,7 +2,6 @@ package dev.kyro.pitsim.storage;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.ItemFactory;
@@ -50,25 +49,19 @@ public class Outfit {
 		}
 	}
 
-	public boolean equip() {
+	public boolean equip(boolean useOnlinePlayer) {
 		Map<PlayerItemLocation, ItemStack> proposedChanges = new HashMap<>();
 		Player player = profile.getOnlinePlayer();
 
 		List<PlayerItemLocation> emptySlots = new ArrayList<>();
 		List<ItemCandidate> itemCandidates = new ArrayList<>();
-		for(int i = 0; i < 36; i++) {
-			ItemStack itemStack = player.getInventory().getItem(i);
+		for(PlayerItemLocation itemLocation : PlayerItemLocation
+				.getLocations(PlayerItemLocation.Location.INVENTORY, PlayerItemLocation.Location.ARMOR)) {
+			ItemStack itemStack = itemLocation.getItem(profile.getUniqueID(), useOnlinePlayer);
 			PitItem pitItem = ItemFactory.getItem(itemStack);
 			if(pitItem == null) continue;
 			if(!pitItem.hasUUID && !(pitItem instanceof StaticPitItem)) continue;
-			itemCandidates.add(new ItemCandidate(PlayerItemLocation.inventory(i), pitItem, itemStack));
-		}
-		for(int i = 0; i < 4; i++) {
-			ItemStack itemStack = player.getInventory().getArmorContents()[i];
-			PitItem pitItem = ItemFactory.getItem(itemStack);
-			if(pitItem == null) continue;
-			if(!pitItem.hasUUID && !(pitItem instanceof StaticPitItem)) continue;
-			itemCandidates.add(new ItemCandidate(PlayerItemLocation.armor(i), pitItem, itemStack));
+			itemCandidates.add(new ItemCandidate(itemLocation, pitItem, itemStack));
 		}
 		for(int i = 0; i < StorageManager.MAX_ENDERCHEST_PAGES; i++) {
 			EnderchestPage enderchestPage = profile.getEnderchestPage(i);
@@ -76,7 +69,7 @@ public class Outfit {
 			Inventory inventory = enderchestPage.getInventory();
 			for(int j = 0; j < StorageManager.ENDERCHEST_ITEM_SLOTS; j++) {
 				int inventorySlot = j + 9;
-				ItemStack itemStack = inventory.getItem(inventorySlot);
+				ItemStack itemStack = useOnlinePlayer ? inventory.getItem(inventorySlot) : enderchestPage.getItems()[j];
 				PitItem pitItem = ItemFactory.getItem(itemStack);
 				if(pitItem == null) continue;
 				if(!pitItem.hasUUID && !(pitItem instanceof StaticPitItem)) continue;
@@ -87,16 +80,12 @@ public class Outfit {
 		Map<PlayerItemLocation, RequestedItemInformation> requestedItemLocationMap = new LinkedHashMap<>();
 		for(Map.Entry<PlayerItemLocation, String> entry : itemLocationMap.entrySet()) {
 			RequestedItemInformation requestedItem = locateItem(emptySlots, itemCandidates, entry.getValue());
-			if(requestedItem.hasUUID() && !requestedItem.isFulfilled()) {
-				AOutput.error(player, "&c&lERROR!&7 You are missing an item in this set!");
-				Sounds.NO.play(player);
-				System.out.println("missing item: " + requestedItem.identifier);
-				return false;
-			}
-
+			if(requestedItem == null) continue;
 			requestedItemLocationMap.put(entry.getKey(), requestedItem);
 
-			System.out.println("REQUESTED ITEM FOUND: " + requestedItem.identifier);
+			if(!requestedItem.isFulfilled()) System.out.println("missing item: " + requestedItem.identifier);
+
+			System.out.println("REQUESTED ITEM IDENTIFIED: " + requestedItem.identifier);
 			for(Map.Entry<PlayerItemLocation, Integer> sourceEntry : requestedItem.itemSourceMap.entrySet())
 				System.out.println(sourceEntry.getKey().getIdentifier() + ": "+ sourceEntry.getValue());
 		}
@@ -104,54 +93,15 @@ public class Outfit {
 		for(PlayerItemLocation emptySlot : emptySlots) proposedChanges.put(emptySlot, new ItemStack(Material.AIR));
 		for(ItemCandidate candidate : itemCandidates) proposedChanges.put(candidate.getItemLocation(), candidate.getModifiedStack());
 
-		loop:
-		for(PlayerItemLocation itemLocation : PlayerItemLocation
-				.getLocations(PlayerItemLocation.Location.INVENTORY, PlayerItemLocation.Location.ARMOR)) {
-			ItemStack itemStack = proposedChanges.containsKey(itemLocation) ? proposedChanges.get(itemLocation) : itemLocation.getItem(player).clone();
-			proposedChanges.put(itemLocation, new ItemStack(Material.AIR));
-			if(Misc.isAirOrNull(itemStack)) continue;
-			System.out.println("checking for move on: " + itemLocation.getIdentifier());
-			if(emptySlots.contains(itemLocation)) continue;
-			System.out.println("trying to move: " + itemLocation.getIdentifier());
-
-			int maxStackSize = itemStack.getMaxStackSize();
-
-			for(EnderchestPage enderchestPage : profile.getEnderchestPages()) {
-				if(!enderchestPage.isWardrobeEnabled()) continue;
-				for(PlayerItemLocation testLocation : PlayerItemLocation.enderchest(enderchestPage.getIndex())) {
-					ItemStack testStack = proposedChanges.containsKey(testLocation) ? proposedChanges.get(testLocation) : testLocation.getItem(player).clone();
-					if(!testStack.isSimilar(itemStack)) continue;
-					int amountToAdd = Math.min(itemStack.getAmount(), maxStackSize - testStack.getAmount());
-					testStack.setAmount(testStack.getAmount() + amountToAdd);
-					itemStack.setAmount(Math.max(itemStack.getAmount() - amountToAdd, 0));
-					proposedChanges.put(testLocation, testStack);
-					System.out.println("found similar stack: " + testLocation.getIdentifier());
-					if(itemStack.getAmount() == 0) continue loop;
-				}
-			}
-
-			for(EnderchestPage enderchestPage : profile.getEnderchestPages()) {
-				if(!enderchestPage.isWardrobeEnabled()) continue;
-				for(PlayerItemLocation testLocation : PlayerItemLocation.enderchest(enderchestPage.getIndex())) {
-					ItemStack testStack = proposedChanges.containsKey(testLocation) ? proposedChanges.get(testLocation) : testLocation.getItem(player).clone();
-					if(!Misc.isAirOrNull(testStack)) continue;
-					proposedChanges.put(testLocation, itemStack);
-					System.out.println("found empty slot: " + testLocation.getIdentifier());
-					continue loop;
-				}
-			}
-
-			AOutput.error(player, "&c&lERROR!&7 Not enough space for your current inventory and armor");
-			Sounds.NO.play(player);
-			return false;
-		}
+		boolean successfulStore = profile.storeInvAndArmor(proposedChanges, emptySlots, useOnlinePlayer);
+		if(!successfulStore) return false;
 
 		for(Map.Entry<PlayerItemLocation, RequestedItemInformation> entry : requestedItemLocationMap.entrySet())
 			proposedChanges.put(entry.getKey(), entry.getValue().getRequestedItem());
 
 		for(Map.Entry<PlayerItemLocation, ItemStack> entry : proposedChanges.entrySet())
-			entry.getKey().setItem(player, entry.getValue());
-		player.updateInventory();
+			entry.getKey().setItem(profile.getUniqueID(), entry.getValue(), useOnlinePlayer);
+		if(player != null) player.updateInventory();
 
 //		for(Map.Entry<PlayerItemLocation, ItemStack> entry : proposedChanges.entrySet()) {
 //			String itemString = Misc.isAirOrNull(entry.getValue()) ? "AIR" : new NBTItem(entry.getValue()).toString();
@@ -186,6 +136,7 @@ public class Outfit {
 
 	public void clear() {
 		itemLocationMap.clear();
+		displayItem = null;
 	}
 
 	public RequestedItemInformation locateItem(List<PlayerItemLocation> emptySlots, List<ItemCandidate> candidates, String identifier) {

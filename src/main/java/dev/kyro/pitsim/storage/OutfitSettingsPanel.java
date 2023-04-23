@@ -83,7 +83,7 @@ public class OutfitSettingsPanel extends AGUIPanel {
 		} else if(profile.getDefaultOverworldSet() == -1) {
 			setOverworldLore.addLore("&7Current: None!");
 		} else if(profile.getDefaultOverworldSet() == outfit.getIndex()) {
-			setOverworldLore.addLore("&7Current: This one!");
+			setOverworldLore.addLore("&7Current: &2This one!");
 			setOverworldClick = null;
 		} else {
 			setOverworldLore.addLore("&7Current: &2Outfit " + (profile.getDefaultOverworldSet() + 1));
@@ -91,7 +91,7 @@ public class OutfitSettingsPanel extends AGUIPanel {
 		ItemStack setOverworldBaseStack = new ItemStack(Material.STAINED_CLAY, 1, (short) 13);
 		if(!outfitState.isEquippable()) setOverworldBaseStack.setType(Material.BARRIER);
 		addTaggedItem(15, () -> new AItemStackBuilder(setOverworldBaseStack)
-				.setName("&7Set &7Default &aOverworld &2Outfit")
+				.setName("&7Set Default &aOverworld &2Outfit")
 				.setLore(setOverworldLore)
 				.getItemStack(), setOverworldClick).setItem();
 
@@ -111,7 +111,7 @@ public class OutfitSettingsPanel extends AGUIPanel {
 		} else if(profile.getDefaultOverworldSet() == -1) {
 			setDarkzoneLore.addLore("&7Current: None!");
 		} else if(profile.getDefaultOverworldSet() == outfit.getIndex()) {
-			setDarkzoneLore.addLore("&7Current: This one!");
+			setDarkzoneLore.addLore("&7Current: &2This one!");
 			setDarkzoneClick = null;
 		} else {
 			setDarkzoneLore.addLore("&7Current: &2Outfit " + (profile.getDefaultOverworldSet() + 1));
@@ -119,7 +119,7 @@ public class OutfitSettingsPanel extends AGUIPanel {
 		ItemStack setDarkzoneBaseStack = new ItemStack(Material.STAINED_CLAY, 1, (short) 10);
 		if(!outfitState.isEquippable()) setDarkzoneBaseStack.setType(Material.BARRIER);
 		addTaggedItem(16, () -> new AItemStackBuilder(setDarkzoneBaseStack)
-				.setName("&7Set &7Default &5Darkzone &2Outfit")
+				.setName("&7Set Default &5Darkzone &2Outfit")
 				.setLore(setDarkzoneLore)
 				.getItemStack(), setDarkzoneClick).setItem();
 	}
