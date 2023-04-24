@@ -234,7 +234,6 @@ public class StorageManager implements Listener {
 				if(isEditing(player)) getSession(player).playerClosed = false;
 				player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() - 1).getInventory());
 				if(isEditing(player)) getSession(player).playerClosed = true;
-				event.setCancelled(true);
 			} else if(slot == ENDERCHEST_ITEM_SLOTS + 17 && enderchestPage.getIndex() + 1 < MAX_ENDERCHEST_PAGES) {
 				RankInformation rank = RankInformation.getRank(player);
 				if(enderchestPage.getIndex() + 1 >= rank.enderchestPages && !isEditing(player)) continue;
@@ -245,12 +244,9 @@ public class StorageManager implements Listener {
 				if(isEditing(player)) getSession(player).playerClosed = false;
 				new EnderchestGUI(player, profile.getUniqueID()).open();
 				if(isEditing(player)) getSession(player).playerClosed = true;
-			} else if(slot < 9 || slot > 44) {
-//				Does not run the else return
-			} else {
-				return;
 			}
 
+			if(slot > 8 && slot < 45) return;
 			event.setCancelled(true);
 			player.updateInventory();
 		}
