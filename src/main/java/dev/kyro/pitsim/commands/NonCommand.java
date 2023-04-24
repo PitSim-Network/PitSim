@@ -17,7 +17,7 @@ public class NonCommand implements CommandExecutor {
 
 		if(!player.isOp()) return false;
 
-		new Non(NonManager.skinLoadedBotIGNS.get((int) (Math.random() * NonManager.skinLoadedBotIGNS.size())));
+		new Non(NonManager.botSkins.get((int) (Math.random() * NonManager.botSkins.size())));
 
 		return false;
 	}

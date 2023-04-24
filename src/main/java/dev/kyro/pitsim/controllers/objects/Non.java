@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.SkinManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.enums.NonState;
 import dev.kyro.pitsim.enums.NonTrait;
+import dev.kyro.pitsim.misc.MinecraftSkin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -45,14 +46,14 @@ public class Non {
 	public NonState nonState = NonState.RESPAWNING;
 	public int count = (int) (Math.random() * 20);
 
-	public Non(String name) {
-		this.name = name;
+	public Non(MinecraftSkin skin) {
+		this.name = skin.skinName;
 
 		displayName = "&7" + name;
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
 
 		spawn();
-		SkinManager.skinNPC(npc, name);
+		SkinManager.skinNPC(npc, skin);
 
 		this.non = (Player) npc.getEntity();
 		FPSCommand.hideNewNon(this);

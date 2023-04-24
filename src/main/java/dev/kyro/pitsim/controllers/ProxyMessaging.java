@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.inventories.AdminGUI;
+import dev.kyro.pitsim.misc.MinecraftSkin;
 import dev.kyro.pitsim.storage.EditSession;
 import dev.kyro.pitsim.storage.StorageManager;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -24,10 +25,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class ProxyMessaging implements Listener {
@@ -103,7 +101,15 @@ public class ProxyMessaging implements Listener {
 
 		if(strings.size() > 1 && strings.get(0).equals("NITRO PLAYERS")) {
 			strings.remove(0);
-			NonManager.updateNons(strings);
+
+			List<MinecraftSkin> skins = new ArrayList<>();
+			for(String string : strings) {
+				String[] info = string.split(",");
+
+				skins.add(new MinecraftSkin(info[0], info[1], info[2]));
+			}
+
+			NonManager.updateNons(skins);
 		}
 
 		if(strings.size() >= 1 && strings.get(0).equals("SERVER DATA")) {

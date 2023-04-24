@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.misc.MinecraftSkin;
 import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -33,6 +34,16 @@ public class SkinManager implements Listener {
 				}
 			}
 		}.runTaskTimerAsynchronously(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
+	}
+
+	public static void skinNPC(NPC npc, MinecraftSkin skin) {
+		if(npc.isSpawned()) {
+			SkinTrait skinTrait = CitizensAPI.getTraitFactory().getTrait(SkinTrait.class);
+			npc.addTrait(skinTrait);
+			skinTrait.setSkinPersistent(skin.skinName, skin.signature, skin.skin);
+		} else {
+			AOutput.log("Could not skin " + skin.skinName + " npc as it is not spawned");
+		}
 	}
 
 	public static void skinNPC(NPC npc, String skinName) {

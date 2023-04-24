@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.boosters.ChaosBooster;
 import dev.kyro.pitsim.controllers.objects.Non;
+import dev.kyro.pitsim.misc.MinecraftSkin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
@@ -13,19 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NonManager {
-	public static List<String> botIGNs = new ArrayList<>();
+	public static List<MinecraftSkin> botSkins = new ArrayList<>();
 	public static boolean defaultNons = true;
-	public static List<String> skinLoadedBotIGNS = new ArrayList<>();
+//	public static List<String> skinLoadedBotIGNS = new ArrayList<>();
 	public static List<Non> nons = new ArrayList<>();
 
 	static {
-		botIGNs.add("KyroKrypt");
-		botIGNs.add("BHunter");
-		botIGNs.add("PayForTruce");
-		botIGNs.add("Fishduper");
-		botIGNs.add("wiji1");
-		botIGNs.add("Muruseni");
-		botIGNs.add("ObvEndyy");
+		botSkins.add(MinecraftSkin.getSkin("KyroKrypt"));
+		botSkins.add(MinecraftSkin.getSkin("BHunter"));
+		botSkins.add(MinecraftSkin.getSkin("PayForTruce"));
+		botSkins.add(MinecraftSkin.getSkin("Fishduper"));
+		botSkins.add(MinecraftSkin.getSkin("wiji1"));
+		botSkins.add(MinecraftSkin.getSkin("Muruseni"));
+		botSkins.add(MinecraftSkin.getSkin("ObvEndyy"));
 	}
 
 	public static final int MAX_DISTANCE_FROM_MID = 10;
@@ -36,20 +37,11 @@ public class NonManager {
 			public void run() {
 				if(!FirestoreManager.CONFIG.nons) return;
 
-				for(String botIGN : new ArrayList<>(botIGNs)) {
-					if(!SkinManager.isSkinLoaded(botIGN)) {
-						SkinManager.loadSkin(botIGN);
-						continue;
-					}
-					skinLoadedBotIGNS.add(botIGN);
-					botIGNs.remove(botIGN);
-				}
-
-				if(skinLoadedBotIGNS.isEmpty()) return;
+				if(botSkins.isEmpty()) return;
 				for(int i = 0; i < 3; i++) {
 					if(nons.size() >= getMaxNons()) break;
 
-					Non non = new Non(skinLoadedBotIGNS.get((int) (Math.random() * skinLoadedBotIGNS.size())));
+					Non non = new Non(botSkins.get((int) (Math.random() * botSkins.size())));
 					new BukkitRunnable() {
 						@Override
 						public void run() {
@@ -87,31 +79,32 @@ public class NonManager {
 		return Math.min(playersNearMid * 4 + base, max);
 	}
 
-	public static void updateNons(List<String> newBotIGNs) {
-		if(!newBotIGNs.contains("KyroKrypt")) newBotIGNs.add("KyroKrypt");
+	public static void updateNons(List<MinecraftSkin> newBotSkins) {
+		MinecraftSkin kyro = MinecraftSkin.getSkin("KyroKrypt");
+		if(!newBotSkins.contains(kyro)) newBotSkins.add(kyro);
+
 		if(defaultNons) {
 			defaultNons = false;
-			botIGNs.clear();
-			skinLoadedBotIGNS.clear();
+			botSkins.clear();
 		}
-		for(String name : newBotIGNs) {
-			if(skinLoadedBotIGNS.contains(name) || botIGNs.contains(name)) continue;
-			botIGNs.add(name);
+//
+		newLoop:
+		for(MinecraftSkin newSkin : newBotSkins) {
+			for(MinecraftSkin botSkin : new ArrayList<>(botSkins)) {
+				if(botSkin.equals(newSkin)) continue newLoop;
+			}
+			botSkins.add(newSkin);
 		}
 
-		List<String> skinLoadedRemove = new ArrayList<>();
-		for(String name : skinLoadedBotIGNS) {
-			if(newBotIGNs.contains(name)) continue;
-			skinLoadedRemove.add(name);
+		List<MinecraftSkin> remove = new ArrayList<>();
+		newLoop:
+		for(MinecraftSkin skin : botSkins) {
+			for(MinecraftSkin newBotSkin : newBotSkins) {
+				if(skin.equals(newBotSkin)) continue newLoop;
+			}
+			remove.add(skin);
 		}
-		skinLoadedRemove.forEach(skin -> skinLoadedBotIGNS.remove(skin));
-
-		List<String> botIGNsRemove = new ArrayList<>();
-		for(String name : botIGNs) {
-			if(newBotIGNs.contains(name)) continue;
-			botIGNsRemove.add(name);
-		}
-		botIGNsRemove.forEach(skin -> botIGNs.remove(skin));
+		remove.forEach(skin -> botSkins.remove(skin));
 	}
 
 	public static Non getNon(LivingEntity entity) {

@@ -9,6 +9,7 @@ import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.overworld.Hearts;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
+import dev.kyro.pitsim.misc.MinecraftSkin;
 import dev.kyro.pitsim.misc.Misc;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -66,9 +67,10 @@ public class Hopper {
 	public void start() {
 		npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, type.colorCode + name);
 
-		SkinManager.loadSkin(name);
+		MinecraftSkin skin = MinecraftSkin.getSkin(name);
+		if(skin == null) throw new RuntimeException("Skin not found: " + name);
 		npc.spawn(target.getLocation());
-		SkinManager.skinNPC(npc, name);
+		SkinManager.skinNPC(npc, skin);
 		hopper = (Player) npc.getEntity();
 
 		npc.setProtected(false);
