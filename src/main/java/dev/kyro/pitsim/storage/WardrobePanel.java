@@ -32,7 +32,7 @@ public class WardrobePanel extends AGUIPanel {
 			Outfit outfit = profile.getOutfits()[i];
 			Outfit.OutfitState outfitState = outfit.getState();
 
-			addTaggedItem(i, outfit::getDisplayItem, event -> {});
+			addTaggedItem(i + 9, outfit::getDisplayItem, event -> {});
 			if(outfit.isUnlocked()) {
 				ItemStack settingsStack = new AItemStackBuilder(Material.REDSTONE_COMPARATOR)
 						.setName("&2Outfit " + (outfit.getIndex() + 1) + " Settings")
@@ -40,14 +40,14 @@ public class WardrobePanel extends AGUIPanel {
 								"&7Click to open the settings for this &2Outfit"
 						))
 						.getItemStack();
-				addTaggedItem(i + 9, () -> settingsStack, event -> openPanel(new OutfitSettingsPanel(gui, outfit))).setItem();
+				addTaggedItem(i + 18, () -> settingsStack, event -> openPanel(new OutfitSettingsPanel(gui, outfit))).setItem();
 			} else {
 				ItemStack settingsStack = new AItemStackBuilder(Material.STAINED_GLASS_PANE, 1, 15)
 						.getItemStack();
 				getInventory().setItem(i + 9, settingsStack);
 			}
 			if(outfitState.isEquippable()) {
-				addTaggedItem(i + 18, outfit::getStateItem, event -> {
+				addTaggedItem(i + 27, outfit::getStateItem, event -> {
 					boolean success = outfit.equip(true);
 					if(success) {
 						AOutput.send(player, "&2&lWARDROBE!&7 Equipped &2Outfit " + (outfit.getIndex() + 1) + "&7!");
@@ -56,7 +56,7 @@ public class WardrobePanel extends AGUIPanel {
 					}
 				}).setItem();
 			} else {
-				addTaggedItem(i + 18, outfit::getStateItem, event -> {
+				addTaggedItem(i + 27, outfit::getStateItem, event -> {
 					if(outfitState == Outfit.OutfitState.NO_DATA) {
 						AOutput.error(player, "&c&lERROR!&7 No data saved to this &2Outfit&7!");
 					} else if(outfitState == Outfit.OutfitState.LOCKED) {
@@ -67,7 +67,7 @@ public class WardrobePanel extends AGUIPanel {
 			}
 		}
 
-		addTaggedItem(30, () -> new AItemStackBuilder(Material.HOPPER)
+		addTaggedItem(39, () -> new AItemStackBuilder(Material.HOPPER)
 				.setName("&cDump Inventory")
 				.setLore(new PitLoreBuilder(
 						"&7Puts your inventory and armor into your enderchest"
@@ -83,7 +83,7 @@ public class WardrobePanel extends AGUIPanel {
 			}
 		});
 
-		addTaggedItem(32, () -> new AItemStackBuilder(Material.BARRIER)
+		addTaggedItem(41, () -> new AItemStackBuilder(Material.BARRIER)
 				.setName("&cClear Defaults")
 				.setLore(new PitLoreBuilder(
 						"&7Clears default &aOverworld &7and &5Darkzone &7sets"
@@ -110,7 +110,7 @@ public class WardrobePanel extends AGUIPanel {
 
 	@Override
 	public int getRows() {
-		return 4;
+		return 5;
 	}
 
 	@Override

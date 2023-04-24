@@ -334,7 +334,7 @@ public class Outfit {
 				this.requiredItems = 1;
 			} catch(IllegalArgumentException ignored) {
 				PitItem pitItem = ItemFactory.getItem(identifier);
-				if(pitItem == null) throw new PitException();
+				if(!(pitItem instanceof StaticPitItem)) throw new PitException();
 				StaticPitItem staticPitItem = (StaticPitItem) pitItem;
 				this.requiredItems = staticPitItem.getMaxStackSize();
 			}
