@@ -48,7 +48,7 @@ public class PassNPC extends PitNPC {
 		if(tutorial.isActive() && !tutorial.isCompleted(TutorialObjective.PASS)) {
 
 			String playerName = Misc.getRankColor(player.getUniqueId()) + player.getDisplayName();
-			tutorial.sendMessage("&3&lBATTLE PASS: &eWhats up " + playerName + "&e! Want some free loot?", 0);
+			tutorial.sendMessage("&3&lBATTLE PASS: &eWhat's up " + playerName + "&e! Want some free loot?", 0);
 			tutorial.sendMessage("&3&lBATTLE PASS: &eHere you can participate in &6 Daily &eand &6Weekly Quests &ein exchange for rewards", 20 * 3);
 			tutorial.sendMessage("&3&lBATTLE PASS: &eYou can also get more rewards by purchasing the &3Battle Pass &eat &f&nstore.pitsim.net", 20 * 8);
 			tutorial.completeObjective(TutorialObjective.PASS, 20 * 12);
