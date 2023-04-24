@@ -343,9 +343,10 @@ public class Outfit {
 		public void foundItem(List<PlayerItemLocation> emptySlots, List<ItemCandidate> candidates, ItemCandidate candidate) {
 			if(isFulfilled()) throw new RuntimeException();
 			if(Misc.isAirOrNull(itemStack)) itemStack = candidate.itemStack;
-			if(candidate.getAmountLeft() > requiredItems) {
-				itemSourceMap.put(candidate.getItemLocation(), requiredItems);
-				candidate.removeItems(requiredItems);
+			int itemsNeeded = requiredItems - foundItems;
+			if(candidate.getAmountLeft() > itemsNeeded) {
+				itemSourceMap.put(candidate.getItemLocation(), itemsNeeded);
+				candidate.removeItems(itemsNeeded);
 				foundItems = requiredItems;
 			} else {
 				itemSourceMap.put(candidate.getItemLocation(), candidate.getAmountLeft());
