@@ -74,10 +74,10 @@ public class WardrobePanel extends AGUIPanel {
 				)).getItemStack(), event -> {
 			Map<PlayerItemLocation, ItemStack> proposedChanges = new HashMap<>();
 			boolean success = profile.storeInvAndArmor(proposedChanges, new ArrayList<>(), true);
-			for(Map.Entry<PlayerItemLocation, ItemStack> entry : proposedChanges.entrySet())
-				entry.getKey().setItem(profile.getUniqueID(), entry.getValue(), true);
-			player.updateInventory();
 			if(success) {
+				for(Map.Entry<PlayerItemLocation, ItemStack> entry : proposedChanges.entrySet())
+					entry.getKey().setItem(profile.getUniqueID(), entry.getValue(), true);
+				player.updateInventory();
 				AOutput.send(player, "&2&lWARDROBE!&7 Moved your inventory and armor into your enderchest!");
 				Sounds.SUCCESS.play(player);
 			}
