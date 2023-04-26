@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.commands.FPSCommand;
@@ -157,7 +158,7 @@ public class Non {
 		List<Player> nearbyPlayers = new ArrayList<>();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(onlinePlayer.getWorld() != non.getWorld()) continue;
-			if(SpawnManager.isInSpawn(onlinePlayer)) continue;
+			if(SpawnManager.isInSpawn(onlinePlayer) || VanishAPI.isInvisible(onlinePlayer)) continue;
 			nearbyPlayers.add(onlinePlayer);
 		}
 		for(Entity nearbyEntity : non.getWorld().getNearbyEntities(midLoc, 4, 3, 4)) {
@@ -166,7 +167,6 @@ public class Non {
 		}
 
 		for(Entity nearbyEntity : nearbyPlayers) {
-
 			if(!(nearbyEntity instanceof Player) || nearbyEntity.getUniqueId().equals(non.getUniqueId())) continue;
 			if(nearbyEntity.getWorld() != non.getWorld()) continue;
 
