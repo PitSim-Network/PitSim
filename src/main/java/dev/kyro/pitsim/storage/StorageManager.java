@@ -15,10 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -55,6 +52,19 @@ public class StorageManager implements Listener {
 		profiles.add(profile);
 
 		return profile;
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onJoin(AsyncPlayerPreLoginEvent event) {
+		if(PitSim.getStatus() == PitSim.ServerStatus.STANDALONE) return;
+
+		UUID uuid = event.getUniqueId();
+		StorageProfile profile = getProfile(uuid);
+
+		if(!profile.isLoaded()) {
+			event.setKickMessage(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");
+			event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
