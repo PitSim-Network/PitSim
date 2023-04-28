@@ -91,16 +91,22 @@ public abstract class PitMob implements Listener {
 		if(mobStatus == MobStatus.STANDARD) {
 			dropPool.mobDistribution(killer, this);
 
+//			Multiplicative modifiers
 			double soulChance = 0.05;
+			if(pitKiller != null) soulChance *= DarkzoneManager.getSoulSoftCooldownMultiplier(pitKiller.player);
+
+//			Additive modifiers
 			double reaperChance = Reaper.getSoulChanceIncrease(killer) / 100.0;
 			double soulBranchUpgrade = ProgressionManager.getUnlockedEffectAsValue(
 					pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.FIRST_PATH, "soul-chance-mobs") / 100.0;
+
 			soulChance *= 1 + (reaperChance + soulBranchUpgrade);
 			if(Math.random() < soulChance) {
 				double droppedSouls = getDroppedSouls();
 				if(SoulBooster.INSTANCE.isActive()) droppedSouls *= 1 + (SoulBooster.getSoulsIncrease() / 100.0);
 				DarkzoneManager.createSoulExplosion(damageMap,
 						getMob().getLocation().add(0, 0.5, 0), (int) droppedSouls, false);
+				if(pitKiller != null) DarkzoneManager.putOnSoftSoulCooldown(pitKiller.player);
 			}
 
 			if(pitKiller != null) {
@@ -112,7 +118,7 @@ public abstract class PitMob implements Listener {
 					MysticType mysticType = Math.random() < 0.5 ? MysticType.TAINTED_SCYTHE : MysticType.TAINTED_CHESTPLATE;
 					ItemStack dropStack = MysticFactory.getFreshItem(mysticType, null);
 					HypixelSound.play(pitKiller.player, mob.getLocation(), HypixelSound.Sound.FRESH_DROP);
-					DarkzoneManager.putOnSoftFreshCooldownList(pitKiller.player);
+					DarkzoneManager.putOnSoftFreshCooldown(pitKiller.player);
 
 					FakeItem fakeItem = new FakeItem(dropStack, mob.getLocation())
 							.removeAfter(20 * 60)
