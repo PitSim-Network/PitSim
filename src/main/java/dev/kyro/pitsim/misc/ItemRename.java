@@ -2,10 +2,10 @@ package dev.kyro.pitsim.misc;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -31,7 +31,7 @@ public class ItemRename implements Listener {
 	}
 
 	@EventHandler
-	public void onLeave(PlayerQuitEvent event) {
+	public void onLeave(PitQuitEvent event) {
 		renamePlayers.remove(event.getPlayer());
 	}
 }

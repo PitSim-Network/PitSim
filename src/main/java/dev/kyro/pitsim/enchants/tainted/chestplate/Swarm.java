@@ -8,12 +8,12 @@ import dev.kyro.pitsim.cosmetics.misc.kyrocosmetic.SwarmParticle;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.ManaRegenEvent;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class Swarm extends PitEnchant {
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		Player player = event.getPlayer();
 		if(!particleMap.containsKey(player)) return;
 		for(SwarmParticle swarmParticle : particleMap.remove(player)) swarmParticle.remove();

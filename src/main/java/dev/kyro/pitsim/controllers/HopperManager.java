@@ -5,13 +5,13 @@ import dev.kyro.pitsim.controllers.objects.Hopper;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class HopperManager implements Listener {
 	}
 
 	@EventHandler
-	public void onLeave(PlayerQuitEvent event) {
+	public void onLeave(PitQuitEvent event) {
 		for(Hopper hopper : hopperList) {
 			if(event.getPlayer() != hopper.target) continue;
 			hopper.remove();

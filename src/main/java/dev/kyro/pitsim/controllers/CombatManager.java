@@ -5,17 +5,13 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillType;
-import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
-import dev.kyro.pitsim.events.WrapperEntityDamageEvent;
+import dev.kyro.pitsim.events.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -70,7 +66,7 @@ public class CombatManager implements Listener {
 	}
 
 	@EventHandler
-	public static void onLeave(PlayerQuitEvent event) {
+	public static void onLeave(PitQuitEvent event) {
 		Player player = event.getPlayer();
 		event.getPlayer().closeInventory();
 		if(NonManager.getNon(event.getPlayer()) != null) return;

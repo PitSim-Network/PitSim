@@ -4,11 +4,11 @@ import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import com.xxmicloxx.NoteBlockAPI.songplayer.EntitySongPlayer;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class MusicManager implements Listener {
 	}
 
 	@EventHandler
-	public static void onQuit(PlayerQuitEvent event) {
+	public static void onQuit(PitQuitEvent event) {
 		Player player = event.getPlayer();
 		stopPlaying(player);
 	}

@@ -2,12 +2,12 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.storage.StorageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -36,7 +36,7 @@ public class PlayerDataManager implements Listener {
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		new BukkitRunnable() {
@@ -52,9 +52,13 @@ public class PlayerDataManager implements Listener {
 			@Override
 			public void run() {
 				StorageManager.quitCleanup(player);
-				PitPlayer.pitPlayers.remove(pitPlayer);
+				removePitPlayer(pitPlayer);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 30L);
+	}
+
+	public static void removePitPlayer(PitPlayer pitPlayer) {
+		PitPlayer.pitPlayers.remove(pitPlayer);
 	}
 
 	@EventHandler

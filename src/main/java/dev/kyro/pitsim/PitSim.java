@@ -718,6 +718,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new HelpManager(), this);
 		getServer().getPluginManager().registerEvents(new VoucherManager(), this);
 		getServer().getPluginManager().registerEvents(new TutorialManager(), this);
+		getServer().getPluginManager().registerEvents(new CustomEventManager(), this);
 		if(!PitSim.isDev()) getServer().getPluginManager().registerEvents(new StatisticsManager(), this);
 
 		if(getStatus().isDarkzone()) {

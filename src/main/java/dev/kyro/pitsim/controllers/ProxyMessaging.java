@@ -9,6 +9,8 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
+import dev.kyro.pitsim.events.PitJoinEvent;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.inventories.AdminGUI;
 import dev.kyro.pitsim.misc.MinecraftSkin;
 import dev.kyro.pitsim.storage.EditSession;
@@ -20,8 +22,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -318,7 +318,7 @@ public class ProxyMessaging implements Listener {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
+	public void onJoin(PitJoinEvent event) {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -328,7 +328,7 @@ public class ProxyMessaging implements Listener {
 	}
 
 	@EventHandler
-	public void onLeave(PlayerQuitEvent event) {
+	public void onLeave(PitQuitEvent event) {
 		new BukkitRunnable() {
 			@Override
 			public void run() {

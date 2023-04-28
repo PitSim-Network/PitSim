@@ -476,7 +476,7 @@ public class PitPlayer {
 		this.isInitialized = true;
 	}
 
-	public static boolean loadPitPlayer(UUID playerUUID) {
+	public static boolean  loadPitPlayer(UUID playerUUID) {
 		for(PitPlayer testPitPlayer : pitPlayers) {
 			if(testPitPlayer.player == null) continue;
 			if(!testPitPlayer.player.getUniqueId().equals(playerUUID)) continue;

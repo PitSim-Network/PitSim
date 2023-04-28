@@ -1,18 +1,18 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.PitJoinEvent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 public class ResourcePackManager implements Listener {
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
+	public void onJoin(PitJoinEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
 		if(pitPlayer.promptPack) {
 			event.getPlayer().setResourcePack("https://cdn.discordapp.com/attachments/803483152630677524/1035038648552394782/Nebula_PitEdit.zip");

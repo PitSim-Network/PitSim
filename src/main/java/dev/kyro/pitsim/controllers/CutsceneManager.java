@@ -8,6 +8,7 @@ import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import eu.crushedpixel.camerastudio.CameraStudio;
@@ -16,7 +17,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -249,7 +249,7 @@ public class CutsceneManager implements Listener {
 	}
 
 	@EventHandler
-	public void onLeave(PlayerQuitEvent event) {
+	public void onLeave(PitQuitEvent event) {
 
 		Player toRemove = null;
 		if(cutscenePlayers.containsKey(event.getPlayer())) {
