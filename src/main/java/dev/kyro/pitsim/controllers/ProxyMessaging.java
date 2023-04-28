@@ -106,6 +106,10 @@ public class ProxyMessaging implements Listener {
 			for(String string : strings) {
 				String[] info = string.split(",");
 
+				if(info.length < 3) {
+					System.out.println("Error with loading skin: " + Arrays.toString(info));
+					continue;
+				}
 				skins.add(new MinecraftSkin(info[0], info[1], info[2]));
 			}
 
