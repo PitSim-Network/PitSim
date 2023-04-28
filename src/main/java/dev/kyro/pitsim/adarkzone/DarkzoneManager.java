@@ -52,6 +52,7 @@ public class DarkzoneManager implements Listener {
 
 	public static List<Player> regenCooldownList = new ArrayList<>();
 	public static List<UUID> freshSoftCooldownList = new ArrayList<>();
+	public static Map<UUID, Integer> soulSoftCooldownMap = new HashMap<>();
 
 	public DarkzoneManager() {
 		SubLevel subLevel;
@@ -184,10 +185,10 @@ public class DarkzoneManager implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		putOnSoftFreshCooldownList(player);
+		putOnSoftFreshCooldown(player);
 	}
 
-	public static void putOnSoftFreshCooldownList(Player player) {
+	public static void putOnSoftFreshCooldown(Player player) {
 		if(freshSoftCooldownList.contains(player.getUniqueId())) return;
 		freshSoftCooldownList.add(player.getUniqueId());
 		new BukkitRunnable() {
@@ -196,6 +197,20 @@ public class DarkzoneManager implements Listener {
 				freshSoftCooldownList.remove(player.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(20 * 60 * 2) + 20 * 60 * 3 + 1);
+	}
+
+	public static double getSoulSoftCooldownMultiplier(Player player) {
+		return Math.pow(0.5, soulSoftCooldownMap.getOrDefault(player.getUniqueId(), 0));
+	}
+
+	public static void putOnSoftSoulCooldown(Player player) {
+		soulSoftCooldownMap.put(player.getUniqueId(), soulSoftCooldownMap.getOrDefault(player.getUniqueId(), 0) + 1);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				soulSoftCooldownMap.put(player.getUniqueId(), soulSoftCooldownMap.get(player.getUniqueId()) - 1);
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20 * 60);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
