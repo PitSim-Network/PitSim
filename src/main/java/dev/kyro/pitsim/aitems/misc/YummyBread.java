@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.aitems.misc;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
@@ -9,6 +8,8 @@ import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.enums.MarketCategory;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,12 +49,10 @@ public class YummyBread extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public List<String> getLore() {
-		return new ALoreBuilder(
-				"&7Deal &c+" + getDamageIncrease() + "% &7damage to bots",
-				"&7for " + getSeconds() + " seconds. (Stacking)",
-				"",
-				"&cLost on death"
-		).getLore();
+		return new PitLoreBuilder("&7Deal &c+" + getDamageIncrease() + "% &7damage (stacking) to bots for " +
+				getSeconds() + " second" + Misc.s(getSeconds()))
+				.addLongLine("&cLost on death")
+				.getLore();
 	}
 
 	@EventHandler
@@ -68,37 +67,35 @@ public class YummyBread extends StaticPitItem implements TemporaryItem {
 	@EventHandler
 	public void onEat(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		ItemStack itemStack = event.getItem();
+		ItemStack itemStack = player.getItemInHand();
 		player.setFoodLevel(19);
 
 		if(!isThisItem(itemStack)) return;
+		int amount = player.isSneaking() ? itemStack.getAmount() : 1;
 
-		if(breadStacks.containsKey(player)) {
-			breadStacks.put(player, breadStacks.get(player) + 1);
-		} else breadStacks.put(player, 1);
+		breadStacks.put(player, breadStacks.getOrDefault(player, 0) + amount);
+		if(itemStack.getAmount() <= amount) {
+			player.setItemInHand(new ItemStack(Material.AIR));
+		} else {
+			itemStack.setAmount(itemStack.getAmount() - amount);
+		}
+		player.updateInventory();
 		Sounds.YUMMY_BREAD.play(player);
-		if(event.getItem().getAmount() == 1) {
-			player.getInventory().remove(event.getItem());
-		} else event.getItem().setAmount(event.getItem().getAmount() - 1);
 
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if(breadStacks.containsKey(player)) {
-					if(breadStacks.get(player) - 1 <= 0) breadStacks.remove(player);
-					else breadStacks.put(player, breadStacks.get(player) - 1);
-				}
+				breadStacks.put(player, breadStacks.get(player) - amount);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20L * getSeconds());
-		player.updateInventory();
 	}
 
 	public int getDamageIncrease() {
-		return 10;
+		return 8;
 	}
 
 	public int getSeconds() {
-		return 20;
+		return 25;
 	}
 
 	@Override
