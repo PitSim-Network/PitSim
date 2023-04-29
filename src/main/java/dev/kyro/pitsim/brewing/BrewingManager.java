@@ -6,6 +6,7 @@ import dev.kyro.pitsim.brewing.objects.BrewingAnimation;
 import dev.kyro.pitsim.brewing.objects.BrewingSession;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.citizensnpcs.api.CitizensAPI;
@@ -195,7 +196,7 @@ public class BrewingManager implements Listener {
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		for(BrewingAnimation brewingAnimation : brewingAnimations) {
 			brewingAnimation.onQuit(event);
 		}

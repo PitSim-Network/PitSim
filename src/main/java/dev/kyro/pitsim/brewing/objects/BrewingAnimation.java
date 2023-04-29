@@ -5,6 +5,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.mobdrops.SpiderEye;
 import dev.kyro.pitsim.brewing.BrewingManager;
 import dev.kyro.pitsim.controllers.MapManager;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.*;
@@ -22,7 +23,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Cauldron;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -481,7 +481,7 @@ public class BrewingAnimation {
 		}
 	}
 
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		if(!players.contains(event.getPlayer())) return;
 		hideButtons(event.getPlayer());
 		players.remove(event.getPlayer());

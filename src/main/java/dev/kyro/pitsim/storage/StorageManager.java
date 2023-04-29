@@ -5,9 +5,10 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enums.RankInformation;
 import dev.kyro.pitsim.events.MessageEvent;
+import dev.kyro.pitsim.events.PitJoinEvent;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,7 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -54,21 +56,21 @@ public class StorageManager implements Listener {
 		return profile;
 	}
 
+//	@EventHandler(priority = EventPriority.LOWEST)
+//	public void onJoin(AsyncPlayerPreLoginEvent event) {
+//		if(PitSim.getStatus() == PitSim.ServerStatus.STANDALONE) return;
+//
+//		UUID uuid = event.getUniqueId();
+//		StorageProfile profile = getProfile(uuid);
+//
+//		if(!profile.isLoaded()) {
+//			event.setKickMessage(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");
+//			event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
+//		}
+//	}
+
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onJoin(AsyncPlayerPreLoginEvent event) {
-		if(PitSim.getStatus() == PitSim.ServerStatus.STANDALONE) return;
-
-		UUID uuid = event.getUniqueId();
-		StorageProfile profile = getProfile(uuid);
-
-		if(!profile.isLoaded()) {
-			event.setKickMessage(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");
-			event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onJoin(PlayerJoinEvent event) {
+	public void onJoin(PitJoinEvent event) {
 		if(PitSim.getStatus() == PitSim.ServerStatus.STANDALONE) return;
 
 		Player player = event.getPlayer();
@@ -81,11 +83,6 @@ public class StorageManager implements Listener {
 //				!Misc.isAirOrNull(player.getInventory().getBoots())) {
 //			Misc.alertDiscord("@everyone " + player.getName() + " logged in to server " + PitSim.serverName + " with items in their inventory");
 //		}
-
-		if(!profile.isLoaded()) {
-			player.kickPlayer(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");
-			return;
-		}
 
 		player.setItemOnCursor(null);
 		player.getInventory().setContents(profile.getInventory());
@@ -277,7 +274,7 @@ public class StorageManager implements Listener {
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		Player player = event.getPlayer();
 
 		EditSession endSession = null;

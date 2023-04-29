@@ -1,9 +1,9 @@
 package dev.kyro.pitsim.market;
 
+import dev.kyro.pitsim.events.PitQuitEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.*;
 
@@ -36,7 +36,7 @@ public class MarketManager implements Listener {
 	}
 
 	@EventHandler
-	public void onLeave(PlayerQuitEvent event) {
+	public void onLeave(PitQuitEvent event) {
 		UUID playerUUID = event.getPlayer().getUniqueId();
 		if(MarketAsyncTask.taskMap.containsKey(playerUUID)) {
 			MarketAsyncTask task = MarketAsyncTask.taskMap.get(playerUUID);

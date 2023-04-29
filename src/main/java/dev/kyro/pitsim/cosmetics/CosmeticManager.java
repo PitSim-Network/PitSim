@@ -6,14 +6,14 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.cosmetics.particles.ParticleColor;
+import dev.kyro.pitsim.events.PitJoinEvent;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -145,7 +145,7 @@ public class CosmeticManager implements Listener {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
+	public void onJoin(PitJoinEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(VanishAPI.isInvisible(player)) return;
@@ -155,7 +155,7 @@ public class CosmeticManager implements Listener {
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(VanishAPI.isInvisible(player)) return;

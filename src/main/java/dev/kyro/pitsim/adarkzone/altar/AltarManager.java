@@ -7,6 +7,7 @@ import dev.kyro.pitsim.adarkzone.altar.pedestals.*;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
@@ -25,7 +26,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
@@ -170,7 +170,7 @@ public class AltarManager implements Listener {
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		AltarPedestal.disableAll(event.getPlayer());
 
 		AltarAnimation altarAnimation = getAnimation(event.getPlayer());

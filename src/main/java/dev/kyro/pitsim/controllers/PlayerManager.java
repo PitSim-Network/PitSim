@@ -19,10 +19,7 @@ import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.enums.PitEntityType;
-import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.EquipmentChangeEvent;
-import dev.kyro.pitsim.events.IncrementKillsEvent;
-import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.*;
 import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
@@ -574,11 +571,11 @@ public class PlayerManager implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
+	public void onPlayerJoin(PitJoinEvent event) {
 		Player player = event.getPlayer();
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		event.setJoinMessage(null);
+		event.getEvent().setJoinMessage(null);
 
 		PitEquipment currentEquipment = new PitEquipment(player);
 		for(EquipmentType equipmentType : EquipmentType.values()) {
@@ -827,13 +824,13 @@ public class PlayerManager implements Listener {
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		Player player = event.getPlayer();
 		previousEquipmentMap.remove(player);
-		event.setQuitMessage(null);
+		event.getEvent().setQuitMessage(null);
 		PlayerDataManager.exemptedPlayers.remove(player.getUniqueId());
 		XmasMap.removeFromRadio(player);
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		PitPlayer pitPlayer = event.getPitPlayer();
 		pitPlayer.megastreak.stop();
 		if(pitPlayer.megastreak instanceof RNGesus) {
 			RNGesus rngesus = (RNGesus) pitPlayer.megastreak;

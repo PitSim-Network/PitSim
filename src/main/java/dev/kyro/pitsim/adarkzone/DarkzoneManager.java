@@ -20,10 +20,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.chestplate.Resilient;
 import dev.kyro.pitsim.enums.MobStatus;
 import dev.kyro.pitsim.enums.MysticType;
-import dev.kyro.pitsim.events.AttackEvent;
-import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.events.ManaRegenEvent;
-import dev.kyro.pitsim.events.SpellUseEvent;
+import dev.kyro.pitsim.events.*;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
@@ -36,7 +33,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -183,7 +179,7 @@ public class DarkzoneManager implements Listener {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
+	public void onJoin(PitJoinEvent event) {
 		Player player = event.getPlayer();
 		putOnSoftFreshCooldown(player);
 	}

@@ -12,6 +12,7 @@ import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
@@ -20,7 +21,6 @@ import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -52,7 +52,7 @@ public class PhoenixAbility extends HelmetAbility {
 	}
 
 	@EventHandler
-	public static void onLogout(PlayerQuitEvent event) {
+	public static void onLogout(PitQuitEvent event) {
 		alreadyActivatedList.remove(event.getPlayer().getUniqueId());
 	}
 

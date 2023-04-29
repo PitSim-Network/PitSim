@@ -2,6 +2,8 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.PitJoinEvent;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -66,7 +68,7 @@ public class LobbySwitchManager implements Listener {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
+	public void onJoin(PitJoinEvent event) {
 		recentlyJoined.add(event.getPlayer());
 
 		new BukkitRunnable() {
@@ -102,7 +104,7 @@ public class LobbySwitchManager implements Listener {
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		switchingPlayers.remove(event.getPlayer());
 	}
 

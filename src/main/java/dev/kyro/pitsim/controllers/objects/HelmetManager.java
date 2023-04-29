@@ -12,6 +12,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.DoubleSneakEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.helmetabilities.*;
 import dev.kyro.pitsim.inventories.HelmetGUI;
 import dev.kyro.pitsim.misc.Misc;
@@ -221,7 +222,7 @@ public class HelmetManager implements Listener {
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		crouchPlayers.remove(event.getPlayer());
 
 		if(abilities.get(event.getPlayer()) != null) {

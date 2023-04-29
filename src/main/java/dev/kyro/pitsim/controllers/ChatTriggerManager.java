@@ -5,13 +5,13 @@ import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.ReallyToxic;
+import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -35,7 +35,7 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(PitQuitEvent event) {
 		Player player = event.getPlayer();
 		subscribedPlayers.remove(player);
 	}
