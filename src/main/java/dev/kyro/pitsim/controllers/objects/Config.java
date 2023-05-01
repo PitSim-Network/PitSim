@@ -6,7 +6,10 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.misc.PrivateInfo;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class Config {
@@ -26,7 +29,7 @@ public class Config {
 
 	//	PitSim pass stuff
 	public Date currentPassStart;
-	public CurrentPassData currentPassData = new CurrentPassData();
+	public CurrentPassData currentPassData;
 
 	public static class CurrentPassData {
 		public Map<String, Integer> activeWeeklyQuests = new HashMap<>();

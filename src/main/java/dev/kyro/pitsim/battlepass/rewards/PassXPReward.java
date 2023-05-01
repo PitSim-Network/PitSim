@@ -10,10 +10,10 @@ import dev.kyro.pitsim.misc.Formatter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class PassXpReward extends PassReward {
+public class PassXPReward extends PassReward {
 	public long xp;
 
-	public PassXpReward(long xp) {
+	public PassXPReward(long xp) {
 		this.xp = xp;
 	}
 
