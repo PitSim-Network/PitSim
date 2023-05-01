@@ -36,7 +36,7 @@ public class KillstreakPanel extends AGUIPanel {
 
 	@Override
 	public String getName() {
-		return "Killstreaks";
+		return "&7Choose a &eKillstreak";
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class KillstreakPanel extends AGUIPanel {
 							Sounds.ERROR.play(player);
 							return;
 						}
-						if(pitPlayer.prestige < killstreak.prestige) {
+						if(pitPlayer.prestige < killstreak.prestigeReq) {
 							AOutput.error(player, "&cYou aren't high enough prestige to use this!");
 							Sounds.ERROR.play(player);
 							return;
@@ -97,8 +97,7 @@ public class KillstreakPanel extends AGUIPanel {
 
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
-
-		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 
 		AItemStackBuilder builder3Kills = new AItemStackBuilder(Material.ITEM_FRAME);
 		builder3Kills.setName("&c3 Kills");
@@ -165,9 +164,9 @@ public class KillstreakPanel extends AGUIPanel {
 				builder.setName("&a" + killstreak.displayName);
 				loreBuilder.addLore("&aAlready selected!");
 				Misc.addEnchantGlint(builder.getItemStack());
-			} else if(pitPlayer.prestige < killstreak.prestige) {
+			} else if(pitPlayer.prestige < killstreak.prestigeReq) {
 				builder.setName("&c" + killstreak.displayName);
-				loreBuilder.addLore("&cUnlocked at prestige &e" + AUtil.toRoman(killstreak.prestige));
+				loreBuilder.addLore("&cUnlocked at prestige &e" + AUtil.toRoman(killstreak.prestigeReq));
 				builder.getItemStack().setType(Material.BEDROCK);
 			} else {
 				builder.setName("&e" + killstreak.displayName);

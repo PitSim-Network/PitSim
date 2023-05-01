@@ -7,6 +7,7 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.DisplayItemType;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -49,7 +50,7 @@ public class MainViewPanel extends AGUIPanel {
 
 		for(int i = 0; i < pitTarget.pitPerks.size(); i++) {
 			PitPerk pitPerk = pitTarget.pitPerks.get(i);
-			ItemStack itemStack = pitPerk.getDisplayStack(player, PitPerk.DisplayItemType.VIEW_PANEL);
+			ItemStack itemStack = pitPerk.getDisplayStack(player, DisplayItemType.VIEW_PANEL);
 			getInventory().setItem(i + 13, itemStack);
 		}
 
@@ -58,8 +59,8 @@ public class MainViewPanel extends AGUIPanel {
 			if(killstreak instanceof NoKillstreak) continue;
 			killstreakLore.addLore("&7Every &c" + killstreak.killInterval + " &7kills: &a" + killstreak.displayName);
 		}
-		killstreakLore.addLore("&7Megastreak: &a" + pitTarget.megastreak.getRawName());
-		ItemStack killstreaks = new AItemStackBuilder(pitTarget.megastreak.guiItem())
+		killstreakLore.addLore("&7Megastreak: &a" + pitTarget.getMegastreak().getRefName());
+		ItemStack killstreaks = new AItemStackBuilder(pitTarget.getMegastreak().getDisplayStack(player, DisplayItemType.VIEW_PANEL))
 				.setName("&aKillstreaks")
 				.setLore(killstreakLore)
 				.getItemStack();

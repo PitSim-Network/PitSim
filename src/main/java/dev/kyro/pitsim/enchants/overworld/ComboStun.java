@@ -59,7 +59,7 @@ public class ComboStun extends PitEnchant {
 		Misc.stunEntity(attackEvent.getDefender(), duration);
 		Sounds.COMBO_STUN.play(attackEvent.getAttacker());
 
-		if(pitPlayer.stats != null) pitPlayer.stats.stun += getDuration(enchantLvl);
+		pitPlayer.stats.stun += getDuration(enchantLvl);
 	}
 
 	@Override

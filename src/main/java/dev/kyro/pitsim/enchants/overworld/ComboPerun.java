@@ -15,10 +15,12 @@ import org.bukkit.event.block.BlockIgniteEvent;
 import java.util.List;
 
 public class ComboPerun extends PitEnchant {
+	public static ComboPerun INSTANCE;
 
 	public ComboPerun() {
 		super("Combo: Perun's Wrath", true, ApplyType.MELEE,
 				"perun", "lightning");
+		INSTANCE = this;
 	}
 
 	@EventHandler
@@ -38,7 +40,7 @@ public class ComboPerun extends PitEnchant {
 		if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, enchantLvl == 3 ? 4 : getStrikes(enchantLvl)))
 			return;
 
-		if(pitPlayer.stats != null) pitPlayer.stats.perun++;
+		pitPlayer.stats.perun++;
 
 		if(enchantLvl == 3) {
 			int damage = 2;

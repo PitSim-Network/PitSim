@@ -11,7 +11,7 @@ import java.util.List;
 public class PerkGUI extends AGUI {
 
 	public PerkPanel perkPanel;
-	public ApplyPerkPanel applyPerkPanel;
+	public SelectPerkPanel selectPerkPanel;
 	public MegastreakPanel megastreakPanel;
 	public KillstreakPanel killstreakPanel;
 
@@ -22,13 +22,9 @@ public class PerkGUI extends AGUI {
 
 		perkPanel = new PerkPanel(this);
 		setHomePanel(perkPanel);
-		applyPerkPanel = new ApplyPerkPanel(this);
+		selectPerkPanel = new SelectPerkPanel(this);
 		megastreakPanel = new MegastreakPanel(this);
 		killstreakPanel = new KillstreakPanel(this);
-	}
-
-	public void megaWrapUp() {
-
 	}
 
 	public int getSlot(int perkNum) {

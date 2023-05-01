@@ -57,8 +57,8 @@ public class SelfCheckout extends PitEnchant {
 		assert pitItem != null;
 		TemporaryItem temporaryItem = pitItem.getAsTemporaryItem();
 
-		if(killEvent.getKillerPitPlayer().getKills() + 1 < 200 || killEvent.getKillerPitPlayer().megastreak instanceof Uberstreak ||
-				killEvent.getKillerPitPlayer().megastreak instanceof NoMegastreak || killEvent.getKillerPitPlayer().megastreak instanceof RNGesus) return;
+		if(killEvent.getKillerPitPlayer().getKills() + 1 < 200 || killEvent.getKillerPitPlayer().getMegastreak() instanceof Uberstreak ||
+				killEvent.getKillerPitPlayer().getMegastreak() instanceof NoMegastreak || killEvent.getKillerPitPlayer().getMegastreak() instanceof RNGesus) return;
 
 		if(!MysticFactory.isJewel(itemStack, false)) {
 			AOutput.error(killEvent.getKiller(), "Self-Checkout only works on jewel items");

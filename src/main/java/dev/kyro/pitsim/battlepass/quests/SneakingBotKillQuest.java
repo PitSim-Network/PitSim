@@ -25,7 +25,7 @@ public class SneakingBotKillQuest extends PassQuest {
 	public void onKill(KillEvent killEvent) {
 		if(!PlayerManager.isRealPlayer(killEvent.getKillerPlayer()) || !canProgressQuest(killEvent.getKillerPitPlayer()) ||
 				NonManager.getNon(killEvent.getDead()) == null || !killEvent.getKillerPlayer().isSneaking() ||
-				!(killEvent.getKillerPitPlayer().megastreak instanceof NoMegastreak)) return;
+				!(killEvent.getKillerPitPlayer().getMegastreak() instanceof NoMegastreak)) return;
 
 		progressQuest(killEvent.getKillerPitPlayer(), 1);
 	}

@@ -78,7 +78,7 @@ public class FunkyFeather extends StaticPitItem {
 			GuildIntegrationManager.handleFeather(killer, dead);
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
-			if(pitPlayer.stats != null) pitPlayer.stats.feathersLost++;
+			pitPlayer.stats.feathersLost++;
 			return true;
 		}
 		return false;

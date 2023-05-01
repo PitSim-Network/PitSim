@@ -37,16 +37,18 @@ public abstract class RenownUpgrade implements Listener, Summarizable {
 	}
 
 	public abstract ItemStack getBaseDisplayStack();
-	public abstract PitLoreBuilder getBaseDescription(Player player);
+	public abstract void addBaseDescription(PitLoreBuilder loreBuilder, Player player);
 
 	public ItemStack getDisplayStack(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		PitLoreBuilder loreBuilder = getBaseDescription(player);
+		PitLoreBuilder loreBuilder = new PitLoreBuilder();
 		ChatColor chatColor = UpgradeManager.getChatColor(player, this);
 
 		boolean hasUpgrade = UpgradeManager.hasUpgrade(player, this);
 		boolean isMaxed = UpgradeManager.isMaxed(player, this);
 		int renownCost = isMaxed ? -1 : UpgradeManager.getNextCost(player, this);
+
+		addBaseDescription(loreBuilder, player);
 
 		ALoreBuilder prestigeRequired = new ALoreBuilder().addLore(
 				"",

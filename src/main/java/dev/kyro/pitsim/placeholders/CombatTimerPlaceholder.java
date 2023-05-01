@@ -19,9 +19,7 @@ public class CombatTimerPlaceholder implements APAPIPlaceholder {
 		Integer time = CombatManager.taggedPlayers.get(player.getUniqueId());
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		if(pitPlayer.megastreak.isOnMega()) {
-			return pitPlayer.megastreak.getPrefix();
-		}
+		if(pitPlayer.isOnMega()) return pitPlayer.getMegastreak().getDisplayName();
 
 		if(time == null) return ChatColor.GREEN + "Idling";
 		else if(time / 20 > 9) {

@@ -43,7 +43,7 @@ public class Billionaire extends PitEnchant {
 			attackEvent.getAttackerPitPlayer().gold -= goldCost;
 
 			PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
-			if(pitPlayer.stats != null) pitPlayer.stats.billionaire += goldCost;
+			pitPlayer.stats.billionaire += goldCost;
 		}
 
 		attackEvent.increasePercent += getDamageIncrease(enchantLvl);

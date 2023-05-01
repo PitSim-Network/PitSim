@@ -67,7 +67,7 @@ public class PhoenixAbility extends HelmetAbility {
 		ItemStack goldenHelmet = HelmetManager.getHelmet(player);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.megastreak instanceof RNGesus) {
+		if(pitPlayer.getMegastreak() instanceof RNGesus) {
 			AOutput.error(player, "&c&lERROR!&7 You cannot do this while &e&lRNGESUS&7 is equipped");
 			Sounds.NO.play(player);
 			return;
@@ -100,7 +100,7 @@ public class PhoenixAbility extends HelmetAbility {
 				if(target == player) continue;
 				PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 				if(non == null) {
-					if(pitTarget.megastreak instanceof Uberstreak && pitTarget.megastreak.isOnMega()) continue;
+					if(pitTarget.getMegastreak() instanceof Uberstreak && pitTarget.isOnMega()) continue;
 					if(SpawnManager.isInSpawn(target)) continue;
 					Vector force = target.getLocation().toVector().subtract(player.getLocation().toVector())
 							.setY(1).normalize().multiply(1.15);

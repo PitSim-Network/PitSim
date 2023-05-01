@@ -57,8 +57,8 @@ public class Explosive extends PitEnchant {
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					if(NonManager.getNon(player) == null) {
-						if(pitPlayer.megastreak.isOnMega()) {
-							if(pitPlayer.megastreak instanceof Uberstreak || pitPlayer.megastreak instanceof RNGesus) continue;
+						if(pitPlayer.isOnMega()) {
+							if(pitPlayer.getMegastreak() instanceof Uberstreak || pitPlayer.getMegastreak() instanceof RNGesus) continue;
 						}
 						Vector force = player.getLocation().toVector().subtract(arrow.getLocation().toVector())
 								.setY(1).normalize().multiply(non == null ? 1.15 : 5);
@@ -73,7 +73,7 @@ public class Explosive extends PitEnchant {
 				getEffect(enchantLvl).getData(), 100);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(shooter);
-		if(pitPlayer.stats != null) pitPlayer.stats.explosive++;
+		pitPlayer.stats.explosive++;
 	}
 
 	@Override

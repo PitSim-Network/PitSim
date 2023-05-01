@@ -50,7 +50,7 @@ public class Streaker extends PitPerk {
 		if(!killEvent.isKillerPlayer()) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 
-		if(pitPlayer.getKills() + 1 >= pitPlayer.megastreak.getRequiredKills()) {
+		if(pitPlayer.getKills() + 1 >= pitPlayer.getMegastreak().requiredKills) {
 			if(playerTimes.containsKey(killEvent.getKiller())) {
 				Player player = killEvent.getKillerPlayer();
 				double xp = 0;
@@ -78,7 +78,7 @@ public class Streaker extends PitPerk {
 			}
 		}
 
-		if(!playerTimes.containsKey(killEvent.getKiller()) && !pitPlayer.megastreak.isOnMega() && !SpawnManager.isInSpawn(pitPlayer.player)) {
+		if(!playerTimes.containsKey(killEvent.getKiller()) && !pitPlayer.isOnMega() && !SpawnManager.isInSpawn(pitPlayer.player)) {
 			playerTimes.put(killEvent.getKiller(), 0);
 			Sounds.STREAKER.play(killEvent.getKiller());
 			AOutput.send(killEvent.getKiller(), "&b&lSTREAKER!&7 Streak timer started!");
@@ -111,8 +111,8 @@ public class Streaker extends PitPerk {
 	}
 
 	@Override
-	public PitLoreBuilder getBaseDescription() {
-		return new PitLoreBuilder(
+	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+		loreBuilder.addLongLine(
 				"&7Upon reaching your &cMegastreak&7, gain &bmore XP &7the faster you hit mega. " +
 						"Passively gain &b+80 max XP"
 		);

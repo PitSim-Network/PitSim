@@ -1,191 +1,103 @@
 package dev.kyro.pitsim.megastreaks;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.DoubleDeath;
-import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Beastmode extends Megastreak {
+	public static Beastmode INSTANCE;
+
 	public BukkitTask runnable;
 
-	public Beastmode(PitPlayer pitPlayer) {
-		super(pitPlayer);
+	public Beastmode() {
+		super("&aBeastmode", "beastmode", 50, 13, 50);
+		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isDefenderPlayer()) return;
+		if(!hasMegastreak(attackEvent.getDefenderPlayer())) return;
 		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
-		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof Beastmode) {
-			int ks = pitPlayer.getKills();
-			if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-				attackEvent.increasePercent += (ks - 50) * 0.15;
-			} else {
-				attackEvent.increasePercent += (ks - 50) * 5 * 0.15;
-			}
+		if(!pitPlayer.isOnMega()) return;
+		if(NonManager.getNon(attackEvent.getAttacker()) == null) {
+			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 0.15;
+		} else {
+			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 5 * 0.15;
 		}
 	}
 
 	@EventHandler
 	public void kill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer()) return;
+		if(!hasMegastreak(killEvent.getKillerPlayer())) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
-		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof Beastmode) {
-			killEvent.xpCap += 130;
-			killEvent.xpMultipliers.add(2.0);
-			killEvent.goldMultipliers.add(0.5);
-		}
-	}
-
-	@EventHandler
-	public void onAttack(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isAttackerPlayer()) return;
-		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
-		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.megastreak instanceof Beastmode) {
-			if(NonManager.getNon(attackEvent.getDefender()) != null) {
-//				attackEvent.increasePercent += 25 / 100D;
-			}
-		}
+		if(!pitPlayer.isOnMega()) return;
+		killEvent.xpCap += 130;
+		killEvent.xpMultipliers.add(2.0);
+		killEvent.goldMultipliers.add(0.5);
 	}
 
 	@Override
-	public void proc() {
+	public void proc(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
-		Sounds.MEGA_GENERAL.play(pitPlayer.player.getLocation());
-		String message = "%luckperms_prefix%";
-		if(pitPlayer.megastreak.isOnMega()) {
-			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		}
-
-		pitPlayer.megastreak = this;
-		for(Player player : Bukkit.getOnlinePlayers()) {
-			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
-			if(pitPlayer2.streaksDisabled) continue;
-			String streakMessage = ChatColor.translateAlternateColorCodes('&',
-					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + "&7 activated &a&lBEASTMODE&7!");
-			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
-
-		}
-
-		if(pitPlayer.stats != null) pitPlayer.stats.timesOnBeastmode++;
+		Sounds.MEGA_GENERAL.play(player.getLocation());
+		pitPlayer.stats.timesOnBeastmode++;
 		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 	}
 
 	@Override
-	public void reset() {
+	public void reset(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(!pitPlayer.isOnMega()) return;
 
-		String message = "%luckperms_prefix%";
-		if(pitPlayer.megastreak.isOnMega()) {
-			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		}
-
-		if(pitPlayer.megastreak.isOnMega()) {
-			int randomNum = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
-			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomNum = randomNum * 2;
-			AOutput.send(pitPlayer.player, "&c&lBEASTMODE!&7 Earned &b" + randomNum + "&b XP &7from megastreak!");
-			LevelManager.addXP(pitPlayer.player, randomNum);
-//	        OldLevelManager.incrementLevel(pitPlayer.player);
-		}
+		int randomXP = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
+		if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomXP = randomXP * 2;
+		AOutput.send(pitPlayer.player, "&c&lBEASTMODE!&7 Earned &b" + randomXP + "&b XP &7from megastreak!");
+		LevelManager.addXP(pitPlayer.player, randomXP);
 	}
 
 	@Override
-	public void stop() {
-		HandlerList.unregisterAll(this);
-	}
-
-	@Override
-	public String getName() {
+	public String getPrefix(Player player) {
 		return "&a&lBEAST";
 	}
 
 	@Override
-	public String getRawName() {
-		return "Beastmode";
+	public ItemStack getBaseDisplayStack(Player player) {
+		return new AItemStackBuilder(Material.DIAMOND_HELMET)
+				.getItemStack();
 	}
 
 	@Override
-	public String getPrefix() {
-		return "&aBeastmode";
-	}
-
-	@Override
-	public List<String> getRefNames() {
-		return Arrays.asList("beastmode", "beast");
-	}
-
-	@Override
-	public int getRequiredKills() {
-		return 50;
-	}
-
-	@Override
-	public int guiSlot() {
-		return 12;
-	}
-
-	@Override
-	public int prestigeReq() {
-		return 13;
-	}
-
-	@Override
-	public int initialLevelReq() {
-		return 50;
-	}
-
-	@Override
-	public ItemStack guiItem() {
-
-		ItemStack item = new ItemStack(Material.DIAMOND_HELMET);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c50 kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On trigger:");
-//		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Deal &c+25% &7damage to bots"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+100% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+130 max XP &7from kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(5x damage from bots)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"));
-
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
+	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+		loreBuilder.addLore(
+				"&7On Trigger:",
+				"&a\u25a0 &7Earn &b+100% XP &7from kills",
+				"&a\u25a0 &7Gain &b+130 max XP &7from kills",
+				"",
+				"&7BUT:",
+				"&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50",
+				"&7(5x damage from bots)",
+				"&c\u25a0 &7Earn &c-50% &7gold from kills",
+				"",
+				"&7On Death:",
+				"&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"
+		);
 	}
 
 	@Override

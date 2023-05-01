@@ -289,19 +289,24 @@ public class Misc {
 	}
 
 	public static <T> T weightedRandom(LinkedHashMap<T, Double> weightedMap) {
-		return weightedRandom(weightedMap, -1);
+		return weightedRandom(weightedMap, null);
 	}
 
+	@Deprecated
 	public static <T> T weightedRandom(LinkedHashMap<T, Double> weightedMap, long seed) {
+		return weightedRandom(weightedMap, seed == -1 ? null : new Random(seed));
+	}
+
+	public static <T> T weightedRandom(LinkedHashMap<T, Double> weightedMap, Random random) {
 		if(weightedMap.isEmpty()) throw new RuntimeException();
 		// Normalize the weights
 		double sum = 0.0;
 		for(double weight : weightedMap.values()) sum += weight;
-		Map<T, Double> normalizedWeights = new HashMap<>();
+		LinkedHashMap<T, Double> normalizedWeights = new LinkedHashMap<>();
 		for(Map.Entry<T, Double> entry : weightedMap.entrySet()) normalizedWeights.put(entry.getKey(), entry.getValue() / sum);
 
 //		Create Random
-		Random random = seed == -1 ? new Random() : new Random(seed);
+		if(random == null) random = new Random();
 
 		// Select a random number between 0 and 1
 		double rand = random.nextDouble();
@@ -314,6 +319,10 @@ public class Misc {
 		}
 
 		return normalizedWeights.entrySet().iterator().next().getKey();
+	}
+
+	public static int intBetween(int lowBound, int highBound, Random random) {
+		return random.nextInt(highBound - lowBound + 1) + lowBound;
 	}
 
 	public static String getDisplayName(Player player) {
@@ -496,11 +505,11 @@ public class Misc {
 
 		if(NonManager.getNon(entity) == null && entity instanceof Player) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) entity);
-			if(pitPlayer.megastreak instanceof Uberstreak) {
-				Uberstreak uberstreak = (Uberstreak) pitPlayer.megastreak;
+			if(pitPlayer.getMegastreak() instanceof Uberstreak) {
+				Uberstreak uberstreak = (Uberstreak) pitPlayer.getMegastreak();
 				if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED)
 					return;
-			} else if(!(pitPlayer.megastreak instanceof Overdrive) && pitPlayer.megastreak.isOnMega() && type == PotionEffectType.SLOW)
+			} else if(!(pitPlayer.getMegastreak() instanceof Overdrive) && pitPlayer.isOnMega() && type == PotionEffectType.SLOW)
 				return;
 		}
 
@@ -813,5 +822,13 @@ public class Misc {
 
 	public static String s(double value) {
 		return value == 1 ? "" : "s";
+	}
+
+	public static long hashLong(long value) {
+		long hashedValue = value;
+		hashedValue = (hashedValue ^ (hashedValue >>> 30)) * 0xbf58476d1ce4e5b9L;
+		hashedValue = (hashedValue ^ (hashedValue >>> 27)) * 0x94d049bb133111ebL;
+		hashedValue = hashedValue ^ (hashedValue >>> 31);
+		return hashedValue;
 	}
 }

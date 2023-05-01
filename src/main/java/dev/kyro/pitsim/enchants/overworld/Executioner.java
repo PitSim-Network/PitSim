@@ -20,10 +20,12 @@ import org.bukkit.event.EventHandler;
 import java.util.List;
 
 public class Executioner extends PitEnchant {
+	public static Executioner INSTANCE;
 
 	public Executioner() {
 		super("Executioner", true, ApplyType.MELEE,
 				"executioner", "exe");
+		INSTANCE = this;
 	}
 
 	@EventHandler
@@ -34,7 +36,7 @@ public class Executioner extends PitEnchant {
 		killEvent.getDead().getWorld().playEffect(killEvent.getDead().getLocation().add(0, 1, 0), Effect.STEP_SOUND, 152);
 
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
-		if(pitPlayer.stats != null) pitPlayer.stats.executioner++;
+		pitPlayer.stats.executioner++;
 	}
 
 	@EventHandler

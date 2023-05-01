@@ -45,7 +45,7 @@ public class PortalManager implements Listener {
 			return;
 		}
 
-		if(pitPlayer.megastreak.isOnMega() && !player.isOp()) {
+		if(pitPlayer.isOnMega() && !player.isOp()) {
 			player.setVelocity(new Vector(3, 1, 0));
 			AOutput.error(player, "&5&lDARKZONE &7You cannot be on a megastreak and enter the darkzone!");
 			Sounds.NO.play(player);

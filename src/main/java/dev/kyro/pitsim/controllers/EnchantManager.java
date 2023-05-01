@@ -383,8 +383,8 @@ public class EnchantManager implements Listener {
 				itemMeta.setDisplayName(ChatColor.AQUA + "Hidden Jewel Bow");
 				loreBuilder.addLore("&7");
 				loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players to recycle");
-				loreBuilder.addLore("&7into a Tier I bow with a Tier");
-				loreBuilder.addLore("&7III enchant");
+				loreBuilder.addLore("&7into a Tier I sword with a Tier");
+				loreBuilder.addLore("&7III enchant (works in hotbar)");
 				loreBuilder.addLore("&7Kills: &3" + jewelKills);
 			}
 		} else {
@@ -467,7 +467,7 @@ public class EnchantManager implements Listener {
 		temporaryItem.addMaxLives(itemStack, maxLives);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.stats != null) pitPlayer.stats.jewelsCompleted++;
+		pitPlayer.stats.jewelsCompleted++;
 
 		try {
 			itemStack = EnchantManager.addEnchant(itemStack, jewelEnchant, 3, false, true, -1);

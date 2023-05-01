@@ -35,7 +35,7 @@ public class SprintDrain extends PitEnchant {
 				getSpeedDuration(enchantLvl) * 20, getSpeedAmplifier(enchantLvl) - 1, true, false);
 
 		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
-		if(pitAttacker.stats != null) pitAttacker.stats.drain++;
+		pitAttacker.stats.drain++;
 	}
 
 	@Override

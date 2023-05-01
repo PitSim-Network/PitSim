@@ -40,8 +40,8 @@ public class Pullbow extends PitEnchant {
 
 		if(attackEvent.isDefenderPlayer()) {
 			PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
-			if(pitDefender.megastreak.isOnMega()) {
-				if(pitDefender.megastreak instanceof Uberstreak || pitDefender.megastreak instanceof RNGesus) return;
+			if(pitDefender.isOnMega()) {
+				if(pitDefender.getMegastreak() instanceof Uberstreak || pitDefender.getMegastreak() instanceof RNGesus) return;
 			}
 		}
 
@@ -63,7 +63,7 @@ public class Pullbow extends PitEnchant {
 
 		Sounds.PULLBOW.play(attackEvent.getAttackerPlayer());
 		PitPlayer pitAttacker = PitPlayer.getPitPlayer(attackEvent.getAttackerPlayer());
-		if(pitAttacker.stats != null) pitAttacker.stats.pullbow++;
+		pitAttacker.stats.pullbow++;
 	}
 
 	@Override

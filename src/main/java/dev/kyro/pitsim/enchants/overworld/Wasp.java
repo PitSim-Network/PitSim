@@ -34,7 +34,7 @@ public class Wasp extends PitEnchant {
 		Misc.applyPotionEffect(attackEvent.getDefender(), PotionEffectType.WEAKNESS, getDuration(enchantLvl) * 20, enchantLvl, true, false);
 
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
-		if(pitPlayer.stats != null) pitPlayer.stats.wasp++;
+		pitPlayer.stats.wasp++;
 	}
 
 	@Override

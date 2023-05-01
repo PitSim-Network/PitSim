@@ -24,8 +24,6 @@ import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.events.WrapperEntityDamageEvent;
-import dev.kyro.pitsim.megastreaks.NoMegastreak;
-import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.misc.ArmorReduction;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -495,17 +493,6 @@ public class DamageManager implements Listener {
 
 		KillEvent killEvent;
 
-		if(deadIsRealPlayer && pitDead.megastreak instanceof RNGesus && RNGesus.isOnCooldown(pitDead)) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					pitDead.megastreak.stop();
-					pitDead.megastreak = new NoMegastreak(pitDead);
-					ChatTriggerManager.sendPerksInfo(pitDead);
-				}
-			}.runTaskLater(PitSim.INSTANCE, 1L);
-		}
-
 		killEvent = new KillEvent(attackEvent, killer, dead, killType, killModifiers);
 		Bukkit.getServer().getPluginManager().callEvent(killEvent);
 		killEvent.updateItems();
@@ -686,115 +673,8 @@ public class DamageManager implements Listener {
 			pitDead.assistRemove.forEach(BukkitTask::cancel);
 			pitDead.assistRemove.clear();
 			pitDead.recentDamageMap.clear();
-
-			String message = "%luckperms_prefix%";
-			pitDead.prefix = PrestigeValues.getPlayerPrefixNameTag(pitDead.player) + PlaceholderAPI.setPlaceholders(pitDead.player, message);
 		}
 	}
-
-//	public static void loseLives(LivingEntity dead, LivingEntity killer) {
-//		if(!(dead instanceof Player)) return;
-//		if(MapManager.inDarkzone(dead.getLocation())) {
-//			//TODO: Handle ingredient loss in darkzone
-////			Player deadPlayer = (Player) dead;
-////
-////			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
-////				if(!corruptedFeather && BrewingIngredient.isIngredient(deadPlayer.getInventory().getItem(i))) {
-////					ItemStack item = deadPlayer.getInventory().getItem(i);
-////					BrewingIngredient ingredient = BrewingIngredient.getIngredientFromItemStack(item);
-////					AOutput.send(deadPlayer, "&c- &8" + item.getAmount() + "x " + ingredient.color + item.getItemMeta().getDisplayName());
-////					deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
-////				}
-////			}
-////
-////			return;
-//		}
-//
-//
-//
-//		if(BoosterManager.getBooster("pvp").minutes <= 0) {
-//			Player deadPlayer = (Player) dead;
-//			PitPlayer pitDead = PitPlayer.getPitPlayer(deadPlayer);
-//
-//			boolean divine = DivineIntervention.INSTANCE.attemptDivine(deadPlayer);
-//			boolean feather = false;
-//			boolean corruptedFeather = deadPlayer.getWorld().equals(MapManager.getDarkzone()) && ItemFactory.getItem(CorruptedFeather.class).useCorruptedFeather(killer, deadPlayer);
-//			if(!divine) feather = ItemFactory.getItem(FunkyFeather.class).useFeather(killer, deadPlayer);
-//
-//			int livesLost = 0;
-//
-//			for(int i = 0; i < deadPlayer.getInventory().getSize(); i++) {
-//				ItemStack itemStack = deadPlayer.getInventory().getItem(i);
-//				if(Misc.isAirOrNull(itemStack)) continue;
-//				NBTItem nbtItem = new NBTItem(itemStack);
-//				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-//					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-//					if(feather || divine || corruptedFeather) continue;
-//					MysticType mysticType = MysticType.getMysticType(itemStack);
-//					if(mysticType == null) continue;
-//
-//					if(mysticType.isTainted() && !PitSim.status.isDarkzone()) continue;
-//					if(!mysticType.isTainted() && PitSim.status.isDarkzone()) continue;
-//
-//					if(lives - 1 == 0) {
-//						deadPlayer.getInventory().setItem(i, new ItemStack(Material.AIR));
-//						deadPlayer.updateInventory();
-//						PlayerManager.sendItemBreakMessage(deadPlayer, itemStack);
-//						if(pitDead.stats != null) {
-//							pitDead.stats.itemsBroken++;
-//							LogManager.onItemBreak(deadPlayer, nbtItem.getItem());
-//						}
-//					} else {
-//						nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-//						EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
-//						deadPlayer.getInventory().setItem(i, nbtItem.getItem());
-//						livesLost++;
-//						LogManager.onItemLifeLost(deadPlayer, nbtItem.getItem());
-//					}
-//				}
-//			}
-//
-//			if(!feather && !divine && !corruptedFeather) {
-//				deleteProt(deadPlayer);
-//				BreadDealer.handleBreadOnDeath(deadPlayer);
-//				deadPlayer.updateInventory();
-//			}
-//			if(!Misc.isAirOrNull(deadPlayer.getInventory().getLeggings())) {
-//				ItemStack pants = deadPlayer.getInventory().getLeggings();
-//				NBTItem nbtItem = new NBTItem(pants);
-//				if(nbtItem.hasKey(NBTTag.MAX_LIVES.getRef())) {
-//					int lives = nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef());
-//
-//					MysticType mysticType = MysticType.getMysticType(pants);
-//					if(mysticType == null) return;
-//
-//					if(mysticType.isTainted() && !PitSim.status.isDarkzone()) return;
-//					if(!mysticType.isTainted() && PitSim.status.isDarkzone()) return;
-//
-//					if(!feather && !divine && !corruptedFeather) {
-//						if(lives - 1 == 0) {
-//							deadPlayer.getInventory().setLeggings(new ItemStack(Material.AIR));
-//							deadPlayer.updateInventory();
-//							PlayerManager.sendItemBreakMessage(deadPlayer, pants);
-//							if(pitDead.stats != null) {
-//								pitDead.stats.itemsBroken++;
-//								LogManager.onItemBreak(deadPlayer, nbtItem.getItem());
-//							}
-//						} else {
-//							nbtItem.setInteger(NBTTag.CURRENT_LIVES.getRef(), nbtItem.getInteger(NBTTag.CURRENT_LIVES.getRef()) - 1);
-//							EnchantManager.setItemLore(nbtItem.getItem(), deadPlayer);
-//							deadPlayer.getInventory().setLeggings(nbtItem.getItem());
-//							livesLost++;
-//							LogManager.onItemLifeLost(deadPlayer, nbtItem.getItem());
-//						}
-//					}
-//				}
-//			}
-//
-//			if(pitDead.stats != null) pitDead.stats.livesLost += livesLost;
-//			PlayerManager.sendLivesLostMessage(deadPlayer, livesLost);
-//		}
-//	}
 
 	public static boolean hasKillModifier(KillModifier killModifier, KillModifier... killModifiers) {
 		return Arrays.asList(killModifiers).contains(killModifier);

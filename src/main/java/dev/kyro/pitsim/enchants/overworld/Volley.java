@@ -61,7 +61,7 @@ public class Volley extends PitEnchant {
 				if(volleyShootEvent.isCancelled()) volleyArrow.remove();
 
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-				if(pitPlayer.stats != null) pitPlayer.stats.volley++;
+				pitPlayer.stats.volley++;
 
 				new BukkitRunnable() {
 					@Override

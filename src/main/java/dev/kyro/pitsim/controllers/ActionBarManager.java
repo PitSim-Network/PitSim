@@ -47,7 +47,7 @@ public class ActionBarManager implements Listener {
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.megastreak instanceof RNGesus && pitPlayer.getKills() < RNGesus.INSTABILITY_THRESHOLD && pitPlayer.megastreak.isOnMega())
+		if(pitPlayer.getMegastreak() instanceof RNGesus && pitPlayer.getKills() < RNGesus.INSTABILITY_THRESHOLD && pitPlayer.isOnMega())
 			return;
 
 		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +

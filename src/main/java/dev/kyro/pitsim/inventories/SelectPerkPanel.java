@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.CombatManager;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.DisplayItemType;
 import dev.kyro.pitsim.events.PerkEquipEvent;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.perks.NoPerk;
@@ -21,13 +22,13 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class ApplyPerkPanel extends APagedGUIPanel {
+public class SelectPerkPanel extends APagedGUIPanel {
 	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	public PerkGUI perkGUI;
 	public TaggedItem noPerkItem;
 	public int perkNum;
 
-	public ApplyPerkPanel(AGUI gui) {
+	public SelectPerkPanel(AGUI gui) {
 		super(gui);
 		perkGUI = (PerkGUI) gui;
 		addBackButton(getRows() * 9 - 5);
@@ -44,7 +45,7 @@ public class ApplyPerkPanel extends APagedGUIPanel {
 	}
 
 	public Supplier<ItemStack> createSupplier(PitPerk pitPerk) {
-		return () -> pitPerk.getDisplayStack(player, PitPerk.DisplayItemType.APPLY_PERK_PANEL);
+		return () -> pitPerk.getDisplayStack(player, DisplayItemType.SELECT_PANEL);
 	}
 
 	public Consumer<InventoryClickEvent> createConsumer(PitPerk pitPerk) {
@@ -64,7 +65,7 @@ public class ApplyPerkPanel extends APagedGUIPanel {
 			for(PitPerk testPerk : perkGUI.getActivePerks()) {
 				if(testPerk != pitPerk || testPerk == NoPerk.INSTANCE) continue;
 				Sounds.ERROR.play(player);
-				AOutput.error(perkGUI.player, "&cThat perk is already equipped");
+				AOutput.error(perkGUI.player, "&c&lERROR!&7 This perk is already equipped");
 				return;
 			}
 
@@ -89,7 +90,7 @@ public class ApplyPerkPanel extends APagedGUIPanel {
 
 	@Override
 	public String getName() {
-		return "&aChoose a Perk";
+		return "&7Choose a &aPerk";
 	}
 
 	@Override
