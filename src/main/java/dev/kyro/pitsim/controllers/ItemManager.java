@@ -135,7 +135,7 @@ public class ItemManager implements Listener {
 
 			soulPickupMap.remove(droppedItem);
 			droppedItem.remove();
-			pitPlayer.taintedSouls += souls;
+			pitPlayer.giveSouls(souls);
 
 			Sounds.SOUL_PICKUP.play(player);
 			AOutput.send(player, "&5&lHARVEST!&7 You harvested &f" + souls + " soul" + (souls == 1 ? "" : "s"));

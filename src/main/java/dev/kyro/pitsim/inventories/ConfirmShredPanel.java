@@ -99,7 +99,7 @@ public class ConfirmShredPanel extends AGUIPanel {
 			}.runTaskLater(PitSim.INSTANCE, 10);
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			pitPlayer.taintedSouls += soulsGained;
+			pitPlayer.giveSouls(soulsGained);
 			pitPlayer.stats.itemsShredded++;
 
 			AOutput.send(player, "&b&lSHOP! &7Shredded &f" + item.getItemMeta().getDisplayName() + " &7for &f" + soulsGained + " Souls&7!");

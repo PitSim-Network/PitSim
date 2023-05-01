@@ -171,4 +171,41 @@ public class MigrationManager implements Listener {
 		else if(prestige < 55) return 7;
 		else return 8;
 	}
+
+	public static void wipeStats() {
+		ApiFuture<QuerySnapshot> future = FirestoreManager.FIRESTORE.collection(PLAYERDATA_COLLECTION).get();
+		List<QueryDocumentSnapshot> documents;
+		try {
+			documents = future.get().getDocuments();
+		} catch(InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+		for(QueryDocumentSnapshot document : documents) {
+			wipeStats(document);
+		}
+	}
+
+	public static void wipeStats(DocumentSnapshot document) {
+
+		UUID uuid = UUID.fromString(document.getId());
+
+		PitPlayer pitPlayer;
+
+		if(document.exists()) {
+			pitPlayer = document.toObject(PitPlayer.class);
+		} else {
+			AOutput.log("CRITICAL ERROR: COULD NOT LOAD PITPLAYER FOR " + uuid);
+			return;
+		}
+
+		if(pitPlayer == null) {
+			AOutput.log("CRITICAL ERROR: COULD NOT LOAD PITPLAYER FOR " + uuid);
+			return;
+		}
+		pitPlayer.uuid = uuid;
+		pitPlayer.stats.lifetimeSouls = 0;
+		pitPlayer.stats.bossesKilled = 0;
+
+		pitPlayer.save(false, true);
+	}
 }

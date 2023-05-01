@@ -159,7 +159,7 @@ public class PitPlayer {
 
 	public List<String> brewingSessions = Arrays.asList(null, null, null);
 
-	public int taintedSouls = 200;
+	public int taintedSouls = 0;
 
 	public List<String> potionStrings = new ArrayList<>();
 
@@ -779,6 +779,14 @@ public class PitPlayer {
 		if(destination == null) return;
 		AOutput.send(player, "&f&lFAST TRAVEL! &7Unlocked access to " + destination.displayName + "&7!");
 		Sounds.RENOWN_SHOP_PURCHASE.play(player);
+	}
+
+	public void giveSouls(int amount) {
+		giveSouls(amount, true);
+	}
+	public void giveSouls(int amount, boolean stats) {
+		taintedSouls += amount;
+		if(stats) this.stats.lifetimeSouls += amount;
 	}
 
 	@Deprecated

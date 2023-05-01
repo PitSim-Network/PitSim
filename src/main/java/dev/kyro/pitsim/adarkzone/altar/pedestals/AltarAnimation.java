@@ -246,7 +246,7 @@ public class AltarAnimation {
 
 	public void onQuit() {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.taintedSouls += totalSouls;
+		pitPlayer.giveSouls(totalSouls, false);
 
 		onComplete = null;
 		endAnimation();

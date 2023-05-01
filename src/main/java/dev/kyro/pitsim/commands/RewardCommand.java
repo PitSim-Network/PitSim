@@ -161,7 +161,7 @@ public class RewardCommand implements CommandExecutor {
 				}.runTaskLater(PitSim.INSTANCE, 3L);
 				return false;
 			case "soul":
-				pitPlayer.taintedSouls += amount;
+				pitPlayer.giveSouls(amount);
 				new BukkitRunnable() {
 					@Override
 					public void run() {

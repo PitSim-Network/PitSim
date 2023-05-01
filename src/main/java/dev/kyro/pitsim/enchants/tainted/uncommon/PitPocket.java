@@ -41,7 +41,7 @@ public class PitPocket extends PitEnchant {
 		cooldown.restart();
 
 		attackEvent.getDefenderPitPlayer().taintedSouls -= soulsToSteal;
-		attackEvent.getAttackerPitPlayer().taintedSouls += soulsToSteal;
+		attackEvent.getAttackerPitPlayer().giveSouls(soulsToSteal);
 
 		Sounds.PITPOCKET.play(attackEvent.getAttackerPlayer());
 		Sounds.PITPOCKET.play(attackEvent.getDefenderPlayer());
