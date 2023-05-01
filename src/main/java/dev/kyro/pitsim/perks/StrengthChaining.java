@@ -69,8 +69,8 @@ public class StrengthChaining extends PitPerk {
 	}
 
 	@Override
-	public PitLoreBuilder getBaseDescription() {
-		return new PitLoreBuilder(
+	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+		loreBuilder.addLongLine(
 				"&c+8% damage &7for 7s stacking on player or bot kill"
 		);
 	}

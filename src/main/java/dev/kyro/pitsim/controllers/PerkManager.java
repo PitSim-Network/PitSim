@@ -2,6 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
+import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.perks.NoPerk;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ public class PerkManager {
 
 	public static void registerMegastreak(Megastreak megastreak) {
 		megastreaks.add(megastreak);
+		if(PitSim.status.isOverworld()) PitSim.INSTANCE.getServer().getPluginManager().registerEvents(megastreak, PitSim.INSTANCE);
 	}
 
 	public static void registerKillstreak(Killstreak killstreak) {
@@ -34,11 +36,23 @@ public class PerkManager {
 		return ChatColor.YELLOW;
 	}
 
+	public static ChatColor getChatColor(Player player, Megastreak megastreak) {
+		if(!isUnlocked(player, megastreak)) return ChatColor.RED;
+		if(isEquipped(player, megastreak)) return ChatColor.GREEN;
+		return ChatColor.YELLOW;
+	}
+
 	public static boolean isEquipped(Player player, PitPerk pitPerk) {
 		if(!isUnlocked(player, pitPerk)) return false;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		for(PitPerk testPerk : pitPlayer.pitPerks) if(testPerk == pitPerk) return true;
 		return false;
+	}
+
+	public static boolean isEquipped(Player player, Megastreak megastreak) {
+		if(!isUnlocked(player, megastreak)) return false;
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		return pitPlayer.getMegastreak() == megastreak;
 	}
 
 	public static boolean isUnlocked(Player player, PitPerk pitPerk) {
@@ -47,8 +61,20 @@ public class PerkManager {
 		return UpgradeManager.hasUpgrade(player, upgrade);
 	}
 
+	public static boolean isUnlocked(Player player, Megastreak megastreak) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		return pitPlayer.prestige >= megastreak.prestigeReq;
+	}
+
 	public static PitPerk getPitPerk(String refName) {
+		if(refName == null) return NoPerk.INSTANCE;
 		for(PitPerk pitPerk : pitPerks) if(pitPerk.refName.equalsIgnoreCase(refName)) return pitPerk;
 		return NoPerk.INSTANCE;
+	}
+
+	public static Megastreak getMegastreak(String refName) {
+		if(refName == null) return NoMegastreak.INSTANCE;
+		for(Megastreak megastreak : megastreaks) if(megastreak.refName.equalsIgnoreCase(refName)) return megastreak;
+		return NoMegastreak.INSTANCE;
 	}
 }

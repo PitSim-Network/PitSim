@@ -17,10 +17,7 @@ public abstract class UnlockableRenownUpgrade extends RenownUpgrade {
 	public abstract String getEffect();
 	public abstract int getUnlockCost();
 
-	@Override
-	public PitLoreBuilder getBaseDescription(Player player) {
-		PitLoreBuilder loreBuilder = new PitLoreBuilder();
+	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
 		loreBuilder.addLongLine(getEffect());
-		return loreBuilder;
 	}
 }

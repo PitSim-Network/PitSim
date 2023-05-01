@@ -14,7 +14,6 @@ import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.FastPass;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
 public class LevelManager {
@@ -58,15 +57,13 @@ public class LevelManager {
 
 		Sounds.LEVEL_UP.play(player);
 		Misc.sendTitle(player, "&e&lLEVEL UP!", 40);
-		Misc.sendSubTitle(player, prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket(), 40);
-		AOutput.send(player, "&e&lPIT LEVEL UP! " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket());
-
-		String message = "%luckperms_prefix%";
-		if(pitPlayer.megastreak.isOnMega()) {
-			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		}
+		Misc.sendSubTitle(player, prestigeInfo.getOpenBracket() + PrestigeValues.getLevelColor(pitPlayer.level - 1) +
+				(pitPlayer.level - 1) + prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() +
+				PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket(), 40);
+		AOutput.send(player, "&e&lPIT LEVEL UP! " + prestigeInfo.getOpenBracket() +
+				PrestigeValues.getLevelColor(pitPlayer.level - 1) + (pitPlayer.level - 1) +
+				prestigeInfo.getCloseBracket() + " &7\u279F " + prestigeInfo.getOpenBracket() +
+				PrestigeValues.getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracket());
 	}
 
 	public static void addGold(Player player, int amount) {
@@ -104,9 +101,8 @@ public class LevelManager {
 			pitPlayer.remainingXP = (long) (PrestigeValues.getXPForLevel(1) * prestigeInfo.getXpMultiplier());
 		}
 		pitPlayer.goldGrinded = 0;
-		if(pitPlayer.megastreak != null) pitPlayer.megastreak.stop();
-		pitPlayer.megastreak = new Overdrive(pitPlayer);
 		pitPlayer.endKillstreak();
+		pitPlayer.setMegastreak(Overdrive.INSTANCE);
 		pitPlayer.gold = 0;
 		pitPlayer.renown += prestigeInfo.getRenownReward();
 		EarnRenownQuest.INSTANCE.gainRenown(pitPlayer, prestigeInfo.getRenownReward());
@@ -118,13 +114,6 @@ public class LevelManager {
 		ChatTriggerManager.sendProgressionInfo(pitPlayer);
 		ChatTriggerManager.sendPrestigeInfo(pitPlayer);
 		ChatTriggerManager.sendPerksInfo(pitPlayer);
-
-		String message = "%luckperms_prefix%";
-		if(pitPlayer.megastreak.isOnMega()) {
-			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		}
 
 		Sounds.PRESTIGE.play(player);
 		Misc.sendTitle(player, "&e&lPRESTIGE!", 40);

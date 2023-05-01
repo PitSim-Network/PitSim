@@ -40,7 +40,7 @@ public class UberInsurance extends TieredRenownUpgrade {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		int tier = UpgradeManager.getTier(player, INSTANCE);
 
-		if(!(pitPlayer.megastreak instanceof Uberstreak)) return false;
+		if(!(pitPlayer.getMegastreak() instanceof Uberstreak)) return false;
 		if(pitPlayer.getKills() >= 400 && tier >= 3) return true;
 		if(pitPlayer.getKills() >= 450 && tier >= 2) return true;
 		if(pitPlayer.getKills() >= 500 && tier >= 1) return true;

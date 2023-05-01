@@ -54,8 +54,8 @@ public class FirstStrike extends PitPerk {
 	}
 
 	@Override
-	public PitLoreBuilder getBaseDescription() {
-		return new PitLoreBuilder(
+	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+		loreBuilder.addLongLine(
 				"&7First hit on a player or bot deals &c+30% damage"
 		);
 	}

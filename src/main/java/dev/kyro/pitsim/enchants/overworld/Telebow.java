@@ -146,7 +146,7 @@ public class Telebow extends PitEnchant {
 			teleShots.remove(teleShot);
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			if(pitPlayer.stats != null) pitPlayer.stats.telebow++;
+			pitPlayer.stats.telebow++;
 			return;
 		}
 	}

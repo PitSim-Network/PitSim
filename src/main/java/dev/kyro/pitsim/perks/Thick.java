@@ -43,8 +43,8 @@ public class Thick extends PitPerk {
 	}
 
 	@Override
-	public PitLoreBuilder getBaseDescription() {
-		return new PitLoreBuilder(
+	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+		loreBuilder.addLongLine(
 				"&7You have &c+2 max \u2764"
 		);
 	}

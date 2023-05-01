@@ -23,7 +23,6 @@ import dev.kyro.pitsim.events.*;
 import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
-import dev.kyro.pitsim.megastreaks.RNGesus;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -367,9 +366,9 @@ public class PlayerManager implements Listener {
 				AOutput.send(player, bountyMessage);
 			}
 			LevelManager.addGold(killEvent.getKillerPlayer(), pitDead.bounty);
-			if(!(pitDead.megastreak instanceof Highlander)) pitDead.bounty = 0;
+			if(!(pitDead.getMegastreak() instanceof Highlander)) pitDead.bounty = 0;
 
-			if(pitKiller.stats != null) pitKiller.stats.bountiesClaimed++;
+			pitKiller.stats.bountiesClaimed++;
 		}
 
 		int maxBounty = 20_000;
@@ -388,11 +387,24 @@ public class PlayerManager implements Listener {
 
 	@EventHandler
 	public void onIncrement(IncrementKillsEvent event) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
-		int kills = event.kills;
-		Megastreak megastreak = pitPlayer.megastreak;
-		if(kills == megastreak.getRequiredKills() && !(megastreak instanceof NoMegastreak)) megastreak.proc();
-		pitPlayer.megastreak.kill();
+		Player player = event.getPlayer();
+		PitPlayer pitPlayer = event.getPitPlayer();
+		int kills = event.getKills();
+		Megastreak megastreak = pitPlayer.getMegastreak();
+		if(kills == megastreak.requiredKills && !(megastreak instanceof NoMegastreak)) {
+			megastreak.proc(player);
+
+			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				PitPlayer onlinePitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+				if(onlinePitPlayer.streaksDisabled) continue;
+				String translatedName = ChatColor.translateAlternateColorCodes('&', megastreak.displayName);
+				String megastreakName = ChatColor.getLastColors(translatedName) + "&l" +
+						ChatColor.stripColor(translatedName).toUpperCase();
+				String streakMessage = ChatColor.translateAlternateColorCodes('&',
+						"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated " + megastreakName + "&7!");
+				AOutput.send(onlinePlayer, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
+			}
+		}
 	}
 
 	public static List<UUID> pantsSwapCooldown = new ArrayList<>();
@@ -675,13 +687,6 @@ public class PlayerManager implements Listener {
 				}
 
 				ProxyMessaging.joinTeleportMap.remove(player.getUniqueId());
-
-				String message = "%luckperms_prefix%";
-				if(pitPlayer.megastreak.isOnMega()) {
-					pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(player, message);
-				} else {
-					pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(player, message);
-				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 5L);
 
@@ -831,11 +836,7 @@ public class PlayerManager implements Listener {
 		PlayerDataManager.exemptedPlayers.remove(player.getUniqueId());
 		XmasMap.removeFromRadio(player);
 		PitPlayer pitPlayer = event.getPitPlayer();
-		pitPlayer.megastreak.stop();
-		if(pitPlayer.megastreak instanceof RNGesus) {
-			RNGesus rngesus = (RNGesus) pitPlayer.megastreak;
-			if(rngesus.isOnCooldown()) pitPlayer.megastreak = new NoMegastreak(pitPlayer);
-		}
+		pitPlayer.endKillstreak();
 	}
 
 	@EventHandler

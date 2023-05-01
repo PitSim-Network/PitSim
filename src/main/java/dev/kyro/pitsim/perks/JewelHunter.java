@@ -8,6 +8,7 @@ import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
@@ -53,8 +54,8 @@ public class JewelHunter extends PitPerk {
 	}
 
 	@Override
-	public PitLoreBuilder getBaseDescription() {
-		return new PitLoreBuilder(
+	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+		loreBuilder.addLongLine(
 				"&7Outside middle&7, deal &c+" + getDamageIncrease() + "% &7damage for each &3Jewel " +
 						"&7your opponent has (holding or wearing)"
 		);

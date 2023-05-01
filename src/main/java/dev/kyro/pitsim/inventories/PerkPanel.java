@@ -9,19 +9,16 @@ import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.megastreaks.NoMegastreak;
+import dev.kyro.pitsim.enums.DisplayItemType;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.tutorial.HelpItemStacks;
 import dev.kyro.pitsim.upgrades.TheWay;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +31,7 @@ public class PerkPanel extends AGUIPanel {
 		super(gui);
 		perkGUI = (PerkGUI) gui;
 
-		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 8);
+		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7);
 	}
 
 	@Override
@@ -55,8 +52,8 @@ public class PerkPanel extends AGUIPanel {
 
 			if(slot == 10 || slot == 12 || slot == 14 || slot == 16) {
 
-				perkGUI.applyPerkPanel.perkNum = perkGUI.getPerkNum(slot);
-				openPanel(perkGUI.applyPerkPanel);
+				perkGUI.selectPerkPanel.perkNum = perkGUI.getPerkNum(slot);
+				openPanel(perkGUI.selectPerkPanel);
 				return;
 			}
 
@@ -102,7 +99,7 @@ public class PerkPanel extends AGUIPanel {
 		for(int i = 0; i < pitPlayer.pitPerks.size(); i++) {
 			PitPerk pitPerk = pitPlayer.pitPerks.get(i);
 			if(pitPerk == null) continue;
-			ItemStack perkItem = pitPerk.getDisplayStack(player, PitPerk.DisplayItemType.MAIN_PERK_PANEL, i);
+			ItemStack perkItem = pitPerk.getDisplayStack(player, DisplayItemType.MAIN_PERK_PANEL, i);
 			getInventory().setItem(10 + i * 2, perkItem);
 		}
 
@@ -135,29 +132,7 @@ public class PerkPanel extends AGUIPanel {
 		}
 
 		getInventory().setItem(44, HelpItemStacks.getPerksItemStack());
-
-		ItemStack megaStreak = new ItemStack(pitPlayer.megastreak.guiItem().getType());
-		ItemMeta msMeta = megaStreak.getItemMeta();
-		msMeta.setDisplayName(ChatColor.RED + "Megastreak");
-		List<String> msLore = new ArrayList<>();
-		if(!(pitPlayer.megastreak instanceof NoMegastreak)) {
-			msLore.add(ChatColor.GRAY + "Selected: " + ChatColor.GREEN + pitPlayer.megastreak.getRawName());
-			msLore.add("");
-			msLore.addAll(pitPlayer.megastreak.guiItem().getItemMeta().getLore());
-		} else {
-			msLore.add(ChatColor.GRAY + "Select a megastreak to fill this slot.");
-		}
-		msLore.add("");
-		if(pitPlayer.megastreak instanceof NoMegastreak) {
-			msLore.add(ChatColor.YELLOW + "Click to choose megastreak!");
-		} else {
-			msLore.add(ChatColor.YELLOW + "Click to switch megastreak!");
-		}
-		msMeta.setLore(msLore);
-		megaStreak.setItemMeta(msMeta);
-
-		getInventory().setItem(34, megaStreak);
-
+		getInventory().setItem(34, pitPlayer.getMegastreak().getDisplayStack(player, DisplayItemType.MAIN_PERK_PANEL));
 		updateInventory();
 	}
 

@@ -1,18 +1,28 @@
 package dev.kyro.pitsim.events;
 
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
 
-public class IncrementKillsEvent extends Event {
+public class IncrementKillsEvent extends PlayerEvent {
 	private static final HandlerList handlers = new HandlerList();
 
-	public Player player;
-	public int kills;
+	private PitPlayer pitPlayer;
+	private int kills;
 
 	public IncrementKillsEvent(Player player, int kills) {
-		this.player = player;
+		super(player);
+		this.pitPlayer = PitPlayer.getPitPlayer(player);
 		this.kills = kills;
+	}
+
+	public PitPlayer getPitPlayer() {
+		return pitPlayer;
+	}
+
+	public int getKills() {
+		return kills;
 	}
 
 	@Override
@@ -23,5 +33,4 @@ public class IncrementKillsEvent extends Event {
 	public static HandlerList getHandlerList() {
 		return handlers;
 	}
-
 }

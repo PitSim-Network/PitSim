@@ -73,7 +73,7 @@ public class CombatManager implements Listener {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		UUID attackerUUID = pitPlayer.lastHitUUID;
-		if(isInCombat(player) || pitPlayer.megastreak.isOnMega()) {
+		if(isInCombat(player) || pitPlayer.isOnMega()) {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
 
@@ -109,7 +109,7 @@ public class CombatManager implements Listener {
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.megastreak.isOnMega()) {
+		if(pitPlayer.isOnMega()) {
 			event.setCancelled(true);
 			AOutput.send(player, "&c&lERROR!&7 You cannot spawn while on a megastreak");
 			return;

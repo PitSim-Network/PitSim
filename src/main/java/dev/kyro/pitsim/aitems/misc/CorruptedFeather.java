@@ -79,7 +79,7 @@ public class CorruptedFeather extends StaticPitItem {
 
 			// Remove this if you don't want them counting for lb
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(dead);
-			if(pitPlayer.stats != null) pitPlayer.stats.feathersLost++;
+			pitPlayer.stats.feathersLost++;
 			return true;
 		}
 		return false;

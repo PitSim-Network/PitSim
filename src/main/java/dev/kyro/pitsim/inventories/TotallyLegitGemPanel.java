@@ -87,7 +87,7 @@ public class TotallyLegitGemPanel extends AGUIPanel {
 					LogManager.onItemGem(player, nbtItem.getItem());
 
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-					if(pitPlayer.stats != null) pitPlayer.stats.itemsGemmed++;
+					pitPlayer.stats.itemsGemmed++;
 
 					if(gemStack.getAmount() == 1) {
 						player.setItemInHand(new ItemStack(Material.AIR));

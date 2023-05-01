@@ -508,18 +508,14 @@ public class PitSim extends JavaPlugin {
 		PerkManager.registerKillstreak(new Shockwave());
 	}
 
-	private void registerBosses() {
-
-	}
-
 	private void registerMegastreaks() {
-		PerkManager.registerMegastreak(new Overdrive(null));
-		PerkManager.registerMegastreak(new Highlander(null));
-		PerkManager.registerMegastreak(new Uberstreak(null));
-		PerkManager.registerMegastreak(new NoMegastreak(null));
-		PerkManager.registerMegastreak(new Beastmode(null));
-		PerkManager.registerMegastreak(new ToTheMoon(null));
-		PerkManager.registerMegastreak(new RNGesus(null));
+		PerkManager.registerMegastreak(new NoMegastreak());
+		PerkManager.registerMegastreak(new Overdrive());
+		PerkManager.registerMegastreak(new Beastmode());
+		PerkManager.registerMegastreak(new Highlander());
+		PerkManager.registerMegastreak(new Uberstreak());
+		PerkManager.registerMegastreak(new ToTheMoon());
+		PerkManager.registerMegastreak(new RNGesus());
 	}
 
 	private void registerLeaderboards() {

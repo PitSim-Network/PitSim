@@ -38,20 +38,19 @@ public class StatManager implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onMessage(AsyncPlayerChatEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.stats != null) pitPlayer.stats.chatMessages++;
+		pitPlayer.stats.chatMessages++;
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onShoot(EntityShootBowEvent event) {
 		if(!(event.getEntity() instanceof Player)) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) event.getEntity());
-		if(pitPlayer.stats != null) pitPlayer.stats.arrowShots++;
+		pitPlayer.stats.arrowShots++;
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onHeal(HealEvent event) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.getPlayer());
-		if(pitPlayer.stats == null) return;
 		if(event.healType == HealEvent.HealType.HEALTH) {
 			pitPlayer.stats.healthRegained += event.getEffectiveHeal();
 		} else {
@@ -59,52 +58,47 @@ public class StatManager implements Listener {
 		}
 	}
 
+	//		TODO: UPDATE
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onAttack(AttackEvent.Post attackEvent) {
 		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 		PitPlayer pitDefender = attackEvent.getDefenderPitPlayer();
 
-		if(pitAttacker.stats != null) {
-			if(attackEvent.getPet() == null) {
-				if(attackEvent.getArrow() == null) pitAttacker.stats.swordHits++;
-				else pitAttacker.stats.arrowHits++;
-			}
-			pitAttacker.stats.damageDealt += attackEvent.getFinalDamage();
-			pitAttacker.stats.trueDamageDealt += attackEvent.getApplyEvent().trueDamage + attackEvent.getApplyEvent().veryTrueDamage;
-			pitAttacker.stats.trueDamageTaken += attackEvent.getApplyEvent().selfTrueDamage + attackEvent.getApplyEvent().selfVeryTrueDamage;
-
-			if(Regularity.isRegHit(attackEvent.getDefender())) pitAttacker.stats.regularity++;
+		if(attackEvent.getPet() == null) {
+			if(attackEvent.getArrow() == null) pitAttacker.stats.swordHits++;
+			else pitAttacker.stats.arrowHits++;
 		}
+		pitAttacker.stats.damageDealt += attackEvent.getFinalDamage();
+		pitAttacker.stats.trueDamageDealt += attackEvent.getApplyEvent().trueDamage + attackEvent.getApplyEvent().veryTrueDamage;
+		pitAttacker.stats.trueDamageTaken += attackEvent.getApplyEvent().selfTrueDamage + attackEvent.getApplyEvent().selfVeryTrueDamage;
 
-		if(pitDefender.stats != null) {
-			pitDefender.stats.damageTaken += attackEvent.getFinalDamage();
-			pitDefender.stats.trueDamageTaken += attackEvent.getApplyEvent().trueDamage + attackEvent.getApplyEvent().veryTrueDamage;
-		}
+		if(Regularity.isRegHit(attackEvent.getDefender())) pitAttacker.stats.regularity++;
+
+		pitDefender.stats.damageTaken += attackEvent.getFinalDamage();
+		pitDefender.stats.trueDamageTaken += attackEvent.getApplyEvent().trueDamage + attackEvent.getApplyEvent().veryTrueDamage;
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onHit(KillEvent killEvent) {
-		PitPlayer pitKiller = PitPlayer.getPitPlayer(killEvent.getKillerPlayer());
-		PitPlayer pitDead = PitPlayer.getPitPlayer(killEvent.getDeadPlayer());
+		PitPlayer pitKiller = killEvent.getKillerPitPlayer();
+		PitPlayer pitDead = killEvent.getDeadPitPlayer();
 
 		if(pitKiller != null) {
-			if(pitKiller.stats != null) {
-				if(HopperManager.isHopper(killEvent.getDead())) {
-					pitKiller.stats.hopperKills++;
-				} else if(PlayerManager.isRealPlayer(killEvent.getDeadPlayer())) {
-					pitKiller.stats.playerKills++;
-				} else {
-					pitKiller.stats.botKills++;
-				}
-
-				pitKiller.stats.totalGold += killEvent.getFinalGold();
+			if(HopperManager.isHopper(killEvent.getDead())) {
+				pitKiller.stats.hopperKills++;
+			} else if(PlayerManager.isRealPlayer(killEvent.getDeadPlayer())) {
+				pitKiller.stats.playerKills++;
+			} else {
+				pitKiller.stats.botKills++;
 			}
+
+			pitKiller.stats.totalGold += killEvent.getFinalGold();
 		}
 
-		if(pitDead != null && pitDead.stats != null) {
+		if(pitDead != null) {
 			pitDead.stats.deaths++;
-			if(!(pitDead.megastreak instanceof NoMegastreak) && pitDead.getKills() > pitDead.stats.highestStreak)
+			if(!(pitDead.getMegastreak() instanceof NoMegastreak) && pitDead.getKills() > pitDead.stats.highestStreak)
 				pitDead.stats.highestStreak = pitDead.getKills();
 		}
 	}

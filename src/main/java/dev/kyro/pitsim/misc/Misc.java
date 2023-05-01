@@ -505,11 +505,11 @@ public class Misc {
 
 		if(NonManager.getNon(entity) == null && entity instanceof Player) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) entity);
-			if(pitPlayer.megastreak instanceof Uberstreak) {
-				Uberstreak uberstreak = (Uberstreak) pitPlayer.megastreak;
+			if(pitPlayer.getMegastreak() instanceof Uberstreak) {
+				Uberstreak uberstreak = (Uberstreak) pitPlayer.getMegastreak();
 				if(uberstreak.uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED)
 					return;
-			} else if(!(pitPlayer.megastreak instanceof Overdrive) && pitPlayer.megastreak.isOnMega() && type == PotionEffectType.SLOW)
+			} else if(!(pitPlayer.getMegastreak() instanceof Overdrive) && pitPlayer.isOnMega() && type == PotionEffectType.SLOW)
 				return;
 		}
 

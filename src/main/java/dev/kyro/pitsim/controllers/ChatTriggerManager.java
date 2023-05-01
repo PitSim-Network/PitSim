@@ -57,7 +57,7 @@ public class ChatTriggerManager implements Listener {
 		pitPlayer.killstreaks.forEach(killstreak -> killstreaks.add(killstreak.displayName));
 		dataMap.put("killstreaks", encodeList(killstreaks));
 
-		dataMap.put("megastreak", pitPlayer.megastreak.getRawName());
+		dataMap.put("megastreak", pitPlayer.getMegastreak().getRefName());
 
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}

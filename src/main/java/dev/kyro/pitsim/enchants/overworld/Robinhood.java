@@ -69,7 +69,7 @@ public class Robinhood extends PitEnchant {
 		else cooldown.restart();
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.stats != null) pitPlayer.stats.robinhood++;
+		pitPlayer.stats.robinhood++;
 
 		new BukkitRunnable() {
 			@Override

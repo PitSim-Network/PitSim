@@ -15,22 +15,21 @@ public abstract class Killstreak implements Listener, Summarizable {
 	public String displayName;
 	public String refName;
 	public int killInterval;
-	public int prestige;
+	public int prestigeReq;
 
-	public Killstreak(String displayName, String refName, int killInterval, int prestige) {
+	public Killstreak(String displayName, String refName, int killInterval, int prestigeReq) {
 		this.displayName = displayName;
 		this.killInterval = killInterval;
 		this.refName = refName;
-		this.prestige = prestige;
+		this.prestigeReq = prestigeReq;
 	}
 
 	public abstract void proc(Player player);
-
 	public abstract void reset(Player player);
-
 	public abstract ItemStack getDisplayStack(Player player);
 
 	public static Killstreak getKillstreak(String refName) {
+		if(refName == null) return NoKillstreak.INSTANCE;
 		for(Killstreak killstreak : PerkManager.killstreaks) {
 			if(killstreak.refName.equals(refName)) return killstreak;
 		}

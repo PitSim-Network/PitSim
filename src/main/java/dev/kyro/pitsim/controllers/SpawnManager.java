@@ -71,7 +71,7 @@ public class SpawnManager implements Listener {
 			if(!lastLocationMap.containsKey(player)) return;
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			if(pitPlayer.megastreak.isOnMega()) {
+			if(pitPlayer.isOnMega()) {
 				Location lastLocation = lastLocationMap.get(player);
 				player.teleport(lastLocation);
 				player.setVelocity(new Vector());

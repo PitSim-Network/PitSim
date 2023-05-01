@@ -27,17 +27,14 @@ public abstract class TieredRenownUpgrade extends RenownUpgrade {
 	}
 
 	@Override
-	public PitLoreBuilder getBaseDescription(Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
 		boolean hasUpgrade = UpgradeManager.hasUpgrade(player, this);
 		int tier = UpgradeManager.getTier(player, this);
-		PitLoreBuilder loreBuilder = new PitLoreBuilder();
 		if(hasUpgrade) {
 			loreBuilder.addLongLine("&7Current: " + getCurrentEffect(tier));
 			loreBuilder.addLongLine("&7Tier: &a" + AUtil.toRoman(tier), false);
 		}
 		loreBuilder.attemptAddSpacer();
 		loreBuilder.addLore("&7Each Tier:");
-		loreBuilder.addLongLine(getEffectPerTier(), false);
-		return loreBuilder;
 	}
 }

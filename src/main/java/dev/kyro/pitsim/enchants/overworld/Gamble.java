@@ -39,7 +39,7 @@ public class Gamble extends PitEnchant {
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getAttackerPlayer());
-		if(pitPlayer.stats != null) pitPlayer.stats.gamble += getTrueDamage(enchantLvl);
+		pitPlayer.stats.gamble += getTrueDamage(enchantLvl);
 	}
 
 	@Override

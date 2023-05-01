@@ -1,224 +1,135 @@
 package dev.kyro.pitsim.megastreaks;
 
+import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.controllers.HopperManager;
 import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.Hopper;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.DoubleDeath;
-import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ToTheMoon extends Megastreak {
-	public boolean hasCalledHopper = false;
-	public BukkitTask runnable;
+	public static ToTheMoon INSTANCE;
+	public static List<Player> hopperCallList = new ArrayList<>();
 
-	public ToTheMoon(PitPlayer pitPlayer) {
-		super(pitPlayer);
+	public ToTheMoon() {
+		super("&bTo the Moon", "tothemoon", 100, 30, 60);
+		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!attackEvent.isDefenderPlayer()) return;
+		if(!hasMegastreak(attackEvent.getDefenderPlayer())) return;
 		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
-		if(pitPlayer != this.pitPlayer) return;
-		if(pitPlayer.megastreak instanceof ToTheMoon) {
-			if(pitPlayer.getKills() > 200) {
-				double increase = 3 * ((pitPlayer.getKills() - 200) / 20);
-				if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-					attackEvent.increasePercent += increase;
-				} else attackEvent.increasePercent += increase * 5;
-			}
-			if(pitPlayer.getKills() > 400) {
-				if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-					attackEvent.increase += 0.2 * ((pitPlayer.getKills() - 400) / 100);
-				} else attackEvent.increase += 1.0 * ((pitPlayer.getKills() - 400) / 100);
-			}
-			if(pitPlayer.getKills() > 700) {
-				attackEvent.veryTrueDamage += 0.2 * ((pitPlayer.getKills() - 700) / 10);
-			}
+		if(!pitPlayer.isOnMega()) return;
+
+		if(pitPlayer.getKills() > 200) {
+			double increase = 3 * ((pitPlayer.getKills() - 200) / 20);
+			if(NonManager.getNon(attackEvent.getAttacker()) == null) {
+				attackEvent.increasePercent += increase;
+			} else attackEvent.increasePercent += increase * 5;
+		}
+		if(pitPlayer.getKills() > 400) {
+			if(NonManager.getNon(attackEvent.getAttacker()) == null) {
+				attackEvent.increase += 0.2 * ((pitPlayer.getKills() - 400) / 100);
+			} else attackEvent.increase += 1.0 * ((pitPlayer.getKills() - 400) / 100);
+		}
+		if(pitPlayer.getKills() > 700) {
+			attackEvent.veryTrueDamage += 0.2 * ((pitPlayer.getKills() - 700) / 10);
 		}
 	}
 
 	@EventHandler
 	public void onKill(KillEvent killEvent) {
-		if(!killEvent.isKillerPlayer()) return;
+		if(!hasMegastreak(killEvent.getKillerPlayer())) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
-		if(pitPlayer != this.pitPlayer) return;
-		if(!(pitPlayer.megastreak instanceof ToTheMoon)) return;
-		if(!playerIsOnMega(killEvent)) return;
+		if(!pitPlayer.isOnMega()) return;
 
 		killEvent.xpCap += 330;
 		killEvent.xpCap += (pitPlayer.getKills() - 100) * 1.0;
 		killEvent.xpMultipliers.add(2.35);
 		killEvent.goldMultipliers.add(0.5);
 
-		if(pitPlayer.getKills() > 1500 && !hasCalledHopper) {
+		if(pitPlayer.getKills() > 1500 && !hopperCallList.contains(killEvent.getKillerPlayer())) {
 			HopperManager.callHopper("PayForTruce", Hopper.Type.VENOM, killEvent.getKiller());
-			hasCalledHopper = true;
+			hopperCallList.add(killEvent.getKillerPlayer());
 		}
 	}
 
 	@Override
-	public void proc() {
+	public void proc(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		Sounds.MEGA_GENERAL.play(pitPlayer.player.getLocation());
-		runnable = new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(pitPlayer.megastreak instanceof ToTheMoon && pitPlayer.megastreak.isOnMega()) {
-					Misc.applyPotionEffect(pitPlayer.player, PotionEffectType.SPEED, 200, 0, true, false);
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 0L, 60L);
-
-		String message = "%luckperms_prefix%";
-		if(pitPlayer.megastreak.isOnMega()) {
-			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		}
-
-		pitPlayer.megastreak = this;
-		for(Player player : Bukkit.getOnlinePlayers()) {
-			PitPlayer pitPlayer2 = PitPlayer.getPitPlayer(player);
-			if(pitPlayer2.streaksDisabled) continue;
-			String streakMessage = ChatColor.translateAlternateColorCodes('&',
-					"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated &b&lTO THE MOON&7!");
-			AOutput.send(player, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
-		}
-
-		if(pitPlayer.stats != null) pitPlayer.stats.timesOnMoon++;
+		pitPlayer.stats.timesOnMoon++;
 		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 	}
 
 	@Override
-	public void reset() {
-		hasCalledHopper = false;
+	public void reset(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		hopperCallList.remove(player);
 
-		String message = "%luckperms_prefix%";
-		if(pitPlayer.megastreak.isOnMega()) {
-			pitPlayer.prefix = pitPlayer.megastreak.getName() + " &7" + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		} else {
-			pitPlayer.prefix = PrestigeValues.getPlayerPrefixNameTag(pitPlayer.player) + PlaceholderAPI.setPlaceholders(pitPlayer.player, message);
-		}
+		if(!pitPlayer.isOnMega()) return;
 
-		if(pitPlayer.megastreak.isOnMega() && pitPlayer.getKills() >= 700) {
-			int cap = 5;
-			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) cap *= 2;
-			if(pitPlayer.moonBonus + cap > 50) cap = 50 - pitPlayer.moonBonus;
-			if(cap > 0) {
-				pitPlayer.moonBonus += cap;
-				AOutput.send(pitPlayer.player, "&b&lTO THE MOON!&7 Gained &b+" + cap + " max XP &7until you prestige! (" + pitPlayer.moonBonus + "/50)");
+		if(pitPlayer.getKills() >= 700) {
+			int capIncrease = 5;
+			if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) capIncrease *= 2;
+			capIncrease = Math.min(capIncrease, 50 - pitPlayer.moonBonus);
+			if(capIncrease > 0) {
+				pitPlayer.moonBonus += capIncrease;
+				AOutput.send(pitPlayer.player, "&b&lTO THE MOON!&7 Gained &b+" + capIncrease + " max XP &7until you prestige! (" + pitPlayer.moonBonus + "/50)");
 			}
 		}
-
-		if(runnable != null) runnable.cancel();
 	}
 
 	@Override
-	public void stop() {
-		HandlerList.unregisterAll(this);
-		if(runnable != null) runnable.cancel();
-	}
-
-	@Override
-	public void kill() {
-
-		if(!isOnMega()) return;
-	}
-
-	@Override
-	public String getName() {
+	public String getPrefix(Player player) {
 		return "&b&lMOON";
 	}
 
 	@Override
-	public String getRawName() {
-		return "To the Moon";
+	public ItemStack getBaseDisplayStack(Player player) {
+		return new AItemStackBuilder(Material.ENDER_STONE)
+				.getItemStack();
 	}
 
 	@Override
-	public String getPrefix() {
-		return "&bTo the Moon";
-	}
-
-	@Override
-	public List<String> getRefNames() {
-		return Arrays.asList("moon");
-	}
-
-	@Override
-	public int getRequiredKills() {
-		return 100;
-	}
-
-	@Override
-	public int guiSlot() {
-		return 15;
-	}
-
-	@Override
-	public int prestigeReq() {
-		return 30;
-	}
-
-	@Override
-	public int initialLevelReq() {
-		return 60;
-	}
-
-	@Override
-	public ItemStack guiItem() {
-		ItemStack item = new ItemStack(Material.ENDER_STONE);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7Triggers on: &c100 kills"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On trigger:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Earn &b+135% XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+330 max XP &7from kills"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&a\u25a0 &7Gain &b+1 max XP &7per kill"));
-		lore.add("");
-		lore.add(ChatColor.GRAY + "BUT:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 200, receive &c+3%"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 20 kills. (5x damage from bots)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 400, receive &c+" + Misc.getHearts(0.2)));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7damage per 100 kills. (5x damage from bots)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Starting from 700, receive &c+" + Misc.getHearts(0.2)));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7very true damage per 10 kills."));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&c\u25a0 &7Earn &c-50% &7gold from kills"));
-
-		lore.add("");
-		lore.add(ChatColor.GRAY + "On death:");
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&e\u25a0 &7Earn a permanent &b+5 max XP"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7until you prestige (50 max)"));
-		lore.add(ChatColor.translateAlternateColorCodes('&', "&7(If streak is at least 700)"));
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
+	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+		loreBuilder.addLore(
+				"&7On Trigger:",
+				"&a\u25a0 &7Earn &b+135% XP &7from kills",
+				"&a\u25a0 &7Gain &b+330 max XP &7from kills",
+				"&a\u25a0 &7Gain &b+1 max XP &7per kill",
+				"",
+				"&7BUT:",
+				"&c\u25a0 &7Starting from 200, receive &c+3%",
+				"&7damage per 20 kills. (5x damage from bots)",
+				"&c\u25a0 &7Starting from 400, receive &c+" + Misc.getHearts(0.2),
+				"&7damage per 100 kills. (5x damage from bots)",
+				"&c\u25a0 &7Starting from 700, receive &c+" + Misc.getHearts(0.2),
+				"&7very true damage per 10 kills.",
+				"&c\u25a0 &7Earn &c-50% &7gold from kills",
+				"",
+				"&7On Death:",
+				"&e\u25a0 &7Earn a permanent &b+5 max XP",
+				"&7until you prestige (50 max) if",
+				"&7your streak is at least 700"
+		);
 	}
 
 	@Override

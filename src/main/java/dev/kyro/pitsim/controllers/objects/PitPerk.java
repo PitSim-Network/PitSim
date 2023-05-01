@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.ahelp.Summarizable;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
+import dev.kyro.pitsim.enums.DisplayItemType;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.perks.NoPerk;
@@ -33,7 +34,7 @@ public abstract class PitPerk implements Listener, Summarizable {
 	}
 
 	public abstract ItemStack getBaseDisplayStack();
-	public abstract PitLoreBuilder getBaseDescription();
+	public abstract void addBaseDescription(PitLoreBuilder loreBuilder, Player player);
 
 	public ItemStack getDisplayStack(Player player, DisplayItemType displayType) {
 		return getDisplayStack(player, displayType, -1);
@@ -42,14 +43,16 @@ public abstract class PitPerk implements Listener, Summarizable {
 	public ItemStack getDisplayStack(Player player, DisplayItemType displayType, int perkSlot) {
 		boolean isUnlocked = PerkManager.isUnlocked(player, this);
 		ChatColor chatColor = PerkManager.getChatColor(player, this);
-		PitLoreBuilder loreBuilder = getBaseDescription();
+		PitLoreBuilder loreBuilder = new PitLoreBuilder();
 
 		if(displayType == DisplayItemType.MAIN_PERK_PANEL && this != NoPerk.INSTANCE)
 			loreBuilder.addLongLine("&7Selected: &a" + displayName);
 
+		addBaseDescription(loreBuilder, player);
+
 		String status = "&eClick to select!";
 		if(displayType == DisplayItemType.MAIN_PERK_PANEL) {
-			status = "&eClick to change this perk!";
+			status = "&eClick to switch this perk!";
 		} else if(this == NoPerk.INSTANCE) {
 			status = "&eClick to remove perk!";
 		} else if(!isUnlocked) {
@@ -57,11 +60,11 @@ public abstract class PitPerk implements Listener, Summarizable {
 		} else if(hasPerk(player)) {
 			status = "&aAlready selected!";
 		}
-		if(displayType.appendStatus) loreBuilder.addLongLine(status);
+		if(displayType.shouldAppendStatus()) loreBuilder.addLongLine(status);
 
 		ItemStack baseStack = getBaseDisplayStack();
 		if(!isUnlocked) baseStack.setType(Material.BEDROCK);
-		if(hasPerk(player) && displayType == DisplayItemType.APPLY_PERK_PANEL && this != NoPerk.INSTANCE) Misc.addEnchantGlint(baseStack);
+		if(hasPerk(player) && displayType == DisplayItemType.SELECT_PANEL && this != NoPerk.INSTANCE) Misc.addEnchantGlint(baseStack);
 		return new AItemStackBuilder(baseStack)
 				.setName(perkSlot == -1 ? chatColor + displayName : "&aPerk Slot #" + (perkSlot + 1))
 				.setLore(loreBuilder)
@@ -85,21 +88,5 @@ public abstract class PitPerk implements Listener, Summarizable {
 		trainingPhrases.add("what is " + ChatColor.stripColor(displayName) + "?");
 		trainingPhrases.add("what does " + ChatColor.stripColor(displayName) + " do?");
 		return trainingPhrases;
-	}
-
-	public enum DisplayItemType {
-		APPLY_PERK_PANEL(true),
-		MAIN_PERK_PANEL(true),
-		VIEW_PANEL(false);
-
-		private final boolean appendStatus;
-
-		DisplayItemType(boolean appendStatus) {
-			this.appendStatus = appendStatus;
-		}
-
-		public boolean isAppendStatus() {
-			return appendStatus;
-		}
 	}
 }

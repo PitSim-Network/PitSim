@@ -54,7 +54,7 @@ public class PinDown extends PitEnchant {
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getAttackerPlayer());
-		if(pitPlayer.stats != null) pitPlayer.stats.pin++;
+		pitPlayer.stats.pin++;
 	}
 
 	@Override

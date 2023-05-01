@@ -26,6 +26,11 @@ public class RenownShopPanel extends APagedGUIPanel {
 	}
 
 	@Override
+	public String getName() {
+		return "&eRenown Shop";
+	}
+
+	@Override
 	public void addItems() {
 		for(RenownUpgrade upgrade : UpgradeManager.upgrades) addItem(() -> upgrade.getDisplayStack(player), event -> {
 			boolean hasUpgrade = UpgradeManager.hasUpgrade(player, upgrade);
@@ -71,11 +76,6 @@ public class RenownShopPanel extends APagedGUIPanel {
 	public void setInventory() {
 		super.setInventory();
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 7, false);
-	}
-
-	@Override
-	public String getName() {
-		return "&eRenown Shop";
 	}
 
 	@Override

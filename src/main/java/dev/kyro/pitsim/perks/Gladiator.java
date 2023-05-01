@@ -59,11 +59,9 @@ public class Gladiator extends PitPerk {
 	}
 
 	@Override
-	public PitLoreBuilder getBaseDescription() {
-		PitLoreBuilder loreBuilder = new PitLoreBuilder();
+	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
 		loreBuilder.addLongLine("&7Receive &9-3% &7damage per nearby player");
 		loreBuilder.addLongLine("&712 block range. 3 players minimum, 10 players maximum");
-		return loreBuilder;
 	}
 
 	@Override

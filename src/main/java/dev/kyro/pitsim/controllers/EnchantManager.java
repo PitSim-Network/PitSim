@@ -467,7 +467,7 @@ public class EnchantManager implements Listener {
 		temporaryItem.addMaxLives(itemStack, maxLives);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.stats != null) pitPlayer.stats.jewelsCompleted++;
+		pitPlayer.stats.jewelsCompleted++;
 
 		try {
 			itemStack = EnchantManager.addEnchant(itemStack, jewelEnchant, 3, false, true, -1);
