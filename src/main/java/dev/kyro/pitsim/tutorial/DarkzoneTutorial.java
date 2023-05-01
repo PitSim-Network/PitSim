@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.tutorial;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
@@ -73,8 +74,8 @@ public class DarkzoneTutorial extends Tutorial {
 
 	@Override
 	public boolean isActive() {
-		return false;
-//		return pitPlayer.prestige >= 5 && data.completedObjectives.size() < getObjectiveSize() && PitSim.status.isDarkzone();
+//		return false;
+		return pitPlayer.prestige >= 5 && data.completedObjectives.size() < getObjectiveSize() && PitSim.status.isDarkzone();
 	}
 
 	@Override

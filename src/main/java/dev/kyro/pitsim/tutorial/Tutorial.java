@@ -3,6 +3,7 @@ package dev.kyro.pitsim.tutorial;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.enums.DiscordLogChannel;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import net.kyori.adventure.audience.Audience;
@@ -97,11 +98,14 @@ public abstract class Tutorial {
 		if(isCompleted(objective)) return;
 		isInObjective = true;
 
+		if(objective == TutorialObjective.TAINTED_WELL) Misc.logToDiscord(DiscordLogChannel.TUTORIAL_LOG_CHANNEL, pitPlayer.player.getName() + " has completed the Tainted Well!");
+
 		BukkitRunnable runnable = new BukkitRunnable() {
 			@Override
 			public void run() {
 				data.completedObjectives.add(objective);
 				updateBossBar();
+				Misc.logToDiscord(DiscordLogChannel.TUTORIAL_LOG_CHANNEL, pitPlayer.player.getName() + " has completed the tutorial!");
 				AOutput.send(pitPlayer.player, "&a&lTUTORIAL!&7 Completed objective: " + objective.display);
 				onObjectiveComplete(objective);
 				Sounds.LEVEL_UP.play(pitPlayer.player);
