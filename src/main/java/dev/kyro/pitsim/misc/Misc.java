@@ -294,7 +294,7 @@ public class Misc {
 
 	@Deprecated
 	public static <T> T weightedRandom(LinkedHashMap<T, Double> weightedMap, long seed) {
-		return weightedRandom(weightedMap, new Random(seed));
+		return weightedRandom(weightedMap, seed == -1 ? null : new Random(seed));
 	}
 
 	public static <T> T weightedRandom(LinkedHashMap<T, Double> weightedMap, Random random) {
