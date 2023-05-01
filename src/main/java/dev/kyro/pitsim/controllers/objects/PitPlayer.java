@@ -773,6 +773,7 @@ public class PitPlayer {
 		Sounds.RENOWN_SHOP_PURCHASE.play(player);
 	}
 
+	@Exclude
 	public String getPrefix() {
 		String rankColor = PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%");
 		String megaPrefix = megastreak.getPrefix(player);

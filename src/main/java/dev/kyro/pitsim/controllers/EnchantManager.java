@@ -382,9 +382,9 @@ public class EnchantManager implements Listener {
 			} else if(mysticType == MysticType.BOW) {
 				itemMeta.setDisplayName(ChatColor.AQUA + "Hidden Jewel Bow");
 				loreBuilder.addLore("&7");
-				loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players to recycle");
-				loreBuilder.addLore("&7into a Tier I bow with a Tier");
-				loreBuilder.addLore("&7III enchant");
+				loreBuilder.addLore("&7Kill &c" + Constant.JEWEL_KILLS + " &7players with this");
+				loreBuilder.addLore("&7in your hotbar to recycle into a Tier I bow with a Tier");
+				loreBuilder.addLore("&7III enchant (works in hotbar)");
 				loreBuilder.addLore("&7Kills: &3" + jewelKills);
 			}
 		} else {
