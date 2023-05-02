@@ -43,7 +43,7 @@ public class Highlander extends Megastreak {
 	}
 
 	public Highlander() {
-		super("&eHighlander", "highlander", 50, 17, 90);
+		super("&6Highlander", "highlander", 50, 17, 90);
 		INSTANCE = this;
 	}
 

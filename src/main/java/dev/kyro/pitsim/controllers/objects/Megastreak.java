@@ -58,10 +58,11 @@ public abstract class Megastreak implements Listener, Summarizable {
 		if(displayType == DisplayItemType.MAIN_PERK_PANEL && this != NoMegastreak.INSTANCE)
 			loreBuilder.addLore("&7Selected: &a" + displayName, "");
 
-		loreBuilder.addLore(
+		ALoreBuilder triggerLore = new ALoreBuilder().addLore(
 				"",
 				"&7Trigger: &c" + requiredKills + " kills"
 		);
+		if(!(this instanceof NoMegastreak)) loreBuilder.addLore(triggerLore.getLore());
 
 		addBaseDescription(loreBuilder, player);
 
