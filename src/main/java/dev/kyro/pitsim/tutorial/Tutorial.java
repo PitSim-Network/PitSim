@@ -105,13 +105,13 @@ public abstract class Tutorial {
 			public void run() {
 				data.completedObjectives.add(objective);
 				updateBossBar();
-				Misc.logToDiscord(DiscordLogChannel.TUTORIAL_LOG_CHANNEL, pitPlayer.player.getName() + " has completed the tutorial!");
 				AOutput.send(pitPlayer.player, "&a&lTUTORIAL!&7 Completed objective: " + objective.display);
 				onObjectiveComplete(objective);
 				Sounds.LEVEL_UP.play(pitPlayer.player);
 
 				if(data.completedObjectives.size() == getObjectiveSize()) {
 					if(particleRunnable != null) particleRunnable.cancel();
+					Misc.logToDiscord(DiscordLogChannel.TUTORIAL_LOG_CHANNEL, pitPlayer.player.getName() + " has completed the tutorial!");
 
 					new BukkitRunnable() {
 						@Override
