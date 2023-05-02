@@ -741,7 +741,7 @@ public class PlayerManager implements Listener {
 					if(!player.isOnline()) return;
 
 					int soulReturn = pitPlayer.soulReturn;
-					pitPlayer.taintedSouls += soulReturn;
+					pitPlayer.giveSouls(soulReturn, false);
 
 					AuctionManager.sendAlert(player.getName() + " has claimed " + pitPlayer.soulReturn + " souls");
 

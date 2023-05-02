@@ -257,7 +257,7 @@ public class YourListingsPanel extends AGUIPanel {
 					int claimedSouls = listing.getTaxedSouls();
 					AOutput.send(player, "&a&lMARKET!&7 Claimed &f" + claimedSouls + " Souls");
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-					pitPlayer.taintedSouls += claimedSouls;
+					pitPlayer.giveSouls(claimedSouls);
 					if(listing.ownerUUID.equals(player.getUniqueId())) pitPlayer.stats.listingsSold++;
 					Sounds.RENOWN_SHOP_PURCHASE.play(player);
 					placeClaimables();

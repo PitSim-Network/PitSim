@@ -9,17 +9,8 @@ public class MigrateCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if(sender instanceof Player) return false;
 
-		if(!(sender instanceof Player)) return false;
-		Player player = (Player) sender;
-		if(!player.isOp()) return false;
-
-
-//		if(args.length > 0) {
-//			PitPlayer pitPlayer = new PitPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId());
-//			pitPlayer.save(false, false);
-//			return false;
-//		}
 
 		return false;
 	}

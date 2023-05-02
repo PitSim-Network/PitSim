@@ -31,11 +31,12 @@ public class DropPool {
 		for(Map.Entry<UUID, Double> entry : damageMap.entrySet()) {
 			UUID uuid = entry.getKey();
 			double damage = entry.getValue();
-			if(damage / totalDamage >= 0.05) {
+			if(damage / totalDamage >= 0.1) {
 				Player player = Bukkit.getPlayer(uuid);
 				if(player == null) continue;
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				pitPlayer.unlockFastTravelDestination(deadBoss.getSubLevel());
+				pitPlayer.stats.bossesKilled++;
 			}
 		}
 

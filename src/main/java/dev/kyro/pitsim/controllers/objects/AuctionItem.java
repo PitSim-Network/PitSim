@@ -160,7 +160,7 @@ public class AuctionItem {
 			OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getKey());
 
 			if(player.isOnline()) {
-				PitPlayer.getPitPlayer(player.getPlayer()).taintedSouls += entry.getValue();
+				PitPlayer.getPitPlayer(player.getPlayer()).giveSouls(entry.getValue(), false);
 				AOutput.send(player.getPlayer(), "&5&lDARK AUCTION!&7 Received &f" + entry.getValue() + " Tainted Souls&7.");
 			} else {
 

@@ -116,7 +116,7 @@ public class TaintedChestplate extends StaticPitItem implements TemporaryItem {
 
 	@Override
 	public ItemStack getReplacementItem(PitPlayer pitPlayer, ItemStack itemStack, NBTItem nbtItem) {
-		pitPlayer.taintedSouls += 30;
+		pitPlayer.giveSouls(30);
 		return null;
 	}
 

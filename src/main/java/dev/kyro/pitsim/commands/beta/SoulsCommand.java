@@ -35,7 +35,7 @@ public class SoulsCommand extends ACommand {
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.taintedSouls += souls;
+		pitPlayer.giveSouls(souls, false);
 		Sounds.SUCCESS.play(player);
 		AOutput.send(player, "&a&lSUCCESS!&7 Added &f" + souls + " souls &7to your account!");
 	}
