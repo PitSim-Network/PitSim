@@ -77,6 +77,7 @@ public class TutorialNPC implements Listener {
 			Midpoint currentMidpoint = getMidpoint(checkpoint, completedMidpoints);
 			if(currentMidpoint == null) break;
 
+			int finalI = i;
 			runningTasks.add(new BukkitRunnable() {
 				@Override
 				public void run() {
@@ -135,9 +136,8 @@ public class TutorialNPC implements Listener {
 		for(Midpoint midpoint : midpoints) {
 			if(completedMidpoints.contains(midpoint)) continue;
 
-			if(currentMidpoint == null) {
-				currentMidpoint = midpoint;
-				continue;
+			if(midpoint == Midpoint.ENTRANCE) {
+				System.out.println(midpoint.location.distance(checkpoint.location) + " " + npc.getEntity().getLocation().distance(checkpoint.location));
 			}
 
 			if(midpoint.location.distance(checkpoint.location) > npc.getEntity().getLocation().distance(checkpoint.location)) continue;

@@ -10,7 +10,7 @@ import org.bukkit.Location;
 public class CaveCheckpoint extends NPCCheckpoint {
 	public CaveCheckpoint() {
 		super(TutorialObjective.MONSTER_CAVES, new Location(MapManager.getDarkzone(),
-				276.5, 91, -117.5, 13, 0), Midpoint.ENTRANCE, Midpoint.SPAWN1, Midpoint.SPAWN2, Midpoint.EXIT, Midpoint.PATH1, Midpoint.PATH2);
+				276.5, 91, -117.5, 0, 0), Midpoint.ENTRANCE, Midpoint.SPAWN1, Midpoint.SPAWN2, Midpoint.EXIT, Midpoint.PATH1, Midpoint.PATH2);
 	}
 
 	@Override
