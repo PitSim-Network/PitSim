@@ -677,7 +677,8 @@ public class PitPlayer {
 
 		if(megastreak instanceof Uberstreak) {
 			Uberstreak uberstreak = (Uberstreak) megastreak;
-			if(uberstreak.uberEffectMap.contains(Uberstreak.UberEffect.LOSE_MAX_HEALTH)) maxHealth -= 4;
+			List<Uberstreak.UberEffect> uberEffects = uberstreak.uberEffectMap.get(player);
+			if(uberEffects.contains(Uberstreak.UberEffect.LOSE_MAX_HEALTH)) maxHealth -= 4;
 		}
 
 		if(Killstreak.hasKillstreak(player, "Monster") && Monster.healthMap.containsKey(player)) {

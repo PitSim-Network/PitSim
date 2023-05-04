@@ -504,10 +504,12 @@ public class Misc {
 		if(entity == null || amplifier < 0 || duration == 0) return;
 
 		if(NonManager.getNon(entity) == null && entity instanceof Player) {
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer((Player) entity);
+			Player player = (Player) entity;
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			if(pitPlayer.getMegastreak() instanceof Uberstreak) {
 				Uberstreak uberstreak = (Uberstreak) pitPlayer.getMegastreak();
-				if(uberstreak.uberEffectMap.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED)
+				List<Uberstreak.UberEffect> uberEffects = uberstreak.uberEffectMap.get(player);
+				if(uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED)
 					return;
 			} else if(!(pitPlayer.getMegastreak() instanceof Overdrive) && pitPlayer.isOnMega() && type == PotionEffectType.SLOW)
 				return;
