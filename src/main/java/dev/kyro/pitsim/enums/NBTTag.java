@@ -14,6 +14,7 @@ public enum NBTTag {
 	ITEM_JEWEL_ENCHANT("pr-jewel-enchant"),
 	ITEM_LAST_SERVER("pr-last-server"),
 	IS_TUTORIAL_ITEM("pr-istutorial"),
+	PREVIOUS_TUTORIAL_ITEM("pr-previous-tutorial"),
 
 	IS_LOCKED("pr-islocked"),
 	IS_JEWEL("pr-isjewel"),

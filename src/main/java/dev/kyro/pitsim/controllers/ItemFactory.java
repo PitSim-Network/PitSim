@@ -50,7 +50,10 @@ public class ItemFactory {
 		if(Misc.isAirOrNull(itemStack)) throw new RuntimeException("ItemStack cannot be null or air");
 		NBTItem nbtItem = new NBTItem(itemStack, true);
 		if(tutorialItem) nbtItem.setBoolean(NBTTag.IS_TUTORIAL_ITEM.getRef(), true);
-		else nbtItem.removeKey(NBTTag.IS_TUTORIAL_ITEM.getRef());
+		else {
+			nbtItem.removeKey(NBTTag.IS_TUTORIAL_ITEM.getRef());
+			nbtItem.setBoolean(NBTTag.PREVIOUS_TUTORIAL_ITEM.getRef(), true);
+		}
 		EnchantManager.setItemLore(itemStack, null);
 	}
 
