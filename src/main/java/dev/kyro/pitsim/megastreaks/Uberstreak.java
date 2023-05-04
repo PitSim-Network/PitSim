@@ -41,25 +41,36 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Uberstreak extends Megastreak {
 	public static Uberstreak INSTANCE;
 
 	public static double SHARD_MULTIPLIER = 2;
 
-	public List<UberEffect> uberEffects = new ArrayList<>();
+	public Map<Player, List<UberEffect>> uberEffectMap = new HashMap<>();
 
 	public Uberstreak() {
 		super("&dUberstreak", "uberstreak", 100, 20, 100);
 		INSTANCE = this;
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		uberEffectMap.putIfAbsent(player, new ArrayList<>());
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+		uberEffectMap.remove(player);
 	}
 
 	@EventHandler
@@ -68,6 +79,7 @@ public class Uberstreak extends Megastreak {
 		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 		if(!pitAttacker.isOnMega()) return;
 
+		List<UberEffect> uberEffects = uberEffectMap.get(attackEvent.getAttackerPlayer());
 		Map<PitEnchant, Integer> attackerEnchantMap = attackEvent.getAttackerEnchantMap();
 
 		if(uberEffects.contains(UberEffect.EXE_SUCKS) && attackerEnchantMap.containsKey(Executioner.INSTANCE))
@@ -81,6 +93,7 @@ public class Uberstreak extends Megastreak {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.getDefender());
 		if(hasMegastreak(attackEvent.getDefenderPlayer()) && pitDefender.isOnMega()) {
+			List<UberEffect> uberEffects = uberEffectMap.get(attackEvent.getDefenderPlayer());
 			if(uberEffects.contains(UberEffect.TAKE_MORE_DAMAGE)) attackEvent.multipliers.add(1.25);
 			if(uberEffects.contains(UberEffect.TAKE_LESS_DAMAGE)) attackEvent.multipliers.add(0.9);
 		}
@@ -98,6 +111,7 @@ public class Uberstreak extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
 		if(!pitPlayer.isOnMega()) return;
 
+		List<UberEffect> uberEffects = uberEffectMap.get(player);
 		if(uberEffects.contains(UberEffect.HEAL_LESS)) event.multipliers.add(0.75);
 
 		if(pitPlayer.getKills() >= 500) event.multipliers.add(0D);
@@ -124,6 +138,7 @@ public class Uberstreak extends Megastreak {
 			return;
 		}
 
+		List<UberEffect> uberEffects = uberEffectMap.get(player);
 		UberEffect uberEffect = UberEffect.getRandom(uberEffects);
 		uberEffects.add(uberEffect);
 		if(uberEffect == UberEffect.SKIP_100) zoom(pitPlayer);
@@ -162,7 +177,7 @@ public class Uberstreak extends Megastreak {
 	public void reset(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.updateMaxHealth();
-		uberEffects.clear();
+		uberEffectMap.clear();
 
 		if(pitPlayer.getKills() < 500) return;
 
