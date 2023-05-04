@@ -36,5 +36,6 @@ public abstract class TieredRenownUpgrade extends RenownUpgrade {
 		}
 		loreBuilder.attemptAddSpacer();
 		loreBuilder.addLore("&7Each Tier:");
+		loreBuilder.addLongLine(getEffectPerTier(), false);
 	}
 }
