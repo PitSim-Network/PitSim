@@ -53,8 +53,9 @@ public class Uberstreak extends Megastreak {
 	public static Uberstreak INSTANCE;
 
 	public static double SHARD_MULTIPLIER = 2;
+	public static List<Uberdrop> weightedDropList = new ArrayList<>();
 
-	public Map<Player, List<UberEffect>> uberEffectMap = new HashMap<>();
+	private static final Map<Player, List<UberEffect>> uberEffectMap = new HashMap<>();
 
 	public Uberstreak() {
 		super("&dUberstreak", "uberstreak", 100, 20, 100);
@@ -79,7 +80,7 @@ public class Uberstreak extends Megastreak {
 		PitPlayer pitAttacker = attackEvent.getAttackerPitPlayer();
 		if(!pitAttacker.isOnMega()) return;
 
-		List<UberEffect> uberEffects = uberEffectMap.get(attackEvent.getAttackerPlayer());
+		List<UberEffect> uberEffects = getUberEffects(attackEvent.getAttackerPlayer());
 		Map<PitEnchant, Integer> attackerEnchantMap = attackEvent.getAttackerEnchantMap();
 
 		if(uberEffects.contains(UberEffect.EXE_SUCKS) && attackerEnchantMap.containsKey(Executioner.INSTANCE))
@@ -93,7 +94,7 @@ public class Uberstreak extends Megastreak {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		PitPlayer pitDefender = PitPlayer.getPitPlayer(attackEvent.getDefender());
 		if(hasMegastreak(attackEvent.getDefenderPlayer()) && pitDefender.isOnMega()) {
-			List<UberEffect> uberEffects = uberEffectMap.get(attackEvent.getDefenderPlayer());
+			List<UberEffect> uberEffects = getUberEffects(attackEvent.getDefenderPlayer());
 			if(uberEffects.contains(UberEffect.TAKE_MORE_DAMAGE)) attackEvent.multipliers.add(1.25);
 			if(uberEffects.contains(UberEffect.TAKE_LESS_DAMAGE)) attackEvent.multipliers.add(0.9);
 		}
@@ -111,7 +112,7 @@ public class Uberstreak extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(event.player);
 		if(!pitPlayer.isOnMega()) return;
 
-		List<UberEffect> uberEffects = uberEffectMap.get(player);
+		List<UberEffect> uberEffects = getUberEffects(player);
 		if(uberEffects.contains(UberEffect.HEAL_LESS)) event.multipliers.add(0.75);
 
 		if(pitPlayer.getKills() >= 500) event.multipliers.add(0D);
@@ -138,7 +139,7 @@ public class Uberstreak extends Megastreak {
 			return;
 		}
 
-		List<UberEffect> uberEffects = uberEffectMap.get(player);
+		List<UberEffect> uberEffects = getUberEffects(player);
 		UberEffect uberEffect = UberEffect.getRandom(uberEffects);
 		uberEffects.add(uberEffect);
 		if(uberEffect == UberEffect.SKIP_100) zoom(pitPlayer);
@@ -200,6 +201,26 @@ public class Uberstreak extends Megastreak {
 				"&d&lUBERDROP!&7 " + displayName + " &7obtained an &dUberdrop: &7"));
 		message.addExtra(Misc.createItemHover(itemStack));
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) onlinePlayer.sendMessage(message);
+	}
+
+	public static ItemStack getUberDropDisplayStack(String displayName, ItemStack displayStack) {
+		return new AItemStackBuilder(displayStack).setName(displayName).getItemStack();
+	}
+
+	public static int getMaxUbers(Player player) {
+		return 5 + VentureCapitalist.getUberIncrease(player);
+	}
+
+	public static void checkUberReset(PitPlayer pitPlayer) {
+		if(System.currentTimeMillis() > pitPlayer.uberReset) {
+			pitPlayer.uberReset = 0;
+			pitPlayer.dailyUbersLeft = Uberstreak.getMaxUbers(pitPlayer.player);
+			ChatTriggerManager.sendUberInfo(pitPlayer);
+		}
+	}
+
+	public static List<UberEffect> getUberEffects(Player player) {
+		return uberEffectMap.getOrDefault(player, new ArrayList<>());
 	}
 
 	@Override
@@ -276,8 +297,6 @@ public class Uberstreak extends Megastreak {
 			return possible.get(0);
 		}
 	}
-
-	public static List<Uberdrop> weightedDropList = new ArrayList<>();
 
 	public enum Uberdrop {
 		JEWEL_SWORD(5),
@@ -383,22 +402,6 @@ public class Uberstreak extends Megastreak {
 					.writeString(Misc.getDisplayName(player))
 					.writeString(CustomSerializer.serialize(displayStack))
 					.send();
-		}
-	}
-
-	public static ItemStack getUberDropDisplayStack(String displayName, ItemStack displayStack) {
-		return new AItemStackBuilder(displayStack).setName(displayName).getItemStack();
-	}
-
-	public static int getMaxUbers(Player player) {
-		return 5 + VentureCapitalist.getUberIncrease(player);
-	}
-
-	public static void checkUberReset(PitPlayer pitPlayer) {
-		if(System.currentTimeMillis() > pitPlayer.uberReset) {
-			pitPlayer.uberReset = 0;
-			pitPlayer.dailyUbersLeft = Uberstreak.getMaxUbers(pitPlayer.player);
-			ChatTriggerManager.sendUberInfo(pitPlayer);
 		}
 	}
 }

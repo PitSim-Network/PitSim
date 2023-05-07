@@ -676,8 +676,7 @@ public class PitPlayer {
 		maxHealth += Tanky.getExtraHealth(enchantMap);
 
 		if(megastreak instanceof Uberstreak) {
-			Uberstreak uberstreak = (Uberstreak) megastreak;
-			List<Uberstreak.UberEffect> uberEffects = uberstreak.uberEffectMap.get(player);
+			List<Uberstreak.UberEffect> uberEffects = Uberstreak.getUberEffects(player);
 			if(uberEffects.contains(Uberstreak.UberEffect.LOSE_MAX_HEALTH)) maxHealth -= 4;
 		}
 

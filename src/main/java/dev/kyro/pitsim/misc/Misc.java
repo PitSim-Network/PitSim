@@ -507,8 +507,7 @@ public class Misc {
 			Player player = (Player) entity;
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			if(pitPlayer.getMegastreak() instanceof Uberstreak) {
-				Uberstreak uberstreak = (Uberstreak) pitPlayer.getMegastreak();
-				List<Uberstreak.UberEffect> uberEffects = uberstreak.uberEffectMap.get(player);
+				List<Uberstreak.UberEffect> uberEffects = Uberstreak.getUberEffects(player);
 				if(uberEffects.contains(Uberstreak.UberEffect.NO_SPEED) && type == PotionEffectType.SPEED)
 					return;
 			} else if(!(pitPlayer.getMegastreak() instanceof Overdrive) && pitPlayer.isOnMega() && type == PotionEffectType.SLOW)
