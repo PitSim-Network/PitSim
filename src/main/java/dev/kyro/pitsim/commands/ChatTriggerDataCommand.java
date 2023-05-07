@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ChatTriggerRequestCommand implements CommandExecutor {
+public class ChatTriggerDataCommand implements CommandExecutor {
 	public static List<SubCommand> subCommands = new ArrayList<>();
 
-	public ChatTriggerRequestCommand() {
+	public ChatTriggerDataCommand() {
 		registerSubCommand("status", context -> {
 			Player player = context.getPlayer();
 			if(ChatTriggerManager.isSubscribed(player)) {
@@ -41,7 +41,7 @@ public class ChatTriggerRequestCommand implements CommandExecutor {
 
 		if(args.length == 0) {
 			AOutput.send(player, "&1&m-------------------&1<&9&lDATA&1>&m-------------------");
-			for(SubCommand subCommand : subCommands) AOutput.send(player, "&1 * &9" + subCommand.getCommand());
+			for(SubCommand subCommand : subCommands) AOutput.send(player, "&1 * &9/" + label + " " + subCommand.getCommand());
 			AOutput.send(player, "&1&m-------------------&1<&9&lDATA&1>&m-------------------");
 			return false;
 		}

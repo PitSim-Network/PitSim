@@ -646,7 +646,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("cookie").setExecutor(new StaffCookieCommand());
 		getCommand("loadskin").setExecutor(new LoadSkinCommand());
 		getCommand("ineeddata").setExecutor(new ChatTriggerSubscribeCommand());
-		getCommand("givemedata").setExecutor(new ChatTriggerRequestCommand());
+		getCommand("givemedata").setExecutor(new ChatTriggerDataCommand());
 		getCommand("claim").setExecutor(new ClaimCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
