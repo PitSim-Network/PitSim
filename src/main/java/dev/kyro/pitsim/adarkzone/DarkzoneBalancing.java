@@ -42,7 +42,7 @@ public class DarkzoneBalancing {
 	public static final int PEDESTAL_INCREASE_PERCENT = 30;
 	public static final double PEDESTAL_WEALTH_MULTIPLIER = 1.2;
 
-	public static final int ALLOWED_KILLS_PER_MINUTE = 25;
+	public static final int ALLOWED_KILLS_PER_MINUTE = 30;
 
 	public static int getTravelCost(SubLevel subLevel) {
 		return subLevel.getIndex() + 1;
