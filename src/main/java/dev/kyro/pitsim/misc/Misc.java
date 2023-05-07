@@ -832,4 +832,8 @@ public class Misc {
 		hashedValue = hashedValue ^ (hashedValue >>> 31);
 		return hashedValue;
 	}
+
+	public static int fromFixedPoint(double fixedPoint) {
+		return (int) (fixedPoint * 32.0);
+	}
 }

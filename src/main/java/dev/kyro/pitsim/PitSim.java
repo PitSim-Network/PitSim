@@ -69,6 +69,7 @@ import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PitCalendarEvent;
 import dev.kyro.pitsim.events.EquipmentChangeEvent;
 import dev.kyro.pitsim.helmetabilities.*;
+import dev.kyro.pitsim.holograms.HologramManager;
 import dev.kyro.pitsim.killstreaks.Leech;
 import dev.kyro.pitsim.killstreaks.*;
 import dev.kyro.pitsim.kits.EssentialKit;
@@ -715,6 +716,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new VoucherManager(), this);
 		getServer().getPluginManager().registerEvents(new TutorialManager(), this);
 		getServer().getPluginManager().registerEvents(new CustomEventManager(), this);
+		getServer().getPluginManager().registerEvents(new HologramManager(), this);
 		if(!PitSim.isDev()) getServer().getPluginManager().registerEvents(new StatisticsManager(), this);
 
 		if(getStatus().isDarkzone()) {

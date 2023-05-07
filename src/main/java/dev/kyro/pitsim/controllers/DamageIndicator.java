@@ -125,8 +125,8 @@ public class DamageIndicator implements Listener {
 
 		PacketPlayOutSpawnEntityLiving spawnPacket = new PacketPlayOutSpawnEntityLiving(stand);
 		((CraftPlayer) attacker).getHandle().playerConnection.sendPacket(spawnPacket);
-		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(stand.getId(), fromFixedPoint(displayLocation.getX()),
-				fromFixedPoint(displayLocation.getY()), fromFixedPoint(displayLocation.getZ()), (byte) 0, (byte) 0, false);
+		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(stand.getId(), Misc.fromFixedPoint(displayLocation.getX()),
+				Misc.fromFixedPoint(displayLocation.getY()), Misc.fromFixedPoint(displayLocation.getZ()), (byte) 0, (byte) 0, false);
 		((CraftPlayer) attacker).getHandle().playerConnection.sendPacket(teleportPacket);
 
 		new BukkitRunnable() {
@@ -141,9 +141,5 @@ public class DamageIndicator implements Listener {
 	public static int getDivisor(LivingEntity entity) {
 		if(PlayerManager.isRealPlayer(entity)) return 2;
 		return Math.max(1, (int) (2 * (entity.getMaxHealth() / 20)));
-	}
-
-	public static int fromFixedPoint(double fixedPoint) {
-		return (int) (fixedPoint * 32.0);
 	}
 }
