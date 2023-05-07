@@ -41,7 +41,7 @@ import java.util.*;
 
 public class RNGesus extends Megastreak {
 	public static RNGesus INSTANCE;
-	private static Map<Player, RNGesusInfo> rngesusInfoMap = new HashMap<>();
+	private static final Map<Player, RNGesusInfo> rngesusInfoMap = new HashMap<>();
 
 	public static final int RENOWN_COST = 3;
 	public static final int COOLDOWN_MINUTES = 60;
