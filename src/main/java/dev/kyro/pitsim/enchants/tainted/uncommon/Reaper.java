@@ -42,7 +42,7 @@ public class Reaper extends PitEnchant {
 	}
 
 	public static int getSoulChanceIncrease(int enchantLvl) {
-		if(enchantLvl == 1) return 8;
-		return enchantLvl * 12 - 8;
+		if(enchantLvl == 1) return 6;
+		return enchantLvl * 12 - 16;
 	}
 }
