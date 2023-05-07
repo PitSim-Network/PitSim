@@ -48,7 +48,8 @@ public class DarkzoneManager implements Listener {
 
 	public static List<Player> regenCooldownList = new ArrayList<>();
 	public static List<UUID> freshSoftCooldownList = new ArrayList<>();
-	public static Map<UUID, Integer> soulSoftCooldownMap = new HashMap<>();
+	public static Map<UUID, Integer> mobKillTrackMapMap = new HashMap<>();
+	public static List<Player> extraKillsNotificationCooldown = new ArrayList<>();
 
 	public DarkzoneManager() {
 		SubLevel subLevel;
@@ -196,15 +197,34 @@ public class DarkzoneManager implements Listener {
 	}
 
 	public static double getSoulSoftCooldownMultiplier(Player player) {
-		return Math.pow(0.5, soulSoftCooldownMap.getOrDefault(player.getUniqueId(), 0));
+		int recentKills = mobKillTrackMapMap.getOrDefault(player.getUniqueId(), 0);
+		int extraKills = Math.max(recentKills - DarkzoneBalancing.ALLOWED_KILLS_PER_MINUTE, 0);
+		Misc.broadcast(recentKills + " " + Math.pow(0.9, extraKills));
+		if(extraKills != 0 && !extraKillsNotificationCooldown.contains(player)) {
+			extraKillsNotificationCooldown.add(player);
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					extraKillsNotificationCooldown.remove(player);
+				}
+			}.runTaskLater(PitSim.INSTANCE, 10 * 20L);
+
+			AOutput.error(player, "&c&lWOAH!&7 You are killing mobs too quickly! Your chance of finding souls has been temporarily reduced!");
+		}
+		return Math.pow(0.9, extraKills);
 	}
 
-	public static void putOnSoftSoulCooldown(Player player) {
-		soulSoftCooldownMap.put(player.getUniqueId(), soulSoftCooldownMap.getOrDefault(player.getUniqueId(), 0) + 1);
+	@EventHandler
+	public static void onMobKill(KillEvent killEvent) {
+		if(!killEvent.isKillerRealPlayer()) return;
+		PitMob pitMob = getPitMob(killEvent.getDead());
+		if(pitMob == null || pitMob instanceof PitEnderman) return;
+
+		mobKillTrackMapMap.put(killEvent.getKiller().getUniqueId(), mobKillTrackMapMap.getOrDefault(killEvent.getKiller().getUniqueId(), 0) + 1);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				soulSoftCooldownMap.put(player.getUniqueId(), soulSoftCooldownMap.get(player.getUniqueId()) - 1);
+				mobKillTrackMapMap.put(killEvent.getKiller().getUniqueId(), mobKillTrackMapMap.get(killEvent.getKiller().getUniqueId()) - 1);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 20 * 60);
 	}

@@ -106,7 +106,6 @@ public abstract class PitMob implements Listener {
 				if(SoulBooster.INSTANCE.isActive()) droppedSouls *= 1 + (SoulBooster.getSoulsIncrease() / 100.0);
 				DarkzoneManager.createSoulExplosion(damageMap,
 						getMob().getLocation().add(0, 0.5, 0), (int) droppedSouls, false);
-				if(pitKiller != null) DarkzoneManager.putOnSoftSoulCooldown(pitKiller.player);
 			}
 
 			if(pitKiller != null) {
