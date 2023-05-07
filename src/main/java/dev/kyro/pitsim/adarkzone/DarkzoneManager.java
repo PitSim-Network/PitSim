@@ -199,7 +199,6 @@ public class DarkzoneManager implements Listener {
 	public static double getSoulSoftCooldownMultiplier(Player player) {
 		int recentKills = mobKillTrackMapMap.getOrDefault(player.getUniqueId(), 0);
 		int extraKills = Math.max(recentKills - DarkzoneBalancing.ALLOWED_KILLS_PER_MINUTE, 0);
-		Misc.broadcast(recentKills + " " + Math.pow(0.9, extraKills));
 		if(extraKills != 0 && !extraKillsNotificationCooldown.contains(player)) {
 			extraKillsNotificationCooldown.add(player);
 			new BukkitRunnable() {
