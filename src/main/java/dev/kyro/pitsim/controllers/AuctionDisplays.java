@@ -1,7 +1,11 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.AuctionItem;
 import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.holograms.Hologram;
+import dev.kyro.pitsim.holograms.RefreshMode;
+import dev.kyro.pitsim.holograms.ViewMode;
 import dev.kyro.pitsim.inventories.BidGUI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -34,11 +38,10 @@ public class AuctionDisplays implements Listener {
 	public static UUID[] pedestalItems = new UUID[3];
 	public static UUID[] pedestalArmorStands = new UUID[3];
 
-	public static UUID[] highestBidStands = new UUID[3];
-	public static UUID[] highestBidderStands = new UUID[3];
-	public static UUID[] rightClickStands = new UUID[3];
+	public static Hologram[] bidInfoHolograms = new Hologram[3];
 
-	public static UUID timerStandUUID;
+	public static Hologram timerHologram;
+	public static Location timerLocation = new Location(MapManager.getDarkzone(), 178.5, 52, -1009.5);
 
 	public static NPC[] clickables = new NPC[3];
 
@@ -47,7 +50,6 @@ public class AuctionDisplays implements Listener {
 			@Override
 			public void run() {
 				if(!PitSim.getStatus().isDarkzone()) return;
-
 				if(!hasPlayers(pedestalLocations[0])) return;
 
 				for(int i = 0; i < 3; i++) {
@@ -60,20 +62,6 @@ public class AuctionDisplays implements Listener {
 						if(nearbyEntity.getUniqueId().equals(pedestalItems[i])) continue;
 						nearbyEntity.remove();
 					}
-
-					int highestBid = AuctionManager.auctionItems[i].getHighestBid();
-					UUID highestBidder = AuctionManager.auctionItems[i].getHighestBidder();
-
-					ArmorStand highestBidStand = getStand(highestBidStands[i]);
-					if(highestBidder != null)
-						highestBidStand.setCustomName(ChatColor.YELLOW + "Highest Bid: " + ChatColor.WHITE + highestBid + " Tainted Souls");
-					else
-						highestBidStand.setCustomName(ChatColor.YELLOW + "Starting Bid: " + ChatColor.WHITE + highestBid + " Tainted Souls");
-
-					String message = highestBidder == null ? "No One!" : Bukkit.getOfflinePlayer(highestBidder).getName();
-					ArmorStand highestBidderStand = getStand(highestBidderStands[i]);
-					highestBidderStand.setCustomName(ChatColor.YELLOW + "By: " + ChatColor.GOLD + message);
-
 				}
 
 				for(int i = 0; i < clickables.length; i++) {
@@ -84,23 +72,25 @@ public class AuctionDisplays implements Listener {
 					if(clickable.isSpawned())
 						((LivingEntity) clickable.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
 				}
-
-				if(AuctionManager.haveAuctionsEnded()) {
-					getStand(timerStandUUID).setCustomName(ChatColor.YELLOW + "Ending Soon");
-				} else
-					getStand(timerStandUUID).setCustomName(ChatColor.YELLOW + "Time Left: " + ChatColor.WHITE + AuctionManager.getRemainingTime());
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
 	}
 
 	public static void onStart() {
-		ArmorStand timerStand = (ArmorStand) MapManager.getDarkzone().spawnEntity(new Location(MapManager.getDarkzone(), 178.5, 50, -1009.5), EntityType.ARMOR_STAND);
-		timerStand.setGravity(false);
-		timerStand.setVisible(false);
-		timerStand.setCustomNameVisible(true);
-//        timerStand.setRemoveWhenFarAway(false);
-		timerStand.setCustomName(ChatColor.YELLOW + "Time Left: " + ChatColor.WHITE + "0m");
-		timerStandUUID = timerStand.getUniqueId();
+		showItems();
+
+		timerHologram = new Hologram(timerLocation, ViewMode.ALL, RefreshMode.AUTOMATIC_FAST) {
+
+			@Override
+			public List<String> getStrings(Player player) {
+				List<String> strings = new ArrayList<>();
+				if(AuctionManager.haveAuctionsEnded())
+					strings.add("&eEnding Soon");
+				else
+					strings.add("&eTime Left: &f" + AuctionManager.getRemainingTime());
+				return strings;
+			}
+		};
 
 		for(int i = 0; i < 3; i++) {
 
@@ -109,31 +99,36 @@ public class AuctionDisplays implements Listener {
 			npc.spawn(pedestalLocations[i]);
 			clickables[i] = npc;
 
-			ArmorStand highestBidStand = (ArmorStand) MapManager.getDarkzone().spawnEntity(pedestalLocations[i].clone().add(0, 0.6, 0), EntityType.ARMOR_STAND);
-			highestBidStand.setVisible(false);
-			highestBidStand.setCustomNameVisible(true);
-			highestBidStand.setGravity(false);
-//            highestBidStand.setRemoveWhenFarAway(false);
 
-			highestBidStand.setCustomName(ChatColor.YELLOW + "Highest Bid: " + ChatColor.WHITE + " Tainted Souls");
-			highestBidStands[i] = highestBidStand.getUniqueId();
+			int finalI = i;
+			bidInfoHolograms[i] = new Hologram(pedestalLocations[finalI].clone().add(0, 2, 0)) {
 
-			ArmorStand highestBidderStand = (ArmorStand) MapManager.getDarkzone().spawnEntity(pedestalLocations[i].clone().add(0, 0.3, 0), EntityType.ARMOR_STAND);
-			highestBidderStand.setVisible(false);
-			highestBidderStand.setCustomNameVisible(true);
-			highestBidderStand.setGravity(false);
-//            highestBidderStand.setRemoveWhenFarAway(false);
+				@Override
+				public List<String> getStrings(Player player) {
+					AuctionItem auctionItem = AuctionManager.auctionItems[finalI];
+					int highestBid = auctionItem == null ? 0 : auctionItem.getHighestBid();
+					UUID highestBidder = auctionItem == null ? null : auctionItem.getHighestBidder();
 
-			highestBidderStand.setCustomName(ChatColor.YELLOW + "By: " + ChatColor.GOLD);
-			highestBidderStands[i] = highestBidderStand.getUniqueId();
 
-			ArmorStand rightClickStand = (ArmorStand) MapManager.getDarkzone().spawnEntity(pedestalLocations[i].clone().add(0, 0, 0), EntityType.ARMOR_STAND);
-			rightClickStand.setVisible(false);
-			rightClickStand.setCustomNameVisible(true);
-			rightClickStand.setGravity(false);
-			rightClickStand.setCustomName(ChatColor.YELLOW + "Right-Click to Bid!");
-//            rightClickStand.setRemoveWhenFarAway(false);
-			rightClickStands[i] = rightClickStand.getUniqueId();
+					List<String> strings = new ArrayList<>();
+					if(highestBidder != null)
+						strings.add("&eHighest Bid: &f" + highestBid + " Tainted Souls");
+					else
+						strings.add("&eStarting Bid: &f" + highestBid + " Tainted Souls");
+					
+					String message = highestBidder == null ? "No One!" : Bukkit.getOfflinePlayer(highestBidder).getName();
+					strings.add("&eBy: &6" + message);
+					strings.add("&eRight-Click to Bid!");
+
+					return strings;
+				}
+			};
+		}
+	}
+
+	public static void updateHolograms() {
+		for(Hologram bidInfoHologram : bidInfoHolograms) {
+			if(bidInfoHologram != null) bidInfoHologram.updateHologram();
 		}
 	}
 
@@ -214,14 +209,8 @@ public class AuctionDisplays implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onAttack(AttackEvent.Pre event) {
-		List<UUID> stands = new ArrayList<>();
 
-		stands.addAll(Arrays.asList(pedestalArmorStands));
-		stands.addAll(Arrays.asList(highestBidderStands));
-		stands.addAll(Arrays.asList(highestBidStands));
-		stands.addAll(Arrays.asList(rightClickStands));
-		stands.add(timerStandUUID);
-
+		List<UUID> stands = new ArrayList<>(Arrays.asList(pedestalArmorStands));
 		for(UUID armorStand : stands) {
 			if(armorStand.equals(event.getDefender().getUniqueId())) event.setCancelled(true);
 		}
@@ -252,13 +241,6 @@ public class AuctionDisplays implements Listener {
 		return null;
 	}
 
-	public static boolean hasPlayers(World world) {
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(onlinePlayer.getWorld() == world) return true;
-		}
-		return false;
-	}
-
 	public static boolean hasPlayers(Location location) {
 		for(Entity entity : location.getWorld().getNearbyEntities(location, 50, 50, 50)) {
 			if(entity instanceof Player) return true;
@@ -267,21 +249,6 @@ public class AuctionDisplays implements Listener {
 	}
 
 	public static void onDisable() {
-
-		for(UUID highestBidderStand : highestBidderStands) {
-			ArmorStand stand = getStand(highestBidderStand);
-			if(stand != null) stand.remove();
-		}
-
-		for(UUID highestBidStand : highestBidStands) {
-			ArmorStand stand = getStand(highestBidStand);
-			if(stand != null) stand.remove();
-		}
-
-		for(UUID rightClickStand : rightClickStands) {
-			ArmorStand stand = getStand(rightClickStand);
-			if(stand != null) stand.remove();
-		}
 
 		for(UUID pedestalArmorStand : pedestalArmorStands) {
 			ArmorStand stand = getStand(pedestalArmorStand);
@@ -292,9 +259,6 @@ public class AuctionDisplays implements Listener {
 			Item item = getItem(pedestalItem);
 			if(item != null) item.remove();
 		}
-
-		ArmorStand timerStand = getStand(timerStandUUID);
-		if(timerStand != null) timerStand.remove();
 	}
 
 }

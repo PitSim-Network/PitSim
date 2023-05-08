@@ -106,6 +106,10 @@ public abstract class Hologram {
 		updateLine(textLine);
 	}
 
+	public void updateHologram() {
+		textLines.forEach(this::updateLine);
+	}
+
 	public void updateLine(TextLine textLine) {
 		if(textLine == null) throw new RuntimeException("Text line not found in hologram");
 

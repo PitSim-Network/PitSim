@@ -167,8 +167,8 @@ public class AuctionManager implements Listener {
 	}
 
 	public static void generateNewAuctions() {
-		FirestoreManager.AUCTION.endTime = System.currentTimeMillis() + (new Random().nextInt(60 * 12) + 60 * 6) * 60 * 1000;
-//		FirestoreManager.AUCTION.endTime = System.currentTimeMillis() + 10 * 1000;
+//		FirestoreManager.AUCTION.endTime = System.currentTimeMillis() + (new Random().nextInt(60 * 12) + 60 * 6) * 60 * 1000;
+		FirestoreManager.AUCTION.endTime = System.currentTimeMillis() + 10 * 1000;
 
 		for(int i = 0; i < auctionItems.length; i++) {
 			auctionItems[i] = new AuctionItem(generateItem(), 0, i, null);
