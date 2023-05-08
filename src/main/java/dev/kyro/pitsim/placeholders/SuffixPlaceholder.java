@@ -7,7 +7,6 @@ import dev.kyro.pitsim.controllers.AFKManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Formatter;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class SuffixPlaceholder implements APAPIPlaceholder {
@@ -26,7 +25,7 @@ public class SuffixPlaceholder implements APAPIPlaceholder {
 			if(pitPlayer.bounty != 0) return "&7 &6&l" + pitPlayer.bounty + "g";
 		} else {
 			int souls = (int) Math.ceil(KillEvent.getBaseSouls(pitPlayer));
-			if(souls != 0) return "&7 &f&l" + ChatColor.stripColor(Formatter.formatSouls(souls));
+			if(souls != 0) return "&7 &f&l" + Formatter.formatSouls(souls, false);
 		}
 
 		GuildData guild = GuildData.getGuildData(player);
