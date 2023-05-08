@@ -23,9 +23,10 @@ public class LeaderboardData {
 				String[] playerData = data.split(",");
 				UUID uuid = UUID.fromString(playerData[0]);
 				double value = Double.parseDouble(playerData[2]);
+				String username = playerData[3];
 
 				String[] prestigeAndLevel = playerData[1].split(" ");
-				PlayerData dataObject = new PlayerData(value, Integer.parseInt(prestigeAndLevel[0]), Integer.parseInt(prestigeAndLevel[1]));
+				PlayerData dataObject = new PlayerData(username, value, Integer.parseInt(prestigeAndLevel[0]), Integer.parseInt(prestigeAndLevel[1]));
 
 				leaderboardDataMap.put(uuid, dataObject);
 			}
@@ -62,12 +63,14 @@ public class LeaderboardData {
 	public static class PlayerData {
 
 		public double primaryValue;
+		public String username;
 		public String prefix;
 
 		public int level;
 		public int prestige;
 
-		public PlayerData(double primaryValue, int prestige, int level) {
+		public PlayerData(String username, double primaryValue, int prestige, int level) {
+			this.username = username;
 			this.primaryValue = primaryValue;
 			this.prestige = prestige;
 			this.level = level;

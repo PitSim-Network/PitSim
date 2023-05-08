@@ -46,8 +46,9 @@ public abstract class Hologram {
 				List<UUID> toRemove = new ArrayList<>();
 
 				for(Player player : getPermittedViewers()) {
+					if(player.getWorld() != spawnLocation.getWorld()) continue;
 					double distance = player.getLocation().distance(spawnLocation);
-					 if(!activeViewers.contains(player.getUniqueId()) && distance <= VIEW_PROXIMITY) addViewer(player);
+					if(!activeViewers.contains(player.getUniqueId()) && distance <= VIEW_PROXIMITY) addViewer(player);
 				}
 
 				for(UUID activeViewer : new ArrayList<>(activeViewers)) {
@@ -55,6 +56,11 @@ public abstract class Hologram {
 					Player player = Bukkit.getPlayer(activeViewer);
 					if(player == null) {
 						toRemove.add(activeViewer);
+						continue;
+					}
+
+					if(player.getWorld() != spawnLocation.getWorld()) {
+						removeViewer(player);
 						continue;
 					}
 

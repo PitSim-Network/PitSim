@@ -51,6 +51,28 @@ public abstract class PitMap {
 
 	public abstract Location getStandAlonePortalRespawn();
 
+	public abstract Location getWelcomeHolo();
+
+	public abstract Location getMysticWellHolo();
+
+	public abstract Location getKitsHolo();
+
+	public abstract Location getEnderchest1Holo();
+
+	public abstract Location getEnderchest2Holo();
+
+	public abstract Location getUpgradesHolo();
+
+	public abstract Location getPassHolo();
+
+	public abstract Location getPrestigeHolo();
+
+	public abstract Location getLeaderboardHolo();
+
+	public abstract Location getGuildLeaderboardHolo();
+
+	public abstract Location getKeeperHolo();
+
 	public double getY() {
 		return getMid().getY();
 	}

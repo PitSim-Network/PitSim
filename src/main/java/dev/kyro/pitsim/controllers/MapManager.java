@@ -75,4 +75,30 @@ public class MapManager implements Listener {
 		if(location == null) return false;
 		return location.getWorld() == getDarkzone();
 	}
+
+	public static Location getAuctionExitHolo() {
+		return new Location(getDarkzone(), 178.512, 52.164, -1003.274);
+	}
+
+	public static Location getSkillsHolo() {
+		return new Location(getDarkzone(), 188.498, 93.800, -84.700);
+	}
+
+	public static Location getMarketHolo() {
+		return new Location(getDarkzone(), 203.993, 93.800, -84.700);
+	}
+
+	public static Location getShopHolo() {
+		return new Location(getDarkzone(), 201.029, 93.800, -84.638);
+	}
+
+	public static Location getEnderChestHolo() {
+		return new Location(getDarkzone(), 197.524, 94.060, -105.529);
+	}
+
+	public static Location getCrateHolo() {
+		return new Location(getDarkzone(), 207.500, 94.800, -105.500);
+	}
+
+
 }
