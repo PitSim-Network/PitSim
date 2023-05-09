@@ -48,7 +48,9 @@ public abstract class Hologram {
 				for(Player player : getPermittedViewers()) {
 					if(player.getWorld() != spawnLocation.getWorld()) continue;
 					double distance = player.getLocation().distance(spawnLocation);
-					if(!activeViewers.contains(player.getUniqueId()) && distance <= VIEW_PROXIMITY) addViewer(player);
+					if(!activeViewers.contains(player.getUniqueId()) && distance <= VIEW_PROXIMITY) {
+						addViewer(player);
+					}
 				}
 
 				for(UUID activeViewer : new ArrayList<>(activeViewers)) {
@@ -59,7 +61,7 @@ public abstract class Hologram {
 						continue;
 					}
 
-					if(player.getWorld() != spawnLocation.getWorld()) {
+					if(player.getWorld() != spawnLocation.getWorld() || !permittedViewers.contains(player)) {
 						removeViewer(player);
 						continue;
 					}

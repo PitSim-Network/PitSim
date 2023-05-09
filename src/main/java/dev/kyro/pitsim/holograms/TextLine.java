@@ -45,6 +45,7 @@ public class TextLine {
 		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(entityId, Misc.fromFixedPoint(displayLocation.getX()),
 				Misc.fromFixedPoint(displayLocation.getY()), Misc.fromFixedPoint(displayLocation.getZ()), (byte) 0, (byte) 0, false);
 		nmsPlayer.playerConnection.sendPacket(teleportPacket);
+		updateLine(hologram, player);
 	}
 
 	public void updateLine(Hologram hologram, Player player) {
@@ -66,7 +67,9 @@ public class TextLine {
 		World nmsWorld = ((CraftWorld) displayLocation.getWorld()).getHandle();
 
 		int index = hologram.textLines.indexOf(this);
-		String text = ChatColor.translateAlternateColorCodes('&', hologram.getStrings(player).get(index));
+		String uncolored = hologram.getStrings(player).get(index);
+		if(uncolored.isEmpty()) uncolored = "&7";
+		String text = ChatColor.translateAlternateColorCodes('&', uncolored);
 
 		EntityArmorStand stand = new EntityArmorStand(nmsWorld);
 		stand.n(true);
