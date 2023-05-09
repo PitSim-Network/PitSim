@@ -2,7 +2,6 @@ package dev.kyro.pitsim;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.mattmalec.pterodactyl4j.PteroBuilder;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import com.sk89q.worldedit.EditSession;
@@ -273,16 +272,6 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new StreakPlaceholder());
 		AHook.registerPlaceholder(new ExperiencePlaceholder());
 		AHook.registerPlaceholder(new LevelPlaceholder());
-		AHook.registerPlaceholder(new GuildPlaceholder());
-		AHook.registerPlaceholder(new GuildPlaceholder2());
-		AHook.registerPlaceholder(new GuildPlaceholder3());
-		AHook.registerPlaceholder(new GuildPlaceholder4());
-		AHook.registerPlaceholder(new GuildPlaceholder5());
-		AHook.registerPlaceholder(new GuildPlaceholder6());
-		AHook.registerPlaceholder(new GuildPlaceholder7());
-		AHook.registerPlaceholder(new GuildPlaceholder8());
-		AHook.registerPlaceholder(new GuildPlaceholder9());
-		AHook.registerPlaceholder(new GuildPlaceholder10());
 		AHook.registerPlaceholder(new PrestigeLevelPlaceholder());
 		AHook.registerPlaceholder(new PrestigePlaceholder());
 		AHook.registerPlaceholder(new GoldReqPlaceholder());
@@ -292,9 +281,6 @@ public class PitSim extends JavaPlugin {
 		AHook.registerPlaceholder(new NicknamePlaceholder());
 		AHook.registerPlaceholder(new ServerIPPlaceholder());
 		AHook.registerPlaceholder(new CustomScoreboardPlaceholder());
-
-		new LeaderboardPlaceholders().register();
-		new SubLevelPlaceholders().register();
 
 		CooldownManager.init();
 
@@ -375,11 +361,6 @@ public class PitSim extends JavaPlugin {
 				clickable.destroy();
 				NPCRegistry registry = CitizensAPI.getNPCRegistry();
 				registry.deregister(clickable);
-			}
-
-			for(Hologram hologram : new ArrayList<>(DarkzoneManager.holograms)) {
-				hologram.delete();
-				DarkzoneManager.holograms.remove(hologram);
 			}
 		}
 

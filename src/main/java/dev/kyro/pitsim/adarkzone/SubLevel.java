@@ -1,14 +1,12 @@
 package dev.kyro.pitsim.adarkzone;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.StaticPitItem;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.enums.MobStatus;
+import dev.kyro.pitsim.holograms.Hologram;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -39,6 +37,8 @@ public class SubLevel {
 	private int currentDrops = 0;
 	private int requiredDropsToSpawn;
 	private int maxMinionsPerPlayer;
+
+	private Hologram hologram;
 
 	//	Mob related fields
 	private Class<? extends PitMob> mobClass;
@@ -128,16 +128,22 @@ public class SubLevel {
 	}
 
 	public void createHologram() {
-		Hologram hologram = HologramsAPI.createHologram(PitSim.INSTANCE, new Location(
+		Location hologramLoc = new Location(
 				getMiddle().getWorld(),
 				getMiddle().getX() + 0.5,
-				getMiddle().getY() + 1.6,
-				getMiddle().getZ() + 0.5));
-		hologram.setAllowPlaceholders(true);
-		hologram.appendTextLine(ChatColor.translateAlternateColorCodes('&',
-				"&7Place " + ItemFactory.getItem(getSpawnItemClass()).getName()));
-		hologram.appendTextLine("{fast}%sublevel_" + getIdentifier() + "%");
-		DarkzoneManager.holograms.add(hologram);
+				getMiddle().getY() + 1.2,
+				getMiddle().getZ() + 0.5);
+
+		hologram = new Hologram(hologramLoc) {
+
+			@Override
+			public List<String> getStrings(Player player) {
+				List<String> strings = new ArrayList<>();
+				strings.add("&7Place " + ItemFactory.getItem(getSpawnItemClass()).getName());
+				strings.add("&a" + getCurrentDrops() + "&7/" + getRequiredDropsToSpawn());
+				return strings;
+			}
+		};
 	}
 
 	public Location getMobSpawnLocation() {
@@ -224,6 +230,7 @@ public class SubLevel {
 
 	public void setCurrentDrops(int currentDrops) {
 		this.currentDrops = currentDrops;
+		if(hologram != null) hologram.updateHologram();
 	}
 
 	public int getRequiredDropsToSpawn() {

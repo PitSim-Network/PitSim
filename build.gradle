@@ -26,7 +26,6 @@ repositories {
 
 dependencies {
     compileOnly 'org.jetbrains:annotations:23.0.0'
-    compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
 //    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly files('libs/ispigot.jar')
     compileOnly files('libs/Citizens-2.0.30-Kyro.jar')
