@@ -320,7 +320,6 @@ public class PitSim extends JavaPlugin {
 
 		if(status.isDarkzone()) {
 			TaintedWell.onStop();
-			AltarManager.cleanUp();
 			FirestoreManager.AUCTION.save();
 			AuctionDisplays.onDisable();
 		}

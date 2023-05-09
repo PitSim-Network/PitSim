@@ -250,15 +250,10 @@ public class TaintedWell implements Listener {
 		PacketPlayOutEntityTeleport tpRemovePacket = new PacketPlayOutEntityTeleport(((CraftEntity)enchantStand).getHandle());
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(tpRemovePacket);
 
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if(cost == -1) return;
-
-				costMap.put(player.getUniqueId(), cost);
-				enchantCostHologram.addPermittedViewer(player);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 5);
+		if(cost != -1) {
+			costMap.put(player.getUniqueId(), cost);
+			enchantCostHologram.addPermittedViewer(player);
+		}
 
 		setText(player, "", "", "", "");
 		setItemText(player);

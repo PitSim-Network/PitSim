@@ -123,16 +123,29 @@ public abstract class Hologram {
 		}
 	}
 
+	public void updateHologram(Player player) {
+		textLines.forEach(textLine -> textLine.updateLine(this, player));
+	}
+
 	public List<Player> getPermittedViewers() {
 		return permittedViewers;
 	}
 
 	public void addPermittedViewer(Player player) {
+		if(permittedViewers.contains(player)) return;
 		permittedViewers.add(player);
+
+		if(player.getWorld() != spawnLocation.getWorld()) return;
+		double distance = player.getLocation().distance(spawnLocation);
+		if(!activeViewers.contains(player.getUniqueId()) && distance <= VIEW_PROXIMITY) {
+			addViewer(player);
+		}
 	}
 
 	public void removePermittedViewer(Player player) {
 		permittedViewers.remove(player);
+
+		if(activeViewers.contains(player.getUniqueId())) removeViewer(player);
 	}
 
 	public void setPermittedViewers(List<Player> permittedViewers) {
