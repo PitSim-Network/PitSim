@@ -1,15 +1,12 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.holograms.Hologram;
-import dev.kyro.pitsim.holograms.RefreshMode;
-import dev.kyro.pitsim.holograms.ViewMode;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.misc.effects.SelectiveDrop;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class ATestCommand implements CommandExecutor {
 
@@ -19,18 +16,15 @@ public class ATestCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if(!player.isOp()) return false;
 
+		SelectiveDrop selectiveDrop = new SelectiveDrop(player.getInventory().getItemInHand(), player.getLocation());
+		selectiveDrop.dropItem();
 
-		Hologram hologram = new Hologram(player.getLocation(), ViewMode.ALL, RefreshMode.MANUAL) {
+		new BukkitRunnable() {
 			@Override
-			public List<String> getStrings(Player player) {
-				List<String> strings = new ArrayList<>();
-				strings.add("&bTest");
-				strings.add("&3eeeeeee");
-
-				return strings;
+			public void run() {
+				selectiveDrop.addPlayer(player);
 			}
-		};
-
+		}.runTaskLater(PitSim.INSTANCE, 80);
 
 		return false;
 	}

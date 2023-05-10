@@ -17,15 +17,14 @@ import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.effects.PacketBlock;
-import dev.kyro.pitsim.misc.packets.WrapperPlayClientBlockDig;
-import dev.kyro.pitsim.misc.packets.WrapperPlayServerBlockChange;
-import dev.kyro.pitsim.misc.packets.WrapperPlayServerEntityTeleport;
-import dev.kyro.pitsim.misc.packets.WrapperPlayServerNamedEntitySpawn;
+import dev.kyro.pitsim.misc.effects.SelectiveDrop;
+import dev.kyro.pitsim.misc.packets.*;
 import dev.kyro.pitsim.tutorial.DarkzoneTutorial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -174,6 +173,25 @@ public class PacketManager implements Listener {
 							DarkzoneTutorial tutorial = pitPlayer.darkzoneTutorial;
 							if(tutorial == null || tutorial.tutorialNPC == null) continue;
 							if(tutorial.tutorialNPC.npc.getEntity() == entity) {
+								event.setCancelled(true);
+								return;
+							}
+						}
+					}
+				});
+
+		protocolManager.addPacketListener(
+				new PacketAdapter(PitSim.INSTANCE, PacketType.Play.Server.SPAWN_ENTITY) {
+					@Override
+					public void onPacketSending(PacketEvent event) {
+						WrapperPlayServerSpawnEntity wrapper = new WrapperPlayServerSpawnEntity(event.getPacket());
+						Entity entity = wrapper.getEntity(event);
+						if(!(entity instanceof Item)) return;
+
+						for(SelectiveDrop selectiveDrop : SelectiveDrop.selectiveDrops) {
+							if(!selectiveDrop.isItem((Item) entity)) continue;
+//
+							if(!selectiveDrop.getPermittedPlayers().contains(event.getPlayer().getUniqueId())) {
 								event.setCancelled(true);
 								return;
 							}

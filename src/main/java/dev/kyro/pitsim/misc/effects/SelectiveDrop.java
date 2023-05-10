@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.misc.effects;
 
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.misc.Misc;
 import net.minecraft.server.v1_8_R3.*;
@@ -13,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -32,8 +34,13 @@ public class SelectiveDrop implements Listener {
 
 	private Item droppedItem;
 	private long lifetime;
+	private final UUID identifier;
 
 	private final BukkitTask task;
+
+	public SelectiveDrop(ItemStack itemStack, Location location) {
+		this(itemStack, location, new ArrayList<>());
+	}
 
 	public SelectiveDrop(ItemStack itemStack, Location location,  UUID permittedPlayer) {
 		this(itemStack, location, Collections.singletonList(permittedPlayer));
@@ -44,6 +51,8 @@ public class SelectiveDrop implements Listener {
 		this.location = location;
 		this.permittedPlayers = permittedPlayers;
 		this.lifetime = 6000;
+
+		identifier = UUID.randomUUID();
 
 		task = new BukkitRunnable() {
 			long ticksLived = 0;
@@ -63,6 +72,8 @@ public class SelectiveDrop implements Listener {
 	}
 
 	public void dropItem() {
+		NBTItem nbtItem = new NBTItem(itemStack, true);
+		nbtItem.setString(NBTTag.DROPPED_ITEM_UUID.toString(), identifier.toString());
 		droppedItem = location.getWorld().dropItemNaturally(location, itemStack);
 	}
 
@@ -112,20 +123,39 @@ public class SelectiveDrop implements Listener {
 	}
 
 	@EventHandler
-	public void onPickUp(EntityPickupItemEvent event) {
-		if(event.getItem() != droppedItem) return;
+	public void onPickUp(PlayerPickupItemEvent event) {
+		if(!event.getItem().getUniqueId().equals(droppedItem.getUniqueId())) return;
 
-		if(!Misc.isEntity(event.getEntity(), PitEntityType.REAL_PLAYER)) {
+		if(!Misc.isEntity(event.getPlayer(), PitEntityType.REAL_PLAYER)) {
 			event.setCancelled(true);
 			return;
 		}
 
-		UUID uuid = event.getEntity().getUniqueId();
+		UUID uuid = event.getPlayer().getUniqueId();
 		if(!permittedPlayers.contains(uuid)) {
 			event.setCancelled(true);
 			return;
 		}
 
+		NBTItem nbtItem = new NBTItem(event.getItem().getItemStack(), true);
+		nbtItem.removeKey(NBTTag.DROPPED_ITEM_UUID.toString());
+
 		cleanUp();
+	}
+
+	public Item getDroppedItem() {
+		return droppedItem;
+	}
+
+	public List<UUID> getPermittedPlayers() {
+		return permittedPlayers;
+	}
+
+	public boolean isItem(Item item) {
+		ItemStack itemStack = item.getItemStack();
+		NBTItem nbtItem = new NBTItem(itemStack);
+		String identifier = nbtItem.getString(NBTTag.DROPPED_ITEM_UUID.toString());
+		if(identifier == null) return false;
+		return UUID.fromString(identifier).equals(this.identifier);
 	}
 }
