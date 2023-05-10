@@ -46,7 +46,7 @@ public class AsyncBidTask {
 		taskMap.put(executor.getUniqueId(), this);
 
 		PluginMessage message = new PluginMessage().writeString("AUCTION BID");
-		message.writeString(executor.getUniqueId().toString()).writeInt(auctionSlot).writeInt(bidAmount);
+		message.writeString(PitSim.serverName).writeString(executor.getUniqueId().toString()).writeInt(auctionSlot).writeInt(bidAmount);
 		message.send();
 	}
 
@@ -89,7 +89,7 @@ public class AsyncBidTask {
 	}
 
 	public static Runnable getDefaultFail(Player player) {
-		return getDefaultFail(player, "&cThere was an issue with your request. Please try again in a moment.");
+		return getDefaultFail(player, "&cThere was an issue privateuest. Please try again in a moment.");
 	}
 
 	public static Runnable getDefaultFail(Player player, String message) {

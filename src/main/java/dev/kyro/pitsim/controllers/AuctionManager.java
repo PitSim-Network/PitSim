@@ -92,9 +92,11 @@ public class AuctionManager implements Listener {
 		}
 
 		if(strings.size() > 0 && strings.get(0).equals("AUCTION BID DATA")) {
-			String bidMapString = strings.get(2);
+			String bidMapString = strings.get(1);
+			String nameData = strings.get(2);
 			int slot = ints.get(0);
 			auctionItems[slot].bidMap = getBidData(bidMapString);
+			auctionItems[slot].nameMap = getNameData(nameData);
 			AuctionDisplays.updateHolograms();
 			return;
 		}
@@ -111,17 +113,26 @@ public class AuctionManager implements Listener {
 
 		endTime = longs.get(2);
 
-		String bidMapString = strings.get(2);
-		String nameData = strings.get(3);
+		String bidMapString = strings.get(1);
+		String nameData = strings.get(2);
 
 		if(auctionItems[slot] != null) auctionItems[slot].endAuction();
 
 		auctionItems[slot] = new AuctionItem(itemType, itemData, slot, getBidData(bidMapString), getNameData(nameData));
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				AuctionDisplays.showItems();
+			}
+		}.runTask(PitSim.INSTANCE);
 	}
 
 	public static Map<UUID, Integer> getBidData(String bidData) {
 		Map<UUID, Integer> bidMap = new LinkedHashMap<>();
 		for(String s : bidData.split(",")) {
+			if(s.isEmpty()) continue;
+
 			String[] split = s.split(":");
 			bidMap.put(UUID.fromString(split[0]), Integer.parseInt(split[1]));
 		}
@@ -131,6 +142,8 @@ public class AuctionManager implements Listener {
 	public static Map<UUID, String> getNameData(String bidData) {
 		Map<UUID, String> nameMap = new LinkedHashMap<>();
 		for(String s : bidData.split(",")) {
+			if(s.isEmpty()) continue;
+
 			String[] split = s.split(":");
 			nameMap.put(UUID.fromString(split[0]), split[1]);
 		}
