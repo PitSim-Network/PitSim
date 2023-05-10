@@ -77,7 +77,12 @@ public class AuctionDisplays implements Listener {
 	}
 
 	public static void onStart() {
-		showItems();
+		pedestalLocations[0] = new Location(MapManager.getDarkzone(), 172.5, 52, -1012.5);
+		pedestalLocations[1] = new Location(MapManager.getDarkzone(), 178.5, 52, -1016.5);
+		pedestalLocations[2] = new Location(MapManager.getDarkzone(), 184.5, 52, -1012.5);
+		for(Location pedestalLocation : pedestalLocations) {
+			pedestalLocation.getChunk().load();
+		}
 
 		timerHologram = new Hologram(timerLocation, ViewMode.ALL, RefreshMode.AUTOMATIC_FAST) {
 
@@ -133,12 +138,6 @@ public class AuctionDisplays implements Listener {
 	}
 
 	public static void showItems() {
-		pedestalLocations[0] = new Location(MapManager.getDarkzone(), 172.5, 52, -1012.5);
-		pedestalLocations[1] = new Location(MapManager.getDarkzone(), 178.5, 52, -1016.5);
-		pedestalLocations[2] = new Location(MapManager.getDarkzone(), 184.5, 52, -1012.5);
-		for(Location pedestalLocation : pedestalLocations) {
-			pedestalLocation.getChunk().load();
-		}
 
 		for(int i = 0; i < pedestalLocations.length; i++) {
 			Location pedestalLocation = pedestalLocations[i];
@@ -194,6 +193,8 @@ public class AuctionDisplays implements Listener {
 		}
 
 		for(UUID pedestalItem : pedestalItems) {
+			if(pedestalItem == null) continue;
+
 			if(pedestalItem.equals(event.getItem().getUniqueId())) {
 				event.setCancelled(true);
 			}

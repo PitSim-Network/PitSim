@@ -6,16 +6,13 @@ import com.codingforcookies.armorequip.ArmorType;
 import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.notdarkzone.EquipmentType;
 import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.aitems.misc.Arrow;
-import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.objects.*;
-import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.enums.PitEntityType;
@@ -689,69 +686,6 @@ public class PlayerManager implements Listener {
 				ProxyMessaging.joinTeleportMap.remove(player.getUniqueId());
 			}
 		}.runTaskLater(PitSim.INSTANCE, 5L);
-
-		if(PitSim.getStatus().isDarkzone()) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					for(AuctionItem auctionItem : AuctionManager.auctionItems) {
-						if(!auctionItem.bidMap.containsKey(player.getUniqueId())) continue;
-
-						if(auctionItem.getHighestBidder().equals(player.getUniqueId()))
-							AOutput.send(player, "&5&lDARK AUCTION!&7 You are currently holding the highest bid on " + auctionItem.item.itemName);
-						else
-							AOutput.send(player, "&5&lDARK AUCTION!&7 Current bid on " + auctionItem.item.itemName + " &7is &f" + auctionItem.getHighestBid() + " Souls &7by &e" + Bukkit.getOfflinePlayer(auctionItem.getHighestBidder()).getName() + "&7.");
-						Sounds.BOOSTER_REMIND.play(player);
-					}
-				}
-			}.runTaskLater(PitSim.INSTANCE, 10);
-		}
-
-		if(pitPlayer.auctionReturn.size() > 0) {
-			AuctionManager.sendAlert(player.getName() + " is attempting to claim " + "an item");
-
-			for(String item : pitPlayer.auctionReturn) {
-				String[] data = item.split(":");
-
-				ItemStack itemStack;
-				if(Integer.parseInt(data[1]) == 0) itemStack = Objects.requireNonNull(ItemType.getItemType(Integer.parseInt(data[0]))).item;
-				else itemStack = ItemType.getJewelItem(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
-
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + itemStack.getItemMeta().getDisplayName() + "&7.");
-						Sounds.BOOSTER_REMIND.play(player);
-						AUtil.giveItemSafely(player, itemStack, true);
-						AuctionManager.sendAlert(player.getName() + " has claimed " + itemStack.getItemMeta().getDisplayName());
-					}
-				}.runTaskLater(PitSim.INSTANCE, 10);
-			}
-
-			pitPlayer.auctionReturn.clear();
-			pitPlayer.stats.auctionsWon++;
-			WinAuctionsQuest.INSTANCE.winAuction(pitPlayer);
-		}
-
-		if(pitPlayer.soulReturn > 0) {
-			AuctionManager.sendAlert(player.getName() + " is attempting to claim " + pitPlayer.soulReturn + " souls");
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					if(!player.isOnline()) return;
-
-					int soulReturn = pitPlayer.soulReturn;
-					pitPlayer.giveSouls(soulReturn, false);
-
-					AuctionManager.sendAlert(player.getName() + " has claimed " + pitPlayer.soulReturn + " souls");
-
-					pitPlayer.soulReturn = 0;
-
-					AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + soulReturn + " Tainted Souls&7.");
-					Sounds.BOOSTER_REMIND.play(player);
-				}
-			}.runTaskLater(PitSim.INSTANCE, 10);
-		}
 	}
 
 	@EventHandler

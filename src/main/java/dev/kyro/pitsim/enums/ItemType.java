@@ -1,6 +1,6 @@
 package dev.kyro.pitsim.enums;
 
-import dev.kyro.pitsim.aitems.*;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.misc.AncientGemShard;
 import dev.kyro.pitsim.aitems.misc.ChunkOfVile;
 import dev.kyro.pitsim.aitems.misc.CorruptedFeather;
@@ -50,14 +50,33 @@ public enum ItemType {
 		return null;
 	}
 
-	public static int generateJewelData(ItemStack item) {
+	public static int getJewelData(ItemStack item, long seed) {
 		MysticType mysticType = MysticType.getMysticType(item);
 		if(mysticType == null) return 0;
 
-		return new Random().nextInt(EnchantManager.getEnchants(mysticType).size() - 1);
+		Random random = new Random(seed);
+		return random.nextInt(EnchantManager.getEnchants(mysticType).size() - 1);
 	}
 
-	public static String jewelDataToEnchant(MysticType mysticType, int data) {
+	public static ItemType getItem(long seed) {
+		Random random = new Random(seed);
+
+		int totalPercentChance = 0;
+		for (ItemType itemType : values()) {
+			totalPercentChance += itemType.chance;
+		}
+
+		int randomInt = random.nextInt(totalPercentChance) + 1;
+
+		for(ItemType value : values()) {
+			randomInt -= value.chance;
+			if(randomInt <= 0) return value;
+		}
+
+		return null;
+	}
+
+	public static String getEnchantFromJewelData(MysticType mysticType, int data) {
 		if(mysticType == null) return null;
 
 		return EnchantManager.getEnchants(mysticType).get(data).refNames.get(0);
@@ -78,6 +97,6 @@ public enum ItemType {
 				break;
 		}
 
-		return JewelCommand.getJewel(mysticType, jewelDataToEnchant(mysticType, data), 0);
+		return JewelCommand.getJewel(mysticType, getEnchantFromJewelData(mysticType, data), 0);
 	}
 }

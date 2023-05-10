@@ -7,8 +7,9 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.AsyncBidTask;
 import dev.kyro.pitsim.controllers.objects.AuctionItem;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
@@ -24,7 +25,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 public class AuctionManager implements Listener {
 	public static final int AUCTION_NUM = 3;
@@ -33,62 +33,12 @@ public class AuctionManager implements Listener {
 	public static Location spawnLoc = new Location(MapManager.getDarkzone(), 178.5, 52, -1004.5, 180, 0);
 	public static Location returnLoc = new Location(MapManager.getDarkzone(), 244.5, 91, 8.5, 160, 0);
 
+	public static long endTime = 0;
+
 	public List<Player> animationPlayers = new ArrayList<>();
 
-	public AuctionManager() {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-//				TODO: FIX CODE IN OTHER TOOD
-
-				if(haveAuctionsEnded()) {
-					for(AuctionItem item : auctionItems) item.endAuction();
-					generateNewAuctions();
-					AuctionDisplays.showItems();
-					CrossServerMessageManager.updateAllServers();
-				}
-			}
-		}.runTaskTimer(PitSim.INSTANCE, 10, 10);
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				CrossServerMessageManager.updateAllServers();
-			}
-		}.runTaskLater(PitSim.INSTANCE, 20 * 20);
-	}
-
 	public static void onStart() {
-		for(int i = 0; i < 3; i++) {
-			if(FirestoreManager.AUCTION.auctions.get(i) == null) continue;
 
-			int item = FirestoreManager.AUCTION.auctions.get(i).item;
-			int itemData = FirestoreManager.AUCTION.auctions.get(i).itemData;
-
-			List<String> bids = FirestoreManager.AUCTION.auctions.get(i).bids;
-			Map<UUID, Integer> bidMap = new LinkedHashMap<>();
-			for(String bid : bids) {
-				String[] split = bid.split(":");
-				bidMap.put(UUID.fromString(split[0]), Integer.parseInt(split[1]));
-			}
-
-			auctionItems[i] = new AuctionItem(ItemType.getItemType(item), itemData, i, bidMap);
-//			sendAlert("Loaded auction int slot " + i + " with " + auctionItems[i].item.itemName);
-		}
-
-		if(auctionItems[0] == null) generateNewAuctions();
-
-		AuctionDisplays.showItems();
-	}
-
-	public static ItemType generateItem() {
-		double random = Math.random() * 100;
-
-		List<ItemType> itemTypes = Arrays.asList(ItemType.values());
-		Collections.shuffle(itemTypes);
-
-		for(ItemType itemType : itemTypes) if(itemType.chance > random) return itemType;
-
-		return itemTypes.get(0);
 	}
 
 	@EventHandler
@@ -103,105 +53,129 @@ public class AuctionManager implements Listener {
 
 		for(ProtectedRegion region : set) {
 			if(region.getId().equals("darkauctionenterance")) {
-
-				animationPlayers.add(player);
-				Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 60, 99, false, false);
-				Sounds.MANA.play(player);
-
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						player.teleport(spawnLoc);
-						animationPlayers.remove(player);
-					}
-				}.runTaskLater(PitSim.INSTANCE, 20);
+				playTeleportAnimation(player, spawnLoc);
 			}
 
 			if(region.getId().equals("darkauctionexit")) {
-
-				animationPlayers.add(player);
-				Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 60, 99, false, false);
-				Sounds.MANA.play(player);
-
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						player.teleport(returnLoc);
-						animationPlayers.remove(player);
-					}
-				}.runTaskLater(PitSim.INSTANCE, 20);
+				playTeleportAnimation(player, returnLoc);
 			}
 		}
 	}
 
-	@EventHandler
-	public static void onMessageReceived(MessageEvent event) throws ExecutionException, InterruptedException {
+	private void playTeleportAnimation(Player player, Location returnLoc) {
+		animationPlayers.add(player);
+		Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 60, 99, false, false);
+		Sounds.MANA.play(player);
 
-		PluginMessage initialMessage = null;
-
-		for(PluginMessage waitingMessage : AuctionItem.waitingMessages) {
-			if(event.getMessage().isResponseTo(waitingMessage)) initialMessage = waitingMessage;
-		}
-
-		if(initialMessage == null) return;
-
-		boolean response = event.getMessage().getBooleans().get(0);
-		if(!response) {
-			PitPlayer pitPlayer = FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION)
-					.document(initialMessage.getStrings().get(4)).get().get().toObject(PitPlayer.class);
-
-			assert pitPlayer != null;
-			List<Integer> ints = initialMessage.getIntegers();
-			pitPlayer.auctionReturn.add(ints.get(0) + ":" + ints.get(1) + ":" + ints.get(2));
-
-			FirestoreManager.FIRESTORE.collection(FirestoreManager.PLAYERDATA_COLLECTION).document(initialMessage.getStrings().get(4)).set(pitPlayer);
-		}
-
-		PluginMessage finalInitialMessage = initialMessage;
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				AuctionItem.waitingMessages.remove(finalInitialMessage);
+				player.teleport(returnLoc);
+				animationPlayers.remove(player);
 			}
-		}.runTaskLater(PitSim.INSTANCE, 1);
+		}.runTaskLater(PitSim.INSTANCE, 20);
 	}
 
-	public static void generateNewAuctions() {
-		FirestoreManager.AUCTION.endTime = System.currentTimeMillis() + (new Random().nextInt(60 * 12) + 60 * 6) * 60 * 1000;
-//		FirestoreManager.AUCTION.endTime = System.currentTimeMillis() + 10 * 1000;
+	@EventHandler
+	public static void onMessageReceived(MessageEvent event) {
+		PluginMessage message = event.getMessage();
+		List<String> strings = message.getStrings();
+		List<Integer> ints = message.getIntegers();
+		List<Boolean> booleans = message.getBooleans();
+		List<Long> longs = message.getLongs();
 
-		for(int i = 0; i < auctionItems.length; i++) {
-			auctionItems[i] = new AuctionItem(generateItem(), 0, i, null);
-			sendAlert("Created new auction int slot " + i + " with " + auctionItems[i].item.itemName);
+		if(strings.size() > 0 && strings.get(0).equals("AUCTION BID RESPONSE")) {
+			boolean response = booleans.get(0);
+			String player = strings.get(1);
+			AsyncBidTask.getTask(UUID.fromString(player)).respond(response);
+			return;
 		}
 
-		FirestoreManager.AUCTION.save();
+		if(strings.size() > 0 && strings.get(0).equals("AUCTION BID DATA")) {
+			String bidMapString = strings.get(2);
+			int slot = ints.get(0);
+			auctionItems[slot].bidMap = getBidData(bidMapString);
+			AuctionDisplays.updateHolograms();
+			return;
+		}
+
+		if(strings.size() < 1 || !strings.get(0).equals("AUCTION DATA")) return;
+		long itemSeed = longs.get(0);
+		long dataSeed = longs.get(1);
+
+		ItemType itemType = ItemType.getItem(itemSeed);
+		if(itemType == null) throw new RuntimeException("Item type is null! " + itemSeed + " " + dataSeed);
+
+		int itemData = ItemType.getJewelData(itemType.item, dataSeed);
+		int slot = ints.get(0);
+
+		endTime = longs.get(2);
+
+		String bidMapString = strings.get(2);
+		String nameData = strings.get(3);
+
+		if(auctionItems[slot] != null) auctionItems[slot].endAuction();
+
+		auctionItems[slot] = new AuctionItem(itemType, itemData, slot, getBidData(bidMapString), getNameData(nameData));
+	}
+
+	public static Map<UUID, Integer> getBidData(String bidData) {
+		Map<UUID, Integer> bidMap = new LinkedHashMap<>();
+		for(String s : bidData.split(",")) {
+			String[] split = s.split(":");
+			bidMap.put(UUID.fromString(split[0]), Integer.parseInt(split[1]));
+		}
+		return bidMap;
+	}
+
+	public static Map<UUID, String> getNameData(String bidData) {
+		Map<UUID, String> nameMap = new LinkedHashMap<>();
+		for(String s : bidData.split(",")) {
+			String[] split = s.split(":");
+			nameMap.put(UUID.fromString(split[0]), split[1]);
+		}
+		return nameMap;
 	}
 
 	public static boolean haveAuctionsEnded() {
-		return haveAuctionsEnded(getAuctionEndTime());
-	}
-
-	public static boolean haveAuctionsEnded(long endTime) {
 		return System.currentTimeMillis() > endTime;
 	}
 
 	public static String getRemainingTime() {
-		return getRemainingTime(getAuctionEndTime());
-	}
-
-	public static String getRemainingTime(long endTime) {
 		return Formatter.formatDurationFull(endTime - System.currentTimeMillis(), true);
 	}
 
-	public static long getAuctionEndTime() {
-		return FirestoreManager.AUCTION.endTime;
+	public static ChatTriggerAuctionItem[] getChatTriggerAuctionItems() {
+		ChatTriggerAuctionItem[] triggerItems = new ChatTriggerAuctionItem[AUCTION_NUM];
+
+		for(int i = 0; i < AUCTION_NUM; i++) {
+			AuctionItem auctionItem = auctionItems[i];
+			triggerItems[i] = new ChatTriggerAuctionItem(auctionItem.item.itemName, auctionItem.nameMap.get(auctionItem.getHighestBidder()),
+					auctionItem.getHighestBid());
+
+		}
+
+		return triggerItems;
 	}
 
-	public static void sendAlert(String message) {
-		if(FirestoreManager.Collection.getCollection(PitSim.serverName) != FirestoreManager.Collection.PITSIM) return;
+	public static class ChatTriggerAuctionItem implements Mappable {
+		public String itemName;
+		public String topBidder;
+		public int topBid;
 
-		PluginMessage pluginMessage = new PluginMessage().writeString("AUCTION ALERT").writeString(message + " " + System.currentTimeMillis());
-		pluginMessage.send();
+		public ChatTriggerAuctionItem(String itemName, String topBidder, int topBid) {
+			this.itemName = itemName;
+			this.topBidder = topBidder;
+			this.topBid = topBid;
+		}
+
+		@Override
+		public Map<String, Object> getAsMap() {
+			Map<String, Object> dataMap = new HashMap<>();
+			dataMap.put("itemName", itemName);
+			dataMap.put("topBidder", topBidder);
+			dataMap.put("topBid", topBid);
+			return dataMap;
+		}
 	}
 }

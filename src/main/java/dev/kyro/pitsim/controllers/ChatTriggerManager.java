@@ -82,8 +82,8 @@ public class ChatTriggerManager implements Listener {
 
 	public static void sendAuctionInfo(PitPlayer pitPlayer) {
 		Map<String, Object> dataMap = new HashMap<>();
-		dataMap.put("auctionData", CrossServerMessageManager.auctionItems);
-		dataMap.put("auctionEnd", CrossServerMessageManager.auctionEndTime);
+		dataMap.put("auctionData", AuctionManager.getChatTriggerAuctionItems());
+		dataMap.put("auctionEnd", AuctionManager.endTime);
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 

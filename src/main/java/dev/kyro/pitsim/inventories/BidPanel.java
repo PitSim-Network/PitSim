@@ -7,7 +7,6 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.AuctionManager;
-import dev.kyro.pitsim.controllers.CrossServerMessageManager;
 import dev.kyro.pitsim.controllers.objects.AuctionItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ItemType;
@@ -81,23 +80,18 @@ public class BidPanel extends AGUIPanel {
 							return;
 						}
 
-						bid(auctionItem, pitPlayer, bid);
+						bid(auctionItem, bid);
 					});
 				} else {
-					bid(auctionItem, pitPlayer, minBid(auctionItem));
+					bid(auctionItem, minBid(auctionItem));
 				}
 			}
 		}
 	}
 
-	public void bid(AuctionItem auctionItem, PitPlayer pitPlayer, int bid) {
-		Sounds.RENOWN_SHOP_PURCHASE.play(player);
-		pitPlayer.taintedSouls -= bid - auctionItem.getBid(player.getUniqueId());
-
-		if(minBid(auctionItem) > pitPlayer.stats.highestBid) pitPlayer.stats.highestBid = minBid(auctionItem);
-		auctionItem.addBid(player.getUniqueId(), bid);
+	public void bid(AuctionItem auctionItem, int bid) {
+		auctionItem.addBid(player, bid);
 		player.closeInventory();
-		CrossServerMessageManager.updateAllServers();
 	}
 
 	@Override
