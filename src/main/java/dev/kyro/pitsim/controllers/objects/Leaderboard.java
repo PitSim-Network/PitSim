@@ -5,7 +5,6 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -54,19 +53,19 @@ public abstract class Leaderboard {
 			LeaderboardPosition position = orderedLeaderboard.get(i);
 			LeaderboardData data = LeaderboardData.getLeaderboardData(this);
 			if(position.uuid.equals(uuid)) isOnLeaderboard = true;
-			OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(position.uuid);
+			LeaderboardData.PlayerData playerData = data.getValue(position.uuid);
 			String rankColor = getRankColor(position.uuid);
 			if(data.getPrefix(position.uuid) == null) {
 				aLoreBuilder.addLore("&e" + (i + 1) + ". &cERROR");
 				continue;
 			}
-			aLoreBuilder.addLore("&e" + (i + 1) + ". " + data.getPrefix(position.uuid) + " " + rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(position));
+			aLoreBuilder.addLore("&e" + (i + 1) + ". " + data.getPrefix(position.uuid) + " " + rankColor +
+					playerData.username + "&7 - " + getDisplayValue(position));
 		}
 
 		LeaderboardPlayerData data = LeaderboardPlayerData.getData(uuid);
-		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-		if(offlinePlayer.isOnline()) {
-			Player player = offlinePlayer.getPlayer();
+		Player player = Bukkit.getPlayer(uuid);
+		if(player.isOnline()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 			if(isOnLeaderboard) {
@@ -76,7 +75,7 @@ public abstract class Leaderboard {
 				PitSim.LUCKPERMS.getUserManager().loadUser(uuid);
 				String rankColor = getRankColor(uuid);
 				aLoreBuilder.addLore("&7...", "&e" + data.getData(this) + ". " + getPrestigeBrackets(pitPlayer) + " " +
-						rankColor + offlinePlayer.getName() + "&7 - " + getDisplayValue(pitPlayer));
+						rankColor + player.getName() + "&7 - " + getDisplayValue(pitPlayer));
 			}
 		}
 

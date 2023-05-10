@@ -1,6 +1,5 @@
 package dev.kyro.pitsim.adarkzone;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.bosses.*;
@@ -43,7 +42,6 @@ import java.util.*;
 
 public class DarkzoneManager implements Listener {
 	public static List<SubLevel> subLevels = new ArrayList<>();
-	public static List<Hologram> holograms = new ArrayList<>();
 	public static List<Chunk> mapChunks = new ArrayList<>();
 
 	public static List<Player> regenCooldownList = new ArrayList<>();

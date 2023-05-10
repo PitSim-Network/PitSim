@@ -8,19 +8,17 @@ import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.PitQuitEvent;
+import dev.kyro.pitsim.holograms.Hologram;
+import dev.kyro.pitsim.holograms.RefreshMode;
+import dev.kyro.pitsim.holograms.ViewMode;
 import dev.kyro.pitsim.misc.Misc;
-import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,7 +38,7 @@ public class AltarManager implements Listener {
 	public static final int EFFECT_RADIUS = EFFECT_CHUNK_RADIUS + 3;
 
 	public static final List<AltarAnimation> animations = new ArrayList<>();
-	public static ArmorStand[] textStands = new ArmorStand[7];
+	public static Hologram hologram;
 
 	static {
 		new BukkitRunnable() {
@@ -48,12 +46,7 @@ public class AltarManager implements Listener {
 			public void run() {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					if(onlinePlayer.getWorld() != MapManager.getDarkzone()) continue;
-					if(onlinePlayer.getLocation().distance(TEXT_LOCATION) > 30) {
-						AltarPedestal.disableAll(onlinePlayer);
-						continue;
-					}
-
-					setDefaultText(onlinePlayer);
+					if(onlinePlayer.getLocation().distance(TEXT_LOCATION) > 30) AltarPedestal.disableAll(onlinePlayer);
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 20, 20);
@@ -61,17 +54,36 @@ public class AltarManager implements Listener {
 
 
 	public static void init() {
-		for(int i = 0; i < 7; i++) {
-			ArmorStand stand = (ArmorStand) MapManager.getDarkzone().spawnEntity(TEXT_LOCATION.clone().add(0, -0.3 * i, 0), EntityType.ARMOR_STAND);
-			stand.setMarker(true);
-			stand.setVisible(false);
-			stand.setCustomNameVisible(true);
-			stand.setArms(true);
-			stand.setCustomName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "TAINTED ALTAR");
-			stand.setGravity(false);
 
-			textStands[i] = stand;
-		}
+		hologram = new Hologram(TEXT_LOCATION, ViewMode.ALL, RefreshMode.MANUAL) {
+			@Override
+			public List<String> getStrings(Player player) {
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
+
+				int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.darkzoneData.altarXP);
+				int difference = info.getDarkzoneLevel() - altarLevel;
+				String altarPercent = DarkzoneLeveling.getReductionPercent(pitPlayer);
+
+				String color = difference > 0 ? "&c-" : "&a+";
+				if(difference == 0) color = color.replaceAll("\\+", "");
+				String status = difference > 0 ? "&7Taking &f" + altarPercent + "% &7of &bXP &7and &6Gold" : "&aStronger than the Darkzone!";
+
+				DecimalFormat decimalFormat = new DecimalFormat("#,##0");
+				List<String> strings = new ArrayList<>();
+				strings.add("&5Darkzone Level: " + decimalFormat.format(info.getDarkzoneLevel()));
+				strings.add("&8&m----------------------");
+				strings.add("&4&lAltar Level");
+				strings.add("&4" + decimalFormat.format(altarLevel) + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
+				DarkzoneLeveling.getXPProgressToNextLevel(pitPlayer.darkzoneData.altarXP) /
+						DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + decimalFormat.format(altarLevel + 1));
+				strings.add("&8&m----------------------");
+				strings.add("&7Level Difference: " + color + decimalFormat.format(Math.abs(difference)));
+				strings.add(status);
+
+				return strings;
+			}
+		};
 
 		new KnowledgePedestal(new Location(MapManager.getDarkzone(), 224.5, 91.5, -85.5));
 		new RenownPedestal(new Location(MapManager.getDarkzone(), 224.5, 91.5, -82.5));
@@ -89,60 +101,6 @@ public class AltarManager implements Listener {
 
 		BiomeChanger.chunkList.addAll(chunks);
 		Heartbeat.init();
-	}
-
-	public static void setText(Player player, String[] text) {
-		if(text.length != 7) return;
-
-		for(int i = 0; i < 7; i++) {
-			if(text[i] == null) text[i] = "";
-
-			EntityArmorStand tempStand = new EntityArmorStand((((CraftWorld) MapManager.getDarkzone()).getHandle()));
-			tempStand.n(true);
-			tempStand.setInvisible(true);
-			tempStand.setCustomNameVisible(true);
-			tempStand.setArms(true);
-			tempStand.setCustomName(text[i]);
-			tempStand.setGravity(false);
-
-			DataWatcher dw = tempStand.getDataWatcher();
-			dw.watch(2, (Object)ChatColor.translateAlternateColorCodes('&', text[i]));
-			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStands[i]), dw, false);
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
-		}
-	}
-
-	public static void setDefaultText(Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-
-		int altarLevel = DarkzoneLeveling.getLevel(pitPlayer.darkzoneData.altarXP);
-		int difference = info.getDarkzoneLevel() - altarLevel;
-		String altarPercent = DarkzoneLeveling.getReductionPercent(pitPlayer);
-
-		String color = difference > 0 ? "&c-" : "&a+";
-		if(difference == 0) color = color.replaceAll("\\+", "");
-		String status = difference > 0 ? "&7Taking &f" + altarPercent + "% &7of &bXP &7and &6Gold" : "&aStronger than the Darkzone!";
-
-		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
-		setText(player, new String[] {
-				"&5Darkzone Level: " + decimalFormat.format(info.getDarkzoneLevel()),
-				"&8&m----------------------",
-				"&4&lAltar Level",
-				"&4" + decimalFormat.format(altarLevel) + " " + AUtil.createProgressBar("|", ChatColor.RED, ChatColor.GRAY, 30,
-						DarkzoneLeveling.getXPProgressToNextLevel(pitPlayer.darkzoneData.altarXP) /
-								DarkzoneLeveling.getXPForLevel(altarLevel + 1)) + " &4" + decimalFormat.format(altarLevel + 1),
-				"&8&m----------------------",
-				"&7Level Difference: " + color + decimalFormat.format(Math.abs(difference)),
-				status
-		});
-	}
-
-	public static void cleanUp() {
-		for(ArmorStand textStand : textStands) {
-			textStand.remove();
-		}
-		AltarPedestal.cleanUp();
 	}
 
 	public static int getStandID(ArmorStand stand) {
@@ -215,27 +173,11 @@ public class AltarManager implements Listener {
 	}
 
 	public static void disableText(Player player) {
-		for(ArmorStand textStand : textStands) {
-			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(getStandID(textStand));
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(destroyPacket);
-		}
+		hologram.removePermittedViewer(player);
 	}
 
 	public static void enableText(Player player) {
-		for(ArmorStand textStand : textStands) {
-			PacketPlayOutSpawnEntity spawnPacket = new PacketPlayOutSpawnEntity(((CraftEntity) textStand).getHandle(), 78);
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(spawnPacket);
-
-			EntityArmorStand tempStand = new EntityArmorStand((((CraftWorld) MapManager.getDarkzone()).getHandle()));
-			tempStand.n(true);
-			tempStand.setInvisible(true);
-			tempStand.setArms(true);
-			tempStand.setGravity(false);
-
-			DataWatcher dw = tempStand.getDataWatcher();
-			PacketPlayOutEntityMetadata metaPacket = new PacketPlayOutEntityMetadata(getStandID(textStand), dw, true);
-			((CraftPlayer)player).getHandle().playerConnection.sendPacket(metaPacket);
-		}
+		hologram.addPermittedViewer(player);
 	}
 
 	public static double getReduction(PitPlayer pitPlayer) {

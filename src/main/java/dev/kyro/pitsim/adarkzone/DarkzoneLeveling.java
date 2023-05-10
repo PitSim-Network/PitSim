@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -57,6 +58,7 @@ public class DarkzoneLeveling {
 		AOutput.send(pitPlayer.player, "&4&lALTAR!&7 Gained &c+" + decimalFormat.format(amount) + " Altar XP");
 		Sounds.XP_GAIN.play(pitPlayer.player);
 
+		AltarManager.hologram.updateHologram(pitPlayer.player);
 		if(newLevel == currentLevel) return;
 
 		AOutput.send(pitPlayer.player, "&4&lALTAR LEVEL UP! &c" + currentLevel + " &7\u279F &c" + newLevel);

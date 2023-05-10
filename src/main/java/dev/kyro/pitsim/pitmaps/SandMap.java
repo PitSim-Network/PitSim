@@ -106,4 +106,59 @@ public class SandMap extends PitMap {
 	public Location getStandAlonePortalRespawn() {
 		return new Location(null, -53.5, 73, 0.5, -90, 0);
 	}
+
+	@Override
+	public Location getWelcomeHolo() {
+		return new Location(world, -5, 77.6, 5);
+	}
+
+	@Override
+	public Location getMysticWellHolo() {
+		return new Location(world, 8.588, 74.7, 8.576);
+	}
+
+	@Override
+	public Location getKitsHolo() {
+		return new Location(world, 9.388, 74.095, 7.439);
+	}
+
+	@Override
+	public Location getEnderchest1Holo() {
+		return new Location(world, -11.540, 74.162, 5.527);
+	}
+
+	@Override
+	public Location getEnderchest2Holo() {
+		return new Location(world, -5.503, 74.162, 11.508);
+	}
+
+	@Override
+	public Location getUpgradesHolo() {
+		return new Location(world, 9.535, 75.074, -2.515);
+	}
+
+	@Override
+	public Location getPassHolo() {
+		return new Location(world, 9.590, 75.074, 1.537);
+	}
+
+	@Override
+	public Location getPrestigeHolo() {
+		return new Location(world, -9.513, 75.074, 0.005);
+	}
+
+	@Override
+	public Location getLeaderboardHolo() {
+		return new Location(world, 3.453, 76.414, -10.627);
+	}
+
+	@Override
+	public Location getGuildLeaderboardHolo() {
+		return new Location(world, -3.337, 76.414, -10.606);
+	}
+
+	@Override
+	public Location getKeeperHolo() {
+		return new Location(world, 5.495, 75.303, 8.493);
+	}
 }

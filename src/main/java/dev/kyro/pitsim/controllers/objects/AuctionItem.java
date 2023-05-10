@@ -12,6 +12,9 @@ import dev.kyro.pitsim.controllers.FirestoreManager;
 import dev.kyro.pitsim.enums.ItemType;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -38,6 +41,7 @@ public class AuctionItem {
 		}
 
 		saveData();
+		AuctionDisplays.updateHolograms();
 	}
 
 	public void saveData() {
@@ -78,6 +82,7 @@ public class AuctionItem {
 		}
 
 		message.send();
+		AuctionDisplays.updateHolograms();
 	}
 
 	public int getHighestBid() {
@@ -109,6 +114,17 @@ public class AuctionItem {
 	public void endAuction() {
 		AuctionManager.sendAlert("Auction " + slot + " has ended" + " (" + item.itemName + ")");
 		FirestoreManager.AUCTION.auctions.set(slot, null);
+
+		if(AuctionDisplays.pedestalArmorStands[slot] == null || AuctionDisplays.pedestalItems[slot] == null)
+			throw new RuntimeException("Pedestal or item is null!");
+
+		AuctionDisplays.getItem(AuctionDisplays.pedestalItems[slot]).remove();
+		LivingEntity entity = AuctionDisplays.getStand(AuctionDisplays.pedestalArmorStands[slot]);
+
+		for(Entity nearbyEntity : AuctionDisplays.pedestalLocations[slot].getWorld().getNearbyEntities(AuctionDisplays.pedestalLocations[slot], 1, 1, 1)) {
+			if(nearbyEntity instanceof ArmorStand) nearbyEntity.remove();
+		}
+
 
 		if(getHighestBidder() == null) {
 			AuctionManager.sendAlert("Auction has no bidders");
@@ -179,9 +195,10 @@ public class AuctionItem {
 			}
 		}
 
-		try {
-			if(AuctionDisplays.pedestalItems[slot] != null && !AuctionDisplays.hasPlayers(AuctionDisplays.pedestalLocations[0]))
-				AuctionDisplays.getItem(AuctionDisplays.pedestalItems[slot]).remove();
-		} catch(Exception ignored) {}
+//		try {
+//			if(AuctionDisplays.pedestalItems[slot] != null && !AuctionDisplays.hasPlayers(AuctionDisplays.pedestalLocations[0]))
+//				AuctionDisplays.getItem(AuctionDisplays.pedestalItems[slot]).remove();
+//
+//		} catch(Exception ignored) {}
 	}
 }

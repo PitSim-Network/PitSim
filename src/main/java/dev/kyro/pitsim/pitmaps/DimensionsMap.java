@@ -94,6 +94,61 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
+	public Location getWelcomeHolo() {
+		return new Location(world, 0.598, 58.6, 5.549);
+	}
+
+	@Override
+	public Location getMysticWellHolo() {
+		return new Location(world, 0.509, 57.400, 14.3);
+	}
+
+	@Override
+	public Location getKitsHolo() {
+		return new Location(world, -1, 57.1, 14);
+	}
+
+	@Override
+	public Location getEnderchest1Holo() {
+		return new Location(world, 4.472, 57.800, 13.599);
+	}
+
+	@Override
+	public Location getEnderchest2Holo() {
+		return new Location(world, -3.472, 57.800, 13.599);
+	}
+
+	@Override
+	public Location getUpgradesHolo() {
+		return new Location(world, 12.474, 57.138, -1.573);
+	}
+
+	@Override
+	public Location getPassHolo() {
+		return new Location(world, 12.474, 57.138, 2.573);
+	}
+
+	@Override
+	public Location getPrestigeHolo() {
+		return new Location(world, -11.5, 57.164, 0.423);
+	}
+
+	@Override
+	public Location getLeaderboardHolo() {
+		return new Location(world, -0.700, 60.0, -12.184);
+	}
+
+	@Override
+	public Location getGuildLeaderboardHolo() {
+		return new Location(world, -4.487, 60.0, -11.779);
+	}
+
+	@Override
+	public Location getKeeperHolo() {
+		return new Location(world, -7.511, 57.162, -10.581);
+	}
+
+	@Override
 	public Location getPassNPCSpawn() {
 		return new Location(world, 12.5, 55, 2.5, 90, 0);
 	}

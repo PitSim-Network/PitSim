@@ -148,4 +148,59 @@ public class XmasMap extends PitMap {
 	public Location getStandAlonePortalRespawn() {
 		return new Location(null, -56, 73, 0.5, -90, 0);
 	}
+
+	@Override
+	public Location getWelcomeHolo() {
+		return null;
+	}
+
+	@Override
+	public Location getMysticWellHolo() {
+		return null;
+	}
+
+	@Override
+	public Location getKitsHolo() {
+		return null;
+	}
+
+	@Override
+	public Location getEnderchest1Holo() {
+		return null;
+	}
+
+	@Override
+	public Location getEnderchest2Holo() {
+		return null;
+	}
+
+	@Override
+	public Location getUpgradesHolo() {
+		return null;
+	}
+
+	@Override
+	public Location getPassHolo() {
+		return null;
+	}
+
+	@Override
+	public Location getPrestigeHolo() {
+		return null;
+	}
+
+	@Override
+	public Location getLeaderboardHolo() {
+		return null;
+	}
+
+	@Override
+	public Location getGuildLeaderboardHolo() {
+		return null;
+	}
+
+	@Override
+	public Location getKeeperHolo() {
+		return null;
+	}
 }

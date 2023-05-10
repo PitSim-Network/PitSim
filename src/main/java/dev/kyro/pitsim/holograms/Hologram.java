@@ -46,8 +46,11 @@ public abstract class Hologram {
 				List<UUID> toRemove = new ArrayList<>();
 
 				for(Player player : getPermittedViewers()) {
+					if(player.getWorld() != spawnLocation.getWorld()) continue;
 					double distance = player.getLocation().distance(spawnLocation);
-					 if(!activeViewers.contains(player.getUniqueId()) && distance <= VIEW_PROXIMITY) addViewer(player);
+					if(!activeViewers.contains(player.getUniqueId()) && distance <= VIEW_PROXIMITY) {
+						addViewer(player);
+					}
 				}
 
 				for(UUID activeViewer : new ArrayList<>(activeViewers)) {
@@ -55,6 +58,11 @@ public abstract class Hologram {
 					Player player = Bukkit.getPlayer(activeViewer);
 					if(player == null) {
 						toRemove.add(activeViewer);
+						continue;
+					}
+
+					if(player.getWorld() != spawnLocation.getWorld() || !permittedViewers.contains(player)) {
+						removeViewer(player);
 						continue;
 					}
 
@@ -100,6 +108,10 @@ public abstract class Hologram {
 		updateLine(textLine);
 	}
 
+	public void updateHologram() {
+		textLines.forEach(this::updateLine);
+	}
+
 	public void updateLine(TextLine textLine) {
 		if(textLine == null) throw new RuntimeException("Text line not found in hologram");
 
@@ -111,16 +123,29 @@ public abstract class Hologram {
 		}
 	}
 
+	public void updateHologram(Player player) {
+		textLines.forEach(textLine -> textLine.updateLine(this, player));
+	}
+
 	public List<Player> getPermittedViewers() {
 		return permittedViewers;
 	}
 
 	public void addPermittedViewer(Player player) {
+		if(permittedViewers.contains(player)) return;
 		permittedViewers.add(player);
+
+		if(player.getWorld() != spawnLocation.getWorld()) return;
+		double distance = player.getLocation().distance(spawnLocation);
+		if(!activeViewers.contains(player.getUniqueId()) && distance <= VIEW_PROXIMITY) {
+			addViewer(player);
+		}
 	}
 
 	public void removePermittedViewer(Player player) {
 		permittedViewers.remove(player);
+
+		if(activeViewers.contains(player.getUniqueId())) removeViewer(player);
 	}
 
 	public void setPermittedViewers(List<Player> permittedViewers) {
