@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.inventories;
+package dev.kyro.pitsim.auction;
 
 import dev.kyro.arcticapi.gui.AGUI;
 import org.bukkit.entity.Player;

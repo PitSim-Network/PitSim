@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.controllers;
+package dev.kyro.pitsim.auction;
 
 import com.sk89q.worldguard.bukkit.BukkitUtil;
 import com.sk89q.worldguard.bukkit.RegionContainer;
@@ -8,8 +8,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.AsyncBidTask;
-import dev.kyro.pitsim.controllers.objects.AuctionItem;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enums.ItemType;
@@ -30,7 +29,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class AuctionManager implements Listener {
+
+	//Needs to be duplicated on both spigot and bungee end
 	public static final int AUCTION_NUM = 3;
+
 	public static AuctionItem[] auctionItems = new AuctionItem[AUCTION_NUM];
 
 	public static Location spawnLoc = new Location(MapManager.getDarkzone(), 178.5, 52, -1004.5, 180, 0);

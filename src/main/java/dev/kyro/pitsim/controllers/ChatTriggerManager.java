@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.auction.AuctionManager;
 import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;

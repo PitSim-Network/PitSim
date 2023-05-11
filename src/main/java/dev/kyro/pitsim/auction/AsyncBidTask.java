@@ -1,7 +1,8 @@
-package dev.kyro.pitsim.controllers.objects;
+package dev.kyro.pitsim.auction;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

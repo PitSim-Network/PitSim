@@ -1,12 +1,11 @@
-package dev.kyro.pitsim.controllers;
+package dev.kyro.pitsim.auction;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.AuctionItem;
+import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.holograms.Hologram;
 import dev.kyro.pitsim.holograms.RefreshMode;
 import dev.kyro.pitsim.holograms.ViewMode;
-import dev.kyro.pitsim.inventories.BidGUI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;

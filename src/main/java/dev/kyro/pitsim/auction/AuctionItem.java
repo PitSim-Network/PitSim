@@ -1,8 +1,8 @@
-package dev.kyro.pitsim.controllers.objects;
+package dev.kyro.pitsim.auction;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
-import dev.kyro.pitsim.controllers.AuctionDisplays;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.ArmorStand;

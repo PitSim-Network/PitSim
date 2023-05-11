@@ -15,6 +15,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
 import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.adarkzone.altar.AltarPedestal;
+import dev.kyro.pitsim.auction.AuctionDisplays;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.effects.PacketBlock;
 import dev.kyro.pitsim.misc.effects.SelectiveDrop;

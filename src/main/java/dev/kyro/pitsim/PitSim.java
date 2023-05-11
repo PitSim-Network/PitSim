@@ -27,6 +27,8 @@ import dev.kyro.pitsim.aitems.misc.*;
 import dev.kyro.pitsim.aitems.mobdrops.*;
 import dev.kyro.pitsim.aitems.mystics.*;
 import dev.kyro.pitsim.aserverstatistics.StatisticsManager;
+import dev.kyro.pitsim.auction.AuctionDisplays;
+import dev.kyro.pitsim.auction.AuctionManager;
 import dev.kyro.pitsim.battlepass.PassManager;
 import dev.kyro.pitsim.battlepass.quests.*;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyBotKillQuest;

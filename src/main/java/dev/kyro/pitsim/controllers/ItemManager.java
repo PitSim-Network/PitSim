@@ -8,6 +8,7 @@ import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.misc.SoulPickup;
 import dev.kyro.pitsim.aitems.misc.VeryYummyBread;
 import dev.kyro.pitsim.aitems.misc.YummyBread;
+import dev.kyro.pitsim.auction.AuctionDisplays;
 import dev.kyro.pitsim.controllers.objects.FakeItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.PitEntityType;

@@ -2,7 +2,7 @@ package dev.kyro.pitsim.settings.scoreboard;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.pitsim.controllers.AuctionManager;
+import dev.kyro.pitsim.auction.AuctionManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

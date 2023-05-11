@@ -1,4 +1,4 @@
-package dev.kyro.pitsim.inventories;
+package dev.kyro.pitsim.auction;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
@@ -7,8 +7,6 @@ import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.MysticFactory;
-import dev.kyro.pitsim.controllers.AuctionManager;
-import dev.kyro.pitsim.controllers.objects.AuctionItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.misc.Sounds;
