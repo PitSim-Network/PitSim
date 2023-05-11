@@ -6,6 +6,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.AsyncBidTask;
 import dev.kyro.pitsim.controllers.objects.AuctionItem;
@@ -13,9 +14,11 @@ import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PluginMessage;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.events.MessageEvent;
+import dev.kyro.pitsim.events.PitJoinEvent;
 import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -62,6 +65,35 @@ public class AuctionManager implements Listener {
 		}
 	}
 
+	@EventHandler
+	public void onJoin(PitJoinEvent event) {
+		Player player = event.getPlayer();
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(AuctionItem auctionItem : auctionItems) {
+					if(!auctionItem.bidMap.containsKey(player.getUniqueId())) continue;
+
+					UUID highestBidder = auctionItem.getHighestBidder();
+					if(highestBidder == null) continue;
+
+					String bidderName = Misc.getRankColor(highestBidder) + auctionItem.nameMap.get(highestBidder);
+					int bid = auctionItem.bidMap.get(highestBidder);
+					String itemName = auctionItem.item.itemName;
+
+					if(player.getUniqueId().equals(highestBidder)) {
+						AOutput.send(player, "&5&lDARK AUCTION! &7You are holding the top bid of &f" + bid + " Souls &7for " + itemName + "&7!");
+					} else {
+						AOutput.send(player, "&5&lDARK AUCTION! &7" + bidderName + " &7is holding the top bid of &f" + bid + " Souls &7for " + itemName + "&7!");
+					}
+					Sounds.BOOSTER_REMIND.play(player);
+				}
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20);
+
+	}
+
 	private void playTeleportAnimation(Player player, Location returnLoc) {
 		animationPlayers.add(player);
 		Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 60, 99, false, false);
@@ -98,6 +130,21 @@ public class AuctionManager implements Listener {
 			auctionItems[slot].bidMap = getBidData(bidMapString);
 			auctionItems[slot].nameMap = getNameData(nameData);
 			if(PitSim.status.isDarkzone()) AuctionDisplays.updateHolograms();
+
+			for(Player player : Bukkit.getOnlinePlayers()) {
+				if(!auctionItems[slot].bidMap.containsKey(player.getUniqueId())) continue;
+				UUID highestBidder = auctionItems[slot].getHighestBidder();
+				if(highestBidder == null) continue;
+				if(player.getUniqueId().equals(highestBidder)) continue;
+
+				String bidderName = Misc.getRankColor(highestBidder) + auctionItems[slot].nameMap.get(highestBidder);
+				int bid = auctionItems[slot].bidMap.get(highestBidder);
+				String itemName = auctionItems[slot].item.itemName;
+
+				AOutput.send(player, "&5&lDARK AUCTION! &7" + bidderName + " &7has bid &f" + bid + " Souls &7for " + itemName + "&7!");
+				Sounds.BOOSTER_REMIND.play(player);
+			}
+
 			return;
 		}
 

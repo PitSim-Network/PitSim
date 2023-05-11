@@ -13,6 +13,7 @@ import dev.kyro.pitsim.events.PitJoinEvent;
 import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.inventories.AdminGUI;
 import dev.kyro.pitsim.misc.MinecraftSkin;
+import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.storage.EditSession;
 import dev.kyro.pitsim.storage.StorageManager;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -212,29 +213,6 @@ public class ProxyMessaging implements Listener {
 			if(activator != null) booster.queueOnlineShare(activator, amount);
 		}
 
-		if(strings.size() >= 2 && strings.get(0).equals("AUCTION ITEM REQUEST")) {
-			UUID uuid = UUID.fromString(strings.get(4));
-			Player winner = Bukkit.getPlayer(uuid);
-			int id = integers.get(0);
-			int itemData = integers.get(1);
-			int highestBid = integers.get(2);
-
-			ItemType item = ItemType.getItemType(id);
-			assert item != null;
-
-			PitPlayer.getPitPlayer(winner.getPlayer()).stats.auctionsWon++;
-
-			if(itemData == 0) {
-				AUtil.giveItemSafely(winner.getPlayer(), item.item.clone(), true);
-			} else {
-				ItemStack jewel = ItemType.getJewelItem(item.id, itemData);
-
-				AUtil.giveItemSafely(winner.getPlayer(), jewel, true);
-
-				AOutput.send(winner.getPlayer(), "&5&lDARK AUCTION!&7 Received " + item.itemName + "&7.");
-			}
-		}
-
 		if(strings.size() >= 1 && strings.get(0).equals("AUCTION ITEM REWARD")) {
 			long itemSeed = longs.get(0);
 			long dataSeed = longs.get(1);
@@ -251,6 +229,11 @@ public class ProxyMessaging implements Listener {
 
 			ItemStack reward = itemData == 0 ? item.item.clone() : ItemType.getJewelItem(item.id, itemData);
 			AUtil.giveItemSafely(player, reward, true);
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			pitPlayer.stats.auctionsWon++;
+
+			Sounds.BOOSTER_REMIND.play(player);
+			AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + item.itemName + "&7.");
 		}
 
 		if(strings.size() >= 1 && strings.get(0).equals("AUCTION SOUL REWARD")) {
@@ -263,6 +246,9 @@ public class ProxyMessaging implements Listener {
 
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			pitPlayer.giveSouls(soulAmount, false);
+
+			Sounds.BOOSTER_REMIND.play(player);
+			AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + soulAmount + " Soul" + (soulAmount == 1 ? "" : "s") + "&7.");
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("REQUEST SWITCH")) {
