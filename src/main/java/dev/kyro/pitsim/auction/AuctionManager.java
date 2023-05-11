@@ -213,7 +213,8 @@ public class AuctionManager implements Listener {
 
 		for(int i = 0; i < AUCTION_NUM; i++) {
 			AuctionItem auctionItem = auctionItems[i];
-			triggerItems[i] = new ChatTriggerAuctionItem(auctionItem.item.itemName, auctionItem.nameMap.get(auctionItem.getHighestBidder()),
+			String name = auctionItem.nameMap.get(auctionItem.getHighestBidder());
+			triggerItems[i] = new ChatTriggerAuctionItem(auctionItem.item.itemName, name == null ? "None" : name,
 					auctionItem.getHighestBid());
 
 		}
