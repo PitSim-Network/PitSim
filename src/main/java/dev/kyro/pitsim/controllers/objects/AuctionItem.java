@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers.objects;
 
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.AuctionDisplays;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.misc.Sounds;
@@ -26,7 +27,7 @@ public class AuctionItem {
 		this.bidMap = bidMap == null ? new LinkedHashMap<>() : bidMap;
 		this.nameMap = nameMap == null ? new LinkedHashMap<>() : nameMap;
 
-		AuctionDisplays.updateHolograms();
+		if(PitSim.status.isDarkzone()) AuctionDisplays.updateHolograms();
 	}
 
 	public void addBid(Player player, int bid) {
@@ -68,6 +69,8 @@ public class AuctionItem {
 	}
 
 	public void endAuction() {
+		if(!PitSim.status.isDarkzone()) return;
+
 		if(AuctionDisplays.pedestalArmorStands[slot] == null || AuctionDisplays.pedestalItems[slot] == null)
 			throw new RuntimeException("Pedestal or item is null!");
 

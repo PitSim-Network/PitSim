@@ -97,7 +97,7 @@ public class AuctionManager implements Listener {
 			int slot = ints.get(0);
 			auctionItems[slot].bidMap = getBidData(bidMapString);
 			auctionItems[slot].nameMap = getNameData(nameData);
-			AuctionDisplays.updateHolograms();
+			if(PitSim.status.isDarkzone()) AuctionDisplays.updateHolograms();
 			return;
 		}
 
@@ -123,6 +123,7 @@ public class AuctionManager implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				if(!PitSim.status.isDarkzone()) return;
 				AuctionDisplays.showItems();
 			}
 		}.runTask(PitSim.INSTANCE);

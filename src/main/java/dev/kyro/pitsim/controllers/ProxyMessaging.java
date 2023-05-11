@@ -98,6 +98,7 @@ public class ProxyMessaging implements Listener {
 		List<String> strings = event.getMessage().getStrings();
 		List<Integer> integers = event.getMessage().getIntegers();
 		List<Boolean> booleans = event.getMessage().getBooleans();
+		List<Long> longs = event.getMessage().getLongs();
 
 		if(strings.size() > 1 && strings.get(0).equals("NITRO PLAYERS")) {
 			strings.remove(0);
@@ -232,6 +233,36 @@ public class ProxyMessaging implements Listener {
 
 				AOutput.send(winner.getPlayer(), "&5&lDARK AUCTION!&7 Received " + item.itemName + "&7.");
 			}
+		}
+
+		if(strings.size() >= 1 && strings.get(0).equals("AUCTION ITEM REWARD")) {
+			long itemSeed = longs.get(0);
+			long dataSeed = longs.get(1);
+
+			UUID uuid = UUID.fromString(strings.get(1));
+
+			Player player = Bukkit.getPlayer(uuid);
+			if(player == null) return;
+
+			ItemType item = ItemType.getItem(itemSeed);
+			if(item == null) return;
+
+			int itemData = ItemType.getJewelData(item.item, dataSeed);
+
+			ItemStack reward = itemData == 0 ? item.item.clone() : ItemType.getJewelItem(item.id, itemData);
+			AUtil.giveItemSafely(player, reward, true);
+		}
+
+		if(strings.size() >= 1 && strings.get(0).equals("AUCTION SOUL REWARD")) {
+			int soulAmount = integers.get(0);
+
+			UUID uuid = UUID.fromString(strings.get(1));
+
+			Player player = Bukkit.getPlayer(uuid);
+			if(player == null) return;
+
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			pitPlayer.giveSouls(soulAmount, false);
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("REQUEST SWITCH")) {
