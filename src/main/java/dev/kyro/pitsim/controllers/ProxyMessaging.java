@@ -251,6 +251,19 @@ public class ProxyMessaging implements Listener {
 			AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + soulAmount + " Soul" + (soulAmount == 1 ? "" : "s") + "&7.");
 		}
 
+		if(strings.size() >= 1 && strings.get(0).equals("AUCTION ANNOUNCEMENT")) {
+			String announcement = strings.get(1);
+			long itemSeed = longs.get(0);
+
+			ItemType item = ItemType.getItem(itemSeed);
+			if(item == null) return;
+
+
+			announcement = announcement.replaceAll("%item%", item.itemName);
+			Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', announcement));
+			return;
+		}
+
 		if(strings.size() >= 2 && strings.get(0).equals("REQUEST SWITCH")) {
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);

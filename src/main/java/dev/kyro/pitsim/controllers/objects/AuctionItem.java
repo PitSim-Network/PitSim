@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers.objects;
 
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.battlepass.quests.WinAuctionsQuest;
 import dev.kyro.pitsim.controllers.AuctionDisplays;
 import dev.kyro.pitsim.enums.ItemType;
 import dev.kyro.pitsim.misc.Sounds;
@@ -38,7 +39,7 @@ public class AuctionItem {
 			pitPlayer.taintedSouls -= (bid - currentBid);
 			Sounds.RENOWN_SHOP_PURCHASE.play(player);
 			if(bid > pitPlayer.stats.highestBid) pitPlayer.stats.highestBid = bid;
-
+			WinAuctionsQuest.INSTANCE.winAuction(pitPlayer);
 		}, AsyncBidTask.getDefaultFail(player));
 	}
 

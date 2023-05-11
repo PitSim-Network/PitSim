@@ -7,7 +7,6 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.AuctionData;
 import dev.kyro.pitsim.controllers.objects.Config;
 import dev.kyro.pitsim.misc.FileResourcesUtils;
 
@@ -19,12 +18,10 @@ public class FirestoreManager {
 
 	public static final String SERVER_COLLECTION = Collection.getCollection(PitSim.serverName).refName[0];
 	public static final String CONFIG_DOCUMENT = "config";
-	public static final String AUCTION_DOCUMENT = "auction";
 
 	public static final String PLAYERDATA_COLLECTION = SERVER_COLLECTION + "-playerdata";
 
 	public static Config CONFIG;
-	public static AuctionData AUCTION;
 
 	public static void init() {
 		try {
@@ -60,15 +57,6 @@ public class FirestoreManager {
 				CONFIG.save();
 			} else {
 				CONFIG = FIRESTORE.collection(SERVER_COLLECTION).document(CONFIG_DOCUMENT).get().get().toObject(Config.class);
-			}
-
-			if(PitSim.status.isDarkzone()) {
-				if(!FIRESTORE.collection(SERVER_COLLECTION).document(AUCTION_DOCUMENT).get().get().exists()) {
-					AUCTION = new AuctionData();
-					AUCTION.save();
-				} else {
-					AUCTION = FIRESTORE.collection(SERVER_COLLECTION).document(AUCTION_DOCUMENT).get().get().toObject(AuctionData.class);
-				}
 			}
 
 		} catch(Exception exception) {

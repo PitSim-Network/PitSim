@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.AuctionManager;
 import dev.kyro.pitsim.controllers.objects.AuctionItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -100,8 +101,8 @@ public class BidPanel extends AGUIPanel {
 			@Override
 			public void run() {
 				AuctionItem auctionItem = AuctionManager.auctionItems[slot];
-
-				ItemStack item = auctionItem.itemData == 0 ? auctionItem.item.item.clone() : ItemType.getJewelItem(auctionItem.item.id, auctionItem.itemData);
+					ItemStack auctionStack = auctionItem.item.item.clone();
+				ItemStack item = MysticFactory.isFresh(auctionStack) ? ItemType.getJewelItem(auctionItem.item.id, auctionItem.itemData) : auctionItem.item.item.clone();
 
 				AItemStackBuilder itemBuilder = new AItemStackBuilder(item);
 				itemBuilder.setName(auctionItem.item.itemName);
