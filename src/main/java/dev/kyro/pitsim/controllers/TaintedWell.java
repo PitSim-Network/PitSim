@@ -160,7 +160,7 @@ public class TaintedWell implements Listener {
 		wellStand.setVisible(false);
 		wellStand.setGravity(false);
 
-		hologram = new Hologram(wellLocation.clone().add(0.5, 3, 0.5)) {
+		hologram = new Hologram(wellLocation.clone().add(0.5, 3.25, 0.5)) {
 			@Override
 			public List<String> getStrings(Player player) {
 				List<String> strings = textMap.get(player.getUniqueId());
