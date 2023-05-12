@@ -177,18 +177,19 @@ public class SubLevel {
 		return foundCeiling;
 	}
 
-	public void spawnMob(Location location, MobStatus status) {
+	public PitMob spawnMob(Location location, MobStatus status) {
 		PitMob pitMob;
 		try {
 			Constructor<? extends PitMob> constructor = mobClass.getConstructor(Location.class, MobStatus.class);
 			if(location == null) location = getMobSpawnLocation();
-			if(!location.getChunk().isLoaded()) return;
+			if(!location.getChunk().isLoaded()) return null;
 			pitMob = constructor.newInstance(location, status);
 		} catch(Exception exception) {
 			exception.printStackTrace();
-			return;
+			return null;
 		}
 		mobs.add(pitMob);
+		return pitMob;
 	}
 
 	public void spawnBoss(Player summoner) {
