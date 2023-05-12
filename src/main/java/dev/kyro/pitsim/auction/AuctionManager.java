@@ -42,6 +42,8 @@ public class AuctionManager implements Listener {
 
 	public List<Player> animationPlayers = new ArrayList<>();
 
+	public static int repetitions = 0;
+
 	public static void onStart() {
 
 	}
@@ -168,6 +170,10 @@ public class AuctionManager implements Listener {
 		if(auctionItems[slot] != null) auctionItems[slot].endAuction();
 
 		auctionItems[slot] = new AuctionItem(itemType, itemData, slot, getBidData(bidMapString), getNameData(nameData));
+
+		repetitions++;
+		if(repetitions < AUCTION_NUM) return;
+		repetitions = 0;
 
 		new BukkitRunnable() {
 			@Override
