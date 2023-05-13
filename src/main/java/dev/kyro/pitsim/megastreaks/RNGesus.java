@@ -280,7 +280,7 @@ public class RNGesus extends Megastreak {
 		RNGesusInfo rngesusInfo = getRNGesusInfo(player);
 		rngesusInfo.reality = rngesusInfo.generatedRealityOrder.remove(0);
 		if(rngesusInfo.reality == null) return;
-		AOutput.send(player, "&e&lRNGESUS!&7 Reality Shift: " + rngesusInfo.reality.displayName + "&7!");
+		AOutput.send(player, getCapsDisplayName() + "!&7 Reality Shift: " + rngesusInfo.reality.displayName + "&7!");
 		ASound.play(player, Sound.FIZZ, 1000, 0.5F);
 		Misc.applyPotionEffect(player, PotionEffectType.BLINDNESS, 40, 0, true, false);
 	}
@@ -290,7 +290,7 @@ public class RNGesus extends Megastreak {
 		rngesusInfo.reality = Reality.NONE;
 		String message = "Reality destabilizes. Will it make you stronger or will " +
 				"you succumb to the endless void of time";
-		AOutput.send(player, "&e&lRNGESUS!&7 " + message);
+		AOutput.send(player, getCapsDisplayName() + "!&7 " + message);
 		Sounds.RNGESUS_DESTABILIZE.play(player);
 
 		EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
@@ -391,7 +391,7 @@ public class RNGesus extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return "&e&lRNGesus&7 allows you to enter four different random realities, &bXP&7, &6Gold&7, &cDamage&7 and, " +
+		return getCapsDisplayName() + "&7 allows you to enter four different random realities, &bXP&7, &6Gold&7, &cDamage&7 and, " +
 				"&9Absorption&7. At an &c1000 streak&7, gain the buffs that you earned throughout the realities, but " +
 				"you no longer &cheal&7. Throughout the &cMegastreak&7 you are immune to enchants that would &emove&7 " +
 				"you There is an hour cooldown on this &cMegastreak&7, which can be skipped by using &eRenown";

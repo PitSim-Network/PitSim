@@ -491,11 +491,16 @@ public class PitSim extends JavaPlugin {
 
 	private void registerMegastreaks() {
 		PerkManager.registerMegastreak(new NoMegastreak());
+		PerkManager.registerMegastreak(new StashStreaker());
 		PerkManager.registerMegastreak(new Overdrive());
+		PerkManager.registerMegastreak(new Rampage());
+		PerkManager.registerMegastreak(new HighStakes());
 		PerkManager.registerMegastreak(new Beastmode());
 		PerkManager.registerMegastreak(new Highlander());
 		PerkManager.registerMegastreak(new Uberstreak());
 		PerkManager.registerMegastreak(new ToTheMoon());
+		PerkManager.registerMegastreak(new Prosperity());
+		PerkManager.registerMegastreak(new Apostle());
 		PerkManager.registerMegastreak(new RNGesus());
 	}
 
@@ -889,6 +894,7 @@ public class PitSim extends JavaPlugin {
 
 		ItemFactory.registerItem(new GoldenHelmet());
 		ItemFactory.registerItem(new SoulPickup());
+		ItemFactory.registerItem(new GoldPickup());
 		ItemFactory.registerItem(new StaffCookie());
 		ItemFactory.registerItem(new TokenOfAppreciation());
 

@@ -59,10 +59,10 @@ public abstract class Megastreak implements Listener, Summarizable {
 			loreBuilder.addLore("&7Selected: &a" + displayName, "");
 
 		ALoreBuilder triggerLore = new ALoreBuilder().addLore(
-				"",
 				"&7Trigger: &c" + requiredKills + " kills"
 		);
 		if(!(this instanceof NoMegastreak)) loreBuilder.addLore(triggerLore.getLore());
+		loreBuilder.addLore("");
 
 		addBaseDescription(loreBuilder, player);
 
@@ -129,8 +129,22 @@ public abstract class Megastreak implements Listener, Summarizable {
 		return trainingPhrases;
 	}
 
+	public int getKillIncrements(PitPlayer pitPlayer, int everyX) {
+		return getKillIncrements(pitPlayer, everyX, 0);
+	}
+
+	public int getKillIncrements(PitPlayer pitPlayer, int everyX, int starting) {
+		return Math.max((pitPlayer.getKills() - starting) / everyX, 0);
+	}
+
 	public String getDisplayName() {
 		return displayName;
+	}
+
+	public String getCapsDisplayName() {
+		String translatedName = ChatColor.translateAlternateColorCodes('&', getDisplayName());
+		return ChatColor.getLastColors(translatedName) + "&l" +
+				ChatColor.stripColor(translatedName).toUpperCase();
 	}
 
 	public String getRefName() {

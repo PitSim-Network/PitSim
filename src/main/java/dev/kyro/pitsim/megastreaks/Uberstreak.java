@@ -133,7 +133,7 @@ public class Uberstreak extends Megastreak {
 			Sounds.UBER_400.play(pitPlayer.player);
 		} else if(event.getKills() == 500) {
 			Sounds.UBER_500.play(pitPlayer.player);
-			AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&c Cannot heal");
+			AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&c Cannot heal");
 			return;
 		} else {
 			return;
@@ -144,7 +144,7 @@ public class Uberstreak extends Megastreak {
 		uberEffects.add(uberEffect);
 		if(uberEffect == UberEffect.SKIP_100) zoom(pitPlayer);
 		pitPlayer.updateMaxHealth();
-		AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&7 Random Effect: " + uberEffect.description);
+		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Random Effect: " + uberEffect.description);
 	}
 
 	public void zoom(PitPlayer pitPlayer) {
@@ -171,7 +171,7 @@ public class Uberstreak extends Megastreak {
 
 		Sounds.UBER_100.play(pitPlayer.player);
 		pitPlayer.updateMaxHealth();
-		AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&c Deal -50% damage to bots");
+		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&c Deal -50% damage to bots");
 	}
 
 	@Override
@@ -263,7 +263,7 @@ public class Uberstreak extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return "&d&lUBERSTREAK&7 grants you immunity to enchants that move you, double chance to find &agem shards&7, " +
+		return getCapsDisplayName() + "&7 grants you immunity to enchants that move you, double chance to find &agem shards&7, " +
 				"gain random &abuffs&7 or &cdebuffs&7 every 100 kills, gain a reward at &c500 streak&7, but deal a " +
 				"lot less damage to bots and only have five &cUberstreaks&7 daily";
 	}

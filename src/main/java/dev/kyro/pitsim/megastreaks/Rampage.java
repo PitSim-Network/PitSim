@@ -1,10 +1,7 @@
 package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
-import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -12,30 +9,27 @@ import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.upgrades.DoubleDeath;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-public class Beastmode extends Megastreak {
-	public static Beastmode INSTANCE;
+public class Rampage extends Megastreak {
+	public static Rampage INSTANCE;
 
-	public Beastmode() {
-		super("&aBeastmode", "beastmode", 50, 13, 50);
+	public Rampage() {
+		super("&9Rampage", "rampage", 50, 5, 0);
 		INSTANCE = this;
 	}
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!hasMegastreak(attackEvent.getDefenderPlayer())) return;
-		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
+		if(!hasMegastreak(attackEvent.getAttackerPlayer())) return;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
-		if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 0.15;
-		} else {
-			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 5 * 0.15;
-		}
+		int increments = getKillIncrements(pitPlayer, 20, 200);
+		attackEvent.selfVeryTrueDamage += getSelfVeryTrueDamage() * increments;
+		attackEvent.increasePercent += getDamageIncrease() * increments;
 	}
 
 	@EventHandler
@@ -43,8 +37,8 @@ public class Beastmode extends Megastreak {
 		if(!hasMegastreak(killEvent.getKillerPlayer())) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
-		killEvent.xpCap += 130;
-		killEvent.xpMultipliers.add(2.0);
+		killEvent.xpMultipliers.add(1 + (getXPIncrease() / 100.0));
+		killEvent.xpCap += getMaxXPIncrease();
 		killEvent.goldMultipliers.add(0.5);
 	}
 
@@ -53,7 +47,7 @@ public class Beastmode extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		Sounds.MEGA_GENERAL.play(player.getLocation());
-		pitPlayer.stats.timesOnBeastmode++;
+		pitPlayer.stats.timesOnRampage++;
 		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 	}
 
@@ -62,20 +56,17 @@ public class Beastmode extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.isOnMega()) return;
 
-		int randomXP = Misc.intBetween(1000, 5000);
-		if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomXP *= 2;
-		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Earned &b" + randomXP + "&b XP &7from megastreak!");
-		LevelManager.addXP(pitPlayer.player, randomXP);
+//		TODO: Increase damage vs bots for time
 	}
 
 	@Override
 	public String getPrefix(Player player) {
-		return "&a&lBEAST";
+		return "&9&lRMPGE";
 	}
 
 	@Override
 	public ItemStack getBaseDisplayStack(Player player) {
-		return new AItemStackBuilder(Material.DIAMOND_HELMET)
+		return new AItemStackBuilder(Material.WHEAT)
 				.getItemStack();
 	}
 
@@ -83,22 +74,36 @@ public class Beastmode extends Megastreak {
 	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
-				"&a\u25a0 &7Earn &b+100% XP &7from kills",
-				"&a\u25a0 &7Gain &b+130 max XP &7from kills",
+				"&a\u25a0 &7Earn &b+" + getXPIncrease() + "% XP &7from kills",
+				"&a\u25a0 &7Gain &b+" + getMaxXPIncrease() + " max XP &7from kills",
+				"&a\u25a0 &7Deal &c+" + getDamageIncrease() + "% &7damage per 10 kills past " + requiredKills,
 				"",
 				"&7BUT:",
-				"&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50",
-				"&7(5x damage from bots)",
-				"&c\u25a0 &7Earn &c-50% &7gold from kills",
-				"",
-				"&7On Death:",
-				"&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"
+				"&c\u25a0 &7Starting at 200 kills, take &c+" + Misc.getHearts(getSelfVeryTrueDamage()),
+				"   &7very true damage when attacking",
+				"   &7per 20 kills",
+				"&c\u25a0 &7Earn &c-50% &7gold from kills"
 		);
 	}
 
 	@Override
 	public String getSummary() {
-		return getCapsDisplayName() + "&7 is a Megastreak that grants you increased &bXP&7, &bmax XP&7, " +
-				"gain &bXP&7 on death, but makes you earn less &6gold&7 and take more damage per kill over 50";
+		return getCapsDisplayName() + "&7 is a Megastreak that";
+	}
+
+	public static int getXPIncrease() {
+		return 50;
+	}
+
+	public static int getMaxXPIncrease() {
+		return 50;
+	}
+
+	public static int getDamageIncrease() {
+		return 10;
+	}
+
+	public static double getSelfVeryTrueDamage() {
+		return 0.2;
 	}
 }

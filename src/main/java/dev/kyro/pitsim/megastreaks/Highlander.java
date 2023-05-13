@@ -90,7 +90,7 @@ public class Highlander extends Megastreak {
 		LevelManager.addGold(pitPlayer.player, pitPlayer.bounty);
 		if(pitPlayer.bounty != 0 && pitPlayer.isOnMega()) {
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
-			AOutput.send(pitPlayer.player, "&6&lHIGHLANDER!&7 Earned &6+" + formatter.format(pitPlayer.bounty) + "&6g &7from megastreak!");
+			AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Earned &6+" + formatter.format(pitPlayer.bounty) + "&6g &7from megastreak!");
 			pitPlayer.bounty = 0;
 			ChatTriggerManager.sendBountyInfo(pitPlayer);
 		}
@@ -127,7 +127,7 @@ public class Highlander extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return "&6&lHIGHLANDER&7 is a Megastreak grants you increased &6Gold, permanent &espeed I&7, more damage " +
+		return getCapsDisplayName() + "&7 is a Megastreak grants you increased &6Gold, permanent &espeed I&7, more damage " +
 				"to bots, and gain your bounty on death, but heal less per kill over 200, and earn less &bXP";
 	}
 }

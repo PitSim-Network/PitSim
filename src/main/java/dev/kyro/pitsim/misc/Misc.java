@@ -321,6 +321,10 @@ public class Misc {
 		return normalizedWeights.entrySet().iterator().next().getKey();
 	}
 
+	public static int intBetween(int lowBound, int highBound) {
+		return intBetween(lowBound, highBound, new Random());
+	}
+
 	public static int intBetween(int lowBound, int highBound, Random random) {
 		return random.nextInt(highBound - lowBound + 1) + lowBound;
 	}

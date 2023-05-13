@@ -102,8 +102,8 @@ public class EcoCommand implements CommandExecutor {
 
 			PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 			pitTarget.gold = amount;
-			AOutput.send(sender, "&6&lECO!&7 Set the balance of " + Misc.getDisplayName(target) + "&7 to &6" + Formatter.formatGoldFull(amount) + "g");
-			AOutput.send(target, "&6&lGOLD!&7 Your balance was set to &6" + Formatter.formatGoldFull(amount) + "g");
+			AOutput.send(sender, "&6&lECO!&7 Set the balance of " + Misc.getDisplayName(target) + "&7 to " + Formatter.formatGoldFull(amount));
+			AOutput.send(target, "&6&lGOLD!&7 Your balance was set to" + Formatter.formatGoldFull(amount));
 		} else {
 			AOutput.error(sender, "&7Usage: /eco <give|take|set> <player> <amount>");
 		}
@@ -114,20 +114,20 @@ public class EcoCommand implements CommandExecutor {
 	public static void giveGold(CommandSender giver, Player target, double amount) {
 		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 		pitTarget.gold += amount;
-		if(giver != target) AOutput.send(giver, "&6&lECO!&7 Gave &6" + Formatter.formatGoldFull(amount) + "g &7to " + Misc.getDisplayName(target));
-		AOutput.send(pitTarget.player, "&6&lGOLD!&7 You received &6" + Formatter.formatGoldFull(amount) + "g");
+		if(giver != target) AOutput.send(giver, "&6&lECO!&7 Gave " + Formatter.formatGoldFull(amount) + " &7to " + Misc.getDisplayName(target));
+		AOutput.send(pitTarget.player, "&6&lGOLD!&7 You received " + Formatter.formatGoldFull(amount));
 	}
 
 	public static void takeGold(CommandSender giver, Player target, double amount) {
 		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
 
 		if(amount > pitTarget.gold) {
-			AOutput.error(giver, "&c&lERROR!&7 That player only has &6" + Formatter.formatGoldFull(pitTarget.gold) + "g");
+			AOutput.error(giver, "&c&lERROR!&7 That player only has " + Formatter.formatGoldFull(pitTarget.gold));
 			return;
 		}
 
 		pitTarget.gold -= amount;
-		if(giver != target) AOutput.send(giver, "&6&lECO!&7 Took &6" + Formatter.formatGoldFull(amount) + "g &7from " + Misc.getDisplayName(target));
-		AOutput.send(target, "&6&lGOLD!&6 " + Formatter.formatGoldFull(amount) + "g &7was taken from you");
+		if(giver != target) AOutput.send(giver, "&6&lECO!&7 Took " + Formatter.formatGoldFull(amount) + " &7from " + Misc.getDisplayName(target));
+		AOutput.send(target, "&6&lGOLD!&6 " + Formatter.formatGoldFull(amount) + " &7was taken from you");
 	}
 }

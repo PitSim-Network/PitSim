@@ -35,9 +35,14 @@ public class PlayerStats {
 
 //	Megastreaks
 	public int timesOnOverdrive = 0;
+	public int timesOnStashStreaker = 0;
+	public int timesOnRampage = 0;
+	public int timesOnHighStakes = 0;
 	public int timesOnBeastmode = 0;
 	public int timesOnHighlander = 0;
 	public int timesOnMoon = 0;
+	public int timesOnProsperity = 0;
+	public int timesOnApostle = 0;
 	public int rngesusCompleted = 0;
 	public int ubersCompleted = 0;
 

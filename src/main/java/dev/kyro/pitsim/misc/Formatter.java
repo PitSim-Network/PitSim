@@ -22,7 +22,7 @@ public class Formatter {
 	}
 
 	public static String formatGoldFull(double amount) {
-		return decimalCommaFormat.format(amount);
+		return translate("&6" + decimalCommaFormat.format(amount) + "g");
 	}
 
 	public static String formatDurationFull(long millis, boolean displaySeconds) {

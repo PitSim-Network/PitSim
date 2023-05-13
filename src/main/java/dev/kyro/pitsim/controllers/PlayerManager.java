@@ -397,11 +397,8 @@ public class PlayerManager implements Listener {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				PitPlayer onlinePitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 				if(onlinePitPlayer.streaksDisabled) continue;
-				String translatedName = ChatColor.translateAlternateColorCodes('&', megastreak.displayName);
-				String megastreakName = ChatColor.getLastColors(translatedName) + "&l" +
-						ChatColor.stripColor(translatedName).toUpperCase();
 				String streakMessage = ChatColor.translateAlternateColorCodes('&',
-						"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated " + megastreakName + "&7!");
+						"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated " + megastreak.getCapsDisplayName() + "&7!");
 				AOutput.send(onlinePlayer, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
 			}
 		}

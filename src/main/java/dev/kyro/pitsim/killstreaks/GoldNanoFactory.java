@@ -3,6 +3,9 @@ package dev.kyro.pitsim.killstreaks;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.misc.GoldPickup;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
@@ -15,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
@@ -30,35 +32,41 @@ public class GoldNanoFactory extends Killstreak {
 		INSTANCE = this;
 	}
 
+	public static void onGoldPickup(Player player) {
+		if(rewardPlayers.containsKey(player)) {
+			rewardPlayers.put(player, rewardPlayers.get(player) + 1);
+		} else rewardPlayers.put(player, 1);
+	}
+
 	@EventHandler
 	public void onPickup(PlayerPickupItemEvent event) {
-		if(NonManager.getNon(event.getPlayer()) != null) return;
+		Player player = event.getPlayer();
+		if(NonManager.getNon(player) != null) return;
 		if(event.getItem().getItemStack().getType() == Material.GOLD_INGOT) {
 			event.setCancelled(true);
 			event.getItem().remove();
 
-			Sounds.SUCCESS.play(event.getPlayer());
-			LevelManager.addGold(event.getPlayer(), 123);
+			LevelManager.addGold(player, getPickupGold());
+			Misc.applyPotionEffect(player, PotionEffectType.REGENERATION, 20 * GoldPickup.getRegenSeconds(), 3, true, false);
 
-			Misc.applyPotionEffect(event.getPlayer(), PotionEffectType.REGENERATION, 20 * getRegenSeconds(), 3, true, false);
-
-			if(Killstreak.hasKillstreak(event.getPlayer(), this)) {
-				if(rewardPlayers.containsKey(event.getPlayer())) {
-					rewardPlayers.put(event.getPlayer(), rewardPlayers.get(event.getPlayer()) + 1);
-				} else rewardPlayers.put(event.getPlayer(), 1);
-				AOutput.send(event.getPlayer(), "&6&lGOLD PICKUP!&7 Gain &6+123g&7. &6+25% gold &7on your next kill.");
+			if(Killstreak.hasKillstreak(player, this)) {
+				if(rewardPlayers.containsKey(player)) {
+					rewardPlayers.put(player, rewardPlayers.get(player) + 1);
+				} else rewardPlayers.put(player, 1);
+				AOutput.send(player, "&6&lGOLD PICKUP!&7 Gain &6+123g&7. &6+25% gold &7on your next kill.");
 			} else {
-				AOutput.send(event.getPlayer(), "&6&lGOLD PICKUP!&7 Gain &6+123g&7");
+				AOutput.send(player, "&6&lGOLD PICKUP!&7 Gain &6+123g&7");
 			}
+			Sounds.SUCCESS.play(player);
 		}
 	}
 
 	@EventHandler
 	public void onKill(KillEvent event) {
-		if(!event.isKillerPlayer()) return;
+		if(!event.isKillerRealPlayer()) return;
 
 		if(rewardPlayers.containsKey(event.getKillerPlayer())) {
-			event.goldMultipliers.add(1 + (25 * rewardPlayers.get(event.getKillerPlayer())) / 100D);
+			event.goldMultipliers.add(1 + (getGoldIncrease() * rewardPlayers.get(event.getKillerPlayer())) / 100D);
 			rewardPlayers.remove(event.getKillerPlayer());
 		}
 	}
@@ -66,15 +74,11 @@ public class GoldNanoFactory extends Killstreak {
 	@Override
 	public void proc(Player player) {
 		for(int i = 0; i < 10; i++) {
-			ItemStack ingot = new ItemStack(Material.GOLD_INGOT);
-			ItemMeta ingotMeta = ingot.getItemMeta();
-			ingotMeta.setDisplayName(i + "");
-			ingot.setItemMeta(ingotMeta);
 			Location spawnLoc = player.getLocation();
 			spawnLoc = spawnLoc.clone();
 			spawnLoc.setX(spawnLoc.getX() + (Math.random() * 10 - 5));
 			spawnLoc.setZ(spawnLoc.getZ() + (Math.random() * 10 - 5));
-			spawnLoc.getWorld().dropItem(spawnLoc, ingot);
+			spawnLoc.getWorld().dropItem(spawnLoc, ItemFactory.getItem(GoldPickup.class).getItem(getPickupGold()));
 		}
 	}
 
@@ -90,9 +94,9 @@ public class GoldNanoFactory extends Killstreak {
 		builder.setName("&e" + displayName);
 		builder.setLore(new ALoreBuilder(
 				"&7Every: &c" + killInterval + " kills",
-				"", "&7Spawns &610 gold ingots. &7Picking them",
-				"&7up grants &cRegen IV &7(" + getRegenSeconds() + "s), &6123g&7,",
-				"&7and &6+25% gold &7on your next kill."));
+				"", "&7Spawns &610 gold ingots&7. Picking them",
+				"&7up grants &cRegen " + AUtil.toRoman(GoldPickup.getRegenAmplifier() + 1) + " &7(" + GoldPickup.getRegenSeconds() + "s), &6" + getPickupGold() + "g&7,",
+				"&7and &6+" + getGoldIncrease() + "% gold &7on your next kill."));
 
 		return builder.getItemStack();
 	}
@@ -103,7 +107,11 @@ public class GoldNanoFactory extends Killstreak {
 				"&6gold&7 on next kill, and gives some &6gold when picked up every &c15 kills";
 	}
 
-	public int getRegenSeconds() {
-		return 2;
+	public static int getPickupGold() {
+		return 123;
+	}
+
+	public static int getGoldIncrease() {
+		return 25;
 	}
 }

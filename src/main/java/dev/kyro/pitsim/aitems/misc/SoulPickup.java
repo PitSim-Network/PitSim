@@ -58,7 +58,7 @@ public class SoulPickup extends PitItem {
 		itemStack = buildItem(itemStack);
 
 		NBTItem nbtItem = new NBTItem(itemStack);
-		nbtItem.setInteger(NBTTag.SOUL_AMOUNT.getRef(), amount);
+		nbtItem.setInteger(NBTTag.SOUL_PICKUP_AMOUNT.getRef(), amount);
 		itemStack = nbtItem.getItem();
 
 		return new AItemStackBuilder(itemStack)
@@ -70,7 +70,7 @@ public class SoulPickup extends PitItem {
 	public int getSouls(ItemStack itemStack) {
 		if(!isThisItem(itemStack)) return 0;
 		NBTItem nbtItem = new NBTItem(itemStack);
-		return nbtItem.getInteger(NBTTag.SOUL_AMOUNT.getRef());
+		return nbtItem.getInteger(NBTTag.SOUL_PICKUP_AMOUNT.getRef());
 	}
 
 	@Override

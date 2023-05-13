@@ -9,7 +9,6 @@ import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.upgrades.DoubleDeath;
@@ -18,11 +17,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-public class Beastmode extends Megastreak {
-	public static Beastmode INSTANCE;
+import java.util.concurrent.ThreadLocalRandom;
 
-	public Beastmode() {
-		super("&aBeastmode", "beastmode", 50, 13, 50);
+public class StashStreaker extends Megastreak {
+	public static StashStreaker INSTANCE;
+
+	public StashStreaker() {
+		super("&8Stash Streaker", "stashstreaker", 100, 13, 50);
 		INSTANCE = this;
 	}
 
@@ -53,7 +54,7 @@ public class Beastmode extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		Sounds.MEGA_GENERAL.play(player.getLocation());
-		pitPlayer.stats.timesOnBeastmode++;
+		pitPlayer.stats.timesOnStashStreaker++;
 		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 	}
 
@@ -62,20 +63,20 @@ public class Beastmode extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.isOnMega()) return;
 
-		int randomXP = Misc.intBetween(1000, 5000);
-		if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomXP *= 2;
+		int randomXP = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
+		if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomXP = randomXP * 2;
 		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Earned &b" + randomXP + "&b XP &7from megastreak!");
 		LevelManager.addXP(pitPlayer.player, randomXP);
 	}
 
 	@Override
 	public String getPrefix(Player player) {
-		return "&a&lBEAST";
+		return "&8&lSTASH";
 	}
 
 	@Override
 	public ItemStack getBaseDisplayStack(Player player) {
-		return new AItemStackBuilder(Material.DIAMOND_HELMET)
+		return new AItemStackBuilder(Material.DIAMOND_SWORD)
 				.getItemStack();
 	}
 
@@ -98,7 +99,6 @@ public class Beastmode extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return getCapsDisplayName() + "&7 is a Megastreak that grants you increased &bXP&7, &bmax XP&7, " +
-				"gain &bXP&7 on death, but makes you earn less &6gold&7 and take more damage per kill over 50";
+		return getCapsDisplayName() + "&7 is a Megastreak that";
 	}
 }

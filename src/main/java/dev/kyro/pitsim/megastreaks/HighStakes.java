@@ -1,28 +1,26 @@
 package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.aitems.misc.GoldPickup;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
-import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.upgrades.DoubleDeath;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-public class Beastmode extends Megastreak {
-	public static Beastmode INSTANCE;
+public class HighStakes extends Megastreak {
+	public static HighStakes INSTANCE;
 
-	public Beastmode() {
-		super("&aBeastmode", "beastmode", 50, 13, 50);
+	public HighStakes() {
+		super("&fHigh Stakes", "highstakes", 50, 9, 50);
 		INSTANCE = this;
 	}
 
@@ -43,9 +41,8 @@ public class Beastmode extends Megastreak {
 		if(!hasMegastreak(killEvent.getKillerPlayer())) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
-		killEvent.xpCap += 130;
-		killEvent.xpMultipliers.add(2.0);
-		killEvent.goldMultipliers.add(0.5);
+		killEvent.goldMultipliers.add(1 + (getGoldIncrease() / 100.0));
+		killEvent.xpMultipliers.add(0.5);
 	}
 
 	@Override
@@ -53,7 +50,7 @@ public class Beastmode extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		Sounds.MEGA_GENERAL.play(player.getLocation());
-		pitPlayer.stats.timesOnBeastmode++;
+		pitPlayer.stats.timesOnHighStakes++;
 		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
 	}
 
@@ -62,20 +59,17 @@ public class Beastmode extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.isOnMega()) return;
 
-		int randomXP = Misc.intBetween(1000, 5000);
-		if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomXP *= 2;
-		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Earned &b" + randomXP + "&b XP &7from megastreak!");
-		LevelManager.addXP(pitPlayer.player, randomXP);
+//		TODO: Explode into gold ingots
 	}
 
 	@Override
 	public String getPrefix(Player player) {
-		return "&a&lBEAST";
+		return "&f&lSTAKES";
 	}
 
 	@Override
 	public ItemStack getBaseDisplayStack(Player player) {
-		return new AItemStackBuilder(Material.DIAMOND_HELMET)
+		return new AItemStackBuilder(Material.GOLD_NUGGET)
 				.getItemStack();
 	}
 
@@ -83,22 +77,32 @@ public class Beastmode extends Megastreak {
 	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
-				"&a\u25a0 &7Earn &b+100% XP &7from kills",
-				"&a\u25a0 &7Gain &b+130 max XP &7from kills",
+				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills",
+				"&a\u25a0 &7On every tenth kill, spawn",
+				"   &610 gold ingots&7. Picking them up",
+				"   &7grants &cRegen " + AUtil.toRoman(GoldPickup.getRegenAmplifier() + 1) +
+						" &7(" + GoldPickup.getRegenSeconds() + "s),",
+				"   &6" + getPickupGold() + "g",
 				"",
 				"&7BUT:",
-				"&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50",
-				"&7(5x damage from bots)",
-				"&c\u25a0 &7Earn &c-50% &7gold from kills",
+				"&c\u25a0 &7Have a &f1 &7in &f1,000 &7chance of &cdying &7on each bot kill",
+				"&c\u25a0 &7Earn &c-50% &7xp from kills",
 				"",
 				"&7On Death:",
-				"&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"
+				"&e\u25a0 &7Explode into a bunch of &6gold ingots"
 		);
 	}
 
 	@Override
 	public String getSummary() {
-		return getCapsDisplayName() + "&7 is a Megastreak that grants you increased &bXP&7, &bmax XP&7, " +
-				"gain &bXP&7 on death, but makes you earn less &6gold&7 and take more damage per kill over 50";
+		return getCapsDisplayName() + "&7 is a Megastreak that";
+	}
+
+	public static int getGoldIncrease() {
+		return 50;
+	}
+
+	public static int getPickupGold() {
+		return 123;
 	}
 }
