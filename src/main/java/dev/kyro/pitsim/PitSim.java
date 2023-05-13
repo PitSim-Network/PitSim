@@ -491,8 +491,8 @@ public class PitSim extends JavaPlugin {
 
 	private void registerMegastreaks() {
 		PerkManager.registerMegastreak(new NoMegastreak());
-		PerkManager.registerMegastreak(new StashStreaker());
 		PerkManager.registerMegastreak(new Overdrive());
+		PerkManager.registerMegastreak(new StashStreaker());
 		PerkManager.registerMegastreak(new Rampage());
 		PerkManager.registerMegastreak(new HighStakes());
 		PerkManager.registerMegastreak(new Beastmode());

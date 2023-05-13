@@ -2,6 +2,7 @@ package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class NoMegastreak extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLongLine(
 				"&7Go on high streaks with no reward modifiers and no debuffs"
 		);

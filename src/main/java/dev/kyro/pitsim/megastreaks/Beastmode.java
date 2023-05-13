@@ -32,9 +32,9 @@ public class Beastmode extends Megastreak {
 		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
 		if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 0.15;
+			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 0.3;
 		} else {
-			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 5 * 0.15;
+			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 5 * 0.3;
 		}
 	}
 
@@ -80,14 +80,14 @@ public class Beastmode extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
 				"&a\u25a0 &7Earn &b+100% XP &7from kills",
 				"&a\u25a0 &7Gain &b+130 max XP &7from kills",
 				"",
 				"&7BUT:",
-				"&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50",
+				"&c\u25a0 &7Receive &c+0.3% &7damage per kill over 50",
 				"&7(5x damage from bots)",
 				"&c\u25a0 &7Earn &c-50% &7gold from kills",
 				"",

@@ -22,8 +22,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class Overdrive extends Megastreak {
 	public static Overdrive INSTANCE;
 	
@@ -58,8 +56,8 @@ public class Overdrive extends Megastreak {
 		if(!hasMegastreak(killEvent.getKillerPlayer())) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
-		killEvent.xpMultipliers.add(1.75);
-		killEvent.goldMultipliers.add(1.75);
+		killEvent.xpMultipliers.add(1 + (getXPIncrease() / 100.0));
+		killEvent.goldMultipliers.add(1 + (getGoldIncrease() / 100.0));
 	}
 
 	@Override
@@ -76,7 +74,7 @@ public class Overdrive extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.isOnMega()) return;
 
-		int randomGold = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
+		int randomGold = Misc.intBetween(1000, 5000);
 		if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomGold = randomGold * 2;
 		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Earned &6+" + randomGold + "&6g &7from megastreak!");
 		LevelManager.addGold(pitPlayer.player, randomGold);
@@ -94,11 +92,11 @@ public class Overdrive extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
-				"&a\u25a0 &7Earn &b+75% XP &7from kills",
-				"&a\u25a0 &7Earn &6+75% gold &7from kills",
+				"&a\u25a0 &7Earn &b+" + getXPIncrease() + "% XP &7from kills",
+				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills",
 				"&a\u25a0 &7Permanent &eSpeed I&7",
 				"&a\u25a0 &7Immune to &9Slowness&7",
 				"",
@@ -115,5 +113,13 @@ public class Overdrive extends Megastreak {
 	public String getSummary() {
 		return getCapsDisplayName() + "&7 is a Megastreak grants you permanent &eSpeed I&7, increases your &6gold &7and &bXP&7, " +
 				"grants immunity to &9Slowless&7, gain &6gold &7on death, but makes you take very true damage every 10 kills";
+	}
+
+	public static int getXPIncrease() {
+		return 50;
+	}
+
+	public static int getGoldIncrease() {
+		return 50;
 	}
 }

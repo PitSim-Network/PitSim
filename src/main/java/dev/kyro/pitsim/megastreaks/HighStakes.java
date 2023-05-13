@@ -20,7 +20,7 @@ public class HighStakes extends Megastreak {
 	public static HighStakes INSTANCE;
 
 	public HighStakes() {
-		super("&fHigh Stakes", "highstakes", 50, 9, 50);
+		super("&2High Stakes", "highstakes", 50, 9, 50);
 		INSTANCE = this;
 	}
 
@@ -64,7 +64,7 @@ public class HighStakes extends Megastreak {
 
 	@Override
 	public String getPrefix(Player player) {
-		return "&f&lSTAKES";
+		return "&2&lSTAKES";
 	}
 
 	@Override
@@ -74,18 +74,18 @@ public class HighStakes extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
 				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills",
-				"&a\u25a0 &7On every tenth kill, spawn",
-				"   &610 gold ingots&7. Picking them up",
+				"&a\u25a0 &7Every 17 kills, spawn",
+				"   &65 gold ingots&7. Picking them up",
 				"   &7grants &cRegen " + AUtil.toRoman(GoldPickup.getRegenAmplifier() + 1) +
-						" &7(" + GoldPickup.getRegenSeconds() + "s),",
-				"   &6" + getPickupGold() + "g",
+						" &7(" + GoldPickup.getRegenSeconds() + "s) and &6" + GoldPickup.getPickupGold() + "g",
 				"",
 				"&7BUT:",
-				"&c\u25a0 &7Have a &f1 &7in &f1,000 &7chance of &cdying &7on each bot kill",
+				"&c\u25a0 &7Have a &f1 &7in &f1,000 &7chance to &cDIE!",
+				"   &7on each bot kill",
 				"&c\u25a0 &7Earn &c-50% &7xp from kills",
 				"",
 				"&7On Death:",
@@ -99,10 +99,6 @@ public class HighStakes extends Megastreak {
 	}
 
 	public static int getGoldIncrease() {
-		return 50;
-	}
-
-	public static int getPickupGold() {
-		return 123;
+		return 75;
 	}
 }

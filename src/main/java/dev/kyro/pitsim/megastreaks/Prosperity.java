@@ -39,9 +39,8 @@ public class Prosperity extends Megastreak {
 		if(!hasMegastreak(killEvent.getKillerPlayer())) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
-		killEvent.xpCap += 130;
-		killEvent.xpMultipliers.add(2.0);
-		killEvent.goldMultipliers.add(0.5);
+		killEvent.goldMultipliers.add(1 + (getGoldIncrease() / 100.0));
+		killEvent.xpMultipliers.add(0.5);
 	}
 
 	@Override
@@ -71,24 +70,29 @@ public class Prosperity extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
-				"&a\u25a0 &7Earn &b+100% XP &7from kills",
-				"&a\u25a0 &7Gain &b+130 max XP &7from kills",
+				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills",
 				"",
 				"&7BUT:",
-				"&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50",
-				"&7(5x damage from bots)",
-				"&c\u25a0 &7Earn &c-50% &7gold from kills",
+				"&c\u25a0 &7If there are no bots in middle, &cDIE!",
+				"&c\u25a0 &7Earn &c-50% &7xp from kills",
 				"",
-				"&7On Death:",
-				"&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"
+				"&7At 1,000 Kills:",
+				"&a\u25a0 &7Gold on kill and gold cap is",
+				"   &7increased by &610x",
+				"&c\u25a0 &7Bots do not respawn when you",
+				"   &7kill them"
 		);
 	}
 
 	@Override
 	public String getSummary() {
 		return getCapsDisplayName() + "&7 is a Megastreak that";
+	}
+
+	public static int getGoldIncrease() {
+		return 100;
 	}
 }

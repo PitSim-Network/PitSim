@@ -40,7 +40,7 @@ public class Apostle extends Megastreak {
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
 		killEvent.xpMultipliers.add(1 + (getXPIncrease() / 100.0));
-		killEvent.xpCap += getMaxXPIncrease();
+		killEvent.xpCap += pitPlayer.apostleBonus;
 		killEvent.goldMultipliers.add(0.5);
 	}
 
@@ -76,15 +76,17 @@ public class Apostle extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
-				"&a\u25a0 &7Earn &b+" + getXPIncrease() + "% XP &7from kills",
-				"&a\u25a0 &7Gain &b+" + getMaxXPIncrease() + " max XP &7from kills",
+				"&a\u25a0 &7Earn &b+" + getXPIncrease() + "% XP &7from kills");
+		if(pitPlayer.apostleBonus != 0)
+			loreBuilder.addLore("&a\u25a0 &7Gain &b+" + pitPlayer.apostleBonus + " max XP &7from kills");
+		loreBuilder.addLore(
 				"",
 				"&7BUT:",
-				"&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50",
-				"&7(5x damage from bots)",
+				"&c\u25a0 &7Starting at 500 kills, lose",
+				"   &c1 max \u2764 &7every 100 kills",
 				"&c\u25a0 &7Earn &c-50% &7gold from kills",
 				"",
 				"&7During the Streak:",
@@ -93,7 +95,10 @@ public class Apostle extends Megastreak {
 				"&7On Death:",
 				"&e\u25a0 &7Earn the stored &bXP &7multiplied",
 				"   &7by &b0.005x &7per kill above 100,",
-				"   &7up to &b1x"
+				"   &7up to &b1x",
+				"&e\u25a0 &7If your streak is at least 1,000,",
+				"   &7permanently alter this megastreak's",
+				"   &bmax XP &7per kill by &b+1 &7(up to &b+500&7)"
 		);
 	}
 
@@ -103,10 +108,6 @@ public class Apostle extends Megastreak {
 	}
 
 	public static int getXPIncrease() {
-		return 50;
-	}
-
-	public static int getMaxXPIncrease() {
-		return 50;
+		return 140;
 	}
 }

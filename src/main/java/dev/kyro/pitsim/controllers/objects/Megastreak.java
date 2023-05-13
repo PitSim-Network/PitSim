@@ -42,7 +42,7 @@ public abstract class Megastreak implements Listener, Summarizable {
 
 	public abstract String getPrefix(Player player);
 	public abstract ItemStack getBaseDisplayStack(Player player);
-	public abstract void addBaseDescription(PitLoreBuilder loreBuilder, Player player);
+	public abstract void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer);
 
 	public void proc(Player player) {}
 	public void reset(Player player) {}
@@ -64,7 +64,7 @@ public abstract class Megastreak implements Listener, Summarizable {
 		if(!(this instanceof NoMegastreak)) loreBuilder.addLore(triggerLore.getLore());
 		loreBuilder.addLore("");
 
-		addBaseDescription(loreBuilder, player);
+		addBaseDescription(loreBuilder, pitPlayer);
 
 		ALoreBuilder prestigeRequiredLore = new ALoreBuilder().addLore(
 				"",
