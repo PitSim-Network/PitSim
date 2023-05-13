@@ -235,8 +235,7 @@ public class Uberstreak extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		String ubersLeft = (pitPlayer.dailyUbersLeft == 0 ? "&c" : "&a") + pitPlayer.dailyUbersLeft;
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		loreBuilder.addLore(
@@ -254,10 +253,10 @@ public class Uberstreak extends Megastreak {
 				"&d\u25a0 &7500 kills: &cNo longer gain health",
 				"",
 				"&7On Death:",
-				"&e\u25a0 &7Earn a random &dUberdrop&7",
-				"&7(If streak is at least 500)",
+				"&e\u25a0 &7If your streak is at least 500,",
+				"   &7earn a random &dUberdrop&7",
 				"",
-				"&7Daily Uberstreaks Remaining: &e" + ubersLeft + "&7/" + Uberstreak.getMaxUbers(player)
+				"&7Daily Uberstreaks Remaining: &e" + ubersLeft + "&7/" + Uberstreak.getMaxUbers(pitPlayer.player)
 		);
 	}
 

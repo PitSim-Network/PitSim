@@ -256,6 +256,7 @@ public class Misc {
 				continue;
 			}
 			if(character == '\u00A7') {
+				if(!finalString.contains("\u00A7k")) finalString += ChatColor.getLastColors(message.substring(0, i + 2));
 				i++;
 				continue;
 			}

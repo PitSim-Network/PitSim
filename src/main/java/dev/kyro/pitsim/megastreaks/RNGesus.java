@@ -48,7 +48,7 @@ public class RNGesus extends Megastreak {
 	public static final int INSTABILITY_THRESHOLD = 1000;
 
 	public RNGesus() {
-		super("&eRNGesus", "rngesus", 100, 50, 0);
+		super("&4RNGesus", "rngesus", 100, 50, 0);
 		INSTANCE = this;
 	}
 
@@ -360,28 +360,27 @@ public class RNGesus extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
 				"&a\u25a0 &7Immune to enchants that &emove &7you",
-				"&e\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,",
-				"&cDamage&7, &eAbsorption&7)",
-				"&c\u25a0 &7Start a &b1 hour &7cooldown for this streak",
+				"&a\u25a0 &eShift &7into a random reality (&bXP&7, &6Gold&7,",
+				"   &cDamage&7, &eAbsorption&7)",
+				"&c\u25a0 &7Start a &f1 hour &7cooldown for this streak",
 				"",
 				"&7Every 100 Kills:",
-				"&e\u25a0 &eShift &7into a random reality (&6Gold&7, &bXP&7,",
-				"&cDamage&7, &eAbsorption&7)",
-				"&e\u25a0 &7Build up stats for each reality as you streak",
+				"&a\u25a0 &eShift &7into a random reality (&bXP&7, &6Gold&7,",
+				"   &cDamage&7, &eAbsorption&7)",
+				"&a\u25a0 &7Build up stats for each reality as you streak",
 				"",
 				"&7At 1,000 Kills:",
-				"&e&k\u25a0&7 Reality &fdestabilizes",
+				"&e&k\u25a0&7 Reality " + Misc.distortMessage("&fDestabilizes", 0.2),
 				"&a\u25a0 &7Use the stats earned from each reality as",
-				"&7&cdamage&7, &9health&7, &bXP&7, and &6gold &7on each kill",
+				"   &7&cdamage&7, &9health&7, &bXP&7, and &6gold &7on each kill",
 				"&c\u25a0 &7You can no longer heal",
 				"",
 				"&7On Death:",
-				"&e\u25a0 &7View a recap of your stats from each reality"
+				"&e\u25a0 &7View a recap of your streak"
 		);
 		if(isOnCooldown(pitPlayer)) loreBuilder.addLore(
 				"",
@@ -398,11 +397,11 @@ public class RNGesus extends Megastreak {
 	}
 
 	public enum Reality {
-		NONE("&eAbnormal", "&e&lRNGSUS", 1),
-		XP("&bXP", "&b&lRNG&e&lSUS", 0.05),
-		GOLD("&6Gold", "&6&lRNG&e&lSUS", 50),
-		DAMAGE("&cDamage", "&c&lRNG&e&lSUS", 1),
-		ABSORPTION("&6Absorption", "&9&lRNG&e&lSUS", 0.3);
+		NONE("&eAbnormal", "&4&lRNGSUS", 1),
+		XP("&bXP", "&b&lRNG&4&lSUS", 0.05),
+		GOLD("&6Gold", "&6&lRNG&4&lSUS", 50),
+		DAMAGE("&cDamage", "&c&lRNG&4&lSUS", 1),
+		ABSORPTION("&6Absorption", "&9&lRNG&4&lSUS", 0.3);
 
 		public final String displayName;
 		public final String prefix;

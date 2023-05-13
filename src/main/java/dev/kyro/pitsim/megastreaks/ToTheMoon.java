@@ -59,9 +59,9 @@ public class ToTheMoon extends Megastreak {
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
 
-		killEvent.xpCap += 330;
+		killEvent.xpMultipliers.add(1 + (getXPIncrease() / 100.0));
+		killEvent.xpCap += getMaxXPIncrease();
 		killEvent.xpCap += (pitPlayer.getKills() - 100) * 1.0;
-		killEvent.xpMultipliers.add(2.35);
 		killEvent.goldMultipliers.add(0.5);
 
 		if(pitPlayer.getKills() > 1500 && !hopperCallList.contains(killEvent.getKillerPlayer())) {
@@ -110,11 +110,11 @@ public class ToTheMoon extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
-				"&a\u25a0 &7Earn &b+135% XP &7from kills",
-				"&a\u25a0 &7Gain &b+330 max XP &7from kills",
+				"&a\u25a0 &7Earn &b+" + getXPIncrease() + "% XP &7from kills",
+				"&a\u25a0 &7Gain &b+" + getMaxXPIncrease() + " max XP &7from kills",
 				"&a\u25a0 &7Gain &b+1 max XP &7per kill",
 				"",
 				"&7BUT:",
@@ -138,5 +138,13 @@ public class ToTheMoon extends Megastreak {
 		return getCapsDisplayName() + "&7 grants you increased &bXP&7 and &bXP cap&7 both which increase per kill, but take " +
 				"&cdamage&7, &9true damage&7, and &cvery &9true damage&7 based on your streak, spawns a &5hopper&7 " +
 				"at a very high killstreak";
+	}
+
+	public static int getXPIncrease() {
+		return 120;
+	}
+
+	public static int getMaxXPIncrease() {
+		return 300;
 	}
 }

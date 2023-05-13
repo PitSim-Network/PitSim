@@ -1,9 +1,7 @@
 package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
-import dev.kyro.pitsim.controllers.LevelManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -11,13 +9,10 @@ import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
-import dev.kyro.pitsim.upgrades.DoubleDeath;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public class StashStreaker extends Megastreak {
 	public static StashStreaker INSTANCE;
@@ -63,10 +58,7 @@ public class StashStreaker extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.isOnMega()) return;
 
-		int randomXP = ThreadLocalRandom.current().nextInt(1000, 5000 + 1);
-		if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomXP = randomXP * 2;
-		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Earned &b" + randomXP + "&b XP &7from megastreak!");
-		LevelManager.addXP(pitPlayer.player, randomXP);
+//		TODO: On death effect
 	}
 
 	@Override
@@ -81,7 +73,7 @@ public class StashStreaker extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
 				"&a\u25a0 &7Earn &b+100% XP &7from kills",

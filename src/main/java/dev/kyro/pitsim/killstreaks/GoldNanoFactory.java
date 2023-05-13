@@ -46,7 +46,7 @@ public class GoldNanoFactory extends Killstreak {
 			event.setCancelled(true);
 			event.getItem().remove();
 
-			LevelManager.addGold(player, getPickupGold());
+			LevelManager.addGold(player, GoldPickup.getPickupGold());
 			Misc.applyPotionEffect(player, PotionEffectType.REGENERATION, 20 * GoldPickup.getRegenSeconds(), 3, true, false);
 
 			if(Killstreak.hasKillstreak(player, this)) {
@@ -78,7 +78,7 @@ public class GoldNanoFactory extends Killstreak {
 			spawnLoc = spawnLoc.clone();
 			spawnLoc.setX(spawnLoc.getX() + (Math.random() * 10 - 5));
 			spawnLoc.setZ(spawnLoc.getZ() + (Math.random() * 10 - 5));
-			spawnLoc.getWorld().dropItem(spawnLoc, ItemFactory.getItem(GoldPickup.class).getItem(getPickupGold()));
+			spawnLoc.getWorld().dropItem(spawnLoc, ItemFactory.getItem(GoldPickup.class).getItem(GoldPickup.getPickupGold()));
 		}
 	}
 
@@ -95,7 +95,8 @@ public class GoldNanoFactory extends Killstreak {
 		builder.setLore(new ALoreBuilder(
 				"&7Every: &c" + killInterval + " kills",
 				"", "&7Spawns &610 gold ingots&7. Picking them",
-				"&7up grants &cRegen " + AUtil.toRoman(GoldPickup.getRegenAmplifier() + 1) + " &7(" + GoldPickup.getRegenSeconds() + "s), &6" + getPickupGold() + "g&7,",
+				"&7up grants &cRegen " + AUtil.toRoman(GoldPickup.getRegenAmplifier() + 1) + " &7(" +
+						GoldPickup.getRegenSeconds() + "s), &6" + GoldPickup.getPickupGold() + "g&7,",
 				"&7and &6+" + getGoldIncrease() + "% gold &7on your next kill."));
 
 		return builder.getItemStack();
@@ -105,10 +106,6 @@ public class GoldNanoFactory extends Killstreak {
 	public String getSummary() {
 		return "&6Gold Nano Factory&7 is a killstreak that spawns &6gold&7 ingots that grant you &cregen&7, increases " +
 				"&6gold&7 on next kill, and gives some &6gold when picked up every &c15 kills";
-	}
-
-	public static int getPickupGold() {
-		return 123;
 	}
 
 	public static int getGoldIncrease() {

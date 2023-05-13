@@ -123,4 +123,8 @@ public class GoldPickup extends PitItem {
 	public static int getRegenSeconds() {
 		return 2;
 	}
+
+	public static int getPickupGold() {
+		return 123;
+	}
 }

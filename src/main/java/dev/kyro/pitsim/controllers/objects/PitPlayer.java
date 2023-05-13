@@ -144,6 +144,7 @@ public class PitPlayer {
 
 	public double goldStack = 0;
 	public int moonBonus = 0;
+	public int apostleBonus = 0;
 	public int dailyUbersLeft = 5;
 	public long uberReset = 0;
 	public long rngCooldown = 0;

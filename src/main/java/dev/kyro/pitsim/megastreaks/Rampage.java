@@ -6,6 +6,7 @@ import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
@@ -29,7 +30,7 @@ public class Rampage extends Megastreak {
 		if(!pitPlayer.isOnMega()) return;
 		int increments = getKillIncrements(pitPlayer, 20, 200);
 		attackEvent.selfVeryTrueDamage += getSelfVeryTrueDamage() * increments;
-		attackEvent.increasePercent += getDamageIncrease() * increments;
+		attackEvent.increasePercent += getStreakDamageIncrease() * increments;
 	}
 
 	@EventHandler
@@ -71,18 +72,23 @@ public class Rampage extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
 				"&a\u25a0 &7Earn &b+" + getXPIncrease() + "% XP &7from kills",
 				"&a\u25a0 &7Gain &b+" + getMaxXPIncrease() + " max XP &7from kills",
-				"&a\u25a0 &7Deal &c+" + getDamageIncrease() + "% &7damage per 10 kills past " + requiredKills,
+				"&a\u25a0 &7Deal &c+" + getStreakDamageIncrease() + "% &7damage to bots per 10",
+				"   &7kills past " + requiredKills,
 				"",
 				"&7BUT:",
 				"&c\u25a0 &7Starting at 200 kills, take &c+" + Misc.getHearts(getSelfVeryTrueDamage()),
 				"   &7very true damage when attacking",
 				"   &7per 20 kills",
-				"&c\u25a0 &7Earn &c-50% &7gold from kills"
+				"&c\u25a0 &7Earn &c-50% &7gold from kills",
+				"",
+				"&7On Death:",
+				"&e\u25a0 &7Deal &c+" + getPostDamageIncrease() + "% &7damage to bots for",
+				"   &7the next &f" + Formatter.formatDurationMostSignificant(getPostDamageTicks() / 20) + " &7(non-stacking)"
 		);
 	}
 
@@ -92,18 +98,26 @@ public class Rampage extends Megastreak {
 	}
 
 	public static int getXPIncrease() {
-		return 50;
+		return 75;
 	}
 
 	public static int getMaxXPIncrease() {
 		return 50;
 	}
 
-	public static int getDamageIncrease() {
+	public static int getStreakDamageIncrease() {
 		return 10;
 	}
 
 	public static double getSelfVeryTrueDamage() {
 		return 0.2;
+	}
+
+	public static long getPostDamageIncrease() {
+		return 20;
+	}
+
+	public static long getPostDamageTicks() {
+		return 20 * 60 * 5;
 	}
 }
