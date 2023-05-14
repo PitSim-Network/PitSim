@@ -753,6 +753,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new FastPass());
 		UpgradeManager.registerUpgrade(new Celebrity());
 		UpgradeManager.registerUpgrade(new BreadDealer());
+		UpgradeManager.registerUpgrade(new HandOfGreed());
 	}
 
 	private void registerHelmetAbilities() {
@@ -894,11 +895,12 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new VeryYummyBread());
 		ItemFactory.registerItem(new Arrow());
 
-		ItemFactory.registerItem(new GoldenHelmet());
 		ItemFactory.registerItem(new SoulPickup());
 		ItemFactory.registerItem(new GoldPickup());
+		ItemFactory.registerItem(new GoldenHelmet());
 		ItemFactory.registerItem(new StaffCookie());
 		ItemFactory.registerItem(new TokenOfAppreciation());
+		ItemFactory.registerItem(new TheCakeIsALie());
 
 		ItemFactory.registerItem(new DiamondHelmet());
 		ItemFactory.registerItem(new DiamondChestplate());
@@ -919,8 +921,6 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new Charcoal());
 		ItemFactory.registerItem(new IronIngot());
 		ItemFactory.registerItem(new EnderPearl());
-
-		ItemFactory.registerItem(new TheCakeIsALie());
 
 		ItemFactory.registerItem(new Potion());
 	}

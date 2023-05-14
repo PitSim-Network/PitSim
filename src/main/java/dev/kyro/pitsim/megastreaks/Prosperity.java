@@ -7,8 +7,10 @@ import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.HandOfGreed;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +20,7 @@ public class Prosperity extends Megastreak {
 	public static Prosperity INSTANCE;
 
 	public Prosperity() {
-		super("&eProsperity", "prosperity", 50, 13, 50);
+		super("&eProsperity", "prosperity", 50, 35, 50);
 		INSTANCE = this;
 	}
 
@@ -71,9 +73,16 @@ public class Prosperity extends Megastreak {
 
 	@Override
 	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
+		int prosperityBonus = HandOfGreed.getGoldIncrease(pitPlayer.player);
 		loreBuilder.addLore(
 				"&7On Trigger:",
-				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills",
+				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills");
+		if(prosperityBonus != 0) loreBuilder.addLore(
+				"&a\u25a0 &e" + HandOfGreed.INSTANCE.name + "&7: Earn &6EXACTLY +&6" + Formatter.commaFormat.format(prosperityBonus) + "g",
+				"   &7from kills (ignores modifiers and",
+				"   &7gold cap)"
+		);
+		loreBuilder.addLore(
 				"",
 				"&7BUT:",
 				"&c\u25a0 &7If there are no bots in middle, &cDIE!",
@@ -81,7 +90,7 @@ public class Prosperity extends Megastreak {
 				"",
 				"&7At 1,000 Kills:",
 				"&a\u25a0 &7Gold on kill and gold cap is",
-				"   &7increased by &610x",
+				"   &7increased by &6" + getFinalGoldMultiplier() + "x",
 				"&c\u25a0 &7Bots do not respawn when you",
 				"   &7kill them"
 		);
@@ -94,5 +103,9 @@ public class Prosperity extends Megastreak {
 
 	public static int getGoldIncrease() {
 		return 100;
+	}
+
+	public static int getFinalGoldMultiplier() {
+		return 5;
 	}
 }

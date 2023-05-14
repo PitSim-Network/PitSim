@@ -18,7 +18,7 @@ public class Apostle extends Megastreak {
 	public static Apostle INSTANCE;
 
 	public Apostle() {
-		super("&3Apostle", "apostle", 100, 40, 120);
+		super("&3Apostle", "apostle", 100, 42, 120);
 		INSTANCE = this;
 	}
 
@@ -80,8 +80,9 @@ public class Apostle extends Megastreak {
 		loreBuilder.addLore(
 				"&7On Trigger:",
 				"&a\u25a0 &7Earn &b+" + getXPIncrease() + "% XP &7from kills");
-		if(pitPlayer.apostleBonus != 0)
-			loreBuilder.addLore("&a\u25a0 &7Gain &b+" + pitPlayer.apostleBonus + " max XP &7from kills");
+		if(pitPlayer.apostleBonus != 0) loreBuilder.addLore(
+				"&a\u25a0 &7Gain &b+" + pitPlayer.apostleBonus + " max XP &7from kills"
+		);
 		loreBuilder.addLore(
 				"",
 				"&7BUT:",

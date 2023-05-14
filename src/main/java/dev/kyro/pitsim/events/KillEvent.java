@@ -15,9 +15,11 @@ import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.KillType;
+import dev.kyro.pitsim.megastreaks.Prosperity;
 import dev.kyro.pitsim.misc.PlayerItemLocation;
 import dev.kyro.pitsim.misc.wrappers.WrapperPlayerInventory;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
+import dev.kyro.pitsim.upgrades.HandOfGreed;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -88,7 +90,7 @@ public class KillEvent extends Event {
 		if(isDeadRealPlayer) this.soulsLost = getBaseSouls(getDeadPitPlayer());
 
 		if(isDeadPlayer) deadInventoryWrapper = new WrapperPlayerInventory(getDeadPlayer());
-		 checkLoseLives();
+		checkLoseLives();
 	}
 
 	public int getFinalXp() {
@@ -114,6 +116,8 @@ public class KillEvent extends Event {
 		double postGoldCap = Math.min(goldReward, goldCap);
 		double altarMultiplier = DarkzoneLeveling.getReductionMultiplier(getKillerPitPlayer());
 		postGoldCap *= altarMultiplier;
+		if(getKillerPitPlayer().getMegastreak() instanceof Prosperity && getKillerPitPlayer().isOnMega())
+			postGoldCap += HandOfGreed.getGoldIncrease(getKillerPlayer());
 
 		return postGoldCap;
 	}
