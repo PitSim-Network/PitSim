@@ -1,21 +1,22 @@
 package dev.kyro.pitsim.commands;
 
-import dev.kyro.pitsim.inventories.PerkGUI;
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.storage.EnderchestGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class PerkCommand implements CommandExecutor {
+public class WardrobeCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
-		if(!player.isOp()) return false;
+		if(!player.isOp() && !PitSim.isDev()) return false;
 
-		PerkGUI perkGUI = new PerkGUI(player);
-		perkGUI.open();
+		EnderchestGUI enderchestGUI = new EnderchestGUI(player, player.getUniqueId());
+		enderchestGUI.enderchestPanel.openPanel(enderchestGUI.wardrobePanel);
 		return false;
 	}
 }

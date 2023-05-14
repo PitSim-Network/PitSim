@@ -591,7 +591,7 @@ public class PitSim extends JavaPlugin {
 
 		getCommand("fps").setExecutor(new FPSCommand());
 		getCommand("oof").setExecutor(new OofCommand());
-		getCommand("perks").setExecutor(new PerkCommand());
+		getCommand("perks").setExecutor(new PerksCommand());
 		getCommand("non").setExecutor(new NonCommand());
 		getCommand("enchant").setExecutor(new EnchantCommand());
 		getCommand("fresh").setExecutor(new FreshCommand());
@@ -633,6 +633,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("ineeddata").setExecutor(new ChatTriggerSubscribeCommand());
 		getCommand("givemedata").setExecutor(new ChatTriggerDataCommand());
 		getCommand("claim").setExecutor(new ClaimCommand());
+		getCommand("enderchest").setExecutor(new EnderchestCommand());
+		getCommand("wardrobe").setExecutor(new WardrobeCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
