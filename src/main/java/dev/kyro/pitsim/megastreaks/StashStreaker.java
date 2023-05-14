@@ -68,7 +68,7 @@ public class StashStreaker extends Megastreak {
 
 	@Override
 	public ItemStack getBaseDisplayStack(Player player) {
-		return new AItemStackBuilder(Material.DIAMOND_SWORD)
+		return new AItemStackBuilder(Material.CHAINMAIL_LEGGINGS)
 				.getItemStack();
 	}
 

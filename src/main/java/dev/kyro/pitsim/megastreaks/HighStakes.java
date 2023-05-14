@@ -69,8 +69,6 @@ public class HighStakes extends Megastreak {
 	public void reset(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.isOnMega()) return;
-
-//		TODO: Explode into gold ingots
 	}
 
 	@Override
@@ -80,7 +78,7 @@ public class HighStakes extends Megastreak {
 
 	@Override
 	public ItemStack getBaseDisplayStack(Player player) {
-		return new AItemStackBuilder(Material.GOLD_NUGGET)
+		return new AItemStackBuilder(Material.DIAMOND)
 				.getItemStack();
 	}
 
@@ -100,7 +98,8 @@ public class HighStakes extends Megastreak {
 				"&c\u25a0 &7Earn &c-50% &7xp from kills",
 				"",
 				"&7On Death:",
-				"&e\u25a0 &7Explode into a bunch of &6gold ingots"
+				"&e\u25a0 &7If &cbad luck &7killed you, explode",
+				"   &7into a bunch of &6gold ingots"
 		);
 	}
 

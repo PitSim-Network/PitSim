@@ -84,7 +84,7 @@ public class Rampage extends Megastreak {
 
 	@Override
 	public ItemStack getBaseDisplayStack(Player player) {
-		return new AItemStackBuilder(Material.WHEAT)
+		return new AItemStackBuilder(Material.IRON_AXE)
 				.getItemStack();
 	}
 

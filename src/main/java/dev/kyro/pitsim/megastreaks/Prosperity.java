@@ -1,9 +1,13 @@
 package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
+import dev.kyro.pitsim.commands.FPSCommand;
+import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
+import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -16,8 +20,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Prosperity extends Megastreak {
 	public static Prosperity INSTANCE;
+	public static Map<Player, List<Player>> hiddenBotMap = new HashMap<>();
 
 	public Prosperity() {
 		super("&eProsperity", "prosperity", 50, 35, 50);
@@ -25,24 +35,37 @@ public class Prosperity extends Megastreak {
 	}
 
 	@EventHandler
-	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!hasMegastreak(attackEvent.getDefenderPlayer())) return;
-		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
-		if(!pitPlayer.isOnMega()) return;
-		if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 0.15;
-		} else {
-			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 5 * 0.15;
-		}
+	public void onAttack(AttackEvent.Pre attackEvent) {
+		if(!attackEvent.isAttackerRealPlayer() || !attackEvent.isDefenderPlayer() ||
+				!hiddenBotMap.containsKey(attackEvent.getAttackerPlayer())) return;
+		List<Player> hiddenBotList = hiddenBotMap.get(attackEvent.getAttackerPlayer());
+		if(!hiddenBotList.contains(attackEvent.getDefenderPlayer())) return;
+		attackEvent.setCancelled(true);
+		AOutput.error(attackEvent.getAttackerPlayer(), "&c&lERROR!&7 You cannot attack players you cannot see!");
 	}
 
 	@EventHandler
 	public void kill(KillEvent killEvent) {
-		if(!hasMegastreak(killEvent.getKillerPlayer())) return;
+		if(!hasMegastreak(killEvent.getKillerPlayer()) || !killEvent.isDeadPlayer()) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
 		killEvent.goldMultipliers.add(1 + (getGoldIncrease() / 100.0));
 		killEvent.xpMultipliers.add(0.5);
+
+		if(pitPlayer.getKills() < 1000) return;
+		hiddenBotMap.putIfAbsent(pitPlayer.player, new ArrayList<>());
+		List<Player> hiddenBotList = hiddenBotMap.get(pitPlayer.player);
+		hiddenBotList.add(killEvent.getDeadPlayer());
+		killEvent.getKillerPlayer().hidePlayer(killEvent.getDeadPlayer());
+		killEvent.goldMultipliers.add((double) getFinalGoldMultiplier());
+
+		boolean allNonsHidden = true;
+		for(Non non : NonManager.nons) {
+			if(hiddenBotList.contains(non.non)) continue;
+			allNonsHidden = false;
+			break;
+		}
+		if(allNonsHidden) DamageManager.killPlayer(killEvent.getKillerPlayer());
 	}
 
 	@Override
@@ -56,8 +79,9 @@ public class Prosperity extends Megastreak {
 
 	@Override
 	public void reset(Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(!pitPlayer.isOnMega()) return;
+		hiddenBotMap.remove(player);
+		if(FPSCommand.fpsActivePlayers.contains(player)) return;
+		for(Non non : NonManager.nons) player.showPlayer(non.non);
 	}
 
 	@Override
@@ -67,7 +91,7 @@ public class Prosperity extends Megastreak {
 
 	@Override
 	public ItemStack getBaseDisplayStack(Player player) {
-		return new AItemStackBuilder(Material.GOLD_INGOT)
+		return new AItemStackBuilder(Material.SPECKLED_MELON)
 				.getItemStack();
 	}
 

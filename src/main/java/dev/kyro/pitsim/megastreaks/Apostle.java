@@ -71,7 +71,7 @@ public class Apostle extends Megastreak {
 
 	@Override
 	public ItemStack getBaseDisplayStack(Player player) {
-		return new AItemStackBuilder(Material.INK_SACK, 1, 12)
+		return new AItemStackBuilder(Material.STEP, 1, 7)
 				.getItemStack();
 	}
 
