@@ -76,16 +76,14 @@ public class StashStreaker extends Megastreak {
 	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
-				"&a\u25a0 &7Earn &b+100% XP &7from kills",
-				"&a\u25a0 &7Gain &b+130 max XP &7from kills",
+				"&a\u25a0 &7Gain access to /ec while not",
+				"   &7in combat",
 				"",
 				"&7BUT:",
-				"&c\u25a0 &7Receive &c+0.15% &7damage per kill over 50",
-				"&7(5x damage from bots)",
-				"&c\u25a0 &7Earn &c-50% &7gold from kills",
+				"&c\u25a0 &7You cannot attack bots",
 				"",
 				"&7On Death:",
-				"&e\u25a0 &7Earn between &b1000 &7and &b5000 XP&7"
+				"&e\u25a0 &7Protects your inventory"
 		);
 	}
 

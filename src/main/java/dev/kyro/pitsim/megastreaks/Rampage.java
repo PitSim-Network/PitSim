@@ -1,6 +1,8 @@
 package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
+import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -15,16 +17,29 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Rampage extends Megastreak {
 	public static Rampage INSTANCE;
+	private static final Map<Player, Long> damageIncreaseMap = new HashMap<>();
 
 	public Rampage() {
 		super("&9Rampage", "rampage", 50, 5, 0);
 		INSTANCE = this;
 	}
 
+	public static void giveDamageIncrease(Player player) {
+		damageIncreaseMap.put(player, PitSim.currentTick);
+	}
+
+	public static boolean hasDamageIncrease(Player player) {
+		return damageIncreaseMap.getOrDefault(player, Long.MIN_VALUE) + getPostDamageTicks() > PitSim.currentTick;
+	}
+
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
+		if(hasDamageIncrease(attackEvent.getAttackerPlayer())) attackEvent.increasePercent += getPostDamageIncrease();
 		if(!hasMegastreak(attackEvent.getAttackerPlayer())) return;
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
@@ -57,7 +72,9 @@ public class Rampage extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		if(!pitPlayer.isOnMega()) return;
 
-//		TODO: Increase damage vs bots for time
+		giveDamageIncrease(player);
+		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Damage vs bots increased by &c+" +
+						getPostDamageIncrease() + "% &7for &f" + Formatter.formatDurationMostSignificant(getPostDamageTicks() / 20) + "&7!");
 	}
 
 	@Override
