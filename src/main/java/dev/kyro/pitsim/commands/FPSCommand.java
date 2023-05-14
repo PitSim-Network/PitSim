@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FPSCommand implements CommandExecutor {
-	public static List<Player> fpsPlayers = new ArrayList<>();
-	public static List<Player> affectedPlayers = new ArrayList<>();
+	public static List<Player> fpsToggledPlayers = new ArrayList<>();
+	public static List<Player> fpsActivePlayers = new ArrayList<>();
 	public static double nonHideRadius = 15;
 	public static double playerHideRadius = 8;
 
@@ -34,7 +34,7 @@ public class FPSCommand implements CommandExecutor {
 						Location mid = MapManager.currentMap.getMid();
 						double y = MapManager.currentMap.getY();
 
-						if(!fpsPlayers.contains(onlinePlayer)) continue;
+						if(!fpsToggledPlayers.contains(onlinePlayer)) continue;
 						if(MapManager.currentMap.world != world) continue;
 						Location playerLoc = onlinePlayer.getLocation();
 						playerLoc.setY(y);
@@ -60,7 +60,7 @@ public class FPSCommand implements CommandExecutor {
 	}
 
 	public static void hideMid(Player player) {
-		boolean alreadyHidden = affectedPlayers.contains(player);
+		boolean alreadyHidden = fpsActivePlayers.contains(player);
 		if(!alreadyHidden) for(Non non : NonManager.nons) player.hidePlayer(non.non);
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(onlinePlayer.getWorld() != player.getWorld()) continue;
@@ -70,23 +70,23 @@ public class FPSCommand implements CommandExecutor {
 				continue;
 			player.hidePlayer(onlinePlayer);
 		}
-		if(!alreadyHidden) affectedPlayers.add(player);
+		if(!alreadyHidden) fpsActivePlayers.add(player);
 	}
 
 	public static void showMid(Player player) {
-		boolean wasHidden = affectedPlayers.contains(player);
+		boolean wasHidden = fpsActivePlayers.contains(player);
 		if(wasHidden) {
 			for(Non non : NonManager.nons) player.showPlayer(non.non);
-			affectedPlayers.remove(player);
+			fpsActivePlayers.remove(player);
 		}
 	}
 
 	public static void hideNewNon(Non non) {
-		for(Player affectedPlayer : FPSCommand.affectedPlayers) if(non.non != null) affectedPlayer.hidePlayer(non.non);
+		for(Player affectedPlayer : fpsActivePlayers) if(non.non != null) affectedPlayer.hidePlayer(non.non);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Player affectedPlayer : FPSCommand.affectedPlayers)
+				for(Player affectedPlayer : fpsActivePlayers)
 					if(non.non != null) affectedPlayer.hidePlayer(non.non);
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
@@ -98,16 +98,16 @@ public class FPSCommand implements CommandExecutor {
 		if(!(sender instanceof Player)) return false;
 		Player player = (Player) sender;
 
-		if(fpsPlayers.contains(player)) {
+		if(fpsToggledPlayers.contains(player)) {
 			for(Non non : NonManager.nons) player.showPlayer(non.non);
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) player.showPlayer(onlinePlayer);
 			AOutput.send(player, "Nons now visible");
-			fpsPlayers.remove(player);
-			affectedPlayers.remove(player);
+			fpsToggledPlayers.remove(player);
+			fpsActivePlayers.remove(player);
 			return false;
 		} else {
 			AOutput.send(player, "Nons now hidden");
-			fpsPlayers.add(player);
+			fpsToggledPlayers.add(player);
 			return false;
 		}
 	}

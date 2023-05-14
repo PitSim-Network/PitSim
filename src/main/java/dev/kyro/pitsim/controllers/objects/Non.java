@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Non {
-
 	public NPC npc;
 	public Player non;
 	public Player target;
