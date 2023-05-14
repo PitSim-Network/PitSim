@@ -112,8 +112,8 @@ public class PlayerManager implements Listener {
 	//						if(nearbyEntity.getWorld() == Bukkit.getWorld("tutorial")) continue;
 							if(!(nearbyEntity instanceof Player)) continue;
 							Player nearby = (Player) nearbyEntity;
-							if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby)) continue;
-							if(nearby.getLocation().distance(player.getLocation()) > 4) continue;
+							if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby) ||
+									nearby.getLocation().distance(player.getLocation()) > 4 || !player.canSee(nearby)) continue;
 							nearbyNons.add(nearby);
 						}
 						if(!nearbyNons.isEmpty()) {

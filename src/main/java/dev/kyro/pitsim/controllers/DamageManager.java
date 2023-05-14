@@ -569,7 +569,7 @@ public class DamageManager implements Listener {
 			killerNon.rewardKill();
 		}
 
-		DecimalFormat df = new DecimalFormat("##0.##");
+		DecimalFormat df = new DecimalFormat("#,##0.##");
 		String kill = null;
 		if(deadMob != null) {
 			kill = "&a&lKILL!&7 on " + deadMob.getDisplayName();

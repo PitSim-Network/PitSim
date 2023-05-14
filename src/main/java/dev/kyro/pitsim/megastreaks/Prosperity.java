@@ -58,6 +58,7 @@ public class Prosperity extends Megastreak {
 		hiddenBotList.add(killEvent.getDeadPlayer());
 		killEvent.getKillerPlayer().hidePlayer(killEvent.getDeadPlayer());
 		killEvent.goldMultipliers.add((double) getFinalGoldMultiplier());
+		killEvent.goldCap *= getFinalGoldMultiplier();
 
 		boolean allNonsHidden = true;
 		for(Non non : NonManager.nons) {
