@@ -2,16 +2,15 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.KillType;
-import dev.kyro.pitsim.events.*;
+import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.events.PitQuitEvent;
+import dev.kyro.pitsim.events.PlayerSpawnCommandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -72,25 +71,8 @@ public class CombatManager implements Listener {
 		if(NonManager.getNon(event.getPlayer()) != null) return;
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		UUID attackerUUID = pitPlayer.lastHitUUID;
-		if(isInCombat(player) || pitPlayer.isOnMega()) {
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
-
-					Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
-					Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-					EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-					AttackEvent attackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
-
-					DamageManager.kill(attackEvent, onlinePlayer, player, KillType.KILL);
-					return;
-				}
-			}
-			DamageManager.death(player);
-		}
-		if(player.getWorld() == MapManager.getDarkzone() && !SpawnManager.isInSpawn(player)) {
-			DamageManager.death(player);
-		}
+		if(isInCombat(player) || pitPlayer.isOnMega()) DamageManager.killPlayer(player);
+		if(player.getWorld() == MapManager.getDarkzone() && !SpawnManager.isInSpawn(player)) DamageManager.killPlayer(player);
 	}
 
 	@EventHandler

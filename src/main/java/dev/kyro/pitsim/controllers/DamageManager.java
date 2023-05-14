@@ -132,7 +132,7 @@ public class DamageManager implements Listener {
 		Player player = (Player) event.getEntity();
 		if(event.getFinalDamage() >= player.getHealth()) {
 			event.setCancelled(true);
-			death(player);
+			killPlayer(player);
 		}
 	}
 
@@ -422,7 +422,7 @@ public class DamageManager implements Listener {
 			if(Persephone.shouldPreventDeath(attackEvent.getDefenderPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
 				attackEvent.setCancelled(true);
-				kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
+				handleKill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
 				return 0;
 			} else {
 				attackEvent.getDefender().setHealth(Math.max(finalHealth, 0));
@@ -434,7 +434,7 @@ public class DamageManager implements Listener {
 			if(Persephone.shouldPreventDeath(attackEvent.getAttackerPlayer())) finalHealth = Math.max(finalHealth, 1);
 			if(finalHealth <= 0) {
 				attackEvent.setCancelled(true);
-				kill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), KillType.KILL);
+				handleKill(attackEvent, attackEvent.getDefender(), attackEvent.getAttacker(), KillType.KILL);
 				return 0;
 			} else {
 				attackEvent.getAttacker().setHealth(Math.max(finalHealth, 0));
@@ -458,9 +458,9 @@ public class DamageManager implements Listener {
 				attackEvent.setCancelled(true);
 				boolean exeDeath = finalDamage < attackEvent.getDefender().getHealth();
 				if(exeDeath) {
-					kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL, KillModifier.EXECUTION);
+					handleKill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL, KillModifier.EXECUTION);
 				} else {
-					kill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
+					handleKill(attackEvent, attackEvent.getAttacker(), attackEvent.getDefender(), KillType.KILL);
 				}
 			}
 		} else {
@@ -476,7 +476,7 @@ public class DamageManager implements Listener {
 		return null;
 	}
 
-	public static void kill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillType killType, KillModifier... killModifiers) {
+	public static void handleKill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillType killType, KillModifier... killModifiers) {
 		boolean killerIsPlayer = killer instanceof Player;
 		boolean deadIsPlayer = dead instanceof Player;
 		Player killerPlayer = killerIsPlayer ? (Player) killer : null;
@@ -680,11 +680,25 @@ public class DamageManager implements Listener {
 		return Arrays.asList(killModifiers).contains(killModifier);
 	}
 
-	public static void death(LivingEntity dead, KillModifier... killModifiers) {
-		kill(null, null, dead, KillType.DEATH, killModifiers);
+	public static void killPlayer(Player player, KillModifier... killModifiers) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		UUID attackerUUID = pitPlayer.lastHitUUID;
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
+
+				Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
+				Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+				EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
+				AttackEvent attackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
+
+				DamageManager.handleKill(attackEvent, onlinePlayer, player, KillType.KILL);
+				return;
+			}
+		}
+		handleKill(null, null, player, KillType.DEATH, killModifiers);
 	}
 
 	public static void fakeKill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillModifier... killModifiers) {
-		kill(attackEvent, killer, dead, KillType.FAKE_KILL, killModifiers);
+		handleKill(attackEvent, killer, dead, KillType.FAKE_KILL, killModifiers);
 	}
 }

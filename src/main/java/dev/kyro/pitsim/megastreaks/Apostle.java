@@ -66,7 +66,7 @@ public class Apostle extends Megastreak {
 
 	@Override
 	public String getPrefix(Player player) {
-		return "&3&lAPSTLE";
+		return "&3&lAPSTL";
 	}
 
 	@Override

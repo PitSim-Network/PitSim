@@ -5,11 +5,13 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
-import dev.kyro.pitsim.controllers.*;
+import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.EnchantManager;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
@@ -22,7 +24,10 @@ import dev.kyro.pitsim.misc.particles.HomeParticle;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -219,19 +224,7 @@ public class RNGesus extends Megastreak {
 					} else if(player.getHealth() > 1) {
 						player.setHealth(player.getHealth() - 1);
 					} else {
-						UUID attackerUUID = pitPlayer.lastHitUUID;
-						for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-							if(onlinePlayer.getUniqueId().equals(attackerUUID)) {
-								Map<PitEnchant, Integer> attackerEnchant = new HashMap<>();
-								Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-								EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(onlinePlayer, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
-								AttackEvent attackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
-
-								DamageManager.kill(attackEvent, onlinePlayer, player, KillType.KILL);
-								return;
-							}
-						}
-						DamageManager.death(player);
+						DamageManager.killPlayer(player);
 					}
 				}
 			}

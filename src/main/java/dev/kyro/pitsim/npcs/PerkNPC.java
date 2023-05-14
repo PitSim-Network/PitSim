@@ -38,8 +38,8 @@ public class PerkNPC extends PitNPC {
 	@Override
 	public void onClick(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.isOnMega()) {
-			AOutput.error(player, "&c&lERROR!&7 You cannot use this command while on a megastreak!");
+		if(pitPlayer.isOnMega() && !player.isOp()) {
+			AOutput.error(player, "&c&lERROR!&7 You cannot use this while on a megastreak!");
 			return;
 		}
 

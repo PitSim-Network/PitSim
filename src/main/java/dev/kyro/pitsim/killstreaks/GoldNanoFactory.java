@@ -2,23 +2,16 @@ package dev.kyro.pitsim.killstreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.aitems.misc.GoldPickup;
 import dev.kyro.pitsim.controllers.ItemFactory;
-import dev.kyro.pitsim.controllers.LevelManager;
-import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.misc.Misc;
-import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,29 +29,6 @@ public class GoldNanoFactory extends Killstreak {
 		if(rewardPlayers.containsKey(player)) {
 			rewardPlayers.put(player, rewardPlayers.get(player) + 1);
 		} else rewardPlayers.put(player, 1);
-	}
-
-	@EventHandler
-	public void onPickup(PlayerPickupItemEvent event) {
-		Player player = event.getPlayer();
-		if(NonManager.getNon(player) != null) return;
-		if(event.getItem().getItemStack().getType() == Material.GOLD_INGOT) {
-			event.setCancelled(true);
-			event.getItem().remove();
-
-			LevelManager.addGold(player, GoldPickup.getPickupGold());
-			Misc.applyPotionEffect(player, PotionEffectType.REGENERATION, 20 * GoldPickup.getRegenSeconds(), 3, true, false);
-
-			if(Killstreak.hasKillstreak(player, this)) {
-				if(rewardPlayers.containsKey(player)) {
-					rewardPlayers.put(player, rewardPlayers.get(player) + 1);
-				} else rewardPlayers.put(player, 1);
-				AOutput.send(player, "&6&lGOLD PICKUP!&7 Gain &6+123g&7. &6+25% gold &7on your next kill.");
-			} else {
-				AOutput.send(player, "&6&lGOLD PICKUP!&7 Gain &6+123g&7");
-			}
-			Sounds.SUCCESS.play(player);
-		}
 	}
 
 	@EventHandler

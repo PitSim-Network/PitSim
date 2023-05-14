@@ -66,10 +66,10 @@ public class Shockwave extends Killstreak {
 			if(non.getWorld() != player.getWorld()) continue;
 			double distance = non.getLocation().distance(player.getLocation());
 			if(distance < 2.5 && count < 15) {
-				DamageManager.kill(attackEvent, player, non, KillType.KILL);
+				DamageManager.handleKill(attackEvent, player, non, KillType.KILL);
 				count++;
 				if(distance < 2) {
-					DamageManager.kill(attackEvent, player, non, KillType.KILL);
+					DamageManager.handleKill(attackEvent, player, non, KillType.KILL);
 					count++;
 				}
 			} else {

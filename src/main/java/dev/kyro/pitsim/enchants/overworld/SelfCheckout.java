@@ -74,7 +74,7 @@ public class SelfCheckout extends PitEnchant {
 
 		AOutput.send(killEvent.getKillerPlayer(), "&9&lSCO!&7 Self-Checkout pants activated giving &e" +
 				Formatter.formatRenown(getRenown()));
-		DamageManager.death(killEvent.getKiller(), KillModifier.SELF_CHECKOUT);
+		DamageManager.killPlayer(killEvent.getKillerPlayer(), KillModifier.SELF_CHECKOUT);
 	}
 
 	@Override

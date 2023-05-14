@@ -60,7 +60,7 @@ public class Prosperity extends Megastreak {
 
 	@Override
 	public String getPrefix(Player player) {
-		return "&e&lPRSPTY";
+		return "&e&lPROSP";
 	}
 
 	@Override

@@ -4,17 +4,22 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.aitems.misc.GoldPickup;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
-import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.DamageManager;
+import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Formatter;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 public class HighStakes extends Megastreak {
 	public static HighStakes INSTANCE;
@@ -24,16 +29,18 @@ public class HighStakes extends Megastreak {
 		INSTANCE = this;
 	}
 
+	public static void spawnIngot(Player player, double multiplier) {
+		Location spawnLoc = player.getLocation().add(Misc.randomOffset(1), Misc.randomOffsetPositive(1), Misc.randomOffset(1));
+		Item item = spawnLoc.getWorld().dropItem(spawnLoc, ItemFactory.getItem(GoldPickup.class).getItem(GoldPickup.getPickupGold()));
+		item.setVelocity(new Vector(Misc.randomOffset(1), Misc.randomOffsetPositive(1.5), Misc.randomOffset(1)).multiply(multiplier));
+	}
+
 	@EventHandler
-	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!hasMegastreak(attackEvent.getDefenderPlayer())) return;
-		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
-		if(!pitPlayer.isOnMega()) return;
-		if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 0.15;
-		} else {
-			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 5 * 0.15;
-		}
+	public void onKill(KillEvent killEvent) {
+		if(!hasMegastreak(killEvent.getKillerPlayer())) return;
+		if(!killEvent.getKillerPitPlayer().isOnMega() || killEvent.getKillerPitPlayer().getKills() % getKillInterval() != 0) return;
+
+		for(int i = 0; i < getIngotCount(); i++) spawnIngot(killEvent.getDeadPlayer(), 0.7);
 	}
 
 	@EventHandler
@@ -43,6 +50,10 @@ public class HighStakes extends Megastreak {
 		if(!pitPlayer.isOnMega()) return;
 		killEvent.goldMultipliers.add(1 + (getGoldIncrease() / 100.0));
 		killEvent.xpMultipliers.add(0.5);
+
+		if(Math.random() > 1.0 / getChanceToKill()) return;
+		for(int i = 0; i < getDeathIngotCount(); i++) spawnIngot(killEvent.getKillerPlayer(), 1);
+		DamageManager.killPlayer(killEvent.getKillerPlayer());
 	}
 
 	@Override
@@ -64,7 +75,7 @@ public class HighStakes extends Megastreak {
 
 	@Override
 	public String getPrefix(Player player) {
-		return "&2&lSTAKES";
+		return "&2&lSTAKE";
 	}
 
 	@Override
@@ -78,13 +89,13 @@ public class HighStakes extends Megastreak {
 		loreBuilder.addLore(
 				"&7On Trigger:",
 				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills",
-				"&a\u25a0 &7Every 17 kills, spawn",
-				"   &65 gold ingots&7. Picking them up",
+				"&a\u25a0 &7Every &c" + getKillInterval() + " kills&7, spawn",
+				"   &6" + getIngotCount() + " gold ingots&7. Picking them up",
 				"   &7grants &cRegen " + AUtil.toRoman(GoldPickup.getRegenAmplifier() + 1) +
 						" &7(" + GoldPickup.getRegenSeconds() + "s) and &6" + GoldPickup.getPickupGold() + "g",
 				"",
 				"&7BUT:",
-				"&c\u25a0 &7Have a &f1 &7in &f1,000 &7chance to &cDIE!",
+				"&c\u25a0 &7Have a &f1 &7in &f" + Formatter.commaFormat.format(getChanceToKill()) + " &7chance to &cDIE!",
 				"   &7on each bot kill",
 				"&c\u25a0 &7Earn &c-50% &7xp from kills",
 				"",
@@ -100,5 +111,21 @@ public class HighStakes extends Megastreak {
 
 	public static int getGoldIncrease() {
 		return 75;
+	}
+
+	public static int getIngotCount() {
+		return 5;
+	}
+
+	public static int getDeathIngotCount() {
+		return 20;
+	}
+
+	public static int getKillInterval() {
+		return 17;
+	}
+
+	public static int getChanceToKill() {
+		return 1000;
 	}
 }

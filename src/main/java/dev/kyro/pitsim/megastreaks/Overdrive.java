@@ -82,7 +82,7 @@ public class Overdrive extends Megastreak {
 
 	@Override
 	public String getPrefix(Player player) {
-		return "&c&lOVRDRV";
+		return "&c&lOVRDV";
 	}
 
 	@Override

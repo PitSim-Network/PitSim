@@ -548,10 +548,10 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
 		if(event.getPlayer().getLocation().getY() < 10 && event.getPlayer().getWorld() == Bukkit.getWorld("tutorial"))
-			DamageManager.death(event.getPlayer());
+			DamageManager.killPlayer(event.getPlayer());
 		else if(event.getPlayer().getLocation().getY() < 10 && (MapManager.getDarkzone() == event.getPlayer().getWorld() || MapManager.currentMap.world == event.getPlayer().getWorld())) {
-			DamageManager.death(event.getPlayer());
-		} else if(event.getPlayer().getLocation().getY() < 10) DamageManager.death(event.getPlayer());
+			DamageManager.killPlayer(event.getPlayer());
+		} else if(event.getPlayer().getLocation().getY() < 10) DamageManager.killPlayer(event.getPlayer());
 	}
 
 	@EventHandler
