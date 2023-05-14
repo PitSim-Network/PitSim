@@ -36,7 +36,7 @@ public class KnowledgePedestal extends AltarPedestal {
 				.setName("&3Pedestal of Knowledge")
 				.setLore(new ALoreBuilder(
 						"&7This pedestal increases your",
-						"&7chance of gaining &cAltar XP&7.",
+						"&7chance of gaining &cAltar XP",
 						"",
 						"&7Activation Cost: &f" + getActivationCost() + " Souls",
 						"&7Status: " + getStatus(player)
