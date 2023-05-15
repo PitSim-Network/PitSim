@@ -583,6 +583,7 @@ public class PitSim extends JavaPlugin {
 		new SkillsCommand(betaCommand, "skills");
 		new AltarCommand(betaCommand, "altar");
 		new PrestigeCommand(betaCommand, "prestige");
+		new ApostleCommand(betaCommand, "apostle");
 		new MassEnchantCommand(betaCommand, "me");
 		new FastTravelCommand(betaCommand, "ft");
 

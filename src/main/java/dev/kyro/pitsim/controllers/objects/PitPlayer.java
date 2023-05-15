@@ -679,10 +679,17 @@ public class PitPlayer {
 		if(megastreak instanceof Uberstreak) {
 			List<Uberstreak.UberEffect> uberEffects = Uberstreak.getUberEffects(player);
 			if(uberEffects.contains(Uberstreak.UberEffect.LOSE_MAX_HEALTH)) maxHealth -= 4;
+		} else if(megastreak instanceof Apostle) {
+			maxHealth -= Apostle.getRemovedHealth(this);
 		}
 
-		if(Killstreak.hasKillstreak(player, "Monster") && Monster.healthMap.containsKey(player)) {
-			maxHealth += Monster.healthMap.get(player);
+		if(Killstreak.hasKillstreak(player, "Monster") && Monster.healthMap.containsKey(player)) maxHealth += Monster.healthMap.get(player);
+
+		if(maxHealth <= 0) {
+			DamageManager.killPlayer(player);
+			updateMaxHealth();
+			player.setHealth(player.getMaxHealth());
+			return;
 		}
 
 		if(player.getMaxHealth() == maxHealth) return;

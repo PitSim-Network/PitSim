@@ -22,9 +22,6 @@ import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.misc.particles.HomeParticle;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -199,23 +196,23 @@ public class RNGesus extends Megastreak {
 					switch(rngesusInfo.reality) {
 						case NONE:
 							String realityString = Misc.distortMessage("Reality appears normal", 0.2);
-							sendActionBar(player, "&7" + realityString);
+							Misc.sendActionBar(player, "&7" + realityString);
 							break;
 						case XP:
 							double xp = rngesusInfo.realityMap.get(Reality.XP).progression;
-							sendActionBar(player, "&bXP: " + decimalFormat.format(xp));
+							Misc.sendActionBar(player, "&bXP: " + decimalFormat.format(xp));
 							break;
 						case GOLD:
 							double gold = rngesusInfo.realityMap.get(Reality.GOLD).progression;
-							sendActionBar(player, "&6Gold: " + decimalFormat.format(gold));
+							Misc.sendActionBar(player, "&6Gold: " + decimalFormat.format(gold));
 							break;
 						case DAMAGE:
 							double damage = rngesusInfo.realityMap.get(Reality.DAMAGE).progression;
-							sendActionBar(player, "&cDamage: " + decimalFormat.format(damage));
+							Misc.sendActionBar(player, "&cDamage: " + decimalFormat.format(damage));
 							break;
 						case ABSORPTION:
 							double absorption = rngesusInfo.realityMap.get(Reality.ABSORPTION).progression;
-							sendActionBar(player, "&9True Damage: " + decimalFormat.format(absorption));
+							Misc.sendActionBar(player, "&9True Damage: " + decimalFormat.format(absorption));
 					}
 				} else {
 					EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
@@ -319,12 +316,6 @@ public class RNGesus extends Megastreak {
 
 	public float getAbsorption(double progression) {
 		return (float) progression;
-	}
-
-	public static void sendActionBar(Player player, String message) {
-		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
-				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);
-		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 
 	public static boolean isOnCooldown(PitPlayer pitPlayer) {

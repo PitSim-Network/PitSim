@@ -512,6 +512,12 @@ public class DamageManager implements Listener {
 
 		if(killType != KillType.FAKE_KILL) {
 			dead.setHealth(dead.getMaxHealth());
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					dead.setHealth(dead.getMaxHealth());
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1L);
 			dead.playEffect(EntityEffect.HURT);
 			Sounds.DEATH_FALL.play(dead);
 			Sounds.DEATH_FALL.play(dead);

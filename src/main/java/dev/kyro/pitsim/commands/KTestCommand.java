@@ -1,9 +1,13 @@
 package dev.kyro.pitsim.commands;
 
 import de.tr7zw.nbtapi.NBTItem;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import dev.kyro.pitsim.controllers.PrestigeValues;
+import dev.kyro.pitsim.controllers.UpgradeManager;
+import dev.kyro.pitsim.controllers.objects.RenownUpgrade;
 import dev.kyro.pitsim.enums.NBTTag;
-import dev.kyro.pitsim.storage.EnderchestGUI;
+import dev.kyro.pitsim.misc.Formatter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -25,6 +29,27 @@ public class KTestCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if(!(sender instanceof Player)) return false;
+		Player player = (Player) sender;
+		if(!player.isOp()) return false;
+
+		for(int i = 1; i <= 60; i++) {
+			int renown = 0;
+			for(int j = 0; j < i; j++) renown += PrestigeValues.getPrestigeInfo(j).getRenownReward();
+			int shopRenown = 0;
+			for(RenownUpgrade upgrade : UpgradeManager.upgrades) {
+				if(upgrade.prestigeReq > i) continue;
+				if(upgrade.isTiered()) {
+					shopRenown += upgrade.getTierCosts().stream().mapToInt(Integer::intValue).sum();
+				} else {
+					shopRenown += upgrade.getUnlockCost();
+				}
+			}
+			AOutput.broadcast("&7Prestige: " + i + ", Renown: &e" + Formatter.commaFormat.format(renown) + "&7, Shop: &e" +
+					Formatter.commaFormat.format(shopRenown) + "&7, Ratio: &e" + Formatter.commaFormat.format((double) renown * 100 / shopRenown) + "%");
+		}
+		return false;
+	}
 
 //		for(PitEnchant pitEnchant : EnchantManager.pitEnchants) {
 //			System.out.println(pitEnchant.name.toUpperCase().replaceAll(" ", "_")
@@ -35,13 +60,6 @@ public class KTestCommand implements CommandExecutor {
 //					.replaceAll("-", "") + "\", \"" + pitEnchant.refNames.get(0) + "\", " + pitEnchant.isRare + ", " +
 //					pitEnchant.isUncommonEnchant + ", " + pitEnchant.isTainted + "),");
 //		}
-
-		if(!(sender instanceof Player)) return false;
-		Player player = (Player) sender;
-		if(!player.isOp()) return false;
-
-		EnderchestGUI enderchestGUI = new EnderchestGUI(player, player.getUniqueId());
-		enderchestGUI.wardrobePanel.openPanel(enderchestGUI.wardrobePanel);
 
 //		for(Block block : getNearbyBlocks(player.getLocation(), 100)) {
 //			Block blockBelow = block.getRelative(0, -1, 0);
@@ -64,21 +82,6 @@ public class KTestCommand implements CommandExecutor {
 //				}
 //			}.runTaskLater(PitSim.INSTANCE, new Random().nextInt(30 * 20));
 //		}
-
-//		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-//		ItemStack itemStack = player.getItemInHand();
-//		NBTItem nbtItem = new NBTItem(itemStack);
-//
-//		String string = CraftItemStack.asNMSCopy(itemStack).getTag().toString();
-//		System.out.println(string);
-//		player.sendMessage(ChatColor.stripColor(string));
-//
-//		MysticSword pitItem = ItemFactory.getItem(MysticSword.class);
-//		ItemStack newStack = pitItem.getReplacementItem(pitPlayer, itemStack, nbtItem);
-//		pitItem.updateItem(newStack);
-//		player.getInventory().addItem(newStack);
-		return false;
-	}
 
 	public static List<Block> getNearbyBlocks(Location location, int radius) {
 		List<Block> blocks = new ArrayList<>();

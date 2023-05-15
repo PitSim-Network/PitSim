@@ -26,9 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShardHunterPanel extends AGUIPanel {
-
-	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-	RenownUpgrade upgrade = null;
+	public PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+	public RenownUpgrade upgrade = null;
 	public RenownShopGUI renownShopGUI;
 
 	public ShardHunterPanel(AGUI gui) {

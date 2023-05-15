@@ -3,6 +3,7 @@ package dev.kyro.pitsim.controllers;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
+import dev.kyro.pitsim.megastreaks.Apostle;
 import dev.kyro.pitsim.megastreaks.RNGesus;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
@@ -47,8 +48,8 @@ public class ActionBarManager implements Listener {
 		}
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		if(pitPlayer.getMegastreak() instanceof RNGesus && pitPlayer.getKills() < RNGesus.INSTABILITY_THRESHOLD && pitPlayer.isOnMega())
-			return;
+		if(pitPlayer.getMegastreak() instanceof RNGesus && pitPlayer.getKills() < RNGesus.INSTABILITY_THRESHOLD && pitPlayer.isOnMega()) return;
+		if(pitPlayer.getMegastreak() instanceof Apostle && pitPlayer.isOnMega()) return;
 
 		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
 				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);
@@ -57,11 +58,11 @@ public class ActionBarManager implements Listener {
 
 //	controls the amount of ticks that the action bar is locked from displaying low priority messages
 	public enum LockTime {
-	SHORT_TIME(30), // time that action bar message is opaque
-	FULL_OPACITY_TIME(2 * 20), // time that action bar message is opaque
-	FULL_TIME(3 * 20), // time it takes until action bar message has fully faded out
-	EXTRA_TIME(4 * 20), // fade + 1 second
-	EXTRA_EXTRA_TIME(5 * 20); // fade + 2 seconds
+		SHORT_TIME(30), // time that action bar message is opaque
+		FULL_OPACITY_TIME(2 * 20), // time that action bar message is opaque
+		FULL_TIME(3 * 20), // time it takes until action bar message has fully faded out
+		EXTRA_TIME(4 * 20), // fade + 1 second
+		EXTRA_EXTRA_TIME(5 * 20); // fade + 2 seconds
 
 		public int lockedTicks;
 

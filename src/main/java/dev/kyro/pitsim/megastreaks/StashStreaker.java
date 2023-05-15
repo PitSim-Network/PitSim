@@ -2,10 +2,8 @@ package dev.kyro.pitsim.megastreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
-import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
@@ -20,18 +18,6 @@ public class StashStreaker extends Megastreak {
 	public StashStreaker() {
 		super("&8Stash Streaker", "stashstreaker", 100, 13, 50);
 		INSTANCE = this;
-	}
-
-	@EventHandler
-	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!hasMegastreak(attackEvent.getDefenderPlayer())) return;
-		PitPlayer pitPlayer = attackEvent.getDefenderPitPlayer();
-		if(!pitPlayer.isOnMega()) return;
-		if(NonManager.getNon(attackEvent.getAttacker()) == null) {
-			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 0.15;
-		} else {
-			attackEvent.increasePercent += (pitPlayer.getKills() - 50) * 5 * 0.15;
-		}
 	}
 
 	@EventHandler

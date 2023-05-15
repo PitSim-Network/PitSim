@@ -93,7 +93,7 @@ public class ToTheMoon extends Megastreak {
 			if(capIncrease > 0) {
 				pitPlayer.moonBonus += capIncrease;
 				AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Gained &b+" + capIncrease +
-						" max XP &7until you prestige! (" + pitPlayer.moonBonus + "/50)");
+						" max XP &7until you prestige! (&b" + pitPlayer.moonBonus + "&7/&b50&7)");
 			}
 		}
 	}
@@ -128,7 +128,7 @@ public class ToTheMoon extends Megastreak {
 				"",
 				"&7On Death:",
 				"&e\u25a0 &7Earn a permanent &b+5 max XP",
-				"&7until you prestige (50 max) if",
+				"&7until you prestige (&b" + pitPlayer.moonBonus + "&7/&b50&7) if",
 				"&7your streak is at least 700"
 		);
 	}

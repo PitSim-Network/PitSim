@@ -34,6 +34,7 @@ import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.DoubleDeath;
 import dev.kyro.pitsim.upgrades.VentureCapitalist;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -189,7 +190,7 @@ public class Uberstreak extends Megastreak {
 		if(pitPlayer.dailyUbersLeft == 0) pitPlayer.setMegastreak(NoMegastreak.INSTANCE);
 
 		Uberdrop uberdrop = Uberdrop.getRandom();
-		uberdrop.give(pitPlayer);
+		for(int i = 0; i < (DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player) ? 2 : 1); i++) uberdrop.give(pitPlayer);
 
 		pitPlayer.stats.ubersCompleted++;
 		CompleteUbersQuest.INSTANCE.onUberComplete(pitPlayer);
@@ -244,7 +245,7 @@ public class Uberstreak extends Megastreak {
 				"&a\u25a0 &d" + decimalFormat.format(SHARD_MULTIPLIER) + "x &7chance to find &aAncient Gem Shards",
 				"",
 				"&7BUT:",
-				"&c\u25a0 &7Deal &c-50% &7damage to nons",
+				"&c\u25a0 &7Deal &c-50% &7damage to bots",
 				"",
 				"&7During the Streak:",
 				"&d\u25a0 &7200 kills: Random &dbuff &7or &cdebuff",
@@ -328,7 +329,6 @@ public class Uberstreak extends Megastreak {
 
 		public void give(PitPlayer pitPlayer) {
 			Player player = pitPlayer.player;
-			String displayName = Misc.getDisplayName(player);
 			ItemStack displayStack = null;
 			if(this == JEWEL_SWORD) {
 				ItemStack jewelSword = MysticFactory.getJewelItem(MysticType.SWORD);

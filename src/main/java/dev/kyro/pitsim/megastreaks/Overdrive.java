@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
@@ -76,7 +77,8 @@ public class Overdrive extends Megastreak {
 
 		int randomGold = Misc.intBetween(1000, 5000);
 		if(DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player)) randomGold = randomGold * 2;
-		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Earned &6+" + randomGold + "&6g &7from megastreak!");
+		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Earned &6+" + Formatter.decimalCommaFormat.format(randomGold) +
+				"&6g &7from megastreak!");
 		LevelManager.addGold(pitPlayer.player, randomGold);
 	}
 

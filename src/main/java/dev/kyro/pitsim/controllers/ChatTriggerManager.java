@@ -5,8 +5,11 @@ import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.ReallyToxic;
+import dev.kyro.pitsim.enums.PitEntityType;
+import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -22,16 +25,38 @@ public class ChatTriggerManager implements Listener {
 	private static final List<Player> subscribedPlayers = new ArrayList<>();
 	public static final Map<Player, Long> lastSendLevelData = new HashMap<>();
 
-	static {
-//		new BukkitRunnable() {
-//			@Override
-//			public void run() {
-//				for(Player player : getSubscribedPlayers()) {
-//					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-//					sendProgressionInfo(pitPlayer);
-//				}
-//			}
-//		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
+	@EventHandler
+	public void onAttack(AttackEvent.Post attackEvent) {
+		if(isSubscribed(attackEvent.getAttackerPlayer())) {
+			Map<String, Object> dataMap = new HashMap<>();
+
+			Map<String, Object> playerInfoMap = new HashMap<>();
+			PitEntityType entityType = Misc.getEntity(attackEvent.getDefender());
+			playerInfoMap.put("targetType", entityType);
+			if(entityType == PitEntityType.REAL_PLAYER) {
+				playerInfoMap.put("playerUsername", attackEvent.getDefenderPlayer().getName());
+				playerInfoMap.put("playerDisplayName", Misc.getDisplayName(attackEvent.getDefenderPlayer()));
+			}
+
+			dataMap.put("lastAttack", encodeMap(playerInfoMap));
+			sendData(attackEvent.getAttackerPlayer(), encodeMap(dataMap));
+		}
+
+
+		if(isSubscribed(attackEvent.getDefenderPlayer())) {
+			Map<String, Object> dataMap = new HashMap<>();
+
+			Map<String, Object> playerInfoMap = new HashMap<>();
+			PitEntityType entityType = Misc.getEntity(attackEvent.getAttacker());
+			playerInfoMap.put("targetType", entityType);
+			if(entityType == PitEntityType.REAL_PLAYER) {
+				playerInfoMap.put("playerUsername", attackEvent.getAttackerPlayer().getName());
+				playerInfoMap.put("playerDisplayName", Misc.getDisplayName(attackEvent.getAttackerPlayer()));
+			}
+
+			dataMap.put("lastDefence", encodeMap(playerInfoMap));
+			sendData(attackEvent.getDefenderPlayer(), encodeMap(dataMap));
+		}
 	}
 
 	@EventHandler
@@ -164,6 +189,7 @@ public class ChatTriggerManager implements Listener {
 	}
 
 	public static boolean isSubscribed(Player player) {
+		if(player == null) return false;
 		return subscribedPlayers.contains(player);
 	}
 
