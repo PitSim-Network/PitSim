@@ -50,6 +50,7 @@ public class StorageManager implements Listener {
 			if(profile.getUniqueID().equals(uuid)) return profile;
 		}
 
+		System.out.println("Creating new profile!");
 		StorageProfile profile = new StorageProfile(uuid);
 		profiles.add(profile);
 
@@ -84,10 +85,7 @@ public class StorageManager implements Listener {
 //			Misc.alertDiscord("@everyone " + player.getName() + " logged in to server " + PitSim.serverName + " with items in their inventory");
 //		}
 
-		player.setItemOnCursor(null);
-		player.getInventory().setContents(profile.getInventory());
-		player.getInventory().setArmorContents(profile.getArmor());
-		player.updateInventory();
+		profile.initializePlayerInventory(player);
 	}
 
 	public static void quitInitiate(Player player) {

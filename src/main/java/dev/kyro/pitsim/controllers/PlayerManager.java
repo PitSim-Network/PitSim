@@ -767,7 +767,6 @@ public class PlayerManager implements Listener {
 		Player player = event.getPlayer();
 		previousEquipmentMap.remove(player);
 		event.getEvent().setQuitMessage(null);
-		PlayerDataManager.exemptedPlayers.remove(player.getUniqueId());
 		XmasMap.removeFromRadio(player);
 		PitPlayer pitPlayer = event.getPitPlayer();
 		pitPlayer.endKillstreak();

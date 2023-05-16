@@ -11,13 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 public class PlayerDataManager implements Listener {
-
-	public static List<UUID> exemptedPlayers = new ArrayList<>();
 
 	static {
 		new BukkitRunnable() {
@@ -32,7 +26,7 @@ public class PlayerDataManager implements Listener {
 					}
 				}
 			}
-		}.runTaskTimer(PitSim.INSTANCE, 20L, 20);
+		}.runTaskTimer(PitSim.INSTANCE, 20 * 15L, 20);
 	}
 
 	@EventHandler

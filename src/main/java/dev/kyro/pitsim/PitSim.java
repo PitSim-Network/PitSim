@@ -158,7 +158,6 @@ public class PitSim extends JavaPlugin {
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PlayerManager.addRealPlayer(onlinePlayer.getUniqueId());
-			PlayerDataManager.exemptedPlayers.add(onlinePlayer.getUniqueId());
 
 			PitEquipment currentEquipment = new PitEquipment(onlinePlayer);
 			for(EquipmentType equipmentType : EquipmentType.values()) {
@@ -337,6 +336,8 @@ public class PitSim extends JavaPlugin {
 				List<PitCosmetic> activeCosmetics = CosmeticManager.getEquippedCosmetics(pitPlayer);
 				for(PitCosmetic activeCosmetic : activeCosmetics) activeCosmetic.disable(pitPlayer);
 			}
+
+			pitPlayer.save(true, true);
 		}
 
 		for(World world : Bukkit.getWorlds()) {

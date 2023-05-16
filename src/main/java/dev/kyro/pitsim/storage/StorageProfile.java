@@ -60,6 +60,14 @@ public class StorageProfile {
 		for(int i = 0; i < enderchestPages.length; i++) enderchestPages[i] = new EnderchestPage(this, message);
 		for(int i = 0; i < StorageManager.OUTFITS; i++) outfits[i] = new Outfit(this, message);
 		isLoaded = true;
+
+		Player player = getOnlinePlayer();
+		if(player == null || !player.isOnline()) return;
+		AOutput.log("Loading online data for " + player.getName());
+		AOutput.send(player, "&a&lYOUR PLAYERDATA HAS BEEN SUCCESSFULLY LOADED");
+		Sounds.BOOSTER_REMIND.play(player);
+
+		initializePlayerInventory(player);
 	}
 
 	public void saveData(boolean isLogout) {
@@ -88,7 +96,7 @@ public class StorageProfile {
 		for(Outfit outfit : outfits) outfit.writeData(message);
 
 		saving = true;
-		saveTask = new BukkitRunnable() {
+		saveTask = isLogout ? null : new BukkitRunnable() {
 			@Override
 			public void run() {
 				OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
@@ -260,4 +268,12 @@ public class StorageProfile {
 			if(saveTask != null) saveTask.cancel();
 		}
 	}
+
+	public void initializePlayerInventory(Player player) {
+		player.setItemOnCursor(null);
+		player.getInventory().setContents(getInventory());
+		player.getInventory().setArmorContents(getArmor());
+		player.updateInventory();
+	}
+
 }
