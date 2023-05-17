@@ -120,7 +120,7 @@ public class Rampage extends Megastreak {
 				"&c\u25a0 &7Earn &c-50% &7gold from kills",
 				"",
 				"&7On Death:",
-				"&e\u25a0 &7Deal &c+" + getPostDamageIncrease() + "% &7damage (stacking)t to bots",
+				"&e\u25a0 &7Deal &c+" + getPostDamageIncrease() + "% &7damage (stacking) to bots",
 				"   &7for the next &f" + Formatter.formatDurationMostSignificant(getPostDamageTicks() / 20) + " &7while",
 				"   &7this streak is equipped"
 		);
