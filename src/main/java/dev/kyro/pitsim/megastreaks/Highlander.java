@@ -69,7 +69,7 @@ public class Highlander extends Megastreak {
 		if(!hasMegastreak(attackEvent.getAttackerPlayer())) return;
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(!pitPlayer.isOnMega() || NonManager.getNon(attackEvent.getDefender()) == null) return;
-		attackEvent.increasePercent += 25;
+		attackEvent.increasePercent += getDamageIncrease();
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class Highlander extends Megastreak {
 				"&7On Trigger:",
 				"&a\u25a0 &7Perma &eSpeed I&7",
 				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills",
-				"&a\u25a0 &7Deal &c+25% &7damage vs bots",
+				"&a\u25a0 &7Deal &c+" + getDamageIncrease() + "% &7damage vs bots",
 				"",
 				"&7BUT:",
 				"&c\u25a0 &7Heal &cless &7per kill over 200",
@@ -133,5 +133,9 @@ public class Highlander extends Megastreak {
 
 	public static int getGoldIncrease() {
 		return 110;
+	}
+
+	public static int getDamageIncrease() {
+		return 20;
 	}
 }

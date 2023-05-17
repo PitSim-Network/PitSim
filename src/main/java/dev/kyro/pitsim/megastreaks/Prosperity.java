@@ -69,6 +69,14 @@ public class Prosperity extends Megastreak {
 		if(allNonsHidden) DamageManager.killPlayer(killEvent.getKillerPlayer());
 	}
 
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!hasMegastreak(attackEvent.getAttackerPlayer())) return;
+		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
+		if(!pitPlayer.isOnMega() || NonManager.getNon(attackEvent.getDefender()) == null) return;
+		attackEvent.increasePercent += 25;
+	}
+
 	@Override
 	public void proc(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -101,7 +109,9 @@ public class Prosperity extends Megastreak {
 		int prosperityBonus = HandOfGreed.getGoldIncrease(pitPlayer.player);
 		loreBuilder.addLore(
 				"&7On Trigger:",
-				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills");
+				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills",
+				"&a\u25a0 &7Deal &c+" + getDamageIncrease() + "% &7damage vs bots"
+		);
 		if(prosperityBonus != 0) loreBuilder.addLore(
 				"&a\u25a0 &e" + HandOfGreed.INSTANCE.name + "&7: Earn &6EXACTLY +&6" + Formatter.commaFormat.format(prosperityBonus) + "g",
 				"   &7from kills (ignores modifiers and",
@@ -132,5 +142,9 @@ public class Prosperity extends Megastreak {
 
 	public static int getFinalGoldMultiplier() {
 		return 5;
+	}
+
+	public static int getDamageIncrease() {
+		return 25;
 	}
 }
