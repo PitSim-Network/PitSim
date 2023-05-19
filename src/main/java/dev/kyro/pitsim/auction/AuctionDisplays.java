@@ -202,6 +202,8 @@ public class AuctionDisplays implements Listener {
 
 	@EventHandler
 	public void onDespawn(ItemDespawnEvent event) {
+		if(!(event.getEntity() instanceof ArmorStand)) return;
+
 		for(UUID pedestalItem : pedestalItems) {
 			if(pedestalItem.equals(event.getEntity().getUniqueId())) event.setCancelled(true);
 		}
@@ -209,6 +211,7 @@ public class AuctionDisplays implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onAttack(AttackEvent.Pre event) {
+		if(!(event.getDefender() instanceof ArmorStand)) return;
 
 		List<UUID> stands = new ArrayList<>(Arrays.asList(pedestalArmorStands));
 		for(UUID armorStand : stands) {
@@ -218,6 +221,8 @@ public class AuctionDisplays implements Listener {
 
 	@EventHandler
 	public void onDamage(EntityDamageByEntityEvent event) {
+		if(!(event.getEntity() instanceof ArmorStand)) return;
+
 		for(UUID armorStand : pedestalArmorStands) {
 			if(armorStand.equals(event.getEntity().getUniqueId())) {
 				event.setCancelled(true);

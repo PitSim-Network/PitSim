@@ -5,8 +5,14 @@ import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.aitems.mobdrops.BlazeRod;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MobStatus;
+import dev.kyro.pitsim.misc.CustomPitBlaze;
+import dev.kyro.pitsim.misc.EntityManager;
+import net.minecraft.server.v1_8_R3.Chunk;
+import net.minecraft.server.v1_8_R3.EntityBlaze;
+import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
@@ -15,6 +21,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Random;
 
 public class PitBlaze extends PitMob {
@@ -75,12 +83,22 @@ public class PitBlaze extends PitMob {
 
 	@Override
 	public Creature createMob(Location spawnLocation) {
-		Blaze blaze = spawnLocation.getWorld().spawn(spawnLocation, Blaze.class);
-		blaze.setCustomNameVisible(false);
-		blaze.setRemoveWhenFarAway(false);
-		blaze.setCanPickupItems(false);
+		EntityManager.registerEntity("PitBlaze", 61, CustomPitBlaze.class);
 
-		return blaze;
+		World nmsWorld = ((CraftWorld) spawnLocation.getWorld()).getHandle();
+
+		CustomPitBlaze blaze = new CustomPitBlaze(nmsWorld);
+		blaze.setLocation(spawnLocation.getX(), spawnLocation.getY() + 5, spawnLocation.getZ(), 0, 0);
+
+		spawnEntity(blaze, spawnLocation);
+
+
+//		Blaze blaze = spawnLocation.getWorld().spawn(spawnLocation, Blaze.class);
+//		blaze.setCustomNameVisible(false);
+//		blaze.setRemoveWhenFarAway(false);
+//		blaze.setCanPickupItems(false);
+
+		return (Creature) blaze.getBukkitEntity();
 	}
 
 	@Override
@@ -123,5 +141,37 @@ public class PitBlaze extends PitMob {
 	public PitNameTag createNameTag() {
 		return new PitNameTag(this, PitNameTag.NameTagType.NAME_AND_HEALTH)
 				.addMob(PitNameTag.RidingType.SMALL_MAGMA_CUBE);
+	}
+
+	public void spawnEntity(EntityBlaze entityBlaze, Location location) {
+		World nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
+
+		Chunk chunk = nmsWorld.getChunkIfLoaded(location.getBlockX(), location.getBlockZ());
+
+		if (chunk == null) {
+			chunk = nmsWorld.getChunkAt(location.getBlockX(), location.getBlockZ());
+		}
+
+//		System.out.println("------------------------------");
+//		for(Method method : nmsWorld.getClass().getMethods()) {
+//			System.out.println(method.getName());
+//			StringBuilder builder = new StringBuilder(" - ");
+//			for(Class<?> parameterType : method.getParameterTypes()) {
+//				builder.append(parameterType.getSimpleName()).append(", ");
+//			}
+//			System.out.println(builder);
+//		}
+//		System.out.println("------------------------------");
+
+		chunk.a(entityBlaze);
+
+		try {
+			Method method = nmsWorld.getClass().getMethod("g", net.minecraft.server.v1_8_R3.Entity.class);
+			method.setAccessible(true);
+			method.invoke(nmsWorld, entityBlaze);
+
+		} catch(NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

@@ -202,7 +202,7 @@ public class TaintedEnchanting {
 			int previousDurableLives = Durable.getExtraLives(previousDurableTier);
 			int newDurableLives = Durable.getExtraLives(durableTier);
 
-			addedLives += newDurableLives - previousDurableLives;
+			addedLives += (newDurableLives - previousDurableLives);
 		}
 
 		itemStack = nbtItem.getItem();
