@@ -18,6 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,12 +35,23 @@ public class EndermanMinionAbility extends MinionAbility {
 	public List<PitMob> minionList;
 	public Map<PitMob, ItemRope> itemRopes;
 
-	public EndermanMinionAbility(SubLevelType subLevelType, int maxMobs) {
-		super(subLevelType, maxMobs);
+	public EndermanMinionAbility(double routineWeight, SubLevelType subLevelType, int maxMobs) {
+		super(routineWeight, subLevelType, maxMobs);
 
 		minionList = new ArrayList<>();
 		itemRopes = new HashMap<>();
 	}
+
+	@Override
+	public void onRoutineExecute() {
+		spawnMobs(null, 1);
+	}
+
+	@Override
+	public boolean shouldExecuteRoutine() {
+		return subLevelType.getSubLevel().mobs.size() < maxMobs;
+	}
+
 
 	@Override
 	public void spawnMobs(Location location, int spawnAmount) {
@@ -58,7 +70,7 @@ public class EndermanMinionAbility extends MinionAbility {
 
 	@EventHandler
 	public void onHit(AttackEvent.Apply attackEvent) {
-		if(!Misc.isEntity(attackEvent.getAttacker(), PitEntityType.REAL_PLAYER)) return;
+		if(!Misc.isEntity(attackEvent.getDefender(), PitEntityType.REAL_PLAYER)) return;
 
 		for(PitMob pitMob : minionList) {
 			LivingEntity livingEntity = pitMob.getMob();
@@ -74,6 +86,11 @@ public class EndermanMinionAbility extends MinionAbility {
 			ItemRope itemRope = new ItemRope(pitMob, this, firstItem, player);
 			itemRopes.put(pitMob, itemRope);
 		}
+	}
+
+	@EventHandler
+	public void onPreAttack(AttackEvent.Pre attackEvent) {
+		if(attackEvent.getDefender() instanceof CustomPitBat) attackEvent.setCancelled(true);
 	}
 
 	@EventHandler
@@ -146,7 +163,7 @@ public class EndermanMinionAbility extends MinionAbility {
 			World nmsWorld = ((CraftWorld) pitMob.getMob().getWorld()).getHandle();
 			Location spawnLocation = pitMob.getMob().getLocation().add(0, 2, 0);
 
-			EntityArmorStand armorStand = new EntityArmorStand(nmsWorld, spawnLocation.getX(), spawnLocation.getY(),
+			armorStand = new EntityArmorStand(nmsWorld, spawnLocation.getX(), spawnLocation.getY(),
 					spawnLocation.getZ());
 			armorStand.setArms(true);
 			armorStand.setBasePlate(false);
@@ -155,7 +172,7 @@ public class EndermanMinionAbility extends MinionAbility {
 
 			PacketPlayOutSpawnEntityLiving armorStandSpawn = new PacketPlayOutSpawnEntityLiving(armorStand);
 			PacketPlayOutEntityEquipment standSword = new PacketPlayOutEntityEquipment(armorStand.getId(), 0,
-					new net.minecraft.server.v1_8_R3.ItemStack(Items.DIAMOND_SWORD));
+					CraftItemStack.asNMSCopy(itemStack));
 			PacketPlayOutAttachEntity batAttach = new PacketPlayOutAttachEntity(0, armorStand, bat);
 			PacketPlayOutAttachEntity attachPacket = new PacketPlayOutAttachEntity(1, bat,
 					((CraftEntity) pitMob.getMob()).getHandle());
@@ -176,7 +193,6 @@ public class EndermanMinionAbility extends MinionAbility {
 			}
 
 			bat.getBukkitEntity().remove();
-			armorStand.getBukkitEntity().remove();
 
 			PacketPlayOutEntityDestroy destroyPacket = new PacketPlayOutEntityDestroy(armorStand.getId());
 			for(Player player : ability.getViewers()) {

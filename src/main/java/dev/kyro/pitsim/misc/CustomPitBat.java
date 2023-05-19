@@ -16,7 +16,7 @@ public class CustomPitBat extends EntityBat {
 
 	@Override
 	public void E() {
-		setTargetPos(new BlockPosition((int)target.locX, (int)target.locY + 1.0, (int)target.locZ));
+		setTargetPos(new BlockPosition((int)target.locX, (int)target.locY + 2.5, (int)target.locZ));
 
 //		if (this.getTargetPos() != null && (!this.world.isEmpty(this.getTargetPos()) || this.getTargetPos().getY() < 1)) {
 //			this.setTargetPos(null);

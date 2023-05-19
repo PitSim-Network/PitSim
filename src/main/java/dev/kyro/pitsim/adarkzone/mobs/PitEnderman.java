@@ -4,12 +4,19 @@ import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.aitems.mobdrops.EnderPearl;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.enums.MobStatus;
+import dev.kyro.pitsim.misc.CustomPitEnderman;
+import dev.kyro.pitsim.misc.EntityManager;
+import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.Enderman;
 
 public class PitEnderman extends PitMob {
+
+	static {
+		EntityManager.registerEntity("PitEnderman", 58, CustomPitEnderman.class);
+	}
 
 	public PitEnderman(Location spawnLocation, MobStatus mobStatus) {
 		super(spawnLocation, mobStatus);
@@ -22,12 +29,20 @@ public class PitEnderman extends PitMob {
 
 	@Override
 	public Creature createMob(Location spawnLocation) {
-		Enderman enderman = spawnLocation.getWorld().spawn(spawnLocation, Enderman.class);
-		enderman.setCustomNameVisible(false);
-		enderman.setRemoveWhenFarAway(false);
-		enderman.setCanPickupItems(false);
+//		Enderman enderman = spawnLocation.getWorld().spawn(spawnLocation, Enderman.class);
+//		enderman.setCustomNameVisible(false);
+//		enderman.setRemoveWhenFarAway(false);
+//		enderman.setCanPickupItems(false);
+//
+//		return enderman;
 
-		return enderman;
+		World nmsWorld = ((CraftWorld) spawnLocation.getWorld()).getHandle();
+
+		CustomPitEnderman enderman = new CustomPitEnderman(nmsWorld, DarkzoneManager.getSubLevel(SubLevelType.ENDERMAN));
+		enderman.setLocation(spawnLocation.getX(), spawnLocation.getY(), spawnLocation.getZ(), 0, 0);
+		nmsWorld.addEntity(enderman);
+
+		return (Creature) enderman.getBukkitEntity();
 	}
 
 	@Override

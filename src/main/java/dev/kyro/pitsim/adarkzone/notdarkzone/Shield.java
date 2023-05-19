@@ -104,7 +104,7 @@ public class Shield {
 
 	@Exclude
 	public int getMaxShield() {
-		int maxShield = 100;
+		int maxShield = 100000000;
 		if(pitPlayer != null) maxShield += Fortify.getShieldIncrease(pitPlayer.player);
 		maxShield += ProgressionManager.getUnlockedEffectAsValue(pitPlayer, DefenceBranch.INSTANCE,
 				SkillBranch.PathPosition.SECOND_PATH, "shield");
