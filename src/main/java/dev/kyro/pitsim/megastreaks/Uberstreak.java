@@ -42,7 +42,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -61,12 +60,6 @@ public class Uberstreak extends Megastreak {
 	public Uberstreak() {
 		super("&dUberstreak", "uberstreak", 100, 20, 100);
 		INSTANCE = this;
-	}
-
-	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		uberEffectMap.putIfAbsent(player, new ArrayList<>());
 	}
 
 	@EventHandler
@@ -221,7 +214,8 @@ public class Uberstreak extends Megastreak {
 	}
 
 	public static List<UberEffect> getUberEffects(Player player) {
-		return uberEffectMap.getOrDefault(player, new ArrayList<>());
+		uberEffectMap.putIfAbsent(player, new ArrayList<>());
+		return uberEffectMap.get(player);
 	}
 
 	@Override
