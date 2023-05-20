@@ -33,7 +33,7 @@ public class StashStreaker extends Megastreak {
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(!pitPlayer.isOnMega() || NonManager.getNon(attackEvent.getDefender()) == null) return;
 		attackEvent.setCancelled(true);
-		AOutput.error(pitPlayer.player, "&c&lERROR!&7 You cannot attack bots while on " + getCapsDisplayName());
+		AOutput.error(pitPlayer.player, "&c&lERROR!&7 You cannot attack bots while on " + getCapsDisplayName() + "&7!");
 	}
 
 	@Override
