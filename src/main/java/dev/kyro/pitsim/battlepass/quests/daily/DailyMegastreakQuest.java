@@ -22,7 +22,7 @@ public class DailyMegastreakQuest extends PassQuest {
 
 	public void onMegastreakComplete(PitPlayer pitPlayer) {
 		PassData passData = pitPlayer.getPassData(PassManager.currentPass.startDate);
-		if(!passData.hasPremium) return;
+		if(!passData.hasPremium()) return;
 		progressQuest(pitPlayer, 1);
 	}
 
