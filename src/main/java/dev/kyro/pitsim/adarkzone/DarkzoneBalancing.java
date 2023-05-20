@@ -164,7 +164,7 @@ public class DarkzoneBalancing {
 		LAST(50_000),
 		;
 
-		private int cost;
+		private final int cost;
 
 		SkillUnlockCost(int cost) {
 			this.cost = cost;
