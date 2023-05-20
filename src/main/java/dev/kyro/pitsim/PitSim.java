@@ -580,6 +580,7 @@ public class PitSim extends JavaPlugin {
 		new PrestigeCommand(betaCommand, "prestige");
 		new MassEnchantCommand(betaCommand, "me");
 		new FastTravelCommand(betaCommand, "ft");
+		new FreezeCommand(betaCommand, "freeze");
 
 		getCommand("atest").setExecutor(new ATestCommand());
 		getCommand("ktest").setExecutor(new KTestCommand());

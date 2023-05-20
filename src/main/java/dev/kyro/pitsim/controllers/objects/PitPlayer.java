@@ -246,6 +246,11 @@ public class PitPlayer {
 
 	@Exclude
 	public void save(boolean finalSave, BukkitRunnable callback, boolean itemData) throws ExecutionException, InterruptedException {
+		if(StorageManager.frozenPlayers.contains(uuid)) {
+			AOutput.log("Player " + player.getName() + " is frozen, not saving");
+			return;
+		}
+
 		if(PitSim.getStatus() == PitSim.ServerStatus.STANDALONE || PlayerDataManager.exemptedPlayers.contains(uuid)) return;
 		if(finalSave && lastSave + SAVE_COOLDOWN > System.currentTimeMillis()) {
 			long timeUntilSave = lastSave + SAVE_COOLDOWN - System.currentTimeMillis();
