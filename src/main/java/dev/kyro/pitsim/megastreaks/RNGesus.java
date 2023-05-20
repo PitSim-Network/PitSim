@@ -416,12 +416,10 @@ public class RNGesus extends Megastreak {
 			for(Reality value : Reality.values()) {
 				if(value == Reality.NONE) continue;
 				generatedRealityOrder.add(value);
+				generatedRealityOrder.add(value);
 			}
-			for(int i = generatedRealityOrder.size(); i < 9; i++) {
-				List<Reality> randomRealities = new ArrayList<>(Arrays.asList(Reality.values()));
-				Collections.shuffle(randomRealities);
-				generatedRealityOrder.add(randomRealities.get(0));
-			}
+			for(int i = generatedRealityOrder.size(); i < 9; i++)
+				generatedRealityOrder.add(Reality.values()[new Random().nextInt(Reality.values().length)]);
 			Collections.shuffle(generatedRealityOrder);
 		}
 	}
