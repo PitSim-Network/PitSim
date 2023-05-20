@@ -69,31 +69,32 @@ public class YummyBread extends StaticPitItem implements TemporaryItem {
 	@EventHandler
 	public void onEat(PlayerItemConsumeEvent event) {
 		Player player = event.getPlayer();
-		ItemStack itemStack = event.getItem();
+		ItemStack itemStack = player.getItemInHand().clone();
 		player.setFoodLevel(19);
 
 		if(!isThisItem(itemStack) || !player.isSneaking()) return;
 
 		event.setCancelled(true);
 		int amount = itemStack.getAmount();
-		player.getInventory().remove(itemStack);
+		player.setItemInHand(new ItemStack(Material.AIR));
 		player.updateInventory();
-		AOutput.send(player, "&6&lYUM!&7 Consumed " + amount + " " + getName());
+		AOutput.send(player, "&6&lYUM!&7 Consumed " + amount + "x " + getName());
 		consumeBread(player, amount);
 	}
 
 	@EventHandler
 	public void onEat(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		ItemStack itemStack = event.getItem();
+		ItemStack itemStack = player.getItemInHand().clone();
 		player.setFoodLevel(19);
 
 		if(!isThisItem(itemStack) || player.isSneaking()) return;
 
 		if(itemStack.getAmount() <= 1) {
-			player.getInventory().remove(itemStack);
+			player.setItemInHand(new ItemStack(Material.AIR));
 		} else {
 			itemStack.setAmount(itemStack.getAmount() - 1);
+			player.setItemInHand(itemStack);
 		}
 		player.updateInventory();
 		consumeBread(player, 1);

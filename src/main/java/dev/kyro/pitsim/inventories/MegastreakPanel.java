@@ -42,25 +42,34 @@ public class MegastreakPanel extends APagedGUIPanel {
 	public Consumer<InventoryClickEvent> createConsumer(Megastreak megastreak) {
 		return event -> {
 			if(!PerkManager.isUnlocked(player, megastreak)) {
-				AOutput.error(player, "&c&lERROR!&7 You are not high enough prestige to equip this");
+				AOutput.error(player, "&c&lERROR!&7 You are not high enough prestige to equip this!");
 				Sounds.ERROR.play(player);
 				return;
 			}
 
 			if(pitPlayer.level < megastreak.getLevelReq(player)) {
-				AOutput.error(player, "&c&lERROR!&7 You are not high enough level to equip this");
+				AOutput.error(player, "&c&lERROR!&7 You are not high enough level to equip this!");
 				Sounds.ERROR.play(player);
 				return;
 			}
 
 			if(CombatManager.isInCombat(player) && !player.isOp()) {
-				AOutput.error(player, "&c&lERROR!&7 You cannot do this while in combat");
+				AOutput.error(player, "&c&lERROR!&7 You cannot do this while in combat!");
 				Sounds.ERROR.play(player);
 				return;
 			}
 
+			if(megastreak.hasDailyLimit) {
+				PitPlayer.MegastreakLimit limit = pitPlayer.getMegastreakCooldown(megastreak);
+				if(limit.isAtLimit(pitPlayer)) {
+					AOutput.error(perkGUI.player, "&c&lERROR!&7 You have already done the max amount of this streak today!");
+					Sounds.ERROR.play(player);
+					return;
+				}
+			}
+
 			if(PerkManager.isEquipped(player, megastreak)) {
-				AOutput.error(perkGUI.player, "&c&lERROR!&7 This megastreak is already equipped");
+				AOutput.error(perkGUI.player, "&c&lERROR!&7 This megastreak is already equipped!");
 				Sounds.ERROR.play(player);
 				return;
 			}

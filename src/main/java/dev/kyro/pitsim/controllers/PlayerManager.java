@@ -599,7 +599,7 @@ public class PlayerManager implements Listener {
 		FeatherBoardAPI.resetDefaultScoreboard(player);
 		ScoreboardManager.updateScoreboard(player);
 
-		for(PitPlayer.MegastreakCooldown cooldown : pitPlayer.getAllCooldowns()) cooldown.attemptReset();
+		for(PitPlayer.MegastreakLimit cooldown : pitPlayer.getAllCooldowns()) cooldown.attemptReset(pitPlayer);
 
 		new BukkitRunnable() {
 			@Override

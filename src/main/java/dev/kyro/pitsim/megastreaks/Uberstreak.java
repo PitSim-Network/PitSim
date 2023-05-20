@@ -176,8 +176,8 @@ public class Uberstreak extends Megastreak {
 
 		if(pitPlayer.getKills() < 500) return;
 
-		PitPlayer.MegastreakCooldown cooldown = pitPlayer.getMegastreakCooldown(INSTANCE);
-		cooldown.completeStreak();
+		PitPlayer.MegastreakLimit limit = pitPlayer.getMegastreakCooldown(INSTANCE);
+		limit.completeStreak(pitPlayer);
 
 		Uberdrop uberdrop = Uberdrop.getRandom();
 		for(int i = 0; i < (DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player) ? 2 : 1); i++) uberdrop.give(pitPlayer);

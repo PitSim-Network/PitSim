@@ -37,6 +37,7 @@ import java.util.*;
 
 public class RNGesus extends Megastreak {
 	public static final int INSTABILITY_THRESHOLD = 1000;
+	public static final double DAMAGE_PER_TICK = 0.75;
 
 	public static RNGesus INSTANCE;
 	private static final Map<Player, RNGesusInfo> rngesusInfoMap = new HashMap<>();
@@ -202,9 +203,9 @@ public class RNGesus extends Megastreak {
 				} else {
 					EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
 					if(nmsPlayer.getAbsorptionHearts() > 0) {
-						nmsPlayer.setAbsorptionHearts(Math.max(nmsPlayer.getAbsorptionHearts() - 1F, 0));
-					} else if(player.getHealth() > 1) {
-						player.setHealth(player.getHealth() - 1);
+						nmsPlayer.setAbsorptionHearts((float) Math.max(nmsPlayer.getAbsorptionHearts() - DAMAGE_PER_TICK, 0));
+					} else if(player.getHealth() > DAMAGE_PER_TICK) {
+						player.setHealth(player.getHealth() - DAMAGE_PER_TICK);
 					} else {
 						DamageManager.killPlayer(player);
 					}
@@ -226,8 +227,8 @@ public class RNGesus extends Megastreak {
 
 		if(!pitPlayer.isOnMega()) return;
 
-		PitPlayer.MegastreakCooldown cooldown = pitPlayer.getMegastreakCooldown(this);
-		cooldown.completeStreak();
+		PitPlayer.MegastreakLimit limit = pitPlayer.getMegastreakCooldown(this);
+		limit.completeStreak(pitPlayer);
 
 		int xp = getXP(rngesusInfo.realityMap.get(Reality.XP).getLevel());
 		double gold = getGold(rngesusInfo.realityMap.get(Reality.GOLD).getLevel());
@@ -317,8 +318,8 @@ public class RNGesus extends Megastreak {
 	@Override
 	public ItemStack getBaseDisplayStack(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		PitPlayer.MegastreakCooldown cooldown = pitPlayer.getMegastreakCooldown(this);
-		return new AItemStackBuilder(cooldown.isAtLimit() ? Material.ENDER_PEARL : Material.EYE_OF_ENDER)
+		PitPlayer.MegastreakLimit limit = pitPlayer.getMegastreakCooldown(this);
+		return new AItemStackBuilder(limit.isAtLimit(pitPlayer) ? Material.ENDER_PEARL : Material.EYE_OF_ENDER)
 				.getItemStack();
 	}
 
@@ -350,15 +351,15 @@ public class RNGesus extends Megastreak {
 	@Override
 	public String getSummary() {
 		return getCapsDisplayName() + "&7 allows you to enter four different random realities, &bXP&7, &6Gold&7, &cDamage&7 and, " +
-				"&9Absorption&7. At an &c1000 streak&7, gain the buffs that you earned throughout the realities, but " +
+				"&9Absorption&7. At a &c1,000 streak&7, gain the buffs that you earned throughout the realities, but " +
 				"you no longer &cheal&7. Throughout the &cMegastreak&7 you are immune to enchants that would &emove&7 " +
-				"you There is an hour cooldown on this &cMegastreak&7, which can be skipped by using &eRenown";
+				"you";
 	}
 
 	public enum Reality {
 		NONE("&eAbnormal", "&4&lRNGSUS", 1),
-		XP("&bXP", "&b&lRNG&4&lSUS", 0.05),
-		GOLD("&6Gold", "&6&lRNG&4&lSUS", 50),
+		XP("&bXP", "&b&lRNG&4&lSUS", 0.03),
+		GOLD("&6Gold", "&6&lRNG&4&lSUS", 0.2),
 		DAMAGE("&cDamage", "&c&lRNG&4&lSUS", 1),
 		ABSORPTION("&6Absorption", "&9&lRNG&4&lSUS", 0.3);
 
@@ -418,8 +419,11 @@ public class RNGesus extends Megastreak {
 				generatedRealityOrder.add(value);
 				generatedRealityOrder.add(value);
 			}
-			for(int i = generatedRealityOrder.size(); i < 9; i++)
-				generatedRealityOrder.add(Reality.values()[new Random().nextInt(Reality.values().length)]);
+			for(int i = generatedRealityOrder.size(); i < 9; i++) {
+				List<Reality> possibleRealities = new ArrayList<>(Arrays.asList(Reality.values()));
+				possibleRealities.remove(Reality.NONE);
+				generatedRealityOrder.add(possibleRealities.get(new Random().nextInt(possibleRealities.size())));
+			}
 			Collections.shuffle(generatedRealityOrder);
 		}
 	}

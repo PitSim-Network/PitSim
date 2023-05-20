@@ -80,8 +80,8 @@ public abstract class Megastreak implements Listener, Summarizable {
 		else if(pitPlayer.level < levelRequired) loreBuilder.addLore(levelRequiredLore.getLore());
 
 		if(hasDailyLimit) {
-			PitPlayer.MegastreakCooldown cooldown = pitPlayer.getMegastreakCooldown(this);
-			String streaksLeft = (cooldown.isAtLimit() ? "&c" : "&a") + cooldown.getStreaksLeft();
+			PitPlayer.MegastreakLimit cooldown = pitPlayer.getMegastreakCooldown(this);
+			String streaksLeft = (cooldown.isAtLimit(pitPlayer) ? "&c" : "&a") + cooldown.getStreaksLeft(pitPlayer);
 			loreBuilder.addLore(
 					"",
 					"&7Daily Streaks Remaining: " + streaksLeft + "&7/" + getMaxDailyStreaks(pitPlayer) +
@@ -96,7 +96,7 @@ public abstract class Megastreak implements Listener, Summarizable {
 			status = "&eClick to remove megastreak!";
 		} else if(!isUnlocked) {
 			status = "&cToo low prestige!";
-		} else if(hasDailyLimit && pitPlayer.getMegastreakCooldown(this).isAtLimit()) {
+		} else if(hasDailyLimit && pitPlayer.getMegastreakCooldown(this).isAtLimit(pitPlayer)) {
 			status = "&cDaily limit reached!";
 		} else if(pitPlayer.level < levelRequired) {
 			status = "&cToo low level!";

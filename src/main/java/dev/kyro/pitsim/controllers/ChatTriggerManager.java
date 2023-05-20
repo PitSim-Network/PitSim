@@ -84,7 +84,7 @@ public class ChatTriggerManager implements Listener {
 		dataMap.put("megastreak", pitPlayer.getMegastreak().getRefName());
 
 		Map<String, Object> megastreakCooldownMap = new HashMap<>();
-		for(PitPlayer.MegastreakCooldown cooldown : pitPlayer.getAllCooldowns()) {
+		for(PitPlayer.MegastreakLimit cooldown : pitPlayer.getAllCooldowns()) {
 			Map<String, Object> singleStreakMap = new HashMap<>();
 			singleStreakMap.put("currentStreaks", cooldown.getStreaksCompleted());
 			singleStreakMap.put("maxStreaks", cooldown.getMegastreak().getMaxDailyStreaks(pitPlayer));

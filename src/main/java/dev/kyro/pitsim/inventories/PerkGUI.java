@@ -21,7 +21,7 @@ public class PerkGUI extends AGUI {
 		super(player);
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		for(PitPlayer.MegastreakCooldown cooldown : pitPlayer.getAllCooldowns()) cooldown.attemptReset();
+		for(PitPlayer.MegastreakLimit cooldown : pitPlayer.getAllCooldowns()) cooldown.attemptReset(pitPlayer);
 
 		perkPanel = new PerkPanel(this);
 		setHomePanel(perkPanel);

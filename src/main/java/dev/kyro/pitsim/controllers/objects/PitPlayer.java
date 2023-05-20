@@ -143,7 +143,7 @@ public class PitPlayer {
 
 	public double gold = 50_000;
 
-	private final Map<String, MegastreakCooldown> megastreakCooldownMap = new HashMap<>();
+	private Map<String, MegastreakLimit> megastreakCooldownMap = new HashMap<>();
 	public double goldStack = 0;
 	public int moonBonus = 0;
 	public int apostleBonus = 0;
@@ -514,14 +514,24 @@ public class PitPlayer {
 		return getPitPlayer(player);
 	}
 
-	public List<MegastreakCooldown> getAllCooldowns() {
+	@Exclude
+	public List<MegastreakLimit> getAllCooldowns() {
 		return new ArrayList<>(megastreakCooldownMap.values());
 	}
 
-	public MegastreakCooldown getMegastreakCooldown(Megastreak megastreak) {
+	@Exclude
+	public MegastreakLimit getMegastreakCooldown(Megastreak megastreak) {
 		if(!megastreak.hasDailyLimit) throw new RuntimeException();
-		megastreakCooldownMap.putIfAbsent(megastreak.refName, new MegastreakCooldown(megastreak));
+		megastreakCooldownMap.putIfAbsent(megastreak.refName, new MegastreakLimit(megastreak));
 		return megastreakCooldownMap.get(megastreak.refName);
+	}
+
+	public Map<String, MegastreakLimit> getMegastreakCooldownMap() {
+		return megastreakCooldownMap;
+	}
+
+	public void setMegastreakCooldownMap(Map<String, MegastreakLimit> megastreakCooldownMap) {
+		this.megastreakCooldownMap = megastreakCooldownMap;
 	}
 
 	@Exclude
@@ -806,66 +816,90 @@ public class PitPlayer {
 		return (isOnMega() && megaPrefix != null ? megaPrefix + " " : PrestigeValues.getPlayerPrefixNameTag(player)) + rankColor;
 	}
 
-	public class MegastreakCooldown {
+	public static class MegastreakLimit {
 		private final long COOLDOWN_LENGTH = 1000 * 60 * 60 * 20;
 
-		private Megastreak megastreak;
+		private String megastreakRef;
 		private int streaksCompleted = 0;
-		private long lastReset;
+		private long lastReset = System.currentTimeMillis();
 
-		public MegastreakCooldown() {
+		public MegastreakLimit() {
 		}
 
-		public MegastreakCooldown(Megastreak megastreak) {
-			this.megastreak = megastreak;
+		public MegastreakLimit(Megastreak megastreak) {
+			this.megastreakRef = megastreak.refName;
 		}
 
 //		Returns true if the reset was successful
-		public boolean attemptReset() {
+		@Exclude
+		public boolean attemptReset(PitPlayer pitPlayer) {
 			if(lastReset + COOLDOWN_LENGTH > System.currentTimeMillis()) return false;
-			forceReset();
+			forceReset(pitPlayer);
 			return true;
 		}
 
-		public void forceReset() {
+		@Exclude
+		public void forceReset(PitPlayer pitPlayer) {
 			streaksCompleted = 0;
 			lastReset = System.currentTimeMillis();
-			ChatTriggerManager.sendPerksInfo(PitPlayer.this);
+			ChatTriggerManager.sendPerksInfo(pitPlayer);
 		}
 
-		public void completeStreak() {
+		@Exclude
+		public void completeStreak(PitPlayer pitPlayer) {
 			streaksCompleted++;
-			if(isAtLimit()) setMegastreak(NoMegastreak.INSTANCE);
-			ChatTriggerManager.sendPerksInfo(PitPlayer.this);
+			if(isAtLimit(pitPlayer)) pitPlayer.setMegastreak(NoMegastreak.INSTANCE);
+			ChatTriggerManager.sendPerksInfo(pitPlayer);
 		}
 
+		@Exclude
 		public String getTimeLeft() {
 			long timeRemaining = lastReset + COOLDOWN_LENGTH - System.currentTimeMillis();
 			return Formatter.formatDurationFull(timeRemaining, true);
 		}
 
+		@Exclude
 		public boolean shouldDisplayResetTime() {
 			return streaksCompleted != 0 && lastReset + COOLDOWN_LENGTH > System.currentTimeMillis();
 		}
 
-		public boolean isAtLimit() {
-			return streaksCompleted >= megastreak.getMaxDailyStreaks(PitPlayer.this);
+		@Exclude
+		public boolean isAtLimit(PitPlayer pitPlayer) {
+			return streaksCompleted >= getMegastreak().getMaxDailyStreaks(pitPlayer);
 		}
 
-		public int getStreaksLeft() {
-			return megastreak.getMaxDailyStreaks(PitPlayer.this) - streaksCompleted;
+		@Exclude
+		public int getStreaksLeft(PitPlayer pitPlayer) {
+			return getMegastreak().getMaxDailyStreaks(pitPlayer) - streaksCompleted;
 		}
 
 		public int getStreaksCompleted() {
 			return streaksCompleted;
 		}
 
+		public String getMegastreakRef() {
+			return megastreakRef;
+		}
+
+		@Exclude
 		public Megastreak getMegastreak() {
-			return megastreak;
+			return PerkManager.getMegastreak(megastreakRef);
 		}
 
 		public long getLastReset() {
 			return lastReset;
+		}
+
+		public void setMegastreakRef(String megastreakRef) {
+			this.megastreakRef = megastreakRef;
+		}
+
+		public void setStreaksCompleted(int streaksCompleted) {
+			this.streaksCompleted = streaksCompleted;
+		}
+
+		public void setLastReset(long lastReset) {
+			this.lastReset = lastReset;
 		}
 	}
 

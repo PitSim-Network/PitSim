@@ -10,6 +10,7 @@ import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
 import dev.kyro.pitsim.controllers.objects.TieredRenownUpgrade;
 import dev.kyro.pitsim.events.KillEvent;
+import dev.kyro.pitsim.megastreaks.RNGesus;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -30,6 +31,9 @@ public class LuckyKill extends TieredRenownUpgrade {
 	public void onKill(KillEvent killEvent) {
 		if(!UpgradeManager.hasUpgrade(killEvent.getKillerPlayer(), this) ||
 				NonManager.getNon(killEvent.getDead()) == null) return;
+
+		if(killEvent.getKillerPitPlayer().getMegastreak() instanceof RNGesus &&
+				killEvent.getKillerPitPlayer().getKills() >= RNGesus.INSTABILITY_THRESHOLD) return;
 
 		double chance = 0.01 * UpgradeManager.getTier(killEvent.getKillerPlayer(), this);
 		boolean isLuckyKill = Math.random() < chance;
