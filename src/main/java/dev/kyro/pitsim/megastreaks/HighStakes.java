@@ -25,7 +25,7 @@ public class HighStakes extends Megastreak {
 	public static HighStakes INSTANCE;
 
 	public HighStakes() {
-		super("&2High Stakes", "highstakes", 50, 9, 50);
+		super("&2High Stakes", "highstakes", 50, 8, 50);
 		INSTANCE = this;
 	}
 

@@ -28,7 +28,7 @@ public class Rampage extends Megastreak {
 	private static final Map<Player, Integer> damageIncreaseMap = new HashMap<>();
 
 	public Rampage() {
-		super("&9Rampage", "rampage", 30, 5, 0);
+		super("&9Rampage", "rampage", 30, 4, 0);
 		INSTANCE = this;
 	}
 

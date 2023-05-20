@@ -18,7 +18,7 @@ public class StashStreaker extends Megastreak {
 	public static StashStreaker INSTANCE;
 
 	public StashStreaker() {
-		super("&8Stash Streaker", "stashstreaker", 100, 13, 50);
+		super("&8Stash Streaker", "stashstreaker", 200, 0, 50);
 		INSTANCE = this;
 	}
 
