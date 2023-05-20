@@ -34,6 +34,8 @@ public class StorageManager implements Listener {
 	protected static final List<StorageProfile> profiles = new ArrayList<>();
 	protected static final List<EditSession> editSessions = new ArrayList<>();
 
+	public static List<UUID> frozenPlayers = new ArrayList<>();
+
 	public static StorageProfile getProfile(Player player) {
 		if(player == null) return null;
 		for(StorageProfile profile : profiles) {
