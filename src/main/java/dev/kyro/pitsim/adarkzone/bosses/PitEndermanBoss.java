@@ -4,7 +4,8 @@ import dev.kyro.pitsim.adarkzone.DarkzoneBalancing;
 import dev.kyro.pitsim.adarkzone.DropPool;
 import dev.kyro.pitsim.adarkzone.PitBoss;
 import dev.kyro.pitsim.adarkzone.SubLevelType;
-import dev.kyro.pitsim.adarkzone.abilities.minion.EndermanMinionAbility;
+import dev.kyro.pitsim.adarkzone.abilities.*;
+import dev.kyro.pitsim.adarkzone.abilities.minion.GenericMinionAbility;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -14,13 +15,14 @@ public class PitEndermanBoss extends PitBoss {
 		super(summoner);
 
 		abilities(
-				new EndermanMinionAbility(2, getSubLevelType(), 5)
-//				new DisorderAbility(1, 2),
-//				new RuptureAbility(1, 40, getDamage() * 0.5),
-//
-//				new ReincarnationAbility(),
-//				new TeleportAbility(8, 17),
-//				new WorldBorderAbility()
+//				new EndermanMinionAbility(2, getSubLevelType(), 5)
+				new GenericMinionAbility(1, SubLevelType.ENDERMAN, 1, 5),
+				new DisorderAbility(1, 2),
+				new RuptureAbility(1, 40, getDamage() * 0.5),
+
+				new ReincarnationAbility(),
+				new TeleportAbility(8, 17),
+				new WorldBorderAbility()
 		);
 
 		setRoutineAbilityCooldownTicks(getRoutineAbilityCooldownTicks() * 0.75);
