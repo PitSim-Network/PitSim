@@ -248,6 +248,7 @@ public class PitPlayer {
 	public void save(boolean finalSave, BukkitRunnable callback, boolean itemData) throws ExecutionException, InterruptedException {
 		if(StorageManager.frozenPlayers.contains(uuid)) {
 			AOutput.log("Player " + player.getName() + " is frozen, not saving");
+			if(finalSave) StorageManager.frozenPlayers.remove(uuid);
 			return;
 		}
 

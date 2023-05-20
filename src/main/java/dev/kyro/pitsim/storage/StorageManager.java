@@ -278,7 +278,6 @@ public class StorageManager implements Listener {
 	@EventHandler
 	public void onQuit(PitQuitEvent event) {
 		Player player = event.getPlayer();
-		frozenPlayers.remove(player.getUniqueId());
 
 		EditSession endSession = null;
 		for(EditSession editSession : new ArrayList<>(editSessions)) {
