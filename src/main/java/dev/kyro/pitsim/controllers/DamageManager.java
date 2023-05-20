@@ -645,16 +645,11 @@ public class DamageManager implements Listener {
 				if(assistPlayer == null) continue;
 				double assistPercent = Math.max(Math.min(entry.getValue() / finalDamage, 1), 0);
 
-				if(UpgradeManager.hasUpgrade(assistPlayer, KillSteal.INSTANCE)) {
+				if(UpgradeManager.hasUpgrade(assistPlayer, KillSteal.INSTANCE) && !deadIsRealPlayer) {
 					int tier = UpgradeManager.getTier(assistPlayer, KillSteal.INSTANCE);
 					assistPercent += (tier * 10) / 100D;
 					if(assistPercent >= 1) {
-						Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(assistPlayer);
-						Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
-						EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(assistPlayer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
-						AttackEvent newAttackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
-
-						DamageManager.fakeKill(newAttackEvent, assistPlayer, dead);
+						fakeKill(assistPlayer, dead);
 						continue;
 					}
 				}
@@ -704,7 +699,11 @@ public class DamageManager implements Listener {
 		handleKill(null, null, player, KillType.DEATH, killModifiers);
 	}
 
-	public static void fakeKill(AttackEvent attackEvent, LivingEntity killer, LivingEntity dead, KillModifier... killModifiers) {
+	public static void fakeKill(LivingEntity killer, LivingEntity dead, KillModifier... killModifiers) {
+		Map<PitEnchant, Integer> attackerEnchant = EnchantManager.getEnchantsOnPlayer(killer);
+		Map<PitEnchant, Integer> defenderEnchant = new HashMap<>();
+		EntityDamageByEntityEvent newEvent = new EntityDamageByEntityEvent(killer, dead, EntityDamageEvent.DamageCause.CUSTOM, 0);
+		AttackEvent attackEvent = new AttackEvent(new WrapperEntityDamageEvent(newEvent), attackerEnchant, defenderEnchant, false);
 		handleKill(attackEvent, killer, dead, KillType.FAKE_KILL, killModifiers);
 	}
 }
