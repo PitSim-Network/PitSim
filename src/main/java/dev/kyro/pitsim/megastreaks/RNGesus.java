@@ -13,7 +13,6 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.HealEvent;
 import dev.kyro.pitsim.events.KillEvent;
-import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
@@ -37,15 +36,14 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class RNGesus extends Megastreak {
+	public static final int INSTABILITY_THRESHOLD = 1000;
+
 	public static RNGesus INSTANCE;
 	private static final Map<Player, RNGesusInfo> rngesusInfoMap = new HashMap<>();
 
-	public static final int RENOWN_COST = 3;
-	public static final int COOLDOWN_MINUTES = 60;
-	public static final int INSTABILITY_THRESHOLD = 1000;
-
 	public RNGesus() {
 		super("&4RNGesus", "rngesus", 100, 50, 0);
+		hasDailyLimit = true;
 		INSTANCE = this;
 	}
 
@@ -164,12 +162,10 @@ public class RNGesus extends Megastreak {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		RNGesusInfo rngesusInfo = getRNGesusInfo(player);
 
-		putOnCooldown(pitPlayer);
 		Sounds.MEGA_RNGESUS.play(player.getLocation());
 
 		rngesusInfo.runnable = new BukkitRunnable() {
 			int count = 0;
-
 			@Override
 			public void run() {
 				if(pitPlayer.getKills() > INSTABILITY_THRESHOLD) {
@@ -230,6 +226,9 @@ public class RNGesus extends Megastreak {
 
 		if(!pitPlayer.isOnMega()) return;
 
+		PitPlayer.MegastreakCooldown cooldown = pitPlayer.getMegastreakCooldown(this);
+		cooldown.completeStreak();
+
 		int xp = getXP(rngesusInfo.realityMap.get(Reality.XP).getLevel());
 		double gold = getGold(rngesusInfo.realityMap.get(Reality.GOLD).getLevel());
 		double damage = getDamage(rngesusInfo.realityMap.get(Reality.DAMAGE).getLevel());
@@ -251,8 +250,11 @@ public class RNGesus extends Megastreak {
 		rngesusInfo.reality = Reality.NONE;
 
 		if(rngesusInfo.runnable != null) rngesusInfo.runnable.cancel();
+	}
 
-		if(isOnCooldown(pitPlayer)) pitPlayer.setMegastreak(NoMegastreak.INSTANCE);
+	@Override
+	public int getMaxDailyStreaks(PitPlayer pitPlayer) {
+		return pitPlayer.player.hasPermission("group.eternal") ? 2 : 1;
 	}
 
 	public void shiftReality(Player player) {
@@ -307,19 +309,6 @@ public class RNGesus extends Megastreak {
 		return (float) progression;
 	}
 
-	public static boolean isOnCooldown(PitPlayer pitPlayer) {
-		return System.currentTimeMillis() < pitPlayer.rngCooldown;
-	}
-
-	public static String getTimeLeft(PitPlayer pitPlayer) {
-		long timeRemaining = pitPlayer.rngCooldown - System.currentTimeMillis();
-		return Formatter.formatDurationFull(timeRemaining, true);
-	}
-
-	public void putOnCooldown(PitPlayer pitPlayer) {
-		pitPlayer.rngCooldown = System.currentTimeMillis() + COOLDOWN_MINUTES * 60L * 1000;
-	}
-
 	@Override
 	public String getPrefix(Player player) {
 		return getRNGesusInfo(player).reality.prefix;
@@ -328,7 +317,8 @@ public class RNGesus extends Megastreak {
 	@Override
 	public ItemStack getBaseDisplayStack(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return new AItemStackBuilder(isOnCooldown(pitPlayer) ? Material.ENDER_PEARL : Material.EYE_OF_ENDER)
+		PitPlayer.MegastreakCooldown cooldown = pitPlayer.getMegastreakCooldown(this);
+		return new AItemStackBuilder(cooldown.isAtLimit() ? Material.ENDER_PEARL : Material.EYE_OF_ENDER)
 				.getItemStack();
 	}
 
@@ -354,10 +344,6 @@ public class RNGesus extends Megastreak {
 				"",
 				"&7On Death:",
 				"&e\u25a0 &7View a recap of your streak"
-		);
-		if(isOnCooldown(pitPlayer)) loreBuilder.addLore(
-				"",
-				"&eMegastreak on Cooldown!&7 (" + getTimeLeft(pitPlayer) + ")"
 		);
 	}
 

@@ -14,7 +14,6 @@ import dev.kyro.pitsim.aitems.misc.ChunkOfVile;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
 import dev.kyro.pitsim.battlepass.quests.CompleteUbersQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
-import dev.kyro.pitsim.controllers.ChatTriggerManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
@@ -59,6 +58,7 @@ public class Uberstreak extends Megastreak {
 
 	public Uberstreak() {
 		super("&dUberstreak", "uberstreak", 100, 20, 100);
+		hasDailyLimit = true;
 		INSTANCE = this;
 	}
 
@@ -176,11 +176,8 @@ public class Uberstreak extends Megastreak {
 
 		if(pitPlayer.getKills() < 500) return;
 
-		if(pitPlayer.uberReset == 0) pitPlayer.uberReset = System.currentTimeMillis() + 1000 * 60 * 60 * 20;
-		pitPlayer.dailyUbersLeft = Math.max(pitPlayer.dailyUbersLeft - 1, 0);
-		ChatTriggerManager.sendUberInfo(pitPlayer);
-
-		if(pitPlayer.dailyUbersLeft == 0) pitPlayer.setMegastreak(NoMegastreak.INSTANCE);
+		PitPlayer.MegastreakCooldown cooldown = pitPlayer.getMegastreakCooldown(INSTANCE);
+		cooldown.completeStreak();
 
 		Uberdrop uberdrop = Uberdrop.getRandom();
 		for(int i = 0; i < (DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player) ? 2 : 1); i++) uberdrop.give(pitPlayer);
@@ -188,6 +185,11 @@ public class Uberstreak extends Megastreak {
 		pitPlayer.stats.ubersCompleted++;
 		CompleteUbersQuest.INSTANCE.onUberComplete(pitPlayer);
 		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
+	}
+
+	@Override
+	public int getMaxDailyStreaks(PitPlayer pitPlayer) {
+		return 5 + VentureCapitalist.getUberIncrease(pitPlayer.player);
 	}
 
 	public static void sendUberMessage(String displayName, ItemStack itemStack) {
@@ -199,18 +201,6 @@ public class Uberstreak extends Megastreak {
 
 	public static ItemStack getUberDropDisplayStack(String displayName, ItemStack displayStack) {
 		return new AItemStackBuilder(displayStack).setName(displayName).getItemStack();
-	}
-
-	public static int getMaxUbers(Player player) {
-		return 5 + VentureCapitalist.getUberIncrease(player);
-	}
-
-	public static void checkUberReset(PitPlayer pitPlayer) {
-		if(System.currentTimeMillis() > pitPlayer.uberReset) {
-			pitPlayer.uberReset = 0;
-			pitPlayer.dailyUbersLeft = Uberstreak.getMaxUbers(pitPlayer.player);
-			ChatTriggerManager.sendUberInfo(pitPlayer);
-		}
 	}
 
 	public static List<UberEffect> getUberEffects(Player player) {
@@ -231,7 +221,6 @@ public class Uberstreak extends Megastreak {
 
 	@Override
 	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
-		String ubersLeft = (pitPlayer.dailyUbersLeft == 0 ? "&c" : "&a") + pitPlayer.dailyUbersLeft;
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		loreBuilder.addLore(
 				"&7On Trigger:",
@@ -249,9 +238,7 @@ public class Uberstreak extends Megastreak {
 				"",
 				"&7On Death:",
 				"&e\u25a0 &7If your streak is at least 500,",
-				"   &7earn a random &dUberdrop&7",
-				"",
-				"&7Daily Uberstreaks Remaining: &e" + ubersLeft + "&7/" + Uberstreak.getMaxUbers(pitPlayer.player)
+				"   &7earn a random &dUberdrop&7"
 		);
 	}
 
@@ -337,14 +324,14 @@ public class Uberstreak extends Megastreak {
 				AUtil.giveItemSafely(player, jewelPants);
 				displayStack = getUberDropDisplayStack("&3Hidden Jewel Pants", jewelPants);
 			} else if(this == JEWEL_BUNDLE) {
-				ItemStack jbsword = MysticFactory.getJewelItem(MysticType.SWORD);
-				AUtil.giveItemSafely(player, jbsword);
+				ItemStack jbSword = MysticFactory.getJewelItem(MysticType.SWORD);
+				AUtil.giveItemSafely(player, jbSword);
 
-				ItemStack jbbow = MysticFactory.getJewelItem(MysticType.BOW);
-				AUtil.giveItemSafely(player, jbbow);
+				ItemStack jbBow = MysticFactory.getJewelItem(MysticType.BOW);
+				AUtil.giveItemSafely(player, jbBow);
 
-				ItemStack jbpants = MysticFactory.getJewelItem(MysticType.PANTS);
-				AUtil.giveItemSafely(player, jbpants);
+				ItemStack jbPants = MysticFactory.getJewelItem(MysticType.PANTS);
+				AUtil.giveItemSafely(player, jbPants);
 
 				displayStack = new AItemStackBuilder(Material.STORAGE_MINECART)
 						.setName("&3Hidden Jewel Bundle")

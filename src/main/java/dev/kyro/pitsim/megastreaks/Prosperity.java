@@ -74,7 +74,7 @@ public class Prosperity extends Megastreak {
 		if(!hasMegastreak(attackEvent.getAttackerPlayer())) return;
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(!pitPlayer.isOnMega() || NonManager.getNon(attackEvent.getDefender()) == null) return;
-		attackEvent.increasePercent += 25;
+		attackEvent.increasePercent += getDamageIncrease();
 	}
 
 	@Override
@@ -145,6 +145,6 @@ public class Prosperity extends Megastreak {
 	}
 
 	public static int getDamageIncrease() {
-		return 25;
+		return 33;
 	}
 }

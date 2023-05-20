@@ -8,7 +8,6 @@ import dev.kyro.pitsim.enchants.overworld.ReallyToxic;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.PitQuitEvent;
-import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -84,6 +83,16 @@ public class ChatTriggerManager implements Listener {
 
 		dataMap.put("megastreak", pitPlayer.getMegastreak().getRefName());
 
+		Map<String, Object> megastreakCooldownMap = new HashMap<>();
+		for(PitPlayer.MegastreakCooldown cooldown : pitPlayer.getAllCooldowns()) {
+			Map<String, Object> singleStreakMap = new HashMap<>();
+			singleStreakMap.put("currentStreaks", cooldown.getStreaksCompleted());
+			singleStreakMap.put("maxStreaks", cooldown.getMegastreak().getMaxDailyStreaks(pitPlayer));
+			singleStreakMap.put("lastReset", cooldown.getLastReset());
+			megastreakCooldownMap.put(cooldown.getMegastreak().refName, singleStreakMap);
+		}
+		dataMap.put("megastreakCooldowns", megastreakCooldownMap);
+
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
@@ -109,14 +118,6 @@ public class ChatTriggerManager implements Listener {
 		Map<String, Object> dataMap = new HashMap<>();
 		dataMap.put("auctionData", CrossServerMessageManager.auctionItems);
 		dataMap.put("auctionEnd", CrossServerMessageManager.auctionEndTime);
-		sendData(pitPlayer.player, encodeMap(dataMap));
-	}
-
-	public static void sendUberInfo(PitPlayer pitPlayer) {
-		Map<String, Object> dataMap = new HashMap<>();
-		dataMap.put("maxUbers", Uberstreak.getMaxUbers(pitPlayer.player));
-		dataMap.put("ubersLeft", pitPlayer.dailyUbersLeft);
-		dataMap.put("uberResetTime", pitPlayer.uberReset);
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
@@ -182,7 +183,6 @@ public class ChatTriggerManager implements Listener {
 		sendProgressionInfo(pitPlayer);
 		sendPrestigeInfo(pitPlayer);
 		sendAuctionInfo(pitPlayer);
-		sendUberInfo(pitPlayer);
 		sendBountyInfo(pitPlayer);
 		sendToxicInfo(pitPlayer);
 		sendBoosterInfo(pitPlayer);

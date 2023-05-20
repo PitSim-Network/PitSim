@@ -136,6 +136,6 @@ public class Highlander extends Megastreak {
 	}
 
 	public static int getDamageIncrease() {
-		return 20;
+		return 25;
 	}
 }

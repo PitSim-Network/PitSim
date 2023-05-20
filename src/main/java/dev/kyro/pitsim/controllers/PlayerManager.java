@@ -23,7 +23,6 @@ import dev.kyro.pitsim.events.*;
 import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
-import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.pitmaps.XmasMap;
@@ -600,7 +599,7 @@ public class PlayerManager implements Listener {
 		FeatherBoardAPI.resetDefaultScoreboard(player);
 		ScoreboardManager.updateScoreboard(player);
 
-		Uberstreak.checkUberReset(pitPlayer);
+		for(PitPlayer.MegastreakCooldown cooldown : pitPlayer.getAllCooldowns()) cooldown.attemptReset();
 
 		new BukkitRunnable() {
 			@Override

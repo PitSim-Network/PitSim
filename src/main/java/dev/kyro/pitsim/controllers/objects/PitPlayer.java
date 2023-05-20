@@ -38,6 +38,7 @@ import dev.kyro.pitsim.killstreaks.Limiter;
 import dev.kyro.pitsim.killstreaks.Monster;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.megastreaks.*;
+import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.perks.*;
@@ -142,12 +143,10 @@ public class PitPlayer {
 
 	public double gold = 50_000;
 
+	private final Map<String, MegastreakCooldown> megastreakCooldownMap = new HashMap<>();
 	public double goldStack = 0;
 	public int moonBonus = 0;
 	public int apostleBonus = 0;
-	public int dailyUbersLeft = 5;
-	public long uberReset = 0;
-	public long rngCooldown = 0;
 	public int goldGrinded = 0;
 	public Map<String, Integer> boosters = new HashMap<>();
 
@@ -366,8 +365,6 @@ public class PitPlayer {
 
 		goldStack = playerData.getDouble("goldstack");
 		moonBonus = playerData.getInt("moonbonus");
-		dailyUbersLeft = playerData.contains("ubersleft") ? playerData.getInt("ubersleft") : 5;
-		uberReset = playerData.getLong("ubercooldown");
 		goldGrinded = playerData.getInt("goldgrinded");
 		for(Booster booster : BoosterManager.boosterList)
 			boosters.put(booster.refName, playerData.getInt("boosters." + booster.refName));
@@ -517,6 +514,16 @@ public class PitPlayer {
 		return getPitPlayer(player);
 	}
 
+	public List<MegastreakCooldown> getAllCooldowns() {
+		return new ArrayList<>(megastreakCooldownMap.values());
+	}
+
+	public MegastreakCooldown getMegastreakCooldown(Megastreak megastreak) {
+		if(!megastreak.hasDailyLimit) throw new RuntimeException();
+		megastreakCooldownMap.putIfAbsent(megastreak.refName, new MegastreakCooldown(megastreak));
+		return megastreakCooldownMap.get(megastreak.refName);
+	}
+
 	@Exclude
 	public boolean isOnMega() {
 		return kills >= megastreak.requiredKills;
@@ -608,7 +615,6 @@ public class PitPlayer {
 
 	@Exclude
 	public HealEvent heal(double amount) {
-
 		return heal(amount, HealEvent.HealType.HEALTH, -1);
 	}
 
@@ -624,7 +630,6 @@ public class PitPlayer {
 
 	@Exclude
 	public boolean hasPerk(PitPerk pitPerk) {
-
 		for(PitPerk perk : pitPerks) if(perk == pitPerk) return true;
 		return false;
 	}
@@ -767,11 +772,13 @@ public class PitPlayer {
 		if(previousWalkSpeed != newWalkSpeed) player.setWalkSpeed(newWalkSpeed);
 	}
 
+	@Exclude
 	public boolean hasFastTravelUnlocked(SubLevel subLevel) {
 		if(subLevel == null) return false;
 		return darkzoneData.fastTravelData.unlockedLocations.contains(subLevel.getIndex());
 	}
 
+	@Exclude
 	public void unlockFastTravelDestination(SubLevel subLevel) {
 		if(subLevel == null || darkzoneData.fastTravelData.unlockedLocations.contains(subLevel.getIndex())) return;
 		darkzoneData.fastTravelData.unlockedLocations.add(subLevel.getIndex());
@@ -781,9 +788,12 @@ public class PitPlayer {
 		Sounds.RENOWN_SHOP_PURCHASE.play(player);
 	}
 
+	@Exclude
 	public void giveSouls(int amount) {
 		giveSouls(amount, true);
 	}
+
+	@Exclude
 	public void giveSouls(int amount, boolean stats) {
 		taintedSouls += amount;
 		if(stats) this.stats.lifetimeSouls += amount;
@@ -794,6 +804,69 @@ public class PitPlayer {
 		String rankColor = PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%");
 		String megaPrefix = megastreak.getPrefix(player);
 		return (isOnMega() && megaPrefix != null ? megaPrefix + " " : PrestigeValues.getPlayerPrefixNameTag(player)) + rankColor;
+	}
+
+	public class MegastreakCooldown {
+		private final long COOLDOWN_LENGTH = 1000 * 60 * 60 * 20;
+
+		private Megastreak megastreak;
+		private int streaksCompleted = 0;
+		private long lastReset;
+
+		public MegastreakCooldown() {
+		}
+
+		public MegastreakCooldown(Megastreak megastreak) {
+			this.megastreak = megastreak;
+		}
+
+//		Returns true if the reset was successful
+		public boolean attemptReset() {
+			if(lastReset + COOLDOWN_LENGTH > System.currentTimeMillis()) return false;
+			forceReset();
+			return true;
+		}
+
+		public void forceReset() {
+			streaksCompleted = 0;
+			lastReset = System.currentTimeMillis();
+			ChatTriggerManager.sendPerksInfo(PitPlayer.this);
+		}
+
+		public void completeStreak() {
+			streaksCompleted++;
+			if(isAtLimit()) setMegastreak(NoMegastreak.INSTANCE);
+			ChatTriggerManager.sendPerksInfo(PitPlayer.this);
+		}
+
+		public String getTimeLeft() {
+			long timeRemaining = lastReset + COOLDOWN_LENGTH - System.currentTimeMillis();
+			return Formatter.formatDurationFull(timeRemaining, true);
+		}
+
+		public boolean shouldDisplayResetTime() {
+			return streaksCompleted != 0 && lastReset + COOLDOWN_LENGTH > System.currentTimeMillis();
+		}
+
+		public boolean isAtLimit() {
+			return streaksCompleted >= megastreak.getMaxDailyStreaks(PitPlayer.this);
+		}
+
+		public int getStreaksLeft() {
+			return megastreak.getMaxDailyStreaks(PitPlayer.this) - streaksCompleted;
+		}
+
+		public int getStreaksCompleted() {
+			return streaksCompleted;
+		}
+
+		public Megastreak getMegastreak() {
+			return megastreak;
+		}
+
+		public long getLastReset() {
+			return lastReset;
+		}
 	}
 
 	@Deprecated
