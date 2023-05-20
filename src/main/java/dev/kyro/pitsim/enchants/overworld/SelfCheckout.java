@@ -69,21 +69,24 @@ public class SelfCheckout extends PitEnchant {
 		killEvent.getKillerPlayer().getEquipment().setLeggings(itemStack);
 		killEvent.getKillerPlayer().updateInventory();
 
-		killEvent.getKillerPitPlayer().renown += getRenown();
-		EarnRenownQuest.INSTANCE.gainRenown(killEvent.getKillerPitPlayer(), getRenown());
+		String scoMessage = "&9&lSCO!&7 Self-Checkout pants activated";
+		int renown = Math.min((killEvent.getKillerPitPlayer().getKills() + 1) / getRenownEveryKills(), getMaxRenown());
+		if(renown != 0) {
+			killEvent.getKillerPitPlayer().renown += renown;
+			EarnRenownQuest.INSTANCE.gainRenown(killEvent.getKillerPitPlayer(), renown);
+			scoMessage += " giving " + Formatter.formatRenown(renown);
+		}
 
-		AOutput.send(killEvent.getKillerPlayer(), "&9&lSCO!&7 Self-Checkout pants activated giving &e" +
-				Formatter.formatRenown(getRenown()));
+		AOutput.send(killEvent.getKillerPlayer(), scoMessage + "&7!");
 		DamageManager.killPlayer(killEvent.getKillerPlayer(), KillModifier.SELF_CHECKOUT);
 	}
 
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new ALoreBuilder(
-				"&7On kill, if you have a killstreak", "&7of at least 200, &eExplode:",
+				"&7On kill, if you have a killstreak", "&7of at least " + getRequiredKills() + ", &eExplode:",
 				"&e\u25a0 &7Die! Keep lives on &3Jewel &7items",
-				"&a\u25a0 &7Gain &e+" + Formatter.formatRenown(getRenown()),
-//				"&a\u25a0 &7Gain &e+1 renown &7for every 300 killstreak (max 4)",
+				"&a\u25a0 &7Gain &e+1 renown &7for every " + getRenownEveryKills() + " killstreak (max " + getMaxRenown() + ")",
 				"&c\u25a0 &7Lose &c" + getLivesOnUse() + " lives &7on this item"
 		).getLore();
 	}
@@ -94,11 +97,19 @@ public class SelfCheckout extends PitEnchant {
 				"save the lives on &3Jewels&7, while also giving you &eRenown";
 	}
 
-	public int getRenown() {
-		return 2;
+	public static int getRequiredKills() {
+		return 200;
 	}
 
-	public int getLivesOnUse() {
+	public static int getRenownEveryKills() {
+		return 300;
+	}
+
+	public static int getMaxRenown() {
+		return 4;
+	}
+
+	public static int getLivesOnUse() {
 		return 3;
 	}
 }
