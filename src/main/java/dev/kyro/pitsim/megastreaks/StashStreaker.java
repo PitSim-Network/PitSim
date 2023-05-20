@@ -4,12 +4,10 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.events.KillEvent;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
 public class StashStreaker extends Megastreak {
@@ -20,14 +18,9 @@ public class StashStreaker extends Megastreak {
 		INSTANCE = this;
 	}
 
-	@EventHandler
-	public void kill(KillEvent killEvent) {
-		if(!hasMegastreak(killEvent.getKillerPlayer())) return;
-		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
-		if(!pitPlayer.isOnMega()) return;
-		killEvent.xpCap += 130;
-		killEvent.xpMultipliers.add(2.0);
-		killEvent.goldMultipliers.add(0.5);
+	public static boolean isActive(PitPlayer pitPlayer) {
+		if(pitPlayer == null) return false;
+		return pitPlayer.getMegastreak() instanceof StashStreaker && pitPlayer.isOnMega();
 	}
 
 	@Override

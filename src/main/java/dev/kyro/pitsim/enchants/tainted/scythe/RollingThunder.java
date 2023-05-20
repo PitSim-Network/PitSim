@@ -241,7 +241,7 @@ public class RollingThunder extends PitEnchantSpell {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&6Off your feet! &7Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, " +
+				"&6Off your feet!&7 Right-Clicking casts this spell for &b" + getManaCost(enchantLvl) + " mana&7, " +
 						"sending a cascading earthquake through the world. Those hit by the quake are stunned " +
 						"(" + getCooldownSeconds(enchantLvl) + "s cooldown)"
 		).getLore();

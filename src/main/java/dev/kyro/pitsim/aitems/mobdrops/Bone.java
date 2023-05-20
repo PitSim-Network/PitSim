@@ -78,7 +78,7 @@ public class Bone extends BrewingIngredient implements TemporaryItem {
 		if(effect == null) return;
 
 		String[] values = ((String) getPotency(effect.potency)).split(",");
-		event.bonusXpReward += Integer.parseInt(values[0]);
+		event.postMultiplierXpReward += Integer.parseInt(values[0]);
 		event.xpCap += Integer.parseInt(values[1]);
 	}
 

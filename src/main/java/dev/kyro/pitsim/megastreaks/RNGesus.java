@@ -368,7 +368,7 @@ public class RNGesus extends Megastreak {
 		);
 		if(isOnCooldown(pitPlayer)) loreBuilder.addLore(
 				"",
-				"&eMegastreak on Cooldown! &7(" + getTimeLeft(pitPlayer) + ")"
+				"&eMegastreak on Cooldown!&7 (" + getTimeLeft(pitPlayer) + ")"
 		);
 	}
 

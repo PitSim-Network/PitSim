@@ -33,7 +33,7 @@ public class FastTravelDestination {
 
 	public void travel(Player player) {
 		player.teleport(location);
-		AOutput.send(player, "&f&lFAST TRAVEL! &7You have been sent to " + displayName);
+		AOutput.send(player, "&f&lFAST TRAVEL!&7 You have been sent to " + displayName);
 		Sounds.FAST_TRAVEL.play(player);
 	}
 }

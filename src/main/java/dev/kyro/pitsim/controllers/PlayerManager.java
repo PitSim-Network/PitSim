@@ -744,7 +744,7 @@ public class PlayerManager implements Listener {
 
 					pitPlayer.soulReturn = 0;
 
-					AOutput.send(player, "&5&lDARK AUCTION! &7Received &f" + soulReturn + " Tainted Souls&7.");
+					AOutput.send(player, "&5&lDARK AUCTION!&7 Received &f" + soulReturn + " Tainted Souls&7.");
 					Sounds.BOOSTER_REMIND.play(player);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 10);

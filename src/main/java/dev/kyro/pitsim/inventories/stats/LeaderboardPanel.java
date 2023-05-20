@@ -60,7 +60,7 @@ public class LeaderboardPanel extends AGUIPanel {
 				pitPlayer.savedLeaderboardRef = leaderboard.refName;
 
 				Sounds.RENOWN_SHOP_PURCHASE.play(player);
-				AOutput.send(player, "&e&lLEADERBOARD! &7Now displaying " + leaderboard.displayName);
+				AOutput.send(player, "&e&lLEADERBOARD!&7 Now displaying " + leaderboard.displayName);
 				player.closeInventory();
 				return;
 			}

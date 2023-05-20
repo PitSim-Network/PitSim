@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.events;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneLeveling;
 import dev.kyro.pitsim.aitems.PitItem;
@@ -16,6 +17,7 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.KillModifier;
 import dev.kyro.pitsim.enums.KillType;
 import dev.kyro.pitsim.megastreaks.Prosperity;
+import dev.kyro.pitsim.megastreaks.StashStreaker;
 import dev.kyro.pitsim.misc.PlayerItemLocation;
 import dev.kyro.pitsim.misc.wrappers.WrapperPlayerInventory;
 import dev.kyro.pitsim.upgrades.DivineIntervention;
@@ -50,7 +52,7 @@ public class KillEvent extends Event {
 	private final List<KillModifier> killModifiers;
 
 	public int xpReward;
-	public int bonusXpReward;
+	public int postMultiplierXpReward = 0;
 	public int xpCap = 50;
 	public double goldCap = 2000;
 	public double goldReward = 20;
@@ -95,11 +97,12 @@ public class KillEvent extends Event {
 
 	public int getFinalXp() {
 		if(!isKillerRealPlayer || !isDeadPlayer) return 0;
+
 		double xpReward = this.xpReward;
 		int xpCap = this.xpCap;
 		for(Double xpMultiplier : xpMultipliers) xpReward *= xpMultiplier;
 		for(Double maxXPMultiplier : maxXPMultipliers) xpCap *= maxXPMultiplier;
-		xpReward += bonusXpReward;
+		xpReward += postMultiplierXpReward;
 
 		double postXPCap = Math.min(xpReward, xpCap);
 		double altarMultiplier = DarkzoneLeveling.getReductionMultiplier(getKillerPitPlayer());
@@ -136,7 +139,14 @@ public class KillEvent extends Event {
 	private void checkLoseLives() {
 		if(!isDeadRealPlayer) return;
 
-		if(PvPBooster.INSTANCE.isActive()) return;
+		if(StashStreaker.isActive(getDeadPitPlayer())) {
+			AOutput.send(dead, StashStreaker.INSTANCE.getCapsDisplayName() + "!&7 Inventory protected!");
+			return;
+		}
+		if(PvPBooster.INSTANCE.isActive()) {
+			AOutput.send(dead, "&6&lBOOSTER!&7 Inventory protected!");
+			return;
+		}
 		if(DivineIntervention.attemptDivine(getDeadPlayer())) return;
 
 		if(PitSim.status.isOverworld()) {

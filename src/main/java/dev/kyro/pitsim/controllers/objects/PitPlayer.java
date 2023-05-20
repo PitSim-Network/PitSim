@@ -777,7 +777,7 @@ public class PitPlayer {
 		darkzoneData.fastTravelData.unlockedLocations.add(subLevel.getIndex());
 		FastTravelDestination destination = FastTravelManager.getDestination(subLevel);
 		if(destination == null) return;
-		AOutput.send(player, "&f&lFAST TRAVEL! &7Unlocked access to " + destination.displayName + "&7!");
+		AOutput.send(player, "&f&lFAST TRAVEL!&7 Unlocked access to " + destination.displayName + "&7!");
 		Sounds.RENOWN_SHOP_PURCHASE.play(player);
 	}
 
