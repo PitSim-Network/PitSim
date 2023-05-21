@@ -6,6 +6,7 @@ import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
 import dev.kyro.pitsim.commands.FPSCommand;
 import dev.kyro.pitsim.controllers.DamageManager;
 import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
 import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -36,6 +37,13 @@ public class Prosperity extends Megastreak {
 
 	@EventHandler
 	public void onAttack(AttackEvent.Pre attackEvent) {
+		if(!PlayerManager.isRealPlayer(attackEvent.getAttackerPlayer()) || !PlayerManager.isRealPlayer(attackEvent.getDefenderPlayer()) ||
+				attackEvent.getAttacker() == attackEvent.getDefender()) return;
+		if(hasMegastreak(attackEvent.getAttackerPlayer()) && attackEvent.getAttackerPitPlayer().getKills() >= 1000) attackEvent.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onAttack2(AttackEvent.Pre attackEvent) {
 		if(!attackEvent.isAttackerRealPlayer() || !attackEvent.isDefenderPlayer() ||
 				!hiddenBotMap.containsKey(attackEvent.getAttackerPlayer())) return;
 		List<Player> hiddenBotList = hiddenBotMap.get(attackEvent.getAttackerPlayer());
