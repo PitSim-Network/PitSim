@@ -64,7 +64,7 @@ public class StorageProfile {
 		Player player = getOnlinePlayer();
 		if(player == null || !player.isOnline()) return;
 		AOutput.log("Loading online data for " + player.getName());
-		AOutput.send(player, "&a&lYOUR PLAYERDATA HAS BEEN SUCCESSFULLY LOADED");
+		AOutput.send(player, "&9&lRELOAD!&7 The server you were on was reloaded and your data has been restored!");
 		Sounds.BOOSTER_REMIND.play(player);
 
 		initializePlayerInventory(player);
