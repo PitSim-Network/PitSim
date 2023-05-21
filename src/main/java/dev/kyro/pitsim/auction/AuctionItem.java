@@ -75,7 +75,8 @@ public class AuctionItem {
 		if(AuctionDisplays.pedestalArmorStands[slot] == null || AuctionDisplays.pedestalItems[slot] == null)
 			throw new RuntimeException("Pedestal or item is null!");
 
-		AuctionDisplays.getItem(AuctionDisplays.pedestalItems[slot]).remove();
+		Entity entity = AuctionDisplays.getItem(AuctionDisplays.pedestalItems[slot]);
+		if(entity != null) entity.remove();
 
 		for(Entity nearbyEntity : AuctionDisplays.pedestalLocations[slot].getWorld().getNearbyEntities(AuctionDisplays.pedestalLocations[slot], 1, 1, 1)) {
 			if(nearbyEntity instanceof ArmorStand) nearbyEntity.remove();
