@@ -173,6 +173,16 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+					for(PitPlayer.MegastreakLimit cooldown : pitPlayer.getAllCooldowns()) cooldown.attemptReset(pitPlayer);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
 	}
 
 	public static boolean isStaff(UUID uuid) {

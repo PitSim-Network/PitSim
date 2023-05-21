@@ -830,12 +830,10 @@ public class PitPlayer {
 			this.megastreakRef = megastreak.refName;
 		}
 
-//		Returns true if the reset was successful
 		@Exclude
-		public boolean attemptReset(PitPlayer pitPlayer) {
-			if(lastReset + COOLDOWN_LENGTH > System.currentTimeMillis()) return false;
+		public void attemptReset(PitPlayer pitPlayer) {
+			if(lastReset + COOLDOWN_LENGTH > System.currentTimeMillis()) return;
 			forceReset(pitPlayer);
-			return true;
 		}
 
 		@Exclude
