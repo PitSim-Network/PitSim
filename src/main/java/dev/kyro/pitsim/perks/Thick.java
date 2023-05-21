@@ -23,15 +23,11 @@ public class Thick extends PitPerk {
 	@EventHandler
 	public void onPerkEquip(PerkEquipEvent event) {
 		Player player = event.getPlayer();
-
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				try {
-					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-					pitPlayer.updateMaxHealth();
-				} catch(Exception ignored) {
-				}
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				pitPlayer.updateMaxHealth();
 			}
 		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}

@@ -2,12 +2,14 @@ package dev.kyro.pitsim.killstreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +38,12 @@ public class Monster extends Killstreak {
 	public void reset(Player player) {
 		healthMap.remove(player);
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		pitPlayer.updateMaxHealth();
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				pitPlayer.updateMaxHealth();
+			}
+		}.runTaskLater(PitSim.INSTANCE, 1L);
 	}
 
 	@Override
