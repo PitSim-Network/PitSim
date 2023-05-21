@@ -36,7 +36,7 @@ public class Chipping extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Deals &c" + Misc.getHearts(getDamage(enchantLvl)) + " &7extra true damage"
+				"&7Fully charged shots deal &c+" + Misc.getHearts(getDamage(enchantLvl)) + " &7true damage"
 		).getLore();
 	}
 
