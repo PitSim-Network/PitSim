@@ -33,6 +33,8 @@ public class OutpostManager implements Listener {
 					}
 				} else if(!activeGuildPresent && enemyGuilds.size() == 1) {
 					decreaseControl(enemyGuilds.remove(0));
+				} else if(controllingGuild == null && guildsInOutpost.size() == 1) {
+					controllingGuild = guildsInOutpost.remove(0);
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
@@ -63,15 +65,13 @@ public class OutpostManager implements Listener {
 			percentControlled -= CONTROL_INCREMENT;
 			if(isActive && lastContestingNotification + 20 * 10 < PitSim.currentTick) {
 				lastContestingNotification = PitSim.currentTick;
-//				TODO: inform controllingGuild that their guild is being captured by capturingGuild (capturingGuild can be null)
+//				TODO: inform controllingGuild that their guild is being captured by capturingGuild (capturingGuild won't ever be null)
 			}
 		}
 	}
 
 	public static List<Guild> getGuildsInOutpost() {
-//		TODO: implement
-//		should return the guild in the outpost
-//		if there are multiple guilds in the outpost, it should return null
+//		TODO: return all the guilds in the outpost
 		return new ArrayList<>();
 	}
 
