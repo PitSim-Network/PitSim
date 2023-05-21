@@ -6,12 +6,15 @@ import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.boosters.SoulBooster;
-import dev.kyro.pitsim.controllers.objects.FakeItem;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Reaper;
 import dev.kyro.pitsim.enums.MobStatus;
 import dev.kyro.pitsim.enums.MysticType;
+import dev.kyro.pitsim.holograms.Hologram;
+import dev.kyro.pitsim.holograms.RefreshMode;
+import dev.kyro.pitsim.holograms.ViewMode;
 import dev.kyro.pitsim.misc.HypixelSound;
+import dev.kyro.pitsim.misc.effects.SelectiveDrop;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -26,7 +29,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class PitMob implements Listener {
@@ -113,26 +118,71 @@ public abstract class PitMob implements Listener {
 				if(DarkzoneManager.freshSoftCooldownList.contains(pitKiller.player.getUniqueId())) freshChance *= 0.1;
 				freshChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
 						pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.SECOND_PATH, "fresh-chance") / 100.0);
-				if(Math.random() < freshChance) {
+				if(Math.random() > freshChance) {
 					MysticType mysticType = Math.random() < 0.5 ? MysticType.TAINTED_SCYTHE : MysticType.TAINTED_CHESTPLATE;
 					ItemStack dropStack = MysticFactory.getFreshItem(mysticType, null);
 					HypixelSound.play(pitKiller.player, mob.getLocation(), HypixelSound.Sound.FRESH_DROP);
 					DarkzoneManager.putOnSoftFreshCooldown(pitKiller.player);
 
-					FakeItem fakeItem = new FakeItem(dropStack, mob.getLocation())
-							.removeAfter(20 * 60)
-							.onPickup((pickupPlayer, itemStack) -> {
-								pickupPlayer.getInventory().addItem(itemStack);
-								pickupPlayer.updateInventory();
-							})
-							.addViewer(pitKiller.player);
+					SelectiveDrop selectiveDrop = new SelectiveDrop(dropStack, mob.getLocation());
+					selectiveDrop.addPlayer(pitKiller.player);
+					selectiveDrop.dropItem();
+
+					Hologram hologram = new Hologram(mob.getLocation(), ViewMode.SELECT, RefreshMode.MANUAL) {
+						@Override
+						public List<String> getStrings(Player player) {
+							return Collections.singletonList(dropStack.getItemMeta().getDisplayName());
+						}
+					};
 
 					new BukkitRunnable() {
 						@Override
 						public void run() {
-							fakeItem.showToAllPlayers();
+							if(selectiveDrop.getDroppedItem() == null) return;
+
+							if(selectiveDrop.getDroppedItem().isDead()) {
+								hologram.remove();
+								return;
+							}
+
+							hologram.teleport(selectiveDrop.getDroppedItem().getLocation().add(0, 0.5, 0));
+							hologram.addPermittedViewer(pitKiller.player);
+						}
+					}.runTaskLater(PitSim.INSTANCE, 20);
+
+					selectiveDrop.setCallBack(new BukkitRunnable() {
+						@Override
+						public void run() {
+							hologram.remove();
+						}
+					});
+
+					new BukkitRunnable() {
+						@Override
+						public void run() {
+							if(selectiveDrop.getDroppedItem().isDead()) return;
+							for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+								hologram.addPermittedViewer(onlinePlayer);
+								selectiveDrop.addPlayer(onlinePlayer);
+							}
 						}
 					}.runTaskLater(PitSim.INSTANCE, 20 * 10);
+
+
+//					FakeItem fakeItem = new FakeItem(dropStack, mob.getLocation())
+//							.removeAfter(20 * 60)
+//							.onPickup((pickupPlayer, itemStack) -> {
+//								pickupPlayer.getInventory().addItem(itemStack);
+//								pickupPlayer.updateInventory();
+//							})
+//							.addViewer(pitKiller.player);
+//
+//					new BukkitRunnable() {
+//						@Override
+//						public void run() {
+//							fakeItem.showToAllPlayers();
+//						}
+//					}.runTaskLater(PitSim.INSTANCE, 20 * 10);
 				}
 			}
 		}

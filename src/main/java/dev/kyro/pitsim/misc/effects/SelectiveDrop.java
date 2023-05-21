@@ -37,6 +37,7 @@ public class SelectiveDrop implements Listener {
 	private final UUID identifier;
 
 	private final BukkitTask task;
+	private BukkitRunnable callBack = null;
 
 	public SelectiveDrop(ItemStack itemStack, Location location) {
 		this(itemStack, location, new ArrayList<>());
@@ -61,8 +62,7 @@ public class SelectiveDrop implements Listener {
 			public void run() {
 				ticksLived += 10;
 				if(ticksLived >= lifetime) {
-					cancel();
-					removeItem();
+					cleanUp();
 				}
 			}
 		}.runTaskLater(PitSim.INSTANCE, 10);
@@ -71,14 +71,20 @@ public class SelectiveDrop implements Listener {
 		selectiveDrops.add(this);
 	}
 
+	public void setCallBack(BukkitRunnable callBack) {
+		this.callBack = callBack;
+	}
+
 	public void dropItem() {
 		NBTItem nbtItem = new NBTItem(itemStack, true);
 		nbtItem.setString(NBTTag.DROPPED_ITEM_UUID.toString(), identifier.toString());
-		droppedItem = location.getWorld().dropItemNaturally(location, itemStack);
+		droppedItem = location.getWorld().dropItem(location, itemStack);
 	}
 
-	public void removeItem() {
-		if(droppedItem != null) droppedItem.remove();
+	private void removeItem() {
+		if(droppedItem != null) {
+			droppedItem.remove();
+		}
 	}
 
 	public void setLifetime(long lifetime) {
@@ -94,6 +100,9 @@ public class SelectiveDrop implements Listener {
 
 		PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity(entity, 2);
 		nmsPlayer.playerConnection.sendPacket(packet);
+
+		PacketPlayOutEntityVelocity velocityPacket = new PacketPlayOutEntityVelocity(entity.getId(), 0, 0, 0);
+		nmsPlayer.playerConnection.sendPacket(velocityPacket);
 
 		PacketPlayOutEntityMetadata metadataPacket = new PacketPlayOutEntityMetadata(entity.getId(), entity.getDataWatcher(), true);
 		nmsPlayer.playerConnection.sendPacket(metadataPacket);
@@ -114,8 +123,12 @@ public class SelectiveDrop implements Listener {
 		return this;
 	}
 
-	private void cleanUp() {
+	public void cleanUp() {
 		task.cancel();
+		if(callBack != null) {
+			callBack.runTask(PitSim.INSTANCE);
+			callBack = null;
+		}
 		removeItem();
 		HandlerList.unregisterAll(this);
 
@@ -151,11 +164,15 @@ public class SelectiveDrop implements Listener {
 		return permittedPlayers;
 	}
 
+	public ItemStack getItemStack() {
+		return itemStack;
+	}
+
 	public boolean isItem(Item item) {
 		ItemStack itemStack = item.getItemStack();
 		NBTItem nbtItem = new NBTItem(itemStack);
 		String identifier = nbtItem.getString(NBTTag.DROPPED_ITEM_UUID.toString());
-		if(identifier == null) return false;
+		if(identifier == null || identifier.isEmpty()) return false;
 		return UUID.fromString(identifier).equals(this.identifier);
 	}
 }

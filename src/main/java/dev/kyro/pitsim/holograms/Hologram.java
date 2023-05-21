@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ public abstract class Hologram {
 	private final List<UUID> activeViewers;
 	private final List<Player> permittedViewers;
 
+	private final BukkitTask task;
+
 	public Hologram(Location spawnLocation) {
 		this(spawnLocation, ViewMode.ALL, RefreshMode.AUTOMATIC_MEDIUM);
 	}
@@ -39,7 +42,7 @@ public abstract class Hologram {
 
 		HologramManager.registerHologram(this);
 
-		new BukkitRunnable() {
+		task = new BukkitRunnable() {
 			int iteration = 0;
 			@Override
 			public void run() {
@@ -81,6 +84,31 @@ public abstract class Hologram {
 	}
 
 	public abstract List<String> getStrings(Player player);
+
+	public void remove() {
+		for(UUID activeViewer : new ArrayList<>(activeViewers)) {
+			Player player = Bukkit.getPlayer(activeViewer);
+			if(player == null) continue;
+
+			removeViewer(player);
+		}
+		task.cancel();
+		HologramManager.holograms.remove(this);
+	}
+
+	public void removeAfter(int ticks) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				remove();
+			}
+		}.runTaskLater(PitSim.INSTANCE, ticks);
+	}
+
+	public void teleport(Location location) {
+		spawnLocation = location;
+		updateHologram();
+	}
 
 	protected Location getSpawnLocation(TextLine textLine) {
 		int index = textLines.indexOf(textLine);

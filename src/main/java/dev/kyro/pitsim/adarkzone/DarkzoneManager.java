@@ -20,11 +20,13 @@ import dev.kyro.pitsim.enchants.tainted.chestplate.Resilient;
 import dev.kyro.pitsim.enums.MobStatus;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.events.*;
+import dev.kyro.pitsim.holograms.Hologram;
+import dev.kyro.pitsim.holograms.RefreshMode;
+import dev.kyro.pitsim.holograms.ViewMode;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
+import dev.kyro.pitsim.misc.effects.SelectiveDrop;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -455,32 +457,62 @@ public class DarkzoneManager implements Listener {
 		for(Integer stackSize : Misc.createDistribution(souls, 3.0 / 5.0)) {
 			Location spawnLocation = location.clone().add(Misc.randomOffset(2), Misc.randomOffsetPositive(2), Misc.randomOffset(2));
 			ItemStack soulStack = ItemFactory.getItem(SoulPickup.class).getItem(stackSize);
-			Item droppedItem = location.getWorld().dropItem(spawnLocation, soulStack);
+			SelectiveDrop drop = new SelectiveDrop(soulStack, spawnLocation);
+
+			Hologram hologram = new Hologram(spawnLocation, ViewMode.SELECT, RefreshMode.MANUAL) {
+				@Override
+				public List<String> getStrings(Player player) {
+					int amount = drop.getItemStack().getAmount();
+					return Collections.singletonList("&f" + amount + "x Soul" + Misc.s(amount));
+				}
+			};
+
+			drop.setCallBack(new BukkitRunnable() {
+				@Override
+				public void run() {
+					hologram.remove();
+				}
+			});
 
 			if(damageMap != null) {
 				UUID choice = Misc.weightedRandom(damageMap);
 				Player player = Bukkit.getPlayer(choice);
 				if(player == null) continue;
-				ItemManager.soulPickupMap.put(droppedItem, player);
-
-				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					if(onlinePlayer == player) continue;
-					PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(droppedItem.getEntityId());
-					((CraftPlayer) (onlinePlayer)).getHandle().playerConnection.sendPacket(packet);
-				}
+				drop.addPlayer(player);
 			}
+
+			drop.dropItem();
 
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					if(droppedItem.isValid()) droppedItem.remove();
+					drop.cleanUp();
 				}
 			}.runTaskLater(PitSim.INSTANCE, 20 * 20 + new Random().nextInt(20 * 10 + 1));
 
 			Vector velocityVector = spawnLocation.toVector().subtract(location.toVector()).normalize().multiply(0.4);
 			double multiplier = Math.random() * 0.5 + 0.75;
 			if(largeExplosion) multiplier *= 1.8;
-			droppedItem.setVelocity(velocityVector.multiply(multiplier));
+			drop.getDroppedItem().setVelocity(velocityVector.multiply(multiplier));
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					if(drop.getDroppedItem().isDead()) {
+						hologram.remove();
+						return;
+					}
+
+					hologram.teleport(drop.getDroppedItem().getLocation().add(0, 0.5, 0));
+
+					for(UUID permittedPlayer : drop.getPermittedPlayers()) {
+						Player player = Bukkit.getPlayer(permittedPlayer);
+						if(player == null) continue;
+						hologram.addPermittedViewer(player);
+					}
+				}
+			}.runTaskLater(PitSim.INSTANCE, 25);
+
 		}
 		location.getWorld().playEffect(location, Effect.EXPLOSION_LARGE, 1);
 		Sounds.SOUL_EXPLOSION.play(location);
