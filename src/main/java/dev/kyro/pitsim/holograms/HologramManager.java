@@ -18,6 +18,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HologramManager implements Listener {
@@ -216,6 +217,20 @@ public class HologramManager implements Listener {
 				return strings;
 			}
 		};
+
+		new Hologram(pitMap.getPitSimCrate()) {
+			@Override
+			public List<String> getStrings(Player player) {
+				return Collections.singletonList("&6&lPit&e&lSim &7Crate");
+			}
+		};
+
+		new Hologram(pitMap.getVoteCrate()) {
+			@Override
+			public List<String> getStrings(Player player) {
+				return Collections.singletonList("&a&lVote &7Crate");
+			}
+		};
 	}
 
 	private void createDarkzoneHolograms() {
@@ -272,7 +287,7 @@ public class HologramManager implements Listener {
 			}
 		};
 
-		new Hologram(MapManager.getCrateHolo()) {
+		new Hologram(MapManager.getTaintedCrateHolo()) {
 			@Override
 			public List<String> getStrings(Player player) {
 				List<String> strings = new ArrayList<>();

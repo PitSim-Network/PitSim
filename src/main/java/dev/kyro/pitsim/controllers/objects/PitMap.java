@@ -13,16 +13,6 @@ public abstract class PitMap {
 		this.rotationDays = rotationDays;
 	}
 
-	public abstract int getTeleportAdd();
-
-	public abstract int getTeleportY();
-
-	public abstract String getOpenSchematic();
-
-	public abstract String getClosedSchematic();
-
-	public abstract Location getSchematicPaste();
-
 	public abstract Location getSpawn();
 
 	public abstract Location getFromDarkzoneSpawn();
@@ -72,6 +62,10 @@ public abstract class PitMap {
 	public abstract Location getGuildLeaderboardHolo();
 
 	public abstract Location getKeeperHolo();
+
+	public abstract Location getPitSimCrate();
+
+	public abstract Location getVoteCrate();
 
 	public double getY() {
 		return getMid().getY();

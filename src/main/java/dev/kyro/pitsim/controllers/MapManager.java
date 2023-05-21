@@ -96,7 +96,7 @@ public class MapManager implements Listener {
 		return new Location(getDarkzone(), 197.524, 94.060, -105.529);
 	}
 
-	public static Location getCrateHolo() {
+	public static Location getTaintedCrateHolo() {
 		return new Location(getDarkzone(), 207.500, 94.800, -105.500);
 	}
 

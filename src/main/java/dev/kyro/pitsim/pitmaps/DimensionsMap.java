@@ -34,21 +34,6 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
-	public int getTeleportAdd() {return -3;}
-
-	@Override
-	public int getTeleportY() {return 44;}
-
-	@Override
-	public String getOpenSchematic() {return "plugins/WorldEdit/schematics/map2DoorOpen.schematic";}
-
-	@Override
-	public String getClosedSchematic() {return "plugins/WorldEdit/schematics/map2DoorClosed.schematic";}
-
-	@Override
-	public Location getSchematicPaste() {return new Location(world, 64, 44, 4);}
-
-	@Override
 	public Location getMid() {
 		return new Location(world, 0.5, 22, 0.5);
 	}
@@ -157,5 +142,15 @@ public class DimensionsMap extends PitMap {
 	@Override
 	public Location getKitsNPCSpawn() {
 		return new Location(world, -1, 56, 14, -165, 0);
+	}
+
+	@Override
+	public Location getPitSimCrate() {
+		return new Location(world, -11.5, 57, -4.5);
+	}
+
+	@Override
+	public Location getVoteCrate() {
+		return new Location(world, -11.5, 57, 5.5);
 	}
 }

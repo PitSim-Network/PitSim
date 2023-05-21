@@ -36,21 +36,6 @@ public class BiomesMap extends PitMap {
 	}
 
 	@Override
-	public int getTeleportAdd() {return 3;}
-
-	@Override
-	public int getTeleportY() {return 72;}
-
-	@Override
-	public String getOpenSchematic() {return "plugins/WorldEdit/schematics/doorOpen.schematic";}
-
-	@Override
-	public String getClosedSchematic() {return "plugins/WorldEdit/schematics/doorClosed.schematic";}
-
-	@Override
-	public Location getSchematicPaste() {return new Location(world, -67, 72, 3);}
-
-	@Override
 	public Location getMid() {
 		Location location = mid.clone();
 		location.setWorld(world);
@@ -160,5 +145,15 @@ public class BiomesMap extends PitMap {
 	@Override
 	public Location getKeeperHolo() {
 		return new Location(world, -2.511, 90.4, -9.981);
+	}
+
+	@Override
+	public Location getPitSimCrate() {
+		return new Location(world, -10.5, 90, 6.5);
+	}
+
+	@Override
+	public Location getVoteCrate() {
+		return new Location(world, -10.5, 90, 4.5);
 	}
 }
