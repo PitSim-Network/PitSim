@@ -22,7 +22,7 @@ public class DarkzoneBalancing {
 
 	public static final int MAIN_PROGRESSION_COST_PER = 10;
 	public static final double MAIN_PROGRESSION_MAJOR_MULTIPLIER = 1.5;
-	public static final double BRANCH_DIFFICULTY_MULTIPLIER_INCREASE = 0.2;
+	public static final double BRANCH_DIFFICULTY_MULTIPLIER_INCREASE = 0.1;
 
 	public static final double MOB_ITEM_DROP_PERCENT = 10;
 
