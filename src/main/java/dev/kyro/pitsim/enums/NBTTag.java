@@ -64,6 +64,7 @@ public enum NBTTag {
 	GOLEM_INGOT("pr-golem-ingot"),
 	ENDERMAN_PEARL("pr-enderman-pearl"),
 	INVENTORY_INDEX("pr-inventory-index"),
+	IS_AUCTION_REWARD("pr-is-auction-reward"),
 	;
 
 	private final String ref;

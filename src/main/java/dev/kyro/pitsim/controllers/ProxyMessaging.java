@@ -1,6 +1,7 @@
 package dev.kyro.pitsim.controllers;
 
 import de.myzelyam.api.vanish.VanishAPI;
+import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.arcticguilds.ArcticGuilds;
@@ -8,6 +9,7 @@ import dev.kyro.arcticguilds.events.GuildWithdrawalEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enums.ItemType;
+import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.events.PitJoinEvent;
 import dev.kyro.pitsim.events.PitQuitEvent;
@@ -228,6 +230,8 @@ public class ProxyMessaging implements Listener {
 			int itemData = ItemType.getJewelData(item.item, dataSeed);
 
 			ItemStack reward = itemData == 0 ? item.item.clone() : ItemType.getJewelItem(item.id, itemData);
+			NBTItem nbtItem = new NBTItem(reward, true);
+			nbtItem.setBoolean(NBTTag.IS_AUCTION_REWARD.getRef(), true);
 			AUtil.giveItemSafely(player, reward, true);
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 			pitPlayer.stats.auctionsWon++;
