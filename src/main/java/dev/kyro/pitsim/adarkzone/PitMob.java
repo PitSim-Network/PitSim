@@ -110,6 +110,7 @@ public abstract class PitMob implements Listener {
 
 			if(pitKiller != null) {
 				double freshChance = 2 / 100.0;
+//				TODO: if the player's guild controlls the outpost and OutpostManager.isActive, multiply this by 1 + (OutpostManager.getOutpostFreshIncrease() / 100.0)
 				if(DarkzoneManager.freshSoftCooldownList.contains(pitKiller.player.getUniqueId())) freshChance *= 0.1;
 				freshChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
 						pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.SECOND_PATH, "fresh-chance") / 100.0);
