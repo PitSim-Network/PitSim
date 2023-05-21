@@ -20,7 +20,6 @@ import dev.kyro.pitsim.events.*;
 import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.megastreaks.Highlander;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
-import dev.kyro.pitsim.megastreaks.Uberstreak;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.pitmaps.XmasMap;
@@ -109,8 +108,8 @@ public class PlayerManager implements Listener {
 	//						if(nearbyEntity.getWorld() == Bukkit.getWorld("tutorial")) continue;
 							if(!(nearbyEntity instanceof Player)) continue;
 							Player nearby = (Player) nearbyEntity;
-							if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby)) continue;
-							if(nearby.getLocation().distance(player.getLocation()) > 4) continue;
+							if(NonManager.getNon(nearby) == null || SpawnManager.isInSpawn(nearby) ||
+									nearby.getLocation().distance(player.getLocation()) > 4 || !player.canSee(nearby)) continue;
 							nearbyNons.add(nearby);
 						}
 						if(!nearbyNons.isEmpty()) {
@@ -171,6 +170,16 @@ public class PlayerManager implements Listener {
 				}
 			}
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
+					for(PitPlayer.MegastreakLimit cooldown : pitPlayer.getAllCooldowns()) cooldown.attemptReset(pitPlayer);
+				}
+			}
+		}.runTaskTimer(PitSim.INSTANCE, Misc.getRunnableOffset(1), 20 * 60);
 	}
 
 	public static boolean isStaff(UUID uuid) {
@@ -394,11 +403,8 @@ public class PlayerManager implements Listener {
 			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 				PitPlayer onlinePitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
 				if(onlinePitPlayer.streaksDisabled) continue;
-				String translatedName = ChatColor.translateAlternateColorCodes('&', megastreak.displayName);
-				String megastreakName = ChatColor.getLastColors(translatedName) + "&l" +
-						ChatColor.stripColor(translatedName).toUpperCase();
 				String streakMessage = ChatColor.translateAlternateColorCodes('&',
-						"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated " + megastreakName + "&7!");
+						"&c&lMEGASTREAK! %luckperms_prefix%" + pitPlayer.player.getDisplayName() + " &7activated " + megastreak.getCapsDisplayName() + "&7!");
 				AOutput.send(onlinePlayer, PlaceholderAPI.setPlaceholders(pitPlayer.player, streakMessage));
 			}
 		}
@@ -548,10 +554,10 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
 		if(event.getPlayer().getLocation().getY() < 10 && event.getPlayer().getWorld() == Bukkit.getWorld("tutorial"))
-			DamageManager.death(event.getPlayer());
+			DamageManager.killPlayer(event.getPlayer());
 		else if(event.getPlayer().getLocation().getY() < 10 && (MapManager.getDarkzone() == event.getPlayer().getWorld() || MapManager.currentMap.world == event.getPlayer().getWorld())) {
-			DamageManager.death(event.getPlayer());
-		} else if(event.getPlayer().getLocation().getY() < 10) DamageManager.death(event.getPlayer());
+			DamageManager.killPlayer(event.getPlayer());
+		} else if(event.getPlayer().getLocation().getY() < 10) DamageManager.killPlayer(event.getPlayer());
 	}
 
 	@EventHandler
@@ -600,7 +606,7 @@ public class PlayerManager implements Listener {
 		FeatherBoardAPI.resetDefaultScoreboard(player);
 		ScoreboardManager.updateScoreboard(player);
 
-		Uberstreak.checkUberReset(pitPlayer);
+		for(PitPlayer.MegastreakLimit cooldown : pitPlayer.getAllCooldowns()) cooldown.attemptReset(pitPlayer);
 
 		new BukkitRunnable() {
 			@Override

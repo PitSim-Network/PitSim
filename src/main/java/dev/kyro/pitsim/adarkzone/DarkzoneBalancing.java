@@ -42,7 +42,7 @@ public class DarkzoneBalancing {
 	public static final int PEDESTAL_INCREASE_PERCENT = 30;
 	public static final double PEDESTAL_WEALTH_MULTIPLIER = 1.2;
 
-	public static final int ALLOWED_KILLS_PER_MINUTE = 30;
+	public static final int ALLOWED_KILLS_PER_MINUTE = 35;
 
 	public static int getTravelCost(SubLevel subLevel) {
 		return subLevel.getIndex() + 1;
@@ -67,9 +67,9 @@ public class DarkzoneBalancing {
 	public enum Attribute {
 		BOSS_DAMAGE(5, 1.5),
 		BOSS_HEALTH(50, 1.5),
-		BOSS_SOULS(12, 1.2),
-		MOB_DAMAGE(9, 1.5),
-		MOB_HEALTH(10.5, 1.5),
+		BOSS_SOULS(30.8, 1.2),
+		MOB_DAMAGE(8.1, 1.5),
+		MOB_HEALTH(9.5, 1.5),
 		MOB_SOULS(7.7, 1.2),
 		;
 
@@ -164,7 +164,7 @@ public class DarkzoneBalancing {
 		LAST(50_000),
 		;
 
-		private int cost;
+		private final int cost;
 
 		SkillUnlockCost(int cost) {
 			this.cost = cost;

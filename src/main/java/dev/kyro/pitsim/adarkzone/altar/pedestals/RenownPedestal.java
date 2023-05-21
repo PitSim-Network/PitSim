@@ -36,7 +36,7 @@ public class RenownPedestal extends AltarPedestal {
 				.setName("&ePedestal of Renown")
 				.setLore(new ALoreBuilder(
 						"&7This pedestal increases your",
-						"&7chance of gaining &eRenown&7.",
+						"&7chance of gaining &eRenown",
 						"",
 						"&7Activation Cost: &f" + getActivationCost() + " Souls",
 						"&7Status: " + getStatus(player)

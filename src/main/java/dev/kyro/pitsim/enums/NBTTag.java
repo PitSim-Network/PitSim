@@ -30,7 +30,8 @@ public enum NBTTag {
 	IS_GOD("pr-isgod"),
 
 	CANNOT_PICKUP("pr-cannot-pickup"),
-	SOUL_AMOUNT("pr-soul-amount"),
+	SOUL_PICKUP_AMOUNT("pr-soul-pickup-amount"),
+	GOLD_PICKUP_AMOUNT("pr-gold-pickup-amount"),
 	COOKIE_GIVER("pr-cookie-giver"),
 	COOKIE_RECEIVER("pr-cookie-receiver"),
 	CAKE_USAGES("pr-cake-usages"),

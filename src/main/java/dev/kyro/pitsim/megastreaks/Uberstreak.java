@@ -14,7 +14,6 @@ import dev.kyro.pitsim.aitems.misc.ChunkOfVile;
 import dev.kyro.pitsim.aitems.misc.FunkyFeather;
 import dev.kyro.pitsim.battlepass.quests.CompleteUbersQuest;
 import dev.kyro.pitsim.battlepass.quests.daily.DailyMegastreakQuest;
-import dev.kyro.pitsim.controllers.ChatTriggerManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
 import dev.kyro.pitsim.controllers.NonManager;
 import dev.kyro.pitsim.controllers.objects.Megastreak;
@@ -34,6 +33,7 @@ import dev.kyro.pitsim.misc.CustomSerializer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.upgrades.DoubleDeath;
 import dev.kyro.pitsim.upgrades.VentureCapitalist;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -41,7 +41,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -59,13 +58,8 @@ public class Uberstreak extends Megastreak {
 
 	public Uberstreak() {
 		super("&dUberstreak", "uberstreak", 100, 20, 100);
+		hasDailyLimit = true;
 		INSTANCE = this;
-	}
-
-	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		uberEffectMap.putIfAbsent(player, new ArrayList<>());
 	}
 
 	@EventHandler
@@ -133,7 +127,7 @@ public class Uberstreak extends Megastreak {
 			Sounds.UBER_400.play(pitPlayer.player);
 		} else if(event.getKills() == 500) {
 			Sounds.UBER_500.play(pitPlayer.player);
-			AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&c Cannot heal");
+			AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&c Cannot heal");
 			return;
 		} else {
 			return;
@@ -144,7 +138,7 @@ public class Uberstreak extends Megastreak {
 		uberEffects.add(uberEffect);
 		if(uberEffect == UberEffect.SKIP_100) zoom(pitPlayer);
 		pitPlayer.updateMaxHealth();
-		AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&7 Random Effect: " + uberEffect.description);
+		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Random Effect: " + uberEffect.description);
 	}
 
 	public void zoom(PitPlayer pitPlayer) {
@@ -171,7 +165,7 @@ public class Uberstreak extends Megastreak {
 
 		Sounds.UBER_100.play(pitPlayer.player);
 		pitPlayer.updateMaxHealth();
-		AOutput.send(pitPlayer.player, "&d&lUBERSTREAK!&c Deal -50% damage to bots");
+		AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&c Deal -50% damage to bots");
 	}
 
 	@Override
@@ -182,18 +176,20 @@ public class Uberstreak extends Megastreak {
 
 		if(pitPlayer.getKills() < 500) return;
 
-		if(pitPlayer.uberReset == 0) pitPlayer.uberReset = System.currentTimeMillis() + 1000 * 60 * 60 * 20;
-		pitPlayer.dailyUbersLeft = Math.max(pitPlayer.dailyUbersLeft - 1, 0);
-		ChatTriggerManager.sendUberInfo(pitPlayer);
-
-		if(pitPlayer.dailyUbersLeft == 0) pitPlayer.setMegastreak(NoMegastreak.INSTANCE);
+		PitPlayer.MegastreakLimit limit = pitPlayer.getMegastreakCooldown(INSTANCE);
+		limit.completeStreak(pitPlayer);
 
 		Uberdrop uberdrop = Uberdrop.getRandom();
-		uberdrop.give(pitPlayer);
+		for(int i = 0; i < (DoubleDeath.INSTANCE.isDoubleDeath(pitPlayer.player) ? 2 : 1); i++) uberdrop.give(pitPlayer);
 
 		pitPlayer.stats.ubersCompleted++;
 		CompleteUbersQuest.INSTANCE.onUberComplete(pitPlayer);
 		DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
+	}
+
+	@Override
+	public int getMaxDailyStreaks(PitPlayer pitPlayer) {
+		return 5 + VentureCapitalist.getUberIncrease(pitPlayer.player);
 	}
 
 	public static void sendUberMessage(String displayName, ItemStack itemStack) {
@@ -207,20 +203,9 @@ public class Uberstreak extends Megastreak {
 		return new AItemStackBuilder(displayStack).setName(displayName).getItemStack();
 	}
 
-	public static int getMaxUbers(Player player) {
-		return 5 + VentureCapitalist.getUberIncrease(player);
-	}
-
-	public static void checkUberReset(PitPlayer pitPlayer) {
-		if(System.currentTimeMillis() > pitPlayer.uberReset) {
-			pitPlayer.uberReset = 0;
-			pitPlayer.dailyUbersLeft = Uberstreak.getMaxUbers(pitPlayer.player);
-			ChatTriggerManager.sendUberInfo(pitPlayer);
-		}
-	}
-
 	public static List<UberEffect> getUberEffects(Player player) {
-		return uberEffectMap.getOrDefault(player, new ArrayList<>());
+		uberEffectMap.putIfAbsent(player, new ArrayList<>());
+		return uberEffectMap.get(player);
 	}
 
 	@Override
@@ -235,9 +220,7 @@ public class Uberstreak extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		String ubersLeft = (pitPlayer.dailyUbersLeft == 0 ? "&c" : "&a") + pitPlayer.dailyUbersLeft;
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
 		loreBuilder.addLore(
 				"&7On Trigger:",
@@ -245,7 +228,7 @@ public class Uberstreak extends Megastreak {
 				"&a\u25a0 &d" + decimalFormat.format(SHARD_MULTIPLIER) + "x &7chance to find &aAncient Gem Shards",
 				"",
 				"&7BUT:",
-				"&c\u25a0 &7Deal &c-50% &7damage to nons",
+				"&c\u25a0 &7Deal &c-50% &7damage to bots",
 				"",
 				"&7During the Streak:",
 				"&d\u25a0 &7200 kills: Random &dbuff &7or &cdebuff",
@@ -254,16 +237,14 @@ public class Uberstreak extends Megastreak {
 				"&d\u25a0 &7500 kills: &cNo longer gain health",
 				"",
 				"&7On Death:",
-				"&e\u25a0 &7Earn a random &dUberdrop&7",
-				"&7(If streak is at least 500)",
-				"",
-				"&7Daily Uberstreaks Remaining: &e" + ubersLeft + "&7/" + Uberstreak.getMaxUbers(player)
+				"&e\u25a0 &7If your streak is at least 500,",
+				"   &7earn a random &dUberdrop&7"
 		);
 	}
 
 	@Override
 	public String getSummary() {
-		return "&d&lUBERSTREAK&7 grants you immunity to enchants that move you, double chance to find &agem shards&7, " +
+		return getCapsDisplayName() + "&7 grants you immunity to enchants that move you, double chance to find &agem shards&7, " +
 				"gain random &abuffs&7 or &cdebuffs&7 every 100 kills, gain a reward at &c500 streak&7, but deal a " +
 				"lot less damage to bots and only have five &cUberstreaks&7 daily";
 	}
@@ -329,7 +310,6 @@ public class Uberstreak extends Megastreak {
 
 		public void give(PitPlayer pitPlayer) {
 			Player player = pitPlayer.player;
-			String displayName = Misc.getDisplayName(player);
 			ItemStack displayStack = null;
 			if(this == JEWEL_SWORD) {
 				ItemStack jewelSword = MysticFactory.getJewelItem(MysticType.SWORD);
@@ -344,14 +324,14 @@ public class Uberstreak extends Megastreak {
 				AUtil.giveItemSafely(player, jewelPants);
 				displayStack = getUberDropDisplayStack("&3Hidden Jewel Pants", jewelPants);
 			} else if(this == JEWEL_BUNDLE) {
-				ItemStack jbsword = MysticFactory.getJewelItem(MysticType.SWORD);
-				AUtil.giveItemSafely(player, jbsword);
+				ItemStack jbSword = MysticFactory.getJewelItem(MysticType.SWORD);
+				AUtil.giveItemSafely(player, jbSword);
 
-				ItemStack jbbow = MysticFactory.getJewelItem(MysticType.BOW);
-				AUtil.giveItemSafely(player, jbbow);
+				ItemStack jbBow = MysticFactory.getJewelItem(MysticType.BOW);
+				AUtil.giveItemSafely(player, jbBow);
 
-				ItemStack jbpants = MysticFactory.getJewelItem(MysticType.PANTS);
-				AUtil.giveItemSafely(player, jbpants);
+				ItemStack jbPants = MysticFactory.getJewelItem(MysticType.PANTS);
+				AUtil.giveItemSafely(player, jbPants);
 
 				displayStack = new AItemStackBuilder(Material.STORAGE_MINECART)
 						.setName("&3Hidden Jewel Bundle")

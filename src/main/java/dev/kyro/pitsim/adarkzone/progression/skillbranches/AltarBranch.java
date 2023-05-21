@@ -156,7 +156,7 @@ public class AltarBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("altar-xp", "&4+%value%% &7more &cAltar XP",
-						10, 10, 10, 10, 10, 10));
+						25, 25, 25, 25, 25, 25));
 			}
 		};
 	}
@@ -177,7 +177,7 @@ public class AltarBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("altar-renown", "&4+%value%% &7more &eRenown",
-						15, 0, 15, 0, 15, 0));
+						30, 0, 30, 0, 30, 0));
 				addEffect(new EffectData("altar-vouchers", "&4+%value%% &7more &4Demonic Vouchers",
 						0, 15, 0, 15, 0, 15));
 			}

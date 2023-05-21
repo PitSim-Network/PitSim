@@ -21,7 +21,7 @@ public class PassBoosterReward extends PassReward {
 	public boolean giveReward(PitPlayer pitPlayer) {
 
 		Booster.setBooster(pitPlayer.player, boosterType, pitPlayer.boosters.get(boosterType.refName) + 1);
-		AOutput.send(pitPlayer.player, "&6&lBOOSTER! &7Received &f1 " + boosterType.color + boosterType.name + "&7.");
+		AOutput.send(pitPlayer.player, "&6&lBOOSTER!&7 Received &f1 " + boosterType.color + boosterType.name + "&7.");
 
 		return true;
 	}

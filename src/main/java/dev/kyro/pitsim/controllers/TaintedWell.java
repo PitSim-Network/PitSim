@@ -432,7 +432,7 @@ public class TaintedWell implements Listener {
 		}
 
 		if(pitPlayer.darkzoneTutorial.isActive() && !ItemFactory.isTutorialItem(player.getItemInHand())) {
-			AOutput.error(player, "&c&lERROR! &7You can only enchant tutorial items right now!");
+			AOutput.error(player, "&c&lERROR!&7 You can only enchant tutorial items right now!");
 			Sounds.NO.play(player);
 			return;
 		}

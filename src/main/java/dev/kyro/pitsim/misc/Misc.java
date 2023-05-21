@@ -89,14 +89,14 @@ public class Misc {
 	}
 
 	public static void stunEntity(LivingEntity livingEntity, int ticks) {
-		Misc.applyPotionEffect(livingEntity, PotionEffectType.SLOW, ticks, 7, true, false);
-		Misc.applyPotionEffect(livingEntity, PotionEffectType.JUMP, ticks, 128, true, false);
-		Misc.applyPotionEffect(livingEntity, PotionEffectType.SLOW_DIGGING, ticks, 99, true, false);
+		applyPotionEffect(livingEntity, PotionEffectType.SLOW, ticks, 7, true, false);
+		applyPotionEffect(livingEntity, PotionEffectType.JUMP, ticks, 128, true, false);
+		applyPotionEffect(livingEntity, PotionEffectType.SLOW_DIGGING, ticks, 99, true, false);
 
 		if(livingEntity instanceof Player) {
 			Player player = (Player) livingEntity;
-			Misc.sendTitle(player, "&cSTUNNED", ticks);
-			Misc.sendSubTitle(player, "&eYou cannot move!", ticks);
+			sendTitle(player, "&cSTUNNED", ticks);
+			sendSubTitle(player, "&eYou cannot move!", ticks);
 			Sounds.COMBO_STUN.play(player);
 		}
 	}
@@ -131,28 +131,19 @@ public class Misc {
 	}
 
 	public static boolean isEntity(Entity entity, PitEntityType... entityTypes) {
-		if(!(entity instanceof LivingEntity)) return false;
+		PitEntityType pitEntityType = getEntity(entity);
+		return Arrays.asList(entityTypes).contains(pitEntityType);
+	}
+
+	public static PitEntityType getEntity(Entity entity) {
+		if(!(entity instanceof LivingEntity)) return PitEntityType.NON_LIVING;
 		LivingEntity livingEntity = (LivingEntity) entity;
-		for(PitEntityType entityType : entityTypes) {
-			switch(entityType) {
-				case REAL_PLAYER:
-					if(PlayerManager.isRealPlayer(livingEntity)) return true;
-					break;
-				case NON:
-					if(NonManager.getNon(livingEntity) != null) return true;
-					break;
-				case HOPPER:
-					if(HopperManager.isHopper(livingEntity)) return true;
-					break;
-				case PIT_MOB:
-					if(DarkzoneManager.isPitMob(livingEntity)) return true;
-					break;
-				case PIT_BOSS:
-					if(BossManager.isPitBoss(livingEntity)) return true;
-					break;
-			}
-		}
-		return false;
+		if(PlayerManager.isRealPlayer(livingEntity)) return PitEntityType.REAL_PLAYER;
+		if(NonManager.getNon(livingEntity) != null) return PitEntityType.NON;
+		if(HopperManager.isHopper(livingEntity)) return PitEntityType.HOPPER;
+		if(DarkzoneManager.isPitMob(livingEntity)) return PitEntityType.PIT_MOB;
+		if(BossManager.isPitBoss(livingEntity)) return PitEntityType.PIT_BOSS;
+		return PitEntityType.UNKNOWN;
 	}
 
 	public static boolean isValidMobPlayerTarget(Entity entity, Entity... excluded) {
@@ -256,6 +247,7 @@ public class Misc {
 				continue;
 			}
 			if(character == '\u00A7') {
+				if(!finalString.contains("\u00A7k")) finalString += ChatColor.getLastColors(message.substring(0, i + 2));
 				i++;
 				continue;
 			}
@@ -321,6 +313,10 @@ public class Misc {
 		return normalizedWeights.entrySet().iterator().next().getKey();
 	}
 
+	public static int intBetween(int lowBound, int highBound) {
+		return intBetween(lowBound, highBound, new Random());
+	}
+
 	public static int intBetween(int lowBound, int highBound, Random random) {
 		return random.nextInt(highBound - lowBound + 1) + lowBound;
 	}
@@ -332,7 +328,7 @@ public class Misc {
 
 	public static String stringifyItem(ItemStack itemStack) {
 		String serializedItem = "";
-		if(Misc.isAirOrNull(itemStack)) return addBraces(serializedItem);
+		if(isAirOrNull(itemStack)) return addBraces(serializedItem);
 		if(!itemStack.hasItemMeta()) return addBraces(itemStack.getType().toString());
 		serializedItem += itemStack.getAmount() + "x";
 
@@ -379,7 +375,7 @@ public class Misc {
 		int itemsToFit = itemStack.getAmount();
 		int maxStackSize = itemStack.getType().getMaxStackSize();
 		for(ItemStack inventoryStack : player.getInventory()) {
-			if(Misc.isAirOrNull(inventoryStack) || !inventoryStack.isSimilar(itemStack)) continue;
+			if(isAirOrNull(inventoryStack) || !inventoryStack.isSimilar(itemStack)) continue;
 			int space = maxStackSize - inventoryStack.getAmount();
 			if(space >= itemsToFit) return true;
 			itemsToFit -= space;
@@ -389,7 +385,7 @@ public class Misc {
 
 	public static int getEmptyInventorySlots(Player player) {
 		int emptySlots = 0;
-		for(int i = 0; i < 36; i++) if(Misc.isAirOrNull(player.getInventory().getItem(i))) emptySlots++;
+		for(int i = 0; i < 36; i++) if(isAirOrNull(player.getInventory().getItem(i))) emptySlots++;
 		return emptySlots;
 	}
 
@@ -626,6 +622,12 @@ public class Misc {
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(subTitleLength);
 	}
 
+	public static void sendActionBar(Player player, String message) {
+		PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"" +
+				ChatColor.translateAlternateColorCodes('&', message) + "\"}"), (byte) 2);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+	}
+
 	public static boolean isCritical(LivingEntity entity) {
 		if(entity == null) return false;
 		return entity.getFallDistance() > 0.0F &&
@@ -747,9 +749,7 @@ public class Misc {
 	}
 
 	public static TextComponent createItemHover(ItemStack itemStack, String prefix) {
-		if(Misc.isAirOrNull(itemStack)) {
-			return null;
-		}
+		if(isAirOrNull(itemStack)) return null;
 
 		ItemMeta itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
 		String displayName = itemMeta.getDisplayName();

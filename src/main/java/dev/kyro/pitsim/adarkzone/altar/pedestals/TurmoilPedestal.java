@@ -27,7 +27,7 @@ public class TurmoilPedestal extends AltarPedestal {
 
 	@Override
 	public int getActivationCost() {
-		return 150;
+		return 1;
 	}
 
 	@Override
@@ -35,8 +35,8 @@ public class TurmoilPedestal extends AltarPedestal {
 		AItemStackBuilder builder = new AItemStackBuilder(Material.SAPLING, 1, 3)
 				.setName("&2Pedestal of Turmoil")
 				.setLore(new ALoreBuilder(
-						"&7This pedestal severely &2randomizes",
-						"&7your reward chances.",
+						"&7This pedestal greatly &2randomizes",
+						"&7your reward chances",
 						"",
 						"&7Activation Cost: &f" + getActivationCost() + " Souls",
 						"&7Status: " + getStatus(player)

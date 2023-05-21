@@ -64,8 +64,6 @@ public class RenownShopConfirmPanel extends AGUIPanel {
 			}
 			Sounds.RENOWN_SHOP_PURCHASE.play(player);
 
-			if(upgrade.refName.equals("UBER_INCREASE")) pitPlayer.dailyUbersLeft++;
-
 			RenownShopGUI.purchaseConfirmations.remove(player);
 			openPanel(renownShopGUI.getHomePanel());
 			updateInventory();

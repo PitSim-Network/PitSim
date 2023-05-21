@@ -73,7 +73,7 @@ public class VoucherManager implements Listener {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					AOutput.send(deadPlayer, "&4&lHERESY! &7Saved &f" + finalTotalVouchersUsed + " &7lives with &4Demonic Vouchers&7!");
+					AOutput.send(deadPlayer, "&4&lHERESY!&7 Saved &f" + finalTotalVouchersUsed + " &7lives with &4Demonic Vouchers&7!");
 					Sounds.VOUCHER_USE.play(deadPlayer);
 				}
 			}.runTaskLater(PitSim.INSTANCE, 10);

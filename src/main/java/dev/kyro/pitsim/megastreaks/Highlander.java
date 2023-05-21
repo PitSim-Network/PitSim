@@ -52,7 +52,7 @@ public class Highlander extends Megastreak {
 		if(!hasMegastreak(killEvent.getKillerPlayer())) return;
 		PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 		if(!pitPlayer.isOnMega()) return;
-		killEvent.goldMultipliers.add(2.35);
+		killEvent.goldMultipliers.add(1 + (getGoldIncrease() / 100.0));
 		killEvent.xpMultipliers.add(0.5);
 	}
 
@@ -61,7 +61,7 @@ public class Highlander extends Megastreak {
 		if(!hasMegastreak(healEvent.getPlayer())) return;
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(healEvent.getPlayer());
 		if(!pitPlayer.isOnMega()) return;
-		if(pitPlayer.getKills() > 200) healEvent.multipliers.add(1 / ((pitPlayer.getKills() - 200) / 100D + 1));
+		if(pitPlayer.getKills() > 200) healEvent.multipliers.add(1 / ((pitPlayer.getKills() - 200) / 50.0 + 1));
 	}
 
 	@EventHandler
@@ -69,7 +69,7 @@ public class Highlander extends Megastreak {
 		if(!hasMegastreak(attackEvent.getAttackerPlayer())) return;
 		PitPlayer pitPlayer = attackEvent.getAttackerPitPlayer();
 		if(!pitPlayer.isOnMega() || NonManager.getNon(attackEvent.getDefender()) == null) return;
-		attackEvent.increasePercent += 25;
+		attackEvent.increasePercent += getDamageIncrease();
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class Highlander extends Megastreak {
 		LevelManager.addGold(pitPlayer.player, pitPlayer.bounty);
 		if(pitPlayer.bounty != 0 && pitPlayer.isOnMega()) {
 			DecimalFormat formatter = new DecimalFormat("#,###.#");
-			AOutput.send(pitPlayer.player, "&6&lHIGHLANDER!&7 Earned &6+" + formatter.format(pitPlayer.bounty) + "&6g &7from megastreak!");
+			AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Earned &6+" + formatter.format(pitPlayer.bounty) + "&6g &7from megastreak!");
 			pitPlayer.bounty = 0;
 			ChatTriggerManager.sendBountyInfo(pitPlayer);
 		}
@@ -109,12 +109,12 @@ public class Highlander extends Megastreak {
 	}
 
 	@Override
-	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
+	public void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer) {
 		loreBuilder.addLore(
 				"&7On Trigger:",
 				"&a\u25a0 &7Perma &eSpeed I&7",
-				"&a\u25a0 &7Earn &6+135% gold &7from kills",
-				"&a\u25a0 &7Deal &c+25% &7damage vs bots",
+				"&a\u25a0 &7Earn &6+" + getGoldIncrease() + "% gold &7from kills",
+				"&a\u25a0 &7Deal &c+" + getDamageIncrease() + "% &7damage vs bots",
 				"",
 				"&7BUT:",
 				"&c\u25a0 &7Heal &cless &7per kill over 200",
@@ -127,7 +127,15 @@ public class Highlander extends Megastreak {
 
 	@Override
 	public String getSummary() {
-		return "&6&lHIGHLANDER&7 is a Megastreak grants you increased &6Gold, permanent &espeed I&7, more damage " +
+		return getCapsDisplayName() + "&7 is a Megastreak grants you increased &6Gold, permanent &espeed I&7, more damage " +
 				"to bots, and gain your bounty on death, but heal less per kill over 200, and earn less &bXP";
+	}
+
+	public static int getGoldIncrease() {
+		return 110;
+	}
+
+	public static int getDamageIncrease() {
+		return 25;
 	}
 }

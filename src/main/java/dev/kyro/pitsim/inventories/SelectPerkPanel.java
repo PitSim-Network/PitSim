@@ -56,7 +56,7 @@ public class SelectPerkPanel extends APagedGUIPanel {
 				return;
 			}
 
-			if(CombatManager.isInCombat(player)) {
+			if(CombatManager.isInCombat(player) && !player.isOp()) {
 				AOutput.error(player, "&c&lERROR!&7 You cannot do this while in combat");
 				Sounds.ERROR.play(player);
 				return;

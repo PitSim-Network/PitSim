@@ -30,7 +30,7 @@ public class DoubleDeath extends TieredRenownUpgrade {
 		int tier = UpgradeManager.getTier(player, this);
 		if(tier == 0) return false;
 
-		double chance = 0.01 * (tier * 5);
+		double chance = 0.01 * (tier * 1);
 
 		boolean isDouble = Math.random() < chance;
 
@@ -57,21 +57,21 @@ public class DoubleDeath extends TieredRenownUpgrade {
 
 	@Override
 	public String getCurrentEffect(int tier) {
-		return "&d" + (tier * 5) + "% chance";
+		return "&d" + (tier * 1) + "% chance";
 	}
 
 	@Override
 	public String getEffectPerTier() {
-		return "&7Gain &d+5% chance &7to double megastreak death rewards. Does not work with Uberstreak";
+		return "&7Gain &d+5% chance &7to double megastreak death rewards";
 	}
 
 	@Override
 	public String getSummary() {
-		return "&dDouble-Death &7gives you a chance to gain double death rewards on a &cMegastreak&7, excluding &dUberstreak";
+		return "&dDouble-Death &7gives you a chance to gain double death rewards on a &cMegastreak";
 	}
 
 	@Override
 	public List<Integer> getTierCosts() {
-		return Arrays.asList(5, 5, 10, 10);
+		return Arrays.asList(5, 10, 20, 40, 80);
 	}
 }

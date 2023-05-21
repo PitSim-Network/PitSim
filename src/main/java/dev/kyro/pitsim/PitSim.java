@@ -494,10 +494,15 @@ public class PitSim extends JavaPlugin {
 	private void registerMegastreaks() {
 		PerkManager.registerMegastreak(new NoMegastreak());
 		PerkManager.registerMegastreak(new Overdrive());
+		PerkManager.registerMegastreak(new StashStreaker());
+		PerkManager.registerMegastreak(new Rampage());
+		PerkManager.registerMegastreak(new HighStakes());
 		PerkManager.registerMegastreak(new Beastmode());
 		PerkManager.registerMegastreak(new Highlander());
 		PerkManager.registerMegastreak(new Uberstreak());
 		PerkManager.registerMegastreak(new ToTheMoon());
+		PerkManager.registerMegastreak(new Prosperity());
+		PerkManager.registerMegastreak(new Apostle());
 		PerkManager.registerMegastreak(new RNGesus());
 	}
 
@@ -580,6 +585,7 @@ public class PitSim extends JavaPlugin {
 		new SkillsCommand(betaCommand, "skills");
 		new AltarCommand(betaCommand, "altar");
 		new PrestigeCommand(betaCommand, "prestige");
+		new ApostleCommand(betaCommand, "apostle");
 		new MassEnchantCommand(betaCommand, "me");
 		new FastTravelCommand(betaCommand, "ft");
 		new FreezeCommand(betaCommand, "freeze");
@@ -589,7 +595,7 @@ public class PitSim extends JavaPlugin {
 
 		getCommand("fps").setExecutor(new FPSCommand());
 		getCommand("oof").setExecutor(new OofCommand());
-		getCommand("perks").setExecutor(new PerkCommand());
+		getCommand("perks").setExecutor(new PerksCommand());
 		getCommand("non").setExecutor(new NonCommand());
 		getCommand("enchant").setExecutor(new EnchantCommand());
 		getCommand("fresh").setExecutor(new FreshCommand());
@@ -631,6 +637,8 @@ public class PitSim extends JavaPlugin {
 		getCommand("ineeddata").setExecutor(new ChatTriggerSubscribeCommand());
 		getCommand("givemedata").setExecutor(new ChatTriggerDataCommand());
 		getCommand("claim").setExecutor(new ClaimCommand());
+		getCommand("enderchest").setExecutor(new EnderchestCommand());
+		getCommand("wardrobe").setExecutor(new WardrobeCommand());
 		//TODO: Remove this
 //		getCommand("massmigrate").setExecutor(new MassMigrateCommand());
 
@@ -701,6 +709,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new CustomEventManager(), this);
 		getServer().getPluginManager().registerEvents(new HologramManager(), this);
 		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
+		getServer().getPluginManager().registerEvents(new OutpostManager(), this);
 		if(!PitSim.isDev()) getServer().getPluginManager().registerEvents(new StatisticsManager(), this);
 
 		if(getStatus().isDarkzone()) {
@@ -749,6 +758,7 @@ public class PitSim extends JavaPlugin {
 		UpgradeManager.registerUpgrade(new FastPass());
 		UpgradeManager.registerUpgrade(new Celebrity());
 		UpgradeManager.registerUpgrade(new BreadDealer());
+		UpgradeManager.registerUpgrade(new HandOfGreed());
 	}
 
 	private void registerHelmetAbilities() {
@@ -890,10 +900,12 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new VeryYummyBread());
 		ItemFactory.registerItem(new Arrow());
 
-		ItemFactory.registerItem(new GoldenHelmet());
 		ItemFactory.registerItem(new SoulPickup());
+		ItemFactory.registerItem(new GoldPickup());
+		ItemFactory.registerItem(new GoldenHelmet());
 		ItemFactory.registerItem(new StaffCookie());
 		ItemFactory.registerItem(new TokenOfAppreciation());
+		ItemFactory.registerItem(new TheCakeIsALie());
 
 		ItemFactory.registerItem(new DiamondHelmet());
 		ItemFactory.registerItem(new DiamondChestplate());
@@ -914,8 +926,6 @@ public class PitSim extends JavaPlugin {
 		ItemFactory.registerItem(new Charcoal());
 		ItemFactory.registerItem(new IronIngot());
 		ItemFactory.registerItem(new EnderPearl());
-
-		ItemFactory.registerItem(new TheCakeIsALie());
 
 		ItemFactory.registerItem(new Potion());
 	}

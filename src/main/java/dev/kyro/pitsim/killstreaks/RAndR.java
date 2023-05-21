@@ -14,7 +14,7 @@ public class RAndR extends Killstreak {
 	public static RAndR INSTANCE;
 
 	public RAndR() {
-		super("R And R", "R&R", 7, 0);
+		super("R and R", "R&R", 7, 0);
 		INSTANCE = this;
 	}
 
@@ -45,6 +45,6 @@ public class RAndR extends Killstreak {
 
 	@Override
 	public String getSummary() {
-		return "&eR&R&7 is a killstreak that gives you &9Resistance&7 and &cRegen&7 for a short period of time every &c7 kills";
+		return "&eR and R&7 is a killstreak that gives you &9Resistance&7 and &cRegen&7 for a short period of time every &c7 kills";
 	}
 }

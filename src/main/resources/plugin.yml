@@ -122,3 +122,13 @@ commands:
   givemedata:
   claim:
   beta:
+    aliases:
+      - b
+  enderchest:
+    aliases:
+      - ec
+      - echest
+  wardrobe:
+    aliases:
+      - fit
+      - wear

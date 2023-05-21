@@ -66,7 +66,7 @@ public class CorruptedFeather extends StaticPitItem {
 			ItemStack itemStack = dead.getInventory().getItem(i);
 			if(!isThisItem(itemStack)) continue;
 
-			AOutput.send(dead, "&5&lCORRUPTED FEATHER! &7Inventory protected!");
+			AOutput.send(dead, "&5&lCORRUPTED FEATHER!&7 Inventory protected!");
 			if(itemStack.getAmount() > 1) itemStack.setAmount(itemStack.getAmount() - 1);
 			else {
 				dead.getInventory().setItem(i, null);

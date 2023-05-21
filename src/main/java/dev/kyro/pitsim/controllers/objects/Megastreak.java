@@ -9,9 +9,6 @@ import dev.kyro.pitsim.controllers.PlayerManager;
 import dev.kyro.pitsim.controllers.PrestigeValues;
 import dev.kyro.pitsim.enums.DisplayItemType;
 import dev.kyro.pitsim.megastreaks.NoMegastreak;
-import dev.kyro.pitsim.megastreaks.RNGesus;
-import dev.kyro.pitsim.megastreaks.Uberstreak;
-import dev.kyro.pitsim.misc.Formatter;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
 import dev.kyro.pitsim.upgrades.TheWay;
@@ -31,6 +28,7 @@ public abstract class Megastreak implements Listener, Summarizable {
 	public int requiredKills;
 	public int prestigeReq;
 	public int baseLevelReq;
+	public boolean hasDailyLimit;
 
 	public Megastreak(String displayName, String refName, int requiredKills, int prestigeReq, int baseLevelReq) {
 		this.displayName = displayName;
@@ -42,10 +40,14 @@ public abstract class Megastreak implements Listener, Summarizable {
 
 	public abstract String getPrefix(Player player);
 	public abstract ItemStack getBaseDisplayStack(Player player);
-	public abstract void addBaseDescription(PitLoreBuilder loreBuilder, Player player);
+	public abstract void addBaseDescription(PitLoreBuilder loreBuilder, PitPlayer pitPlayer);
 
 	public void proc(Player player) {}
 	public void reset(Player player) {}
+
+	public int getMaxDailyStreaks(PitPlayer pitPlayer) {
+		return 0;
+	}
 
 	public ItemStack getDisplayStack(Player player, DisplayItemType displayType) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
@@ -59,12 +61,12 @@ public abstract class Megastreak implements Listener, Summarizable {
 			loreBuilder.addLore("&7Selected: &a" + displayName, "");
 
 		ALoreBuilder triggerLore = new ALoreBuilder().addLore(
-				"",
 				"&7Trigger: &c" + requiredKills + " kills"
 		);
 		if(!(this instanceof NoMegastreak)) loreBuilder.addLore(triggerLore.getLore());
+		loreBuilder.addLore("");
 
-		addBaseDescription(loreBuilder, player);
+		addBaseDescription(loreBuilder, pitPlayer);
 
 		ALoreBuilder prestigeRequiredLore = new ALoreBuilder().addLore(
 				"",
@@ -77,6 +79,16 @@ public abstract class Megastreak implements Listener, Summarizable {
 		if(pitPlayer.prestige < prestigeReq) loreBuilder.addLore(prestigeRequiredLore.getLore());
 		else if(pitPlayer.level < levelRequired) loreBuilder.addLore(levelRequiredLore.getLore());
 
+		if(hasDailyLimit) {
+			PitPlayer.MegastreakLimit cooldown = pitPlayer.getMegastreakCooldown(this);
+			String streaksLeft = (cooldown.isAtLimit(pitPlayer) ? "&c" : "&a") + cooldown.getStreaksLeft(pitPlayer);
+			loreBuilder.addLore(
+					"",
+					"&7Daily Streaks Remaining: " + streaksLeft + "&7/" + getMaxDailyStreaks(pitPlayer) +
+							(cooldown.shouldDisplayResetTime() ? " &8(" + cooldown.getTimeLeft() + ")" : "")
+			);
+		}
+
 		String status = "&eClick to select!";
 		if(displayType == DisplayItemType.MAIN_PERK_PANEL) {
 			status = "&eClick to switch megastreak!";
@@ -84,11 +96,8 @@ public abstract class Megastreak implements Listener, Summarizable {
 			status = "&eClick to remove megastreak!";
 		} else if(!isUnlocked) {
 			status = "&cToo low prestige!";
-		} else if(this instanceof Uberstreak && pitPlayer.dailyUbersLeft == 0) {
+		} else if(hasDailyLimit && pitPlayer.getMegastreakCooldown(this).isAtLimit(pitPlayer)) {
 			status = "&cDaily limit reached!";
-		} else if(this instanceof RNGesus && RNGesus.isOnCooldown(pitPlayer)) {
-			String statusColor = pitPlayer.renown >= RNGesus.RENOWN_COST ? "&e" : "&c";
-			status = statusColor + "Click to select for " + Formatter.formatRenown(RNGesus.RENOWN_COST) + "!";
 		} else if(pitPlayer.level < levelRequired) {
 			status = "&cToo low level!";
 		} else if(hasMegastreak(player)) {
@@ -129,8 +138,22 @@ public abstract class Megastreak implements Listener, Summarizable {
 		return trainingPhrases;
 	}
 
+	public int getKillIncrements(PitPlayer pitPlayer, int everyX) {
+		return getKillIncrements(pitPlayer, everyX, 0);
+	}
+
+	public int getKillIncrements(PitPlayer pitPlayer, int everyX, int starting) {
+		return Math.max((pitPlayer.getKills() - starting) / everyX, 0);
+	}
+
 	public String getDisplayName() {
 		return displayName;
+	}
+
+	public String getCapsDisplayName() {
+		String translatedName = ChatColor.translateAlternateColorCodes('&', getDisplayName());
+		return ChatColor.getLastColors(translatedName) + "&l" +
+				ChatColor.stripColor(translatedName).toUpperCase();
 	}
 
 	public String getRefName() {
