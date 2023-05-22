@@ -52,7 +52,7 @@ public class OutpostManager implements Listener {
 				strings.add("&7Control: &f" + percentControlled + "%");
 				strings.add("&7Status: " + getStatus());
 				strings.add("&8&m------------------");
-				strings.add("&7Rewards &6+" + Formatter.formatGoldFull(getGoldAmount()) + "&7/h, &d+" + getOutpostFreshIncrease() + "% Mystic Find");
+				strings.add("&7Rewards &6+" + Formatter.formatGoldFull(getGoldAmount()) + "&7/10m, &d+" + getOutpostFreshIncrease() + "% Mystic Find");
 				return strings;
 			}
 		};
