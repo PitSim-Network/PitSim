@@ -344,6 +344,7 @@ public class ProxyMessaging implements Listener {
 		if(strings.size() > 0 && strings.get(0).equals("OUTPOST DATA")) {
 			OutpostManager.controllingGuild = GuildManager.getGuild(UUID.fromString(strings.get(1)));
 			OutpostManager.isActive = booleans.get(0);
+			if(PitSim.getStatus().isDarkzone()) OutpostManager.setPercentControlled(100);
 		}
 
 	}

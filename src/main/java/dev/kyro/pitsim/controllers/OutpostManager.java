@@ -29,7 +29,7 @@ import java.util.UUID;
 public class OutpostManager implements Listener {
 	public static final Location CENTER_LOCATION = new Location(MapManager.getDarkzone(), 227.5, 93, -189.5);
 
-	public static double CONTROL_INCREMENT = 0.5;
+	public static double CONTROL_INCREMENT = 1;
 
 	public static Guild controllingGuild;
 	public static boolean isActive;
@@ -50,9 +50,9 @@ public class OutpostManager implements Listener {
 				strings.add("&8&m------------------");
 				strings.add("&7Held by: &b" + (controllingGuild == null ? "&cNone" : controllingGuild.color + controllingGuild.name));
 				strings.add("&7Control: &f" + percentControlled + "%");
-				strings.add("&7Status: " + (getGuildsInOutpost().size() > 1 ? "&c&lCONTESTED" : (isActive ? "&a&lACTIVE" : "&6&lINACTIVE")));
+				strings.add("&7Status: " + getStatus());
 				strings.add("&8&m------------------");
-				strings.add("&7Awars &6+" + Formatter.formatGoldFull(getGoldAmount()) + "&7/h, &d+" + getOutpostFreshIncrease() + "% Mystic Increase");
+				strings.add("&7Rewards &6+" + Formatter.formatGoldFull(getGoldAmount()) + "&7/h, &d+" + getOutpostFreshIncrease() + "% Mystic Find");
 				return strings;
 			}
 		};
@@ -62,13 +62,12 @@ public class OutpostManager implements Listener {
 				@Override
 				public void run() {
 					List<Guild> guildsInOutpost = getGuildsInOutpost();
-					hologram.updateHologram();
 					List<Guild> enemyGuilds = new ArrayList<>(guildsInOutpost);
 					boolean activeGuildPresent = enemyGuilds.remove(controllingGuild);
 
 //			    	A guild controls the outpost and no one is capturing it
 					if(enemyGuilds.isEmpty() && controllingGuild != null) {
-						if(isActive) {
+						if(isActive || activeGuildPresent) {
 							increaseControl();
 						} else {
 							decreaseControl(null);
@@ -80,8 +79,9 @@ public class OutpostManager implements Listener {
 						System.out.println(3);
 						setControllingGuild(guildsInOutpost.remove(0));
 					}
+					hologram.updateHologram();
 				}
-			}.runTaskTimer(PitSim.INSTANCE, 0L, 2L);
+			}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
 
 			new BukkitRunnable() {
 				@Override
@@ -100,6 +100,16 @@ public class OutpostManager implements Listener {
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 20 * 60 * 10, 20 * 60 * 10);
 		}
+	}
+
+	public static String getStatus() {
+		if(controllingGuild == null) return "&6&lUNCONTROLLED";
+		List<Guild> guildsInOutpost = getGuildsInOutpost();
+		List<Guild> enemyGuilds = new ArrayList<>(guildsInOutpost);
+		boolean activeGuildPresent = enemyGuilds.remove(controllingGuild);
+
+		if(enemyGuilds.size() > 0 || !isActive) return "&c&lCONTESTED";
+		return "&a&lCONTROLLED";
 	}
 
 	public static void increaseControl() {
@@ -181,6 +191,15 @@ public class OutpostManager implements Listener {
 		pluginMessage.writeString(guildUUID.toString());
 		pluginMessage.writeString(message);
 		pluginMessage.send();
+	}
+
+	public static boolean shouldReceiveRewards(Player player) {
+		Guild guild = GuildManager.getGuild(player);
+		return shouldReceiveRewards(guild);
+	}
+
+	public static boolean shouldReceiveRewards(Guild guild) {
+		return guild != null && OutpostManager.controllingGuild == guild && OutpostManager.isActive;
 	}
 
 	public static int getOutpostFreshIncrease() {

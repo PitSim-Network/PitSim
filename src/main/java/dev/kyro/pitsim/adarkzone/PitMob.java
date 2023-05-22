@@ -1,7 +1,5 @@
 package dev.kyro.pitsim.adarkzone;
 
-import dev.kyro.arcticguilds.Guild;
-import dev.kyro.arcticguilds.GuildManager;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
@@ -118,8 +116,7 @@ public abstract class PitMob implements Listener {
 
 			if(pitKiller != null) {
 				double freshChance = 2 / 100.0;
-				Guild guild = GuildManager.getGuild(pitKiller.player);
-				if(guild != null && OutpostManager.controllingGuild == guild && OutpostManager.isActive) freshChance *= 1 + (OutpostManager.getOutpostFreshIncrease() / 100.0);
+				if(OutpostManager.shouldReceiveRewards(killer)) freshChance *= 1 + (OutpostManager.getOutpostFreshIncrease() / 100.0);
 
 				if(DarkzoneManager.freshSoftCooldownList.contains(pitKiller.player.getUniqueId())) freshChance *= 0.1;
 				freshChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
