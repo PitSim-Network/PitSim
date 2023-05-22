@@ -132,12 +132,12 @@ public class OutpostManager implements Listener {
 		if(percentControlled == 0) return;
 		if(percentControlled - CONTROL_INCREMENT <= 0) {
 			setControllingGuild(null);
-			setActive(false);
-			setPercentControlled(0);
 			if(isActive) {
 				String message = "&3&lOUTPOST! " + controllingGuild.color + controllingGuild.name + " &7has lost control of the Outpost!";
 				Misc.broadcast(message, false);
 			}
+			setActive(false);
+			setPercentControlled(0);
 		} else {
 			setPercentControlled(percentControlled - CONTROL_INCREMENT);
 			if(isActive && lastContestingNotification + 20 * 10 < PitSim.currentTick) {
