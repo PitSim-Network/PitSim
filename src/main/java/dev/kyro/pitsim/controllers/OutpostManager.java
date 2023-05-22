@@ -117,7 +117,12 @@ public class OutpostManager implements Listener {
 			setPercentControlled(100);
 			lastContestingNotification = 0L;
 			String message = "&3&lOUTPOST! " + controllingGuild.color + controllingGuild.name + " &7has captured the Outpost!";
-			Misc.broadcast(message, false);
+
+			List<Guild> guildsInOutpost = getGuildsInOutpost();
+			List<Guild> enemyGuilds = new ArrayList<>(guildsInOutpost);
+			boolean activeGuildPresent = enemyGuilds.remove(controllingGuild);
+
+			if(activeGuildPresent) Misc.broadcast(message, false);
 		} else {
 			setPercentControlled(percentControlled + CONTROL_INCREMENT);
 		}
