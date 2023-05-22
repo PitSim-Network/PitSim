@@ -1,5 +1,6 @@
 package dev.kyro.pitsim.controllers;
 
+import dev.kyro.arcticguilds.Guild;
 import dev.kyro.pitsim.PitSim;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -94,10 +95,5 @@ public class OutpostManager implements Listener {
 
 	public static int getGoldAmount() {
 		return 50_000;
-	}
-
-//	TODO: Implement this in ArcticGuilds
-	public static class Guild {
-
 	}
 }

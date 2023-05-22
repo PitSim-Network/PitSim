@@ -319,8 +319,13 @@ public class ProxyMessaging implements Listener {
 			Player player = Bukkit.getPlayer(uuid);
 			if(!player.isOnline()) return;
 
-			AdminGUI gui = new AdminGUI(player);
-			gui.open();
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					AdminGUI gui = new AdminGUI(player);
+					gui.open();
+				}
+			}.runTask(PitSim.INSTANCE);
 		}
 
 		if(strings.size() >= 2 && strings.get(0).equals("DEPOSIT")) {

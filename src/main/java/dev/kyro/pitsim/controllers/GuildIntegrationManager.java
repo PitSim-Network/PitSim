@@ -2,9 +2,7 @@ package dev.kyro.pitsim.controllers;
 
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticguilds.BuffManager;
-import dev.kyro.arcticguilds.GuildBuff;
-import dev.kyro.arcticguilds.GuildData;
+import dev.kyro.arcticguilds.*;
 import dev.kyro.arcticguilds.events.GuildWithdrawalEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.battlepass.quests.EarnGuildReputationQuest;
@@ -45,7 +43,7 @@ public class GuildIntegrationManager implements Listener {
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 					if(AFKManager.AFKPlayers.contains(onlinePlayer)) continue;
 					if(VanishAPI.isInvisible(onlinePlayer)) continue;
-					GuildData guild = GuildData.getGuildData(onlinePlayer);
+					Guild guild = GuildManager.getGuild(onlinePlayer);
 					if(guild == null) continue;
 					guild.addReputation(getIdleReputation());
 					PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
@@ -60,8 +58,8 @@ public class GuildIntegrationManager implements Listener {
 		if(!(checkKiller instanceof Player)) return;
 		Player killer = (Player) checkKiller;
 
-		GuildData killerGuild = GuildData.getGuildData(killer);
-		GuildData deadGuild = GuildData.getGuildData(dead);
+		Guild killerGuild = GuildManager.getGuild(killer);
+		Guild deadGuild = GuildManager.getGuild(dead);
 
 		if(killerGuild != null && deadGuild != null) {
 			killerGuild.addReputation(getFeatherLossReputation());
@@ -74,8 +72,8 @@ public class GuildIntegrationManager implements Listener {
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 
-		GuildData attackerGuild = GuildData.getGuildData(attackEvent.getAttackerPlayer());
-		GuildData defenderGuild = GuildData.getGuildData(attackEvent.getDefenderPlayer());
+		Guild attackerGuild = GuildManager.getGuild(attackEvent.getAttackerPlayer());
+		Guild defenderGuild = GuildManager.getGuild(attackEvent.getDefenderPlayer());
 		if(attackerGuild == null || defenderGuild == null || attackerGuild == defenderGuild) return;
 
 		GuildBuff damageBuff = BuffManager.getBuff("damage");
@@ -107,8 +105,8 @@ public class GuildIntegrationManager implements Listener {
 	public void onAttack(AttackEvent.Pre attackEvent) {
 		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
 
-		GuildData attackerGuild = GuildData.getGuildData(attackEvent.getAttackerPlayer());
-		GuildData defenderGuild = GuildData.getGuildData(attackEvent.getDefenderPlayer());
+		Guild attackerGuild = GuildManager.getGuild(attackEvent.getAttackerPlayer());
+		Guild defenderGuild = GuildManager.getGuild(attackEvent.getDefenderPlayer());
 		if(attackerGuild == null || defenderGuild == null || attackerGuild == defenderGuild) return;
 
 		GuildBuff dispersionBuff = BuffManager.getBuff("dispersion");
@@ -127,8 +125,8 @@ public class GuildIntegrationManager implements Listener {
 	public void onKill(KillEvent killEvent) {
 		if(!killEvent.isKillerPlayer() || !killEvent.isDeadPlayer()) return;
 
-		GuildData killerGuild = GuildData.getGuildData(killEvent.getKillerPlayer());
-		GuildData deadGuild = GuildData.getGuildData(killEvent.getDeadPlayer());
+		Guild killerGuild = GuildManager.getGuild(killEvent.getKillerPlayer());
+		Guild deadGuild = GuildManager.getGuild(killEvent.getDeadPlayer());
 		if(killerGuild == null || killerGuild == deadGuild) return;
 
 		GuildBuff xpBuff = BuffManager.getBuff("xp");

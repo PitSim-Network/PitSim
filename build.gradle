@@ -43,7 +43,7 @@ dependencies {
     compileOnly 'de.tr7zw:item-nbt-api-plugin:2.8.0'// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
     compileOnly files('libs/FeatherBoard.jar')
     compileOnly files('libs/CPCameraStudioReborn.jar')
-    compileOnly files('libs/ArcticGuilds-1.0.0-all.jar')
+    compileOnly files('libs/ArcticGuilds-all.jar')
     compileOnly files('libs/ArmorEquipEvent-1.7.2.jar')
     compileOnly files('libs/PluginQuery.jar')
     compileOnly files('libs/DeluxeChat-1.16.2.jar')
