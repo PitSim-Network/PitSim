@@ -2,18 +2,19 @@ package dev.kyro.pitsim.controllers;
 
 import dev.kyro.arcticguilds.Guild;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class OutpostManager implements Listener {
 	public static double CONTROL_INCREMENT = 0.5;
 
-//	TODO: load this variable on the spigot end from plugin messages by proxy
 	public static Guild controllingGuild;
-//	TODO: load this variable on the spigot end from plugin messages by proxy
 	public static boolean isActive;
 	public static double percentControlled = 0;
 
@@ -38,7 +39,7 @@ public class OutpostManager implements Listener {
 					} else if(!activeGuildPresent && enemyGuilds.size() == 1) {
 						decreaseControl(enemyGuilds.remove(0));
 					} else if(controllingGuild == null && guildsInOutpost.size() == 1) {
-						controllingGuild = guildsInOutpost.remove(0);
+						setControllingGuild(guildsInOutpost.remove(0));
 					}
 				}
 			}.runTaskTimer(PitSim.INSTANCE, 0L, 20L);
@@ -58,9 +59,10 @@ public class OutpostManager implements Listener {
 		if(percentControlled == 100) return;
 		if(percentControlled + CONTROL_INCREMENT >= 100) {
 			percentControlled = 100;
-			isActive = true;
+			setActive(true);
 			lastContestingNotification = 0L;
-//			TODO: Broadcast new capture to all pitsim servers
+			String message = "&3&lOUTPOST! " + controllingGuild.color + controllingGuild.name + " &7has captured the outpost!";
+			Misc.broadcast(message);
 		} else {
 			percentControlled += CONTROL_INCREMENT;
 		}
@@ -71,22 +73,47 @@ public class OutpostManager implements Listener {
 		if(percentControlled - CONTROL_INCREMENT <= 0) {
 			percentControlled = 0;
 			if(isActive) {
-//				TODO: broadcast loss of control to all pitsim servers
+				String message = "&3&lOUTPOST! " + controllingGuild.color + controllingGuild.name + " &7is losing control of the outpost!";
+				Misc.broadcast(message);
 			}
-			controllingGuild = null;
-			isActive = false;
+			setControllingGuild(null);
+			setActive(false);
 		} else {
 			percentControlled -= CONTROL_INCREMENT;
 			if(isActive && lastContestingNotification + 20 * 10 < PitSim.currentTick) {
 				lastContestingNotification = PitSim.currentTick;
-//				TODO: inform controllingGuild that their guild is being captured by capturingGuild (capturingGuild won't ever be null)
+				sendGuildMessage(controllingGuild.uuid, "&eThe Outpost is being captured by " + capturingGuild.color + capturingGuild.name + "&e!");
 			}
 		}
+	}
+
+	public static void setControllingGuild(Guild guild) {
+		controllingGuild = guild;
+		sendOutpostData();
+	}
+
+	public static void setActive(boolean active) {
+		isActive = active;
+		sendOutpostData();
+	}
+
+	public static void sendOutpostData() {
+		PluginMessage message = new PluginMessage().writeString("OUTPOST DATA");
+		message.writeString(controllingGuild == null ? "null" : controllingGuild.uuid.toString());
+		message.writeBoolean(isActive);
+		message.send();
 	}
 
 	public static List<Guild> getGuildsInOutpost() {
 //		TODO: return all the guilds in the outpost
 		return new ArrayList<>();
+	}
+
+	public static void sendGuildMessage(UUID guildUUID, String message) {
+		PluginMessage pluginMessage = new PluginMessage().writeString("GUILD MESSAGE");
+		pluginMessage.writeString(guildUUID.toString());
+		pluginMessage.writeString(message);
+		pluginMessage.send();
 	}
 
 	public static int getOutpostFreshIncrease() {

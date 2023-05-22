@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.arcticguilds.ArcticGuilds;
+import dev.kyro.arcticguilds.GuildManager;
 import dev.kyro.arcticguilds.events.GuildWithdrawalEvent;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.objects.*;
@@ -268,7 +269,7 @@ public class ProxyMessaging implements Listener {
 			return;
 		}
 
-		if(strings.size() >= 2 && strings.get(0).equals("REQUEST SWITCH")) {
+		if(strings.size() >= 2 && (strings.get(0).equals("REQUEST SWITCH") || strings.get(0).equals("REQUEST DARKZONE SWITCH"))) {
 			UUID uuid = UUID.fromString(strings.get(1));
 			Player player = Bukkit.getPlayer(uuid);
 			if(player == null) return;
@@ -285,25 +286,6 @@ public class ProxyMessaging implements Listener {
 			}
 
 			switchPlayer(player, requestedServer);
-		}
-
-		if(strings.size() >= 2 && strings.get(0).equals("REQUEST DARKZONE SWITCH")) {
-			UUID uuid = UUID.fromString(strings.get(1));
-			Player player = Bukkit.getPlayer(uuid);
-			if(player == null) return;
-
-			if(!player.isOp() && CombatManager.isInCombat(player)) {
-				AOutput.error(player, "You may not queue while in combat!");
-				return;
-			}
-
-			int requestedServer = 0;
-
-			if(integers.size() >= 1) {
-				requestedServer = integers.get(0);
-			}
-
-			darkzoneSwitchPlayer(player, requestedServer);
 		}
 
 		if(strings.size() >= 3 && strings.get(0).equals("TELEPORT JOIN")) {
@@ -358,6 +340,12 @@ public class ProxyMessaging implements Listener {
 					.writeBoolean(success);
 			response.send();
 		}
+
+		if(strings.size() > 0 && strings.get(0).equals("OUTPOST DATA")) {
+			OutpostManager.controllingGuild = GuildManager.getGuild(UUID.fromString(strings.get(1)));
+			OutpostManager.isActive = booleans.get(0);
+		}
+
 	}
 
 	@EventHandler

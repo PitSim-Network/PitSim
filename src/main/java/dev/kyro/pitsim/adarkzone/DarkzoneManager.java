@@ -57,7 +57,7 @@ public class DarkzoneManager implements Listener {
 		subLevel = new SubLevel(
 				SubLevelType.ZOMBIE, PitZombieBoss.class, PitZombie.class, EntityType.ZOMBIE, RottenFlesh.class,
 				new Location(MapManager.getDarkzone(), 327, 67, -143),
-				20, 21, 10, -1,
+				20, 23, 10, -1,
 				new Location(MapManager.getDarkzone(), 302.5, 74, -133.5, -120, 0));
 		registerSubLevel(subLevel);
 
