@@ -1,7 +1,8 @@
 package dev.kyro.pitsim.placeholders;
 
 import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
-import dev.kyro.arcticguilds.GuildData;
+import dev.kyro.arcticguilds.Guild;
+import dev.kyro.arcticguilds.GuildManager;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.AFKManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -28,7 +29,7 @@ public class SuffixPlaceholder implements APAPIPlaceholder {
 			if(souls != 0) return "&7 &f&l" + Formatter.formatSouls(souls, false);
 		}
 
-		GuildData guild = GuildData.getGuildData(player);
+		Guild guild = GuildManager.getGuild(player);
 		if(guild != null && guild.getTag() != null) return guild.getColor() + " #" + guild.getTag();
 		return "";
 	}
