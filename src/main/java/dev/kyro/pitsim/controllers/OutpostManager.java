@@ -73,10 +73,8 @@ public class OutpostManager implements Listener {
 							decreaseControl(null);
 						}
 					} else if(controllingGuild != null && !activeGuildPresent && enemyGuilds.size() == 1) {
-						System.out.println(2);
 						decreaseControl(enemyGuilds.remove(0));
 					} else if(controllingGuild == null && guildsInOutpost.size() == 1) {
-						System.out.println(3);
 						setControllingGuild(guildsInOutpost.remove(0));
 					}
 					hologram.updateHologram();
