@@ -1,11 +1,14 @@
 package dev.kyro.pitsim.adarkzone;
 
+import dev.kyro.arcticguilds.Guild;
+import dev.kyro.arcticguilds.GuildManager;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.progression.ProgressionManager;
 import dev.kyro.pitsim.adarkzone.progression.SkillBranch;
 import dev.kyro.pitsim.adarkzone.progression.skillbranches.SoulBranch;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.boosters.SoulBooster;
+import dev.kyro.pitsim.controllers.OutpostManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.tainted.uncommon.Reaper;
 import dev.kyro.pitsim.enums.MobStatus;
@@ -115,7 +118,9 @@ public abstract class PitMob implements Listener {
 
 			if(pitKiller != null) {
 				double freshChance = 2 / 100.0;
-//				TODO: if the player's guild controlls the outpost and OutpostManager.isActive, multiply this by 1 + (OutpostManager.getOutpostFreshIncrease() / 100.0)
+				Guild guild = GuildManager.getGuild(pitKiller.player);
+				if(guild != null && OutpostManager.controllingGuild == guild && OutpostManager.isActive) freshChance *= 1 + (OutpostManager.getOutpostFreshIncrease() / 100.0);
+
 				if(DarkzoneManager.freshSoftCooldownList.contains(pitKiller.player.getUniqueId())) freshChance *= 0.1;
 				freshChance *= 1 + (ProgressionManager.getUnlockedEffectAsValue(
 						pitKiller, SoulBranch.INSTANCE, SkillBranch.PathPosition.SECOND_PATH, "fresh-chance") / 100.0);

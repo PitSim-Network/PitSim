@@ -263,9 +263,14 @@ public class Misc {
 	}
 
 	public static void broadcast(String message) {
+		broadcast(message, true);
+	}
+
+	public static void broadcast(String message, boolean prefix) {
 		new PluginMessage()
 				.writeString("BROADCAST")
 				.writeString(message)
+				.writeBoolean(prefix)
 				.send();
 	}
 
