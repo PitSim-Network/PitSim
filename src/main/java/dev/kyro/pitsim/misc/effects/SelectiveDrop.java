@@ -138,6 +138,7 @@ public class SelectiveDrop implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPickUp(PlayerPickupItemEvent event) {
+		if(event.getItem() == null || droppedItem == null) return;
 		if(!event.getItem().getUniqueId().equals(droppedItem.getUniqueId())) return;
 
 		if(!Misc.isEntity(event.getPlayer(), PitEntityType.REAL_PLAYER)) {
