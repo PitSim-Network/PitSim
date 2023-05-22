@@ -233,12 +233,18 @@ public class ProxyMessaging implements Listener {
 			ItemStack reward = itemData == 0 ? item.item.clone() : ItemType.getJewelItem(item.id, itemData);
 			NBTItem nbtItem = new NBTItem(reward, true);
 			nbtItem.setBoolean(NBTTag.IS_AUCTION_REWARD.getRef(), true);
-			AUtil.giveItemSafely(player, reward, true);
-			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-			pitPlayer.stats.auctionsWon++;
 
-			Sounds.BOOSTER_REMIND.play(player);
-			AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + item.itemName + "&7.");
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					AUtil.giveItemSafely(player, reward, true);
+					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+					pitPlayer.stats.auctionsWon++;
+
+					Sounds.BOOSTER_REMIND.play(player);
+					AOutput.send(player, "&5&lDARK AUCTION!&7 Received " + item.itemName + "&7.");
+				}
+			}.runTask(PitSim.INSTANCE);
 		}
 
 		if(strings.size() >= 1 && strings.get(0).equals("AUCTION SOUL REWARD")) {

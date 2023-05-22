@@ -8,6 +8,7 @@ import dev.kyro.pitsim.aitems.misc.FunkyFeather;
 import dev.kyro.pitsim.commands.admin.JewelCommand;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.ItemFactory;
+import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
@@ -95,6 +96,9 @@ public enum ItemType {
 			case 7:
 				mysticType = MysticType.PANTS;
 				break;
+			default:
+				Misc.alertDiscord("@everyone Invalid jewel item id: " + id);
+				throw new RuntimeException("Invalid jewel item id: " + id);
 		}
 
 		return JewelCommand.getJewel(mysticType, getEnchantFromJewelData(mysticType, data), 0);
