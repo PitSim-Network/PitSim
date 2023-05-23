@@ -84,23 +84,26 @@ public enum ItemType {
 	}
 
 	public static ItemStack getJewelItem(int id, int data) {
-		MysticType mysticType = null;
-
-		switch(id) {
-			case 5:
-				mysticType = MysticType.SWORD;
-				break;
-			case 6:
-				mysticType = MysticType.BOW;
-				break;
-			case 7:
-				mysticType = MysticType.PANTS;
-				break;
-			default:
-				Misc.alertDiscord("@everyone Invalid jewel item id: " + id);
-				throw new RuntimeException("Invalid jewel item id: " + id);
+		MysticType mysticType = getMysticTypeID(id);
+		if(mysticType == null) {
+			Misc.alertDiscord("@everyone Invalid jewel id: " + id);
+			throw new RuntimeException("Invalid jewel id: " + id);
 		}
 
 		return JewelCommand.getJewel(mysticType, getEnchantFromJewelData(mysticType, data), 0);
 	}
+
+	public static MysticType getMysticTypeID(int id) {
+		switch(id) {
+			case 5:
+				return MysticType.SWORD;
+			case 6:
+				return MysticType.BOW;
+			case 7:
+				return MysticType.PANTS;
+			default:
+				return null;
+		}
+	}
+
 }
