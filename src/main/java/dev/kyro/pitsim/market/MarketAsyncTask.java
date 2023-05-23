@@ -129,11 +129,17 @@ public class MarketAsyncTask {
 	public void respond(boolean success) {
 		timeout.cancel();
 		taskMap.remove(player.getUniqueId());
-		if(success) {
-			this.success.run();
-		} else {
-			this.failure.run();
-		}
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(success) {
+					MarketAsyncTask.this.success.run();
+				} else {
+					MarketAsyncTask.this.failure.run();
+				}
+			}
+		}.runTask(PitSim.INSTANCE);
 	}
 
 	public enum MarketTask {
