@@ -67,6 +67,9 @@ public class PitPlayer {
 	public static List<PitPlayer> pitPlayers = new ArrayList<>();
 
 	@Exclude
+	public static List<PitPlayer> viewPlayers = new ArrayList<>();
+
+	@Exclude
 	public static final long SAVE_COOLDOWN = 1_100;
 
 	@Exclude
@@ -449,11 +452,27 @@ public class PitPlayer {
 	}
 
 	public static boolean loadPitPlayer(UUID playerUUID) {
-		for(PitPlayer testPitPlayer : pitPlayers) {
-			if(testPitPlayer.player == null) continue;
-			if(!testPitPlayer.player.getUniqueId().equals(playerUUID)) continue;
-			AOutput.log("Found duplicate pitplayer for " + testPitPlayer.player.getName());
-			return false;
+		return loadPitPlayer(playerUUID, false);
+	}
+
+	public static boolean loadPitPlayer(UUID playerUUID, boolean viewOnly) {
+
+		if(viewOnly) {
+			List<PitPlayer> toRemove = new ArrayList<>();
+			for(PitPlayer viewPlayer : viewPlayers) {
+				if(viewPlayer.uuid.equals(playerUUID)) toRemove.add(viewPlayer);
+			}
+
+			for(PitPlayer removePlayer : toRemove) {
+				viewPlayers.remove(removePlayer);
+			}
+		} else {
+			for(PitPlayer testPitPlayer : pitPlayers) {
+				if(testPitPlayer.player == null) continue;
+				if(!testPitPlayer.player.getUniqueId().equals(playerUUID)) continue;
+				AOutput.log("Found duplicate pitplayer for " + testPitPlayer.player.getName());
+				return false;
+			}
 		}
 
 		PitPlayer pitPlayer;
@@ -482,8 +501,16 @@ public class PitPlayer {
 			return false;
 		}
 
-		pitPlayers.add(pitPlayer);
+		(viewOnly ? viewPlayers : pitPlayers).add(pitPlayer);
 		return true;
+	}
+
+	@Exclude
+	public static PitPlayer getViewPlayer(UUID uuid) {
+		for(PitPlayer viewPlayer : viewPlayers) {
+			if(viewPlayer.uuid.equals(uuid)) return viewPlayer;
+		}
+		return null;
 	}
 
 	@Exclude

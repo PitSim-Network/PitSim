@@ -32,6 +32,7 @@ public class StorageManager implements Listener {
 	public static final int OUTFITS = 9;
 
 	protected static final List<StorageProfile> profiles = new ArrayList<>();
+	protected static final List<StorageProfile> viewProfiles = new ArrayList<>();
 	protected static final List<EditSession> editSessions = new ArrayList<>();
 
 	public static List<UUID> frozenPlayers = new ArrayList<>();
@@ -57,6 +58,15 @@ public class StorageManager implements Listener {
 		profiles.add(profile);
 
 		return profile;
+	}
+
+	public static StorageProfile getViewProfile(UUID uuid) {
+		System.out.println(viewProfiles);
+		for(StorageProfile profile : viewProfiles) {
+			if(profile.getUniqueID().equals(uuid)) return profile;
+		}
+
+		return null;
 	}
 
 //	@EventHandler(priority = EventPriority.LOWEST)
@@ -150,6 +160,7 @@ public class StorageManager implements Listener {
 	public void onPluginMessage(MessageEvent event) {
 		PluginMessage message = event.getMessage();
 		List<String> strings = message.getStrings();
+		List<Boolean> booleans = message.getBooleans();
 
 		if(strings.size() < 2) return;
 
@@ -162,6 +173,14 @@ public class StorageManager implements Listener {
 		} else if(strings.get(0).equals("PLAYER DATA")) {
 			strings.remove(0);
 			UUID uuid = UUID.fromString(strings.remove(0));
+
+			if(booleans.size() > 0 && booleans.get(booleans.size() - 1)) {
+				StorageProfile profile = new StorageProfile(uuid);
+				profile.loadData(message);
+				viewProfiles.add(profile);
+				System.out.println("Added view profile");
+				return;
+			}
 
 			StorageProfile profile = getProfile(uuid);
 			profile.loadData(message);

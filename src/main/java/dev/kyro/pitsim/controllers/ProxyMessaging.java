@@ -15,10 +15,12 @@ import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.events.PitJoinEvent;
 import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.inventories.AdminGUI;
+import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.misc.MinecraftSkin;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.storage.EditSession;
 import dev.kyro.pitsim.storage.StorageManager;
+import dev.kyro.pitsim.storage.StorageProfile;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -351,6 +353,41 @@ public class ProxyMessaging implements Listener {
 					if(PitSim.getStatus().isDarkzone()) OutpostManager.setPercentControlled(100);
 				}
 			}.runTask(PitSim.INSTANCE);
+
+		}
+
+		if(strings.size() > 0  && strings.get(0).equals("VIEW INFO")) {
+			UUID targetUUID = UUID.fromString(strings.get(1));
+			UUID executorUUID = UUID.fromString(strings.get(2));
+
+			Player player = Bukkit.getPlayer(executorUUID);
+			if(player == null) return;
+
+			boolean online = booleans.get(0);
+
+			if(online) {
+				Player target = Bukkit.getPlayer(targetUUID);
+				if(target == null || !target.isOnline()) return;
+				StorageProfile targetProfile = StorageManager.getProfile(targetUUID);
+
+				ViewGUI gui = new ViewGUI(player, targetProfile, targetUUID, target.getName());
+				gui.open();
+				return;
+			}
+
+			String name = strings.get(3);
+			PitPlayer.loadPitPlayer(targetUUID, true);
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					StorageProfile targetProfile = StorageManager.getViewProfile(targetUUID);
+					if(targetProfile == null) return;
+
+					ViewGUI gui = new ViewGUI(player, targetProfile, targetUUID, name);
+					gui.open();
+				}
+			}.runTaskLater(PitSim.INSTANCE, 1);
 
 		}
 
