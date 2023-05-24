@@ -4,15 +4,15 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticguilds.Guild;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.DisplayItemType;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
-import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.ChatColor;
+import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.storage.StorageProfile;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -23,28 +23,35 @@ public class MainViewPanel extends AGUIPanel {
 	public ViewGUI viewGUI;
 
 	public MainViewPanel(AGUI gui) {
-		super(gui);
+		super(gui, true);
 		viewGUI = (ViewGUI) gui;
+		buildInventory();
 
-		Player target = viewGUI.target;
-		PitPlayer pitTarget = PitPlayer.getPitPlayer(target);
-		getInventory().setItem(0, target.getEquipment().getHelmet());
-		getInventory().setItem(9, target.getEquipment().getChestplate());
-		getInventory().setItem(18, target.getEquipment().getLeggings());
-		getInventory().setItem(27, target.getEquipment().getBoots());
+		StorageProfile target = viewGUI.target;
+		PitPlayer pitTarget = viewGUI.getPitPlayer();
+		assert pitTarget != null;
+
+		ItemStack[] armor = target.getArmor();
+		getInventory().setItem(0, armor[3]);
+		getInventory().setItem(9, armor[2]);
+		getInventory().setItem(18, armor[1]);
+		getInventory().setItem(27, armor[0]);
+
+		ItemStack[] inventory = target.getInventory();
 		for(int i = 0; i < 9; i++) {
-			ItemStack itemStack = target.getInventory().getItem(i);
+			ItemStack itemStack = inventory[i];
 			getInventory().setItem(i + 36, itemStack);
 		}
 
-		ALoreBuilder skullLore = new ALoreBuilder();
-		String rankMessage = ChatColor.translateAlternateColorCodes('&', "&7&8[%luckperms_primary_group_name%&8] %luckperms_prefix%" + target.getName());
+		Guild guild = ViewGUI.getGuild(viewGUI.uuid);
+		ALoreBuilder skullLore = new ALoreBuilder("&7Guild: " + (guild != null ?
+				guild.color + guild.name + (guild.tag.isEmpty() ? "" : " &8(" + guild.color + "#" + guild.tag + "&8)") : "&cNone"));
 		ItemStack skull = new AItemStackBuilder(Material.SKULL_ITEM, 1, 3)
-				.setName(PlaceholderAPI.setPlaceholders(target, rankMessage))
+				.setName(Misc.getRankString(viewGUI.uuid) + " " + viewGUI.name)
 				.setLore(skullLore)
 				.getItemStack();
 		SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-		skullMeta.setOwner(target.getName());
+		skullMeta.setOwner(viewGUI.name);
 		skull.setItemMeta(skullMeta);
 		getInventory().setItem(11, skull);
 
@@ -66,19 +73,19 @@ public class MainViewPanel extends AGUIPanel {
 				.getItemStack();
 		getInventory().setItem(23, killstreaks);
 
-		ItemStack inventory = new AItemStackBuilder(Material.CHEST)
+		ItemStack inventoryDisplay = new AItemStackBuilder(Material.CHEST)
 				.setName("&aInventory")
 				.setLore(new ALoreBuilder(
 						"&7Check out this player's",
 						"&7inventory"
 				))
 				.getItemStack();
-		getInventory().setItem(24, inventory);
+		getInventory().setItem(24, inventoryDisplay);
 	}
 
 	@Override
 	public String getName() {
-		return ((ViewGUI) gui).target.getName() + "'s Profile";
+		return (viewGUI.name + "'s Profile");
 	}
 
 	@Override

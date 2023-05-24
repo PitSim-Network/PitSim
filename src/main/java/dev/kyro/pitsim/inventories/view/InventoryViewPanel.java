@@ -2,7 +2,7 @@ package dev.kyro.pitsim.inventories.view;
 
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import org.bukkit.entity.Player;
+import dev.kyro.pitsim.storage.StorageProfile;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -12,19 +12,21 @@ public class InventoryViewPanel extends AGUIPanel {
 	public ViewGUI viewGUI;
 
 	public InventoryViewPanel(AGUI gui) {
-		super(gui);
+		super(gui, true);
 		viewGUI = (ViewGUI) gui;
+		buildInventory();
 
-		Player target = viewGUI.target;
+		StorageProfile target = viewGUI.target;
+		ItemStack[] inventory = target.getInventory();
 		for(int i = 0; i < 36; i++) {
-			ItemStack itemStack = target.getInventory().getItem(i);
+			ItemStack itemStack = inventory[i];
 			getInventory().setItem(i, itemStack);
 		}
 	}
 
 	@Override
 	public String getName() {
-		return ((ViewGUI) gui).target.getName() + "'s Inventory";
+		return (viewGUI.name + "'s Inventory");
 	}
 
 	@Override

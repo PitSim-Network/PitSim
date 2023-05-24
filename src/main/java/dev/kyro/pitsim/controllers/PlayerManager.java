@@ -12,7 +12,10 @@ import dev.kyro.pitsim.adarkzone.notdarkzone.PitEquipment;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.aitems.misc.Arrow;
-import dev.kyro.pitsim.controllers.objects.*;
+import dev.kyro.pitsim.controllers.objects.HelmetManager;
+import dev.kyro.pitsim.controllers.objects.Megastreak;
+import dev.kyro.pitsim.controllers.objects.Non;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.NBTTag;
 import dev.kyro.pitsim.enums.NonTrait;
 import dev.kyro.pitsim.enums.PitEntityType;
@@ -23,6 +26,8 @@ import dev.kyro.pitsim.megastreaks.NoMegastreak;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import dev.kyro.pitsim.pitmaps.XmasMap;
+import dev.kyro.pitsim.storage.StorageManager;
+import dev.kyro.pitsim.storage.StorageProfile;
 import dev.kyro.pitsim.upgrades.TheWay;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.luckperms.api.model.group.Group;
@@ -251,7 +256,10 @@ public class PlayerManager implements Listener {
 		if(!PlayerManager.isRealPlayer(target)) return;
 		if(viewShiftCooldown.getOrDefault(player.getUniqueId(), 0L) + 500 > System.currentTimeMillis()) return;
 		viewShiftCooldown.put(player.getUniqueId(), System.currentTimeMillis());
-		new ViewGUI(player, target).open();
+
+		StorageProfile targetProfile = StorageManager.getProfile(target);
+		if(targetProfile == null) return;
+		new ViewGUI(player, targetProfile, target.getUniqueId(), target.getName()).open();
 	}
 
 	@EventHandler

@@ -30,6 +30,7 @@ import dev.kyro.pitsim.inventories.GenericConfirmationPanel;
 import dev.kyro.pitsim.megastreaks.Overdrive;
 import dev.kyro.pitsim.megastreaks.Uberstreak;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.luckperms.api.model.group.Group;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -797,6 +798,19 @@ public class Misc {
 			return rankColor;
 		} catch(Exception ignored) {
 			return "&7";
+		}
+	}
+
+	public static String getRankString(UUID uuid) {
+		try {
+			String rank = PitSim.LUCKPERMS.getUserManager().loadUser(uuid).get().getCachedData().getMetaData().getPrimaryGroup();
+			if(rank == null) throw new Exception();
+			Group group = PitSim.LUCKPERMS.getGroupManager().getGroup(rank);
+			if(group == null) throw new Exception();
+
+			return "&8[" + getRankColor(uuid) + group.getDisplayName() + "&8]" + getRankColor(uuid);
+		} catch(Exception ignored) {
+			return "&8[&Member&8]&7";
 		}
 	}
 
