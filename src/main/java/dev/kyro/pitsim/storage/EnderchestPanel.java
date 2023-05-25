@@ -6,6 +6,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.enums.RankInformation;
+import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Material;
@@ -15,24 +16,22 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
-import java.util.UUID;
-
 public class EnderchestPanel extends AGUIPanel {
-	public EnderchestGUI enderchestGUI;
+	public AGUI enderchestGUI;
 	public StorageProfile profile;
 
-	public EnderchestPanel(AGUI gui, UUID storagePlayer) {
+	public EnderchestPanel(AGUI gui, StorageProfile profile) {
 		super(gui);
-		this.enderchestGUI = (EnderchestGUI) gui;
-		this.profile = StorageManager.getProfile(storagePlayer);
+		this.enderchestGUI = gui;
+		this.profile = profile;
 		inventoryBuilder.createBorder(Material.STAINED_GLASS_PANE, 15);
 
-		if(!isAdminSession()) addTaggedItem(35, () -> new AItemStackBuilder(Material.ARMOR_STAND)
+		if(!isAdminSession() && !isViewSession()) addTaggedItem(35, () -> new AItemStackBuilder(Material.ARMOR_STAND)
 				.setName("&2Wardrobe")
 				.setLore(new ALoreBuilder(
 						"&7Click to open your wardrobe"
 				))
-				.getItemStack(), event -> openPanel(enderchestGUI.wardrobePanel)).setItem();
+				.getItemStack(), event -> openPanel(((EnderchestGUI) enderchestGUI).wardrobePanel)).setItem();
 	}
 
 	@Override
@@ -58,6 +57,9 @@ public class EnderchestPanel extends AGUIPanel {
 			session.playerClosed = false;
 			player.openInventory(session.inventory.getInventory());
 			session.playerClosed = true;
+		} else if(slot == 8 && isViewSession()) {
+			ViewGUI viewGUI = ViewGUI.viewGUIs.get(player.getUniqueId());
+			openPanel(viewGUI.mainViewPanel);
 		}
 
 		if(slot < 9 || slot >= StorageManager.MAX_ENDERCHEST_PAGES + 9) return;
@@ -132,7 +134,7 @@ public class EnderchestPanel extends AGUIPanel {
 			stackBuilder.setLore(lore);
 			getInventory().setItem(i, stackBuilder.getItemStack());
 
-			if(!isAdminSession()) continue;
+			if(!isAdminSession() && !isViewSession()) continue;
 
 			AItemStackBuilder builder = new AItemStackBuilder(Material.CHEST);
 			builder.setName("&6View Inventory");
@@ -156,6 +158,18 @@ public class EnderchestPanel extends AGUIPanel {
 	}
 
 	public boolean isAdminSession() {
-		return !profile.getUniqueID().equals(player.getUniqueId());
+		boolean edit = false;
+		for(EditSession editSession : StorageManager.editSessions) {
+			if(editSession.getStaffMember().getUniqueId().equals(player.getUniqueId())) {
+				edit = true;
+				break;
+			}
+		}
+
+		return !profile.getUniqueID().equals(player.getUniqueId()) && edit;
+	}
+
+	public boolean isViewSession() {
+		return StorageManager.viewProfiles.contains(profile);
 	}
 }

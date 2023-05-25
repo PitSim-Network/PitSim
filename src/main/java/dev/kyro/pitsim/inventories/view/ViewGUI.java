@@ -10,10 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ViewGUI extends AGUI {
 	public StorageProfile target;
@@ -22,6 +19,8 @@ public class ViewGUI extends AGUI {
 
 	public MainViewPanel mainViewPanel;
 	public InventoryViewPanel inventoryViewPanel;
+
+	public static Map<UUID, ViewGUI> viewGUIs = new HashMap<>();
 
 	public ViewGUI(Player player, StorageProfile target, UUID uuid, String name) {
 		super(player);
@@ -35,6 +34,8 @@ public class ViewGUI extends AGUI {
 		this.mainViewPanel = new MainViewPanel(this);
 		this.inventoryViewPanel = new InventoryViewPanel(this);
 		setHomePanel(mainViewPanel);
+
+		viewGUIs.put(player.getUniqueId(), this);
 	}
 
 	public PitPlayer getPitPlayer() {

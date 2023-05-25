@@ -15,7 +15,8 @@ public class EnderchestGUI extends AGUI {
 		super(openPlayer);
 
 		this.storagePlayer = storagePlayer;
-		this.enderchestPanel = new EnderchestPanel(this, storagePlayer);
+		StorageProfile storageProfile = StorageManager.getProfile(storagePlayer);
+		this.enderchestPanel = new EnderchestPanel(this, storageProfile);
 		this.wardrobePanel = new WardrobePanel(this);
 		setHomePanel(enderchestPanel);
 	}

@@ -7,6 +7,7 @@ import dev.kyro.pitsim.enums.RankInformation;
 import dev.kyro.pitsim.events.MessageEvent;
 import dev.kyro.pitsim.events.PitJoinEvent;
 import dev.kyro.pitsim.events.PitQuitEvent;
+import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -46,6 +47,24 @@ public class StorageManager implements Listener {
 		StorageProfile profile = new StorageProfile(player.getUniqueId());
 		profiles.add(profile);
 		return profile;
+	}
+
+	public static StorageProfile getProfile(Inventory inventory) {
+		if(inventory == null) return null;
+		for(StorageProfile profile : profiles) {
+			if(!profile.isLoaded()) continue;
+			for(EnderchestPage enderchestPage : profile.getEnderchestPages()) {
+				if(enderchestPage.getInventory().equals(inventory)) return profile;
+			}
+		}
+		for(StorageProfile profile : viewProfiles) {
+			if(!profile.isLoaded()) continue;
+			for(EnderchestPage enderchestPage : profile.getEnderchestPages()) {
+				if(enderchestPage.getInventory().equals(inventory)) return profile;
+			}
+		}
+
+		return null;
 	}
 
 	public static StorageProfile getProfile(UUID uuid) {
@@ -232,9 +251,9 @@ public class StorageManager implements Listener {
 
 	@EventHandler
 	public void onClick(InventoryDragEvent event) {
-		Player player = (Player) event.getWhoClicked();
-		StorageProfile profile = getProfile(player);
-		if(profile.isLoaded() && profile.isSaving()) event.setCancelled(true);
+		StorageProfile profile = getProfile(event.getInventory());
+		if(!profile.isLoaded()) return;
+		if(profile.isSaving() || viewProfiles.contains(profile)) event.setCancelled(true);
 	}
 
 	@EventHandler
@@ -245,7 +264,12 @@ public class StorageManager implements Listener {
 		StorageProfile profile;
 		if(isEditing(player)) {
 			profile = Objects.requireNonNull(getSession(player)).getStorageProfile();
-		} else profile = getProfile(player);
+		} else profile = getProfile(event.getClickedInventory());
+
+		StorageProfile topProfile = getProfile(event.getView().getTopInventory());
+		if(profile == null && topProfile != null && viewProfiles.contains(topProfile)) event.setCancelled(true);
+
+		if(profile == null || !profile.isLoaded()) return;
 
 		if(profile.isLoaded() && profile.isSaving()) {
 			event.setCancelled(true);
@@ -268,12 +292,21 @@ public class StorageManager implements Listener {
 					if(isEditing(player)) getSession(player).playerClosed = true;
 				}
 			} else if(slot == ENDERCHEST_ITEM_SLOTS + 13) {
-				if(isEditing(player)) getSession(player).playerClosed = false;
-				new EnderchestGUI(player, profile.getUniqueID()).open();
-				if(isEditing(player)) getSession(player).playerClosed = true;
+				if(StorageManager.viewProfiles.contains(profile)) {
+					ViewGUI viewGUI = ViewGUI.viewGUIs.get(player.getUniqueId());
+					if(viewGUI != null) viewGUI.mainViewPanel.openPanel(new EnderchestPanel(viewGUI, viewGUI.target));
+				} else {
+					if(isEditing(player)) getSession(player).playerClosed = false;
+					new EnderchestGUI(player, profile.getUniqueID()).open();
+					if(isEditing(player)) getSession(player).playerClosed = true;
+				}
 			}
 
-			if(slot > 8 && slot < 45) return;
+			if(slot > 8 && slot < 45) {
+				if(StorageManager.viewProfiles.contains(profile)) event.setCancelled(true);
+				return;
+			}
+
 			event.setCancelled(true);
 			player.updateInventory();
 		}

@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 public class InventoryViewPanel extends AGUIPanel {
 	public ViewGUI viewGUI;
 
+
+
 	public InventoryViewPanel(AGUI gui) {
 		super(gui, true);
 		viewGUI = (ViewGUI) gui;
