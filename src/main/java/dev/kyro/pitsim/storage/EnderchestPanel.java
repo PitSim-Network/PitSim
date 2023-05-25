@@ -85,7 +85,7 @@ public class EnderchestPanel extends AGUIPanel {
 
 			player.openInventory(enderchestPage.getInventory());
 		} else if(event.getClick() == ClickType.RIGHT || event.getClick() == ClickType.RIGHT) {
-			if(StorageManager.isEditing(player)) return;
+			if(isViewSession() || isAdminSession()) return;
 			if(enderchestPage.isWardrobeEnabled()) {
 				AOutput.send(player, "&2&lWARDROBE!&7 Wardrobe &cdisabled &7for " + enderchestPage.getDisplayName());
 			} else {
@@ -118,9 +118,9 @@ public class EnderchestPanel extends AGUIPanel {
 						"&7Wardrobe: " + (enderchestPage.isWardrobeEnabled() ? "&aEnabled" : "&cDisabled"),
 						"&7Items: &d" + enderchestPage.getItemCount() + "&7/&d" + StorageManager.ENDERCHEST_ITEM_SLOTS,
 						"",
-						"&eLeft-Click to open!",
-						"&eRight-Click to toggle wardrobe!"
+						"&eLeft-Click to open!"
 				);
+				if(!isAdminSession() && !isViewSession()) lore.addLore("&eRight-Click to toggle wardrobe!");
 				Misc.addEnchantGlint(stackBuilder.getItemStack());
 			} else {
 				stackBuilder.getItemStack().setType(Material.BARRIER);

@@ -80,7 +80,6 @@ public class StorageManager implements Listener {
 	}
 
 	public static StorageProfile getViewProfile(UUID uuid) {
-		System.out.println(viewProfiles);
 		for(StorageProfile profile : viewProfiles) {
 			if(profile.getUniqueID().equals(uuid)) return profile;
 		}
