@@ -150,6 +150,7 @@ public class PitSim extends JavaPlugin {
 		serverName = AConfig.getString("server");
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.STANDALONE;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
+		LitebansManager.init();
 
 		if(status.isDarkzone()) {
 			DarkzoneManager.loadChunks();

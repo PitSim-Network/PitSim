@@ -54,6 +54,7 @@ dependencies {
     compileOnly 'com.github.MWHunter:GrimAPI:add576ba8b'
     compileOnly 'com.github.Polar-Anticheat:PolarApi:master-SNAPSHOT'
     compileOnly 'com.google.cloud:google-cloud-dialogflow-cx:0.17.0'
+    compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.5'
 }
 
 shadowJar {
