@@ -49,7 +49,7 @@ public class EnderchestPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 
-		RankInformation rank = RankInformation.getRank(player);
+		RankInformation rank = RankInformation.getRank(profile.getUniqueID());
 		int accessiblePages = isAdminSession() ? StorageManager.MAX_ENDERCHEST_PAGES : rank.enderchestPages;
 
 		if(slot == 8 && isAdminSession()) {
@@ -66,7 +66,8 @@ public class EnderchestPanel extends AGUIPanel {
 
 		if((slot - 9) + 1 > accessiblePages) {
 			event.setCancelled(true);
-			AOutput.error(player, "&5&lRANK REQUIRED!&7 Browse ranks at &6&nhttps://store.pitsim.net");
+			if(!isViewSession() && !isAdminSession()) AOutput.error(player, "&5&lRANK REQUIRED!&7 Browse ranks at &6&nhttps://store.pitsim.net");
+			Sounds.ERROR.play(player);
 			return;
 		}
 
@@ -100,7 +101,7 @@ public class EnderchestPanel extends AGUIPanel {
 	@Override
 	public void setInventory() {
 		super.setInventory();
-		RankInformation rank = RankInformation.getRank(player);
+		RankInformation rank = RankInformation.getRank(profile.getUniqueID());
 
 		for(int i = 9; i < 27; i++) {
 			int pageIndex = (i - 9);

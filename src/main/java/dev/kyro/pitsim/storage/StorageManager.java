@@ -9,6 +9,7 @@ import dev.kyro.pitsim.events.PitJoinEvent;
 import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.inventories.view.ViewGUI;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -287,7 +288,10 @@ public class StorageManager implements Listener {
 				RankInformation rank = RankInformation.getRank(player);
 				if(enderchestPage.getIndex() + 1 < rank.enderchestPages || isEditing(player)) {
 					if(isEditing(player)) getSession(player).playerClosed = false;
-					player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() + 1).getInventory());
+					RankInformation rankInformation = RankInformation.getRank(profile.getUniqueID());
+					if(rankInformation.enderchestPages > enderchestPage.getIndex() + 1 || isEditing(player))
+						player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() + 1).getInventory());
+					else Sounds.ERROR.play(player);
 					if(isEditing(player)) getSession(player).playerClosed = true;
 				}
 			} else if(slot == ENDERCHEST_ITEM_SLOTS + 13) {
