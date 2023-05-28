@@ -474,12 +474,15 @@ public class DarkzoneManager implements Listener {
 				}
 			});
 
-			System.out.println(damageMap);
 			if(damageMap != null) {
 				UUID choice = Misc.weightedRandom(damageMap);
 				Player player = Bukkit.getPlayer(choice);
 				if(player == null) continue;
 				drop.addPlayer(player);
+			} else {
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					drop.addPlayer(onlinePlayer);
+				}
 			}
 
 			drop.dropItem();
