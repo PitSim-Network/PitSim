@@ -500,12 +500,21 @@ public class DarkzoneManager implements Listener {
 			drop.getDroppedItem().setVelocity(velocityVector.multiply(multiplier));
 
 			new BukkitRunnable() {
+				int count = 0;
+
 				@Override
 				public void run() {
 					if(drop.getDroppedItem().isDead()) {
 						hologram.remove();
+						cancel();
 						return;
 					}
+
+					System.out.println(drop.getDroppedItem().getVelocity());
+					Vector velocity = drop.getDroppedItem().getVelocity();
+					if(velocity.getX() > 0.001 || velocity.getY() > 0.001 || velocity.getZ() > 0.001) return;
+					count++;
+					if(count < 5) return;
 
 					hologram.teleport(drop.getDroppedItem().getLocation().add(0, 0.5, 0));
 
@@ -514,8 +523,9 @@ public class DarkzoneManager implements Listener {
 						if(player == null) continue;
 						hologram.addPermittedViewer(player);
 					}
+					cancel();
 				}
-			}.runTaskLater(PitSim.INSTANCE, 25);
+			}.runTaskTimer(PitSim.INSTANCE, 5, 5);
 
 		}
 		location.getWorld().playEffect(location, Effect.EXPLOSION_LARGE, 1);
