@@ -18,6 +18,7 @@ public class LitebansManager {
 			public void entryAdded(Entry entry) {
 				if(entry.getType().equals("ban")) {
 					if(!Objects.equals(entry.getExecutorName(), "Console")) return;
+					if(entry.getReason().contains("[Anticheat]")) return;
 
 					String message = "```ID: " + entry.getId() + "\nPlayer: |\nReason: "
 							+ entry.getReason() + "\nDuration: " + entry.getDurationString() + "```," + entry.getUuid();
