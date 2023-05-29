@@ -66,7 +66,7 @@ public class EnderchestPage {
 	}
 
 	public void writeData(PluginMessage message, boolean isLogout) {
-		message.writeString(CustomSerializer.serialize(displayItem))
+		message.writeString(CustomSerializer.serialize(getDisplayItem()))
 				.writeBoolean(isWardrobeEnabled);
 		for(int i = 0; i < StorageManager.ENDERCHEST_ITEM_SLOTS; i++) {
 			int inventorySlot = i + 9;
@@ -98,7 +98,7 @@ public class EnderchestPage {
 	}
 
 	public ItemStack getDisplayItem() {
-		return displayItem;
+		return displayItem.clone();
 	}
 
 	public void setDisplayItem(ItemStack displayItem) {

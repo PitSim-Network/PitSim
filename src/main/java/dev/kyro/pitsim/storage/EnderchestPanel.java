@@ -116,8 +116,6 @@ public class EnderchestPanel extends AGUIPanel {
 					.setName(enderchestPage.getDisplayName());
 			ALoreBuilder lore = new ALoreBuilder();
 
-
-
 			if(pageIndex + 1 <= accessiblePages) {
 				System.out.println(pageIndex);
 				lore.addLore(
