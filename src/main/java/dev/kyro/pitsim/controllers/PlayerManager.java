@@ -248,7 +248,7 @@ public class PlayerManager implements Listener {
 		if(!player.isSneaking() || !SpawnManager.isInSpawn(player) || !SpawnManager.isInSpawn(target))
 			return;
 		if(!PlayerManager.isRealPlayer(target)) return;
-		if(viewShiftCooldown.getOrDefault(player.getUniqueId(), 0L) + 500 > System.currentTimeMillis()) return;
+		if(viewShiftCooldown.getOrDefault(player.getUniqueId(), 0L) + 2000 > System.currentTimeMillis()) return;
 		viewShiftCooldown.put(player.getUniqueId(), System.currentTimeMillis());
 
 		new PluginMessage().writeString("VIEW REQUEST").writeString(player.getUniqueId().toString())
