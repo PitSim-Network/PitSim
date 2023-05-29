@@ -81,6 +81,22 @@ public class StorageManager implements Listener {
 	}
 
 	public static StorageProfile getViewProfile(UUID uuid) {
+
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getUniqueId().equals(uuid)) {
+				try {
+					StorageProfile viewProfile = getProfile(uuid).clone();
+					new ArrayList<>(viewProfiles).forEach(profile -> {
+						if(profile.getUniqueID().equals(uuid)) viewProfiles.remove(profile);
+					});
+					viewProfiles.add(viewProfile);
+					return viewProfile;
+				} catch(CloneNotSupportedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 		for(StorageProfile profile : viewProfiles) {
 			if(profile.getUniqueID().equals(uuid)) return profile;
 		}

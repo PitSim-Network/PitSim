@@ -102,6 +102,11 @@ public class EnderchestPanel extends AGUIPanel {
 	public void setInventory() {
 		super.setInventory();
 		RankInformation rank = RankInformation.getRank(profile.getUniqueID());
+		int accessiblePages = isAdminSession() ? StorageManager.MAX_ENDERCHEST_PAGES : rank.enderchestPages;
+
+		System.out.println(isViewSession());
+		System.out.println(rank);
+		System.out.println(accessiblePages);
 
 		for(int i = 9; i < 27; i++) {
 			int pageIndex = (i - 9);
@@ -111,9 +116,10 @@ public class EnderchestPanel extends AGUIPanel {
 					.setName(enderchestPage.getDisplayName());
 			ALoreBuilder lore = new ALoreBuilder();
 
-			int accessiblePages = isAdminSession() ? StorageManager.MAX_ENDERCHEST_PAGES : rank.enderchestPages;
+
 
 			if(pageIndex + 1 <= accessiblePages) {
+				System.out.println(pageIndex);
 				lore.addLore(
 						"&7Status: &aUnlocked",
 						"&7Wardrobe: " + (enderchestPage.isWardrobeEnabled() ? "&aEnabled" : "&cDisabled"),
@@ -125,6 +131,7 @@ public class EnderchestPanel extends AGUIPanel {
 				Misc.addEnchantGlint(stackBuilder.getItemStack());
 			} else {
 				stackBuilder.getItemStack().setType(Material.BARRIER);
+				System.out.println("Setting to barier");
 				lore.addLore(
 						"&7Status: &cLocked",
 						"&7Required Rank: " + RankInformation.getMinimumRankForPages(pageIndex + 1).rankName,
