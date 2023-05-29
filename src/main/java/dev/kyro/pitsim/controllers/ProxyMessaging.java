@@ -364,19 +364,6 @@ public class ProxyMessaging implements Listener {
 			Player player = Bukkit.getPlayer(executorUUID);
 			if(player == null) return;
 
-			boolean online = booleans.get(0);
-
-			if(online) {
-				Player target = Bukkit.getPlayer(targetUUID);
-				if(target == null || !target.isOnline()) return;
-				StorageProfile targetProfile = StorageManager.getViewProfile(targetUUID);
-
-				assert targetProfile != null;
-				ViewGUI gui = new ViewGUI(player, targetProfile, targetUUID, target.getName());
-				gui.open();
-				return;
-			}
-
 			String name = strings.get(3);
 			PitPlayer.loadPitPlayer(targetUUID, true);
 

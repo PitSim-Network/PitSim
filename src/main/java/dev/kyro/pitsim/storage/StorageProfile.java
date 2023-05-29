@@ -54,7 +54,7 @@ public class StorageProfile implements Cloneable {
 		return (StorageProfile) super.clone();
 	}
 
-	public void loadData(PluginMessage message) {
+	public void loadData(PluginMessage message, boolean view) {
 		List<String> strings = message.getStrings();
 		List<Integer> integers = message.getIntegers();
 
@@ -65,6 +65,8 @@ public class StorageProfile implements Cloneable {
 		for(int i = 0; i < enderchestPages.length; i++) enderchestPages[i] = new EnderchestPage(this, message);
 		for(int i = 0; i < StorageManager.OUTFITS; i++) outfits[i] = new Outfit(this, message);
 		isLoaded = true;
+
+		if(view) return;
 
 		Player player = getOnlinePlayer();
 		if(player == null || !player.isOnline()) return;

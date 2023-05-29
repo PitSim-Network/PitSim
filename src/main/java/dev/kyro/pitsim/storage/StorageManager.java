@@ -23,10 +23,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class StorageManager implements Listener {
 	public static final int MAX_ENDERCHEST_PAGES = 18;
@@ -81,21 +78,6 @@ public class StorageManager implements Listener {
 	}
 
 	public static StorageProfile getViewProfile(UUID uuid) {
-
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(onlinePlayer.getUniqueId().equals(uuid)) {
-				try {
-					StorageProfile viewProfile = getProfile(uuid).clone();
-					new ArrayList<>(viewProfiles).forEach(profile -> {
-						if(profile.getUniqueID().equals(uuid)) viewProfiles.remove(profile);
-					});
-					viewProfiles.add(viewProfile);
-					return viewProfile;
-				} catch(CloneNotSupportedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 
 		for(StorageProfile profile : viewProfiles) {
 			if(profile.getUniqueID().equals(uuid)) return profile;
@@ -211,14 +193,25 @@ public class StorageManager implements Listener {
 
 			if(booleans.size() > 0 && booleans.get(booleans.size() - 1)) {
 				StorageProfile profile = new StorageProfile(uuid);
-				profile.loadData(message);
+				profile.loadData(message, true);
+				for(Map.Entry<UUID, ViewGUI> entry : ViewGUI.viewGUIs.entrySet()) {
+					if(entry.getValue().target.getUniqueID().equals(uuid)) {
+						Player player = Bukkit.getPlayer(entry.getKey());
+						if(player == null || !player.isOnline()) continue;
+						player.closeInventory();
+						ViewGUI gui = new ViewGUI(player, profile, profile.getUniqueID(), entry.getValue().name);
+						gui.open();
+					}
+				}
+				viewProfiles.removeIf(p -> p.getUniqueID().equals(uuid));
+
 				viewProfiles.add(profile);
 				System.out.println("Added view profile");
 				return;
 			}
 
 			StorageProfile profile = getProfile(uuid);
-			profile.loadData(message);
+			profile.loadData(message, false);
 
 			int index = PitSim.status.isOverworld() ? profile.getDefaultOverworldSet() : profile.getDefaultDarkzoneSet();
 			if(index != -1) {
