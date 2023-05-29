@@ -77,7 +77,7 @@ public class AuctionManager implements Listener {
 			@Override
 			public void run() {
 				for(AuctionItem auctionItem : auctionItems) {
-					if(auctionItem.bidMap == null) continue;
+					if(auctionItem == null || auctionItem.bidMap == null) continue;
 					if(!auctionItem.bidMap.containsKey(player.getUniqueId())) continue;
 
 					UUID highestBidder = auctionItem.getHighestBidder();

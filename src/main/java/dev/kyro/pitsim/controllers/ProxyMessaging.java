@@ -294,7 +294,8 @@ public class ProxyMessaging implements Listener {
 				requestedServer = integers.get(0);
 			}
 
-			switchPlayer(player, requestedServer);
+			 if(strings.get(0).contains("DARKZONE")) darkzoneSwitchPlayer(player, requestedServer);
+			 else switchPlayer(player, requestedServer);
 		}
 
 		if(strings.size() >= 3 && strings.get(0).equals("TELEPORT JOIN")) {
@@ -369,18 +370,6 @@ public class ProxyMessaging implements Listener {
 
 			Player player = Bukkit.getPlayer(executorUUID);
 			if(player == null) return;
-
-			boolean online = booleans.get(0);
-
-			if(online) {
-				Player target = Bukkit.getPlayer(targetUUID);
-				if(target == null || !target.isOnline()) return;
-				StorageProfile targetProfile = StorageManager.getProfile(targetUUID);
-
-				ViewGUI gui = new ViewGUI(player, targetProfile, targetUUID, target.getName());
-				gui.open();
-				return;
-			}
 
 			String name = strings.get(3);
 			PitPlayer.loadPitPlayer(targetUUID, true);

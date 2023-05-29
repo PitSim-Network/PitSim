@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class StorageProfile {
+public class StorageProfile implements Cloneable {
 	private ItemStack[] inventory = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
 	private ItemStack[] armor = new ItemStack[4];
 	private final EnderchestPage[] enderchestPages = new EnderchestPage[StorageManager.MAX_ENDERCHEST_PAGES];
@@ -49,7 +49,12 @@ public class StorageProfile {
 		saveData(logout);
 	}
 
-	public void loadData(PluginMessage message) {
+	@Override
+	public StorageProfile clone() throws CloneNotSupportedException {
+		return (StorageProfile) super.clone();
+	}
+
+	public void loadData(PluginMessage message, boolean view) {
 		List<String> strings = message.getStrings();
 		List<Integer> integers = message.getIntegers();
 
@@ -60,6 +65,8 @@ public class StorageProfile {
 		for(int i = 0; i < enderchestPages.length; i++) enderchestPages[i] = new EnderchestPage(this, message);
 		for(int i = 0; i < StorageManager.OUTFITS; i++) outfits[i] = new Outfit(this, message);
 		isLoaded = true;
+
+		if(view) return;
 
 		Player player = getOnlinePlayer();
 		if(player == null || !player.isOnline()) return;

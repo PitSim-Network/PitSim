@@ -1,11 +1,10 @@
 package dev.kyro.pitsim.enums;
 
+import dev.kyro.pitsim.PitSim;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public enum RankInformation {
 	MEMBER("&7Member", "group.default", 1, 2),
@@ -33,6 +32,22 @@ public enum RankInformation {
 		List<RankInformation> ranks = new ArrayList<>(Arrays.asList(values()));
 		Collections.reverse(ranks);
 		for(RankInformation value : ranks) if(player.hasPermission(value.permission)) return value;
+		return MEMBER;
+	}
+
+	public static RankInformation getRank(UUID player) {
+		List<RankInformation> ranks = new ArrayList<>(Arrays.asList(values()));
+		Collections.reverse(ranks);
+
+		try {
+			List<String> perms = new ArrayList<>(PitSim.LUCKPERMS.getUserManager().loadUser(player)
+					.get().getCachedData().getPermissionData().getPermissionMap().keySet());
+
+			for(RankInformation value : ranks) if(perms.contains(value.permission)) return value;
+		} catch(InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+
 		return MEMBER;
 	}
 

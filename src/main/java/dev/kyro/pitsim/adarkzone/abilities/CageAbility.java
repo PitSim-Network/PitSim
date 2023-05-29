@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone.abilities;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.PitBossAbility;
+import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.misc.BlockData;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.SchematicPaste;
@@ -98,6 +99,10 @@ public class CageAbility extends PitBossAbility {
 				int runnableTicks = 0;
 				@Override
 				public void run() {
+					if(SpawnManager.isInSpawn(viewer)) {
+						cancel();
+						return;
+					}
 					Location tpLoc = cageLoc.clone().add(1, 0, 1);
 					if(viewer.getLocation().distance(tpLoc) > 1.5) viewer.teleport(tpLoc);
 

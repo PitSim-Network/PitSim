@@ -131,11 +131,11 @@ public class OutpostManager implements Listener {
 	public static void decreaseControl(Guild capturingGuild) {
 		if(percentControlled == 0) return;
 		if(percentControlled - CONTROL_INCREMENT <= 0) {
-			setControllingGuild(null);
 			if(isActive) {
 				String message = "&3&lOUTPOST! " + controllingGuild.color + controllingGuild.name + " &7has lost control of the Outpost!";
 				Misc.broadcast(message, false);
 			}
+			setControllingGuild(null);
 			setActive(false);
 			setPercentControlled(0);
 		} else {

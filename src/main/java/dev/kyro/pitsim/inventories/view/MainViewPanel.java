@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticguilds.Guild;
 import dev.kyro.pitsim.controllers.objects.Killstreak;
 import dev.kyro.pitsim.controllers.objects.PitPerk;
@@ -11,6 +12,8 @@ import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.DisplayItemType;
 import dev.kyro.pitsim.killstreaks.NoKillstreak;
 import dev.kyro.pitsim.misc.Misc;
+import dev.kyro.pitsim.misc.Sounds;
+import dev.kyro.pitsim.storage.EnderchestPanel;
 import dev.kyro.pitsim.storage.StorageProfile;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -81,6 +84,14 @@ public class MainViewPanel extends AGUIPanel {
 				))
 				.getItemStack();
 		getInventory().setItem(24, inventoryDisplay);
+		ItemStack enderChestDisplay = new AItemStackBuilder(Material.ENDER_CHEST)
+				.setName("&5Ender Chest")
+				.setLore(new ALoreBuilder(
+						"&7Check out this player's",
+						"&7ender chest"
+				))
+				.getItemStack();
+		getInventory().setItem(25, enderChestDisplay);
 	}
 
 	@Override
@@ -99,6 +110,14 @@ public class MainViewPanel extends AGUIPanel {
 		int slot = event.getSlot();
 		if(slot == 24) {
 			openPanel(viewGUI.inventoryViewPanel);
+		}
+		if(slot == 25) {
+			if(Misc.isKyro(viewGUI.target.getUniqueID())) {
+				AOutput.error(player, "&c&lERROR! &7This player has their Ender Chest disabled!");
+				Sounds.NO.play(player);
+				return;
+			}
+			openPanel(new EnderchestPanel(viewGUI, viewGUI.target));
 		}
 	}
 

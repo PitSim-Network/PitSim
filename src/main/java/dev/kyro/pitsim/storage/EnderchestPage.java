@@ -31,7 +31,7 @@ public class EnderchestPage {
 
 		index = integers.remove(0);
 		displayItem = CustomSerializer.deserializeDirectly(strings.remove(0));
-		if(Misc.isAirOrNull(displayItem)) displayItem = new AItemStackBuilder(Material.ENDER_CHEST).getItemStack();
+		if(Misc.isAirOrNull(displayItem) || displayItem.getType() == Material.BARRIER) displayItem = new AItemStackBuilder(Material.ENDER_CHEST).getItemStack();
 		isWardrobeEnabled = booleans.remove(0);
 		for(int i = 0; i < items.length; i++) items[i] = StorageProfile.deserialize(strings.remove(0), profile.getUniqueID());
 
@@ -66,7 +66,7 @@ public class EnderchestPage {
 	}
 
 	public void writeData(PluginMessage message, boolean isLogout) {
-		message.writeString(CustomSerializer.serialize(displayItem))
+		message.writeString(CustomSerializer.serialize(getDisplayItem()))
 				.writeBoolean(isWardrobeEnabled);
 		for(int i = 0; i < StorageManager.ENDERCHEST_ITEM_SLOTS; i++) {
 			int inventorySlot = i + 9;
@@ -98,7 +98,7 @@ public class EnderchestPage {
 	}
 
 	public ItemStack getDisplayItem() {
-		return displayItem;
+		return displayItem.clone();
 	}
 
 	public void setDisplayItem(ItemStack displayItem) {
