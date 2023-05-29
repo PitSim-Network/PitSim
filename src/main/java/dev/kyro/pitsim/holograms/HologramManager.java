@@ -175,7 +175,8 @@ public class HologramManager implements Listener {
 						strings.add(getLeaderboardColor(i) + String.valueOf(i) + ". " + rankColor + playerData.username + "&7 - "
 								+ PrestigeValues.getLeaderboardPrefix(playerData.prestige, playerData.level));
 					} else {
-						strings.add(getLeaderboardColor(i) + String.valueOf(i) + ". " + rankColor + "&7 - " + leaderboard.getDisplayValue(position));
+						strings.add(getLeaderboardColor(i) + String.valueOf(i) + ". " + rankColor + playerData.username + "&7 - " +
+								leaderboard.getDisplayValue(position));
 					}
 
 				}
