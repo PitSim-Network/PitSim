@@ -59,6 +59,7 @@ public class EnderchestPanel extends AGUIPanel {
 			session.playerClosed = true;
 		} else if(slot == 8 && isViewSession()) {
 			ViewGUI viewGUI = ViewGUI.viewGUIs.get(player.getUniqueId());
+			viewGUI.playerClosed = false;
 			openPanel(viewGUI.mainViewPanel);
 		}
 
@@ -84,7 +85,12 @@ public class EnderchestPanel extends AGUIPanel {
 				return;
 			}
 
+			if(getViewGUI() != null) {
+				ViewGUI viewGUI = getViewGUI();
+				viewGUI.playerClosed = false;
+			}
 			player.openInventory(enderchestPage.getInventory());
+
 		} else if(event.getClick() == ClickType.RIGHT || event.getClick() == ClickType.RIGHT) {
 			if(isViewSession() || isAdminSession()) return;
 			if(enderchestPage.isWardrobeEnabled()) {
@@ -146,15 +152,22 @@ public class EnderchestPanel extends AGUIPanel {
 	@Override
 	public void onOpen(InventoryOpenEvent event) {
 		setInventory();
+
+		if(getViewGUI() != null) {
+			ViewGUI viewGUI = getViewGUI();
+			viewGUI.playerClosed = true;
+		}
 	}
 
 	@Override
 	public void onClose(InventoryCloseEvent event) {
-		if(!StorageManager.isEditing((Player) event.getPlayer())) return;
-		EditSession session = StorageManager.getSession(player);
 
-		if(!session.playerClosed) return;
-		session.end();
+		if(StorageManager.isEditing((Player) event.getPlayer())) {
+			EditSession session = StorageManager.getSession(player);
+
+			if(!session.playerClosed) return;
+			session.end();
+		}
 	}
 
 	public boolean isAdminSession() {
@@ -167,6 +180,10 @@ public class EnderchestPanel extends AGUIPanel {
 		}
 
 		return !profile.getUniqueID().equals(player.getUniqueId()) && edit;
+	}
+
+	public ViewGUI getViewGUI() {
+		return ViewGUI.viewGUIs.get(player.getUniqueId());
 	}
 
 	public boolean isViewSession() {

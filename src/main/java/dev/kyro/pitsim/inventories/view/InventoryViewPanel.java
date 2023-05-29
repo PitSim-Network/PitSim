@@ -40,8 +40,11 @@ public class InventoryViewPanel extends AGUIPanel {
 	public void onClick(InventoryClickEvent event) {}
 
 	@Override
-	public void onOpen(InventoryOpenEvent event) {}
+	public void onOpen(InventoryOpenEvent event) {
+		viewGUI.playerClosed = true;
+	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) {}
+	public void onClose(InventoryCloseEvent event) {
+	}
 }

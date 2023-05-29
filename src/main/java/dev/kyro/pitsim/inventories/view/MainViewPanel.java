@@ -109,6 +109,7 @@ public class MainViewPanel extends AGUIPanel {
 		if(event.getClickedInventory().getHolder() != this) return;
 		int slot = event.getSlot();
 		if(slot == 24) {
+			viewGUI.playerClosed = false;
 			openPanel(viewGUI.inventoryViewPanel);
 		}
 		if(slot == 25) {
@@ -117,13 +118,17 @@ public class MainViewPanel extends AGUIPanel {
 				Sounds.NO.play(player);
 				return;
 			}
+			viewGUI.playerClosed = false;
 			openPanel(new EnderchestPanel(viewGUI, viewGUI.target));
 		}
 	}
 
 	@Override
-	public void onOpen(InventoryOpenEvent event) {}
+	public void onOpen(InventoryOpenEvent event) {
+		viewGUI.playerClosed = true;
+	}
 
 	@Override
-	public void onClose(InventoryCloseEvent event) {}
+	public void onClose(InventoryCloseEvent event) {
+	}
 }

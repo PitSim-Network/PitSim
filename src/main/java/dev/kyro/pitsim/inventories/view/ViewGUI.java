@@ -20,6 +20,8 @@ public class ViewGUI extends AGUI {
 	public MainViewPanel mainViewPanel;
 	public InventoryViewPanel inventoryViewPanel;
 
+	public boolean playerClosed = true;
+
 	public static Map<UUID, ViewGUI> viewGUIs = new HashMap<>();
 
 	public ViewGUI(Player player, StorageProfile target, UUID uuid, String name) {

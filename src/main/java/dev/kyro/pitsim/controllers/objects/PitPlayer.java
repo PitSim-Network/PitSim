@@ -486,7 +486,7 @@ public class PitPlayer {
 				pitPlayer = new PitPlayer();
 			}
 
-			AOutput.log("Loaded Player: " + Bukkit.getOfflinePlayer(playerUUID).getName());
+			if(!viewOnly) AOutput.log("Loaded Player: " + Bukkit.getOfflinePlayer(playerUUID).getName());
 			assert pitPlayer != null;
 
 			pitPlayer.uuid = playerUUID;

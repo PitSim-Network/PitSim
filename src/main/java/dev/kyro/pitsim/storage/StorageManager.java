@@ -194,15 +194,21 @@ public class StorageManager implements Listener {
 			if(booleans.size() > 0 && booleans.get(booleans.size() - 1)) {
 				StorageProfile profile = new StorageProfile(uuid);
 				profile.loadData(message, true);
-				for(Map.Entry<UUID, ViewGUI> entry : ViewGUI.viewGUIs.entrySet()) {
-					if(entry.getValue().target.getUniqueID().equals(uuid)) {
-						Player player = Bukkit.getPlayer(entry.getKey());
-						if(player == null || !player.isOnline()) continue;
-						player.closeInventory();
-						ViewGUI gui = new ViewGUI(player, profile, profile.getUniqueID(), entry.getValue().name);
-						gui.open();
+
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						for(Map.Entry<UUID, ViewGUI> entry : ViewGUI.viewGUIs.entrySet()) {
+							if(entry.getValue().target.getUniqueID().equals(uuid)) {
+								Player player = Bukkit.getPlayer(entry.getKey());
+								if(player == null || !player.isOnline()) continue;
+								player.closeInventory();
+								ViewGUI gui = new ViewGUI(player, profile, profile.getUniqueID(), entry.getValue().name);
+								gui.open();
+							}
+						}
 					}
-				}
+				}.runTask(PitSim.INSTANCE);
 				viewProfiles.removeIf(p -> p.getUniqueID().equals(uuid));
 
 				viewProfiles.add(profile);
@@ -261,6 +267,7 @@ public class StorageManager implements Listener {
 	@EventHandler
 	public void onClick(InventoryDragEvent event) {
 		StorageProfile profile = getProfile(event.getInventory());
+		if(profile == null) return;
 		if(!profile.isLoaded()) return;
 		if(profile.isSaving() || viewProfiles.contains(profile)) event.setCancelled(true);
 	}
@@ -285,27 +292,33 @@ public class StorageManager implements Listener {
 			return;
 		}
 
+		ViewGUI viewGUI = ViewGUI.viewGUIs.get(player.getUniqueId());
+
 		for(EnderchestPage enderchestPage : profile.getEnderchestPages()) {
 			Inventory inventory = enderchestPage.getInventory();
 			if(!inventory.equals(event.getClickedInventory())) continue;
 
 			if(slot == ENDERCHEST_ITEM_SLOTS + 9 && enderchestPage.getIndex() > 0) {
 				if(isEditing(player)) getSession(player).playerClosed = false;
+				if(viewGUI != null) viewGUI.playerClosed = false;
 				player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() - 1).getInventory());
 				if(isEditing(player)) getSession(player).playerClosed = true;
+				if(viewGUI != null) viewGUI.playerClosed = true;
 			} else if(slot == ENDERCHEST_ITEM_SLOTS + 17 && enderchestPage.getIndex() + 1 < MAX_ENDERCHEST_PAGES) {
 				RankInformation rank = RankInformation.getRank(player);
 				if(enderchestPage.getIndex() + 1 < rank.enderchestPages || isEditing(player)) {
 					if(isEditing(player)) getSession(player).playerClosed = false;
+					if(viewGUI != null) viewGUI.playerClosed = false;
 					RankInformation rankInformation = RankInformation.getRank(profile.getUniqueID());
 					if(rankInformation.enderchestPages > enderchestPage.getIndex() + 1 || isEditing(player))
 						player.openInventory(profile.getEnderchestPage(enderchestPage.getIndex() + 1).getInventory());
 					else Sounds.ERROR.play(player);
 					if(isEditing(player)) getSession(player).playerClosed = true;
+					if(viewGUI != null) viewGUI.playerClosed = true;
 				}
 			} else if(slot == ENDERCHEST_ITEM_SLOTS + 13) {
 				if(StorageManager.viewProfiles.contains(profile)) {
-					ViewGUI viewGUI = ViewGUI.viewGUIs.get(player.getUniqueId());
+					if(viewGUI != null) viewGUI.playerClosed = false;
 					if(viewGUI != null) viewGUI.mainViewPanel.openPanel(new EnderchestPanel(viewGUI, viewGUI.target));
 				} else {
 					if(isEditing(player)) getSession(player).playerClosed = false;
@@ -327,13 +340,23 @@ public class StorageManager implements Listener {
 	@EventHandler
 	public void onClose(InventoryCloseEvent event) {
 		Player player = (Player) event.getPlayer();
-		if(!isEditing(player)) return;
-		EditSession session = getSession(player);
-		StorageProfile profile = session.getStorageProfile();
 
-		for(EnderchestPage enderchestPage : profile.getEnderchestPages()) {
-			if(!enderchestPage.getInventory().equals(event.getInventory())) continue;
-			if(session.playerClosed) session.end();
+		ViewGUI viewGUI = ViewGUI.viewGUIs.get(player.getUniqueId());
+		if(viewGUI != null) {
+			if(viewGUI.playerClosed) {
+				ViewGUI.viewGUIs.remove(player.getUniqueId());
+				return;
+			}
+		}
+
+		if(isEditing(player)) {
+			EditSession session = getSession(player);
+			StorageProfile profile = session.getStorageProfile();
+
+			for(EnderchestPage enderchestPage : profile.getEnderchestPages()) {
+				if(!enderchestPage.getInventory().equals(event.getInventory())) continue;
+				if(session.playerClosed) session.end();
+			}
 		}
 	}
 
