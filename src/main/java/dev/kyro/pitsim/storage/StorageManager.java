@@ -191,7 +191,7 @@ public class StorageManager implements Listener {
 			strings.remove(0);
 			UUID uuid = UUID.fromString(strings.remove(0));
 
-			if(booleans.size() > 0 && booleans.get(booleans.size() - 1)) {
+			if(booleans.size() > 0 && booleans.remove(0)) {
 				StorageProfile profile = new StorageProfile(uuid);
 				profile.loadData(message, true);
 
