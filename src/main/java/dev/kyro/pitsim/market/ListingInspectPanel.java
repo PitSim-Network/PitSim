@@ -43,6 +43,8 @@ public class ListingInspectPanel extends AGUIPanel {
 	}
 
 	public void calculateItems() {
+		if(PitPlayer.getPitPlayer(player) == null) return;
+
 		ItemStack listingStack = listing.getItemStack();
 		ItemMeta listingMeta = listingStack.getItemMeta();
 		List<String> listingLore = listingMeta.getLore();

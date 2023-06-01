@@ -131,7 +131,7 @@ public class YourListingsPanel extends AGUIPanel {
 		}
 
 		List<MarketListing> itemListings = new ArrayList<>();
-		for(MarketListing listing : MarketManager.listings) {
+		for(MarketListing listing : new ArrayList<>(MarketManager.listings)) {
 			if(!listing.hasEnded || listing.itemClaimed) continue;
 
 			if(listing.startingBid != -1) {

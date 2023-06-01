@@ -352,7 +352,8 @@ public class ProxyMessaging implements Listener {
 		}
 
 		if(strings.size() > 0 && strings.get(0).equals("OUTPOST DATA")) {
-			OutpostManager.controllingGuild = GuildManager.getGuild(UUID.fromString(strings.get(1)));
+			String uuidString = strings.get(1);
+			OutpostManager.controllingGuild = (uuidString == null ? null : GuildManager.getGuild(UUID.fromString(uuidString)));
 			OutpostManager.isActive = booleans.get(0);
 
 			new BukkitRunnable() {

@@ -171,6 +171,11 @@ public class HologramManager implements Listener {
 
 					String rankColor = Leaderboard.getRankColor(position.uuid);
 
+					if(playerData == null) {
+						strings.add("&cERROR");
+						continue;
+					}
+
 					if(leaderboard instanceof XPLeaderboard) {
 						strings.add(getLeaderboardColor(i) + String.valueOf(i) + ". " + rankColor + playerData.username + "&7 - "
 								+ PrestigeValues.getLeaderboardPrefix(playerData.prestige, playerData.level));

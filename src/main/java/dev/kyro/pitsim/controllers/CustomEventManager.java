@@ -35,7 +35,14 @@ public class CustomEventManager implements Listener {
 		}
 
 		PitJoinEvent pitJoinEvent = new PitJoinEvent(event, player, pitPlayer, profile);
-		Bukkit.getPluginManager().callEvent(pitJoinEvent);
+
+		try {
+			Bukkit.getPluginManager().callEvent(pitJoinEvent);
+		} catch(Exception e) {
+			e.printStackTrace();
+			preventedJoin.add(player.getUniqueId());
+			player.kickPlayer(ChatColor.RED + "An error occurred when loading your data. Please report this issue.");
+		}
 	}
 
 

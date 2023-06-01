@@ -474,7 +474,7 @@ public class DarkzoneManager implements Listener {
 				}
 			});
 
-			if(damageMap != null) {
+			if(damageMap != null && !damageMap.isEmpty()) {
 				UUID choice = Misc.weightedRandom(damageMap);
 				Player player = Bukkit.getPlayer(choice);
 				if(player == null) continue;
@@ -510,7 +510,6 @@ public class DarkzoneManager implements Listener {
 						return;
 					}
 
-					System.out.println(drop.getDroppedItem().getVelocity());
 					Vector velocity = drop.getDroppedItem().getVelocity();
 					if(velocity.getX() > 0.001 || velocity.getY() > 0.001 || velocity.getZ() > 0.001) return;
 					count++;
