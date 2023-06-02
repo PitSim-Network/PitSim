@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public enum ConnectionInfo {
 
 
-	DEVELOPMENT("jdbc:mysql://sql.pitsim.net:3306/s9_Development", "***REMOVED***", PrivateInfo.DEVELOPMENT_SQL_PASSWORD, 1000L * 60 * 60 * 24 * 30)
+	PLAYER_DATA("jdbc:mysql://sql.pitsim.net:3306/s9_PlayerData", "***REMOVED***", PrivateInfo.PLAYER_DATA_SQL_PASSWORD, 1000L * 60 * 60 * 24 * 30),
 	;
 
 	 public final String URL;

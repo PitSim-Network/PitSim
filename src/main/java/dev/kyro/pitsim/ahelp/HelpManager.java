@@ -4,7 +4,10 @@ import com.google.cloud.dialogflow.cx.v3.*;
 import com.google.protobuf.FieldMask;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.DiscordManager;
+import dev.kyro.pitsim.SQL.Constraint;
+import dev.kyro.pitsim.SQL.SQLTable;
+import dev.kyro.pitsim.SQL.TableManager;
+import dev.kyro.pitsim.SQL.Value;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.PerkManager;
 import dev.kyro.pitsim.controllers.UpgradeManager;
@@ -14,7 +17,8 @@ import org.bukkit.event.Listener;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class HelpManager implements Listener {
@@ -26,7 +30,7 @@ public class HelpManager implements Listener {
 	public static final String LOCATION_ID = "us-east1";
 	public static final String FLOW_ID = "00000000-0000-0000-0000-000000000000";
 	private static final Map<Player, HelperAgent> helpClientMap = new HashMap<>();
-	public static final String TABLE_NAME = "HelpRequests";
+	public static final String HELP_TABLE = "HelpRequests";
 
 	private static SessionsSettings sessionsSettings;
 	private static PagesSettings pagesSettings;
@@ -382,65 +386,36 @@ public class HelpManager implements Listener {
 	}
 
 	public static StoredRequest getStoredRequest(String query) {
-		Connection connection = getConnection();
-		String sqlQuery = "SELECT * FROM " + TABLE_NAME + " WHERE query = ?";
+		SQLTable table = TableManager.getTable(HELP_TABLE);
+		if(table == null) throw new RuntimeException("Help table failed to register!");
+
+		ResultSet rs = table.selectRow(new Constraint("query", query));
 
 		try {
-			PreparedStatement statement = connection.prepareStatement(sqlQuery);
-			statement.setString(1, query);
-			ResultSet resultSet = statement.executeQuery();
-			if(resultSet.next()) {
-				String intent = resultSet.getString("intent");
+			if(rs.next()) {
+				String intent = rs.getString("intent");
+				rs.close();
 				return new StoredRequest(query, intent);
-			}
+			} else rs.close();
 		} catch(SQLException exception) {
 			exception.printStackTrace();
 		}
 
-		try {
-			connection.close();
-		} catch(SQLException e) {
-			throw new RuntimeException(e);
-		}
 		return null;
 	}
 
 	public static void writeStoredRequest(StoredRequest request) {
-		Connection connection = getConnection();
-		String sqlQuery = "INSERT INTO " + TABLE_NAME + " (query, intent) VALUES (?, ?)";
+		SQLTable table = TableManager.getTable(HELP_TABLE);
+		if(table == null) throw new RuntimeException("Help table failed to register!");
 
-		try {
-			PreparedStatement statement = connection.prepareStatement(sqlQuery);
-			statement.setString(1, request.query);
-			statement.setString(2, request.intent);
-			statement.executeUpdate();
-		} catch(SQLException exception) {
-			exception.printStackTrace();
-		}
-
-		try {
-			connection.close();
-		} catch(SQLException e) {
-			throw new RuntimeException(e);
-		}
+		table.insertRow(new Value("query", request.query), new Value("intent", request.intent));
 	}
 
 	public static void clearStoredData() {
-		Connection connection = getConnection();
-		String sqlQuery = "DELETE FROM " + TABLE_NAME;
+		SQLTable table = TableManager.getTable(HELP_TABLE);
+		if(table == null) throw new RuntimeException("Help table failed to register!");
 
-		try {
-			PreparedStatement statement = connection.prepareStatement(sqlQuery);
-			statement.executeUpdate();
-		} catch(SQLException exception) {
-			exception.printStackTrace();
-		}
-
-		try {
-			connection.close();
-		} catch(SQLException e) {
-			throw new RuntimeException(e);
-		}
+		table.deleteRow();
 	}
 
 	public static HelperAgent getAgent(Player player) {
@@ -568,21 +543,5 @@ public class HelpManager implements Listener {
 		public String getIntent() {
 			return intent;
 		}
-	}
-
-	public static Connection getConnection() {
-		return DiscordManager.getConnection();
-	}
-
-	public static void createTable(Connection connection) throws SQLException {
-		Statement stmt = connection.createStatement();
-
-		String createTableSQL = "CREATE TABLE " + TABLE_NAME + " (" +
-				"query VARCHAR(255) PRIMARY KEY, " +
-				"intent VARCHAR(255) NOT NULL)";
-		stmt.executeUpdate(createTableSQL);
-
-		stmt.close();
-		connection.close();
 	}
 }

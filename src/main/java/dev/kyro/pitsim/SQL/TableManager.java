@@ -8,15 +8,22 @@ public class TableManager {
 
 	public static void registerTables() {
 
-		new SQLTable(ConnectionInfo.DEVELOPMENT, "development",
+		new SQLTable(ConnectionInfo.PLAYER_DATA, "DiscordAuthentication",
 				new TableStructure(
-						new TableColumn(String.class, "uuid"),
-						new TableColumn(Integer.class, "xp"),
-						new TableColumn(Long.class, "last_login"),
-						new TableColumn(Boolean.class, "is_staff"),
-						new TableColumn(Integer.class, "souls")
+						new TableColumn(String.class, "uuid", false, true),
+						new TableColumn(Long.class, "discord_id", true),
+						new TableColumn(String.class, "access_token"),
+						new TableColumn(String.class, "refresh_token"),
+						new TableColumn(Long.class, "last_refresh", true),
+						new TableColumn(Long.class, "last_link", true),
+						new TableColumn(Long.class, "last_boosting_claim", true)
 				));
 
+		new SQLTable(ConnectionInfo.PLAYER_DATA, "HelpRequests",
+				new TableStructure(
+						new TableColumn(String.class, "query", false, true),
+						new TableColumn(String.class, "intent", true)
+				));
 	}
 
 	protected static void registerTable(SQLTable table) {
