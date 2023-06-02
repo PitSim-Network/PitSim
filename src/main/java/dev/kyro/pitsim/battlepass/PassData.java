@@ -62,7 +62,6 @@ public class PassData {
 	}
 
 	public boolean hasPremium() {
-		if(true) return true;
 		return hasPremium;
 	}
 
