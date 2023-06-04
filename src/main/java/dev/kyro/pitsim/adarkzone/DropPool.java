@@ -2,6 +2,7 @@ package dev.kyro.pitsim.adarkzone;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import dev.kyro.pitsim.aitems.StaticPitItem;
+import dev.kyro.pitsim.controllers.GuildIntegrationManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.Sounds;
@@ -37,6 +38,8 @@ public class DropPool {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 				pitPlayer.unlockFastTravelDestination(deadBoss.getSubLevel());
 				pitPlayer.stats.bossesKilled++;
+
+				GuildIntegrationManager.earnDarkzoneReputation(player, deadBoss.getSubLevel());
 			}
 		}
 

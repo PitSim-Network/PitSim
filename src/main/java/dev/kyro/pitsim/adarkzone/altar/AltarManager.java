@@ -30,7 +30,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AltarManager implements Listener {
+public  class AltarManager implements Listener {
 	public static final Location TEXT_LOCATION = new Location(MapManager.getDarkzone(), 221.5, 96, -83.5);
 	public static final Location CONFIRM_LOCATION = new Location(MapManager.getDarkzone(), 221.5, 90.5, -83.5);
 	public static final Location ALTAR_CENTER = new Location(MapManager.getDarkzone(), 221.5, 93, -83.5);

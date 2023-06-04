@@ -5,6 +5,7 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticguilds.*;
 import dev.kyro.arcticguilds.events.GuildWithdrawalEvent;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.adarkzone.SubLevel;
 import dev.kyro.pitsim.battlepass.quests.EarnGuildReputationQuest;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -30,6 +31,14 @@ public class GuildIntegrationManager implements Listener {
 
 	public static int getKillReputation() {
 		return (int) (Math.random() * 300);
+	}
+
+	public static int getStreakReputation() {
+		return (int) (Math.random() * 50);
+	}
+
+	public static int getDarkzoneReputation(SubLevel level) {
+		return (int) (Math.random() * 100 * (level.getIndex() + 1));
 	}
 
 	public static int getFeatherLossReputation() {
@@ -149,8 +158,16 @@ public class GuildIntegrationManager implements Listener {
 		}
 
 		if(deadGuild != null) {
-			killerGuild.addReputation(getKillReputation());
-			EarnGuildReputationQuest.INSTANCE.gainReputation(killEvent.getKillerPitPlayer(), getKillReputation());
+			int reputation = getKillReputation();
+			killerGuild.addReputation(reputation);
+			EarnGuildReputationQuest.INSTANCE.gainReputation(killEvent.getKillerPitPlayer(), reputation);
+		}
+
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(killEvent.getKillerPlayer());
+		if(pitPlayer.getKills() % 100 == 0) {
+			int reputation = getStreakReputation();
+			killerGuild.addReputation(reputation);
+			EarnGuildReputationQuest.INSTANCE.gainReputation(killEvent.getKillerPitPlayer(), reputation);
 		}
 	}
 
@@ -162,6 +179,16 @@ public class GuildIntegrationManager implements Listener {
 		if(pitPlayer.level < levelRequired) {
 			event.setCancelled(true);
 			AOutput.error(event.getPlayer(), "&c&lERROR!&7 You cannot withdraw until you are level " + levelRequired);
+		}
+	}
+
+	public static void earnDarkzoneReputation(Player player, SubLevel subLevel) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		Guild guild = GuildManager.getGuild(player);
+		if(guild != null) {
+			int reputation = getDarkzoneReputation(subLevel);
+			guild.addReputation(reputation);
+			EarnGuildReputationQuest.INSTANCE.gainReputation(pitPlayer, reputation);
 		}
 	}
 }
