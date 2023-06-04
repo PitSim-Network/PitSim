@@ -68,8 +68,8 @@ public class DarkzoneLeveling {
 	}
 
 	public static double getReductionMultiplier(int altarLevel, int darkzoneLevel) {
-		int levelDifference = Math.max(darkzoneLevel - altarLevel, 0);
-		return Misc.getReductionMultiplier(Math.min(levelDifference, 75));
+		int levelDifference = Math.min(Math.max(darkzoneLevel - altarLevel, -40), 40);
+		return 1 - (levelDifference / 100.0);
 	}
 
 	public static double getReductionMultiplier(PitPlayer pitPlayer) {
@@ -80,20 +80,7 @@ public class DarkzoneLeveling {
 
 	public static String getReductionPercent(PitPlayer pitPlayer) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.#");
-		return decimalFormat.format((1 - getReductionMultiplier(pitPlayer)) * 100);
+		String reduction = decimalFormat.format((1 - getReductionMultiplier(pitPlayer)) * -100);
+		return (Double.parseDouble(reduction) >= 0 ? "+" : "") + reduction;
 	}
-
-//TODO: Will mess up altar levels if uncommented
-
-//	public static void updateAltarXP(PitPlayer pitPlayer) {
-//		if(pitPlayer.darkzoneData.preDarkzoneUpdatePrestige <= 0) return;
-//		double altarXP = pitPlayer.darkzoneData.altarXP;
-//		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.darkzoneData.preDarkzoneUpdatePrestige);
-//		double expectedMinimumXP = getXPToLevel(prestigeInfo.getDarkzoneLevel());
-//		if(altarXP >= expectedMinimumXP) return;
-//		pitPlayer.darkzoneData.altarXP = expectedMinimumXP;
-//		DecimalFormat decimalFormat = new DecimalFormat("#,##0");
-//		AOutput.send(pitPlayer.player, "&4&lALTAR UPDATE!&7 An update has increased your &cAltar XP &7to level &c" +
-//				decimalFormat.format(prestigeInfo.getDarkzoneLevel()));
-//	}
 }

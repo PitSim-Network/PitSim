@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants.overworld;
 
 import dev.kyro.pitsim.aserverstatistics.StatisticsManager;
-import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -25,16 +24,22 @@ public class BulletTime extends PitEnchant {
 	}
 
 	@EventHandler
-	public void cancel(AttackEvent.Pre attackEvent) {
+	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!attackEvent.isDefenderPlayer()) return;
 		if(!canApply(attackEvent)) return;
 
 		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
-		if(enchantLvl == 0 || attackEvent.getArrow() == null || !(attackEvent.getDefenderPlayer().isBlocking())) return;
+		if(enchantLvl == 0 || !attackEvent.getDefenderPlayer().isBlocking()) return;
+		attackEvent.multipliers.add(2.0);
+	}
 
-		Cooldown cooldown = getCooldown(attackEvent.getDefenderPlayer(), getCooldownSeconds(enchantLvl) * 20);
-		if(cooldown.isOnCooldown()) return;
-		else cooldown.restart();
+	@EventHandler
+	public void onAttack(AttackEvent.Pre attackEvent) {
+		if(!attackEvent.isDefenderPlayer()) return;
+		if(!canApply(attackEvent)) return;
+
+		int enchantLvl = attackEvent.getDefenderEnchantLevel(this);
+		if(enchantLvl == 0 || attackEvent.getArrow() == null || !attackEvent.getDefenderPlayer().isBlocking()) return;
 
 		attackEvent.setCancelled(true);
 		attackEvent.getArrow().remove();
@@ -52,7 +57,7 @@ public class BulletTime extends PitEnchant {
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
 				"&7Blocking destroys arrows that hit you. Destroying arrows this way heals &c" +
-				Misc.getHearts(getHealing(enchantLvl)) + " &7(" + getCooldownSeconds(enchantLvl) + "s cooldown)"
+				Misc.getHearts(getHealing(enchantLvl)) + "&7. Blocking does not reduce damage"
 		).getLore();
 	}
 
@@ -62,11 +67,8 @@ public class BulletTime extends PitEnchant {
 				"destroys arrows when blocking your sword (and heals you too)";
 	}
 
-	public static int getCooldownSeconds(int enchantLvl) {
-		return Math.max(11 - enchantLvl * 2, 0);
-	}
-
 	public double getHealing(int enchantLvl) {
-		return 4;
+		if(enchantLvl == 1) return 0.2;
+		return enchantLvl * 0.5 - 0.5;
 	}
 }

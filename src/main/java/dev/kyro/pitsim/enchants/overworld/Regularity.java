@@ -4,7 +4,6 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.MapManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -45,11 +44,11 @@ public class Regularity extends PitEnchant {
 					"with " + Billionaire.INSTANCE.getDisplayName());
 		}
 
-		if(attackEvent.getAttackerEnchantMap().containsKey(this) && MapManager.currentMap.world == attackEvent.getAttacker().getWorld() &&
-				MapManager.currentMap.getMid().distance(attackEvent.getAttacker().getLocation()) <= 8) {
-			attackEvent.getAttackerEnchantMap().remove(this);
-			AOutput.error(attackEvent.getAttackerPlayer(), "&c&lERROR!&7 " + getDisplayName() + " &7does not work in middle");
-		}
+//		if(attackEvent.getAttackerEnchantMap().containsKey(this) && MapManager.currentMap.world == attackEvent.getAttacker().getWorld() &&
+//				MapManager.currentMap.getMid().distance(attackEvent.getAttacker().getLocation()) <= 8) {
+//			attackEvent.getAttackerEnchantMap().remove(this);
+//			AOutput.error(attackEvent.getAttackerPlayer(), "&c&lERROR!&7 " + getDisplayName() + " &7does not work in middle");
+//		}
 	}
 
 	@EventHandler

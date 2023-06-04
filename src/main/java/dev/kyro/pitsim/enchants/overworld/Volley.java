@@ -1,7 +1,6 @@
 package dev.kyro.pitsim.enchants.overworld;
 
 import dev.kyro.pitsim.PitSim;
-import dev.kyro.pitsim.controllers.Cooldown;
 import dev.kyro.pitsim.controllers.EnchantManager;
 import dev.kyro.pitsim.controllers.SpawnManager;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
@@ -35,10 +34,6 @@ public class Volley extends PitEnchant {
 
 		int enchantLvl = EnchantManager.getEnchantLevel(player, this);
 		if(enchantLvl == 0) return;
-
-		Cooldown cooldown = getCooldown(player, 20 * getCooldownSeconds(enchantLvl));
-		if(cooldown.isOnCooldown()) return;
-		else cooldown.restart();
 
 		new BukkitRunnable() {
 			int count = 0;
@@ -76,7 +71,7 @@ public class Volley extends PitEnchant {
 	@Override
 	public List<String> getNormalDescription(int enchantLvl) {
 		return new PitLoreBuilder(
-				"&7Shoot &f" + getArrows(enchantLvl) + " arrows &7at once (" + getCooldownSeconds(enchantLvl) + "s cooldown)"
+				"&7Shoot &f" + getArrows(enchantLvl) + " arrows &7at once"
 		).getLore();
 	}
 
@@ -87,10 +82,6 @@ public class Volley extends PitEnchant {
 	}
 
 	public int getArrows(int enchantLvl) {
-		return enchantLvl + 2;
-	}
-
-	public int getCooldownSeconds(int enchantLvl) {
-		return 5;
+		return enchantLvl + 1;
 	}
 }

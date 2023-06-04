@@ -67,7 +67,14 @@ public  class AltarManager implements Listener {
 
 				String color = difference > 0 ? "&c-" : "&a+";
 				if(difference == 0) color = color.replaceAll("\\+", "");
-				String status = difference > 0 ? "&7Taking &f" + altarPercent + "% &7of &bXP &7and &6Gold" : "&aStronger than the Darkzone!";
+				String status;
+				if(difference > 0) {
+					status = "&7Receiving &c" + altarPercent + "% &7of &bXP &7and &6Gold";
+				} else if(difference < 0) {
+					status = "&7Receiving &a" + altarPercent + "% &7of &bXP &7and &6Gold";
+				} else {
+					status = "&aEven with the Darkzone";
+				}
 
 				DecimalFormat decimalFormat = new DecimalFormat("#,##0");
 				List<String> strings = new ArrayList<>();

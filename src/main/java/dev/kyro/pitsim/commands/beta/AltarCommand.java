@@ -3,7 +3,9 @@ package dev.kyro.pitsim.commands.beta;
 import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.adarkzone.DarkzoneLeveling;
+import dev.kyro.pitsim.adarkzone.altar.AltarManager;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.command.Command;
@@ -37,6 +39,7 @@ public class AltarCommand extends ACommand {
 
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.darkzoneData.altarXP = DarkzoneLeveling.getXPToLevel(level);
+		if(PitSim.status.isDarkzone()) AltarManager.hologram.updateHologram(player);
 		Sounds.SUCCESS.play(player);
 		AOutput.send(player, "&a&lSUCCESS!&7 Set your &4Altar &7to &clevel " + level + "&7!");
 	}
