@@ -704,7 +704,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onJoin(AsyncPlayerPreLoginEvent event) {
 		UUID playerUUID = event.getUniqueId();
-		if(!realPlayers.contains(playerUUID)) realPlayers.add(playerUUID);
+		if(!realPlayers.contains(playerUUID)) addRealPlayer(playerUUID);
 		boolean success = PitPlayer.loadPitPlayer(playerUUID);
 		if(FirestoreManager.FIRESTORE == null) {
 			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,

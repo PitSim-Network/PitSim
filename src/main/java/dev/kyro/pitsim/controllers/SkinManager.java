@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 public class SkinManager implements Listener {
-
 	public static Map<String, List<BukkitRunnable>> callbackMap = new HashMap<>();
 	public static List<String> loadingSkins = new ArrayList<>();
 

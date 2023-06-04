@@ -58,7 +58,6 @@ dependencies {
 }
 
 shadowJar {
-
     relocate 'dev.kyro.arcticapi', 'dev.kyro.pitsim.arcticapi'
     relocate 'net.kyori', 'dev.kyro.pitsim.kyori'
     relocate 'com.google', 'dev.kyro.pitsim.com.google'

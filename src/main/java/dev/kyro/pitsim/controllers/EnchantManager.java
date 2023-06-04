@@ -56,6 +56,32 @@ public class EnchantManager implements Listener {
 	public static final int TAINTED_ARTIFACT_LIVES = 250;
 	public static final int TAINTED_DEMONIC_LIVES = 1_000;
 
+	public static void registerEnchant(PitEnchant pitEnchant) {
+		pitEnchants.add(pitEnchant);
+		if(pitEnchant.isEnabled()) PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitSim.INSTANCE);
+		pitEnchant.setDefaultCategories();
+
+//		Code for creating the damage values for the basic darkzone enchants
+//		if(pitEnchant.isTainted && pitEnchant instanceof BasicDarkzoneEnchant) {
+//			BasicDarkzoneEnchant basicEnchant = (BasicDarkzoneEnchant) pitEnchant;
+//			int applicableMobs = basicEnchant.getApplicableMobs().size();
+//			int scaling = 12 + new Random().nextInt(4) - (int) (applicableMobs * 1.5);
+//			int base = new Random().nextInt(6) + 8 - applicableMobs;
+//
+//			if(basicEnchant.isUncommonEnchant) {
+//				scaling += 3;
+//				base += 5;
+//			}
+//
+//			if(!basicEnchant.isOffensive()) {
+//				scaling /= 2;
+//				base /= 2;
+//			}
+//
+//			AOutput.log(basicEnchant.getDisplayName() + " &7(" + applicableMobs + "): enchantLvl * " + scaling + " + " + base);
+//		}
+	}
+
 	public static void readPlayerEnchants() {
 		enchantMap.clear();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) enchantMap.put(onlinePlayer, readEnchantsOnPlayer(onlinePlayer));
@@ -89,32 +115,6 @@ public class EnchantManager implements Listener {
 		enchantingGUI.open();
 		Sounds.MYSTIC_WELL_OPEN_1.play(player);
 		Sounds.MYSTIC_WELL_OPEN_2.play(player);
-	}
-
-	public static void registerEnchant(PitEnchant pitEnchant) {
-		pitEnchants.add(pitEnchant);
-		if(pitEnchant.isEnabled()) PitSim.INSTANCE.getServer().getPluginManager().registerEvents(pitEnchant, PitSim.INSTANCE);
-		pitEnchant.setDefaultCategories();
-
-//		Code for creating the damage values for the basic darkzone enchants
-//		if(pitEnchant.isTainted && pitEnchant instanceof BasicDarkzoneEnchant) {
-//			BasicDarkzoneEnchant basicEnchant = (BasicDarkzoneEnchant) pitEnchant;
-//			int applicableMobs = basicEnchant.getApplicableMobs().size();
-//			int scaling = 12 + new Random().nextInt(4) - (int) (applicableMobs * 1.5);
-//			int base = new Random().nextInt(6) + 8 - applicableMobs;
-//
-//			if(basicEnchant.isUncommonEnchant) {
-//				scaling += 3;
-//				base += 5;
-//			}
-//
-//			if(!basicEnchant.isOffensive()) {
-//				scaling /= 2;
-//				base /= 2;
-//			}
-//
-//			AOutput.log(basicEnchant.getDisplayName() + " &7(" + applicableMobs + "): enchantLvl * " + scaling + " + " + base);
-//		}
 	}
 
 	public static boolean canTypeApply(ItemStack itemStack, PitEnchant pitEnchant) {
