@@ -3,6 +3,7 @@ package dev.kyro.pitsim.enchants.overworld;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.ChatTriggerManager;
 import dev.kyro.pitsim.controllers.HitCounter;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
@@ -136,7 +137,7 @@ public class RetroGravityMicrocosm extends PitEnchant {
 		if(rgmGlobalMap.containsKey(defender)) {
 			rgmGlobalMap.get(defender).add(attacker);
 		} else {
-			RGMInfo rgmInfo = new RGMInfo();
+			RGMInfo rgmInfo = new RGMInfo(defender);
 			rgmInfo.add(attacker);
 			rgmGlobalMap.putIfAbsent(defender, rgmInfo);
 		}
@@ -151,7 +152,12 @@ public class RetroGravityMicrocosm extends PitEnchant {
 	}
 
 	public static class RGMInfo {
+		private final LivingEntity defender;
 		private final Map<LivingEntity, List<BukkitTask>> rgmPlayerProcMap = new HashMap<>();
+
+		public RGMInfo(LivingEntity defender) {
+			this.defender = defender;
+		}
 
 		private void add(LivingEntity entity) {
 			rgmPlayerProcMap.putIfAbsent(entity, new ArrayList<>());
@@ -164,12 +170,22 @@ public class RetroGravityMicrocosm extends PitEnchant {
 						rgmPlayerProcMap.get(entity).remove(bukkitTask);
 						break;
 					}
+					if(defender instanceof Player) ChatTriggerManager.sendRGMInfo(PitPlayer.getPitPlayer((Player) defender));
 				}
 			}.runTaskLater(PitSim.INSTANCE, getRGMStackTime()));
+			if(defender instanceof Player) ChatTriggerManager.sendRGMInfo(PitPlayer.getPitPlayer((Player) defender));
 		}
 
 		public void clear(LivingEntity player) {
 			rgmPlayerProcMap.remove(player);
+		}
+
+		public LivingEntity getDefender() {
+			return defender;
+		}
+
+		public Map<LivingEntity, List<BukkitTask>> getRgmPlayerProcMap() {
+			return rgmPlayerProcMap;
 		}
 	}
 }
