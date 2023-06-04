@@ -48,11 +48,11 @@ public class RewardCommand implements CommandExecutor {
 		Player finalPlayer = player;
 		switch(item) {
 			case "pass":
-				passData.setPremium(true);
+				passData.hasPremium = true;
 				return false;
 			case "passboost":
-				if(!passData.getPremium()) passData.totalPoints += PassManager.POINTS_PER_TIER * 9;
-				passData.setPremium(true);
+				if(!passData.hasPremium) passData.totalPoints += PassManager.POINTS_PER_TIER * 9;
+				passData.hasPremium = true;
 				return false;
 			case "passtiers":
 				passData.totalPoints += amount * PassManager.POINTS_PER_TIER;

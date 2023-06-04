@@ -251,7 +251,7 @@ public class PassManager implements Listener {
 	public static boolean canClaimReward(PitPlayer pitPlayer, PitSimPass.RewardType rewardType, int tier) {
 		PassData passData = pitPlayer.getPassData(currentPass.startDate);
 		if(passData.getCompletedTiers() < tier || hasClaimedReward(pitPlayer, rewardType, tier)) return false;
-		if(rewardType == PitSimPass.RewardType.PREMIUM) return passData.getPremium();
+		if(rewardType == PitSimPass.RewardType.PREMIUM) return passData.hasPremium;
 		return true;
 	}
 
