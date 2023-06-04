@@ -51,7 +51,7 @@ public class RewardCommand implements CommandExecutor {
 				passData.setPremium(true);
 				return false;
 			case "passboost":
-				if(!passData.hasPremium()) passData.totalPoints += PassManager.POINTS_PER_TIER * 9;
+				if(!passData.getPremium()) passData.totalPoints += PassManager.POINTS_PER_TIER * 9;
 				passData.setPremium(true);
 				return false;
 			case "passtiers":

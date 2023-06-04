@@ -8,7 +8,7 @@ public class PassData {
 	public Date currentPassDate = new Date(0);
 	public long daysPassed = 0;
 	public int totalPoints;
-	private boolean hasPremium = false;
+	private boolean premium = false;
 
 	//	Unique weekly quest data
 	public List<String> uniquePlayersPunched = new ArrayList<>();
@@ -61,11 +61,11 @@ public class PassData {
 		return totalPoints % PassManager.POINTS_PER_TIER;
 	}
 
-	public boolean hasPremium() {
-		return hasPremium;
+	public boolean getPremium() {
+		return premium;
 	}
 
 	public void setPremium(boolean hasPremium) {
-		this.hasPremium = hasPremium;
+		this.premium = hasPremium;
 	}
 }
