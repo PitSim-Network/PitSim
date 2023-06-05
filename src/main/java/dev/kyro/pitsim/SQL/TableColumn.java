@@ -6,6 +6,7 @@ package dev.kyro.pitsim.SQL;
 	public String name;
 	public boolean notNull;
 	public boolean primaryKey;
+	public int varcharLength;
 
 	public TableColumn(Class<?> type, String name) {
 		this(type, name, false);
@@ -16,11 +17,16 @@ package dev.kyro.pitsim.SQL;
 	}
 
 	public TableColumn(Class<?> type, String name, boolean notNull, boolean primaryKey) {
-		this.type = type;
-		this.name = name;
-		this.notNull = notNull;
-		this.primaryKey = primaryKey;
+		this(type, name, notNull, primaryKey, 50);
 	}
+
+	 public TableColumn(Class<?> type, String name, boolean notNull, boolean primaryKey, int varcharLength) {
+		 this.type = type;
+		 this.name = name;
+		 this.notNull = notNull;
+		 this.primaryKey = primaryKey;
+		 this.varcharLength = varcharLength;
+	 }
 
 	public Class<?> getType() {
 		return type;

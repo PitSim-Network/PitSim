@@ -21,7 +21,7 @@ public class TableManager {
 
 		new SQLTable(ConnectionInfo.PLAYER_DATA, "HelpRequests",
 				new TableStructure(
-						new TableColumn(String.class, "query", false, true),
+						new TableColumn(String.class, "query", false, true, 255),
 						new TableColumn(String.class, "intent", true)
 				));
 	}

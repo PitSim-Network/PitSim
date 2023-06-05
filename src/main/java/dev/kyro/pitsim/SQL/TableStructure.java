@@ -85,13 +85,13 @@ public class TableStructure {
 
 	private String getColumnTypeName(TableColumn column) {
 		Clazz clazz = Clazz.valueOf(column.getType().getSimpleName());
-		return getColumnTypeName(clazz);
+		return getColumnTypeName(clazz, column.varcharLength);
 	}
 
-	private String getColumnTypeName(Clazz clazz) {
+	private String getColumnTypeName(Clazz clazz, int varcharLength) {
 		switch(clazz) {
 			case String:
-				return "VARCHAR(50)";
+				return "VARCHAR(" + varcharLength + ")";
 			case Integer:
 				return "INT";
 			case Long:
