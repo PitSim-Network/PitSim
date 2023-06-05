@@ -63,7 +63,7 @@ public class CosmeticManager implements Listener {
 
 	public static List<Player> getDisplayPlayers(Player mainPlayer, Location location, double range) {
 		List<Player> displayPlayers = Misc.getNearbyRealPlayers(location, range);
-		if(!displayPlayers.contains(mainPlayer) && mainPlayer.isOnline()) displayPlayers.add(mainPlayer);
+		if(!displayPlayers.contains(mainPlayer)) displayPlayers.add(mainPlayer);
 		return displayPlayers;
 	}
 
