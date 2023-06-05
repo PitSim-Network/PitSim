@@ -6,15 +6,18 @@ import dev.kyro.pitsim.controllers.objects.Booster;
 import dev.kyro.pitsim.controllers.objects.Mappable;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enchants.overworld.ReallyToxic;
+import dev.kyro.pitsim.enchants.overworld.RetroGravityMicrocosm;
 import dev.kyro.pitsim.enums.PitEntityType;
 import dev.kyro.pitsim.events.AttackEvent;
 import dev.kyro.pitsim.events.PitQuitEvent;
 import dev.kyro.pitsim.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitTask;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -134,6 +137,17 @@ public class ChatTriggerManager implements Listener {
 		sendData(pitPlayer.player, encodeMap(dataMap));
 	}
 
+	public static void sendRGMInfo(PitPlayer pitPlayer) {
+		Map<String, Object> dataMap = new HashMap<>();
+		Map<String, Object> rgmProcMap = new HashMap<>();
+		if(RetroGravityMicrocosm.rgmGlobalMap.containsKey(pitPlayer.player)) {
+			for(Map.Entry<LivingEntity, List<BukkitTask>> entry : RetroGravityMicrocosm.rgmGlobalMap.get(pitPlayer.player).getRgmPlayerProcMap().entrySet())
+				rgmProcMap.put(entry.getKey().getName(), entry.getValue().size());
+		}
+		dataMap.put("rgmProcs", encodeMap(rgmProcMap));
+		sendData(pitPlayer.player, encodeMap(dataMap));
+	}
+
 	public static void sendBoosterInfo(PitPlayer pitPlayer) {
 		Map<String, Object> dataMap = new HashMap<>();
 		Map<String, Object> boosterDataMap = new HashMap<>();
@@ -186,6 +200,7 @@ public class ChatTriggerManager implements Listener {
 		sendAuctionInfo(pitPlayer);
 		sendBountyInfo(pitPlayer);
 		sendToxicInfo(pitPlayer);
+		sendRGMInfo(pitPlayer);
 		sendBoosterInfo(pitPlayer);
 	}
 

@@ -54,6 +54,7 @@ public class VoucherManager implements Listener {
 		if(!PitSim.getStatus().isOverworld()) return;
 		Player deadPlayer = event.getDeadPlayer();
 		PitPlayer deadPitPlayer = event.getDeadPitPlayer();
+		if(!deadPitPlayer.isOnMega()) return;
 		int totalVouchersUsed = 0;
 
 		for(Map.Entry<PlayerItemLocation, KillEvent.ItemInfo> entry : new ArrayList<>(event.getVulnerableItems().entrySet())) {

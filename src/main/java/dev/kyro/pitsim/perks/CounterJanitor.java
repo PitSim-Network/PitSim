@@ -27,7 +27,7 @@ public class CounterJanitor extends PitPerk {
 		if(killEvent.isKillerPlayer() && NonManager.getNon(killEvent.getDead()) == null) {
 			PitPlayer pitPlayer = killEvent.getKillerPitPlayer();
 			double missingHealth = killEvent.getKiller().getMaxHealth() - killEvent.getKiller().getHealth();
-			pitPlayer.heal(missingHealth / 2);
+			pitPlayer.heal(missingHealth);
 		}
 	}
 
@@ -40,7 +40,7 @@ public class CounterJanitor extends PitPerk {
 	@Override
 	public void addBaseDescription(PitLoreBuilder loreBuilder, Player player) {
 		loreBuilder.addLongLine(
-				"&7Instantly heal half your &chealth &7on player kill"
+				"&7Instantly heal to &cfull health &7on player kill"
 		);
 	}
 

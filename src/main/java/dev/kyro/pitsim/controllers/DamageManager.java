@@ -583,10 +583,17 @@ public class DamageManager implements Listener {
 			double altarMultiplier = DarkzoneLeveling.getReductionMultiplier(pitKiller);
 			String altarPercent = DarkzoneLeveling.getReductionPercent(pitKiller);
 
+			PrestigeValues.PrestigeInfo info = PrestigeValues.getPrestigeInfo(pitKiller.prestige);
+			int altarLevel = DarkzoneLeveling.getLevel(pitKiller.darkzoneData.altarXP);
+			int difference = info.getDarkzoneLevel() - altarLevel;
+			String color = difference > 0 ? "&c" : "&a";
+
 			TextComponent hover = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6" +
-					df.format(killEvent.getFinalGold()) + "g &8(&5-" + altarPercent + "%&8)"));
+					df.format(killEvent.getFinalGold()) + "g &8(" + color + altarPercent + "%&8)"));
+
+			String hoverText = difference > 0 ? "&7Go to the &5Darkzone &7to remove this debuff" : "&7The &5Darkzone &7rewards you for your sacrifices";
 			hover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(
-					ChatColor.translateAlternateColorCodes('&', "&7Go to the &5Darkzone &7to remove this debuff")).create()));
+					ChatColor.translateAlternateColorCodes('&', hoverText)).create()));
 
 			kill = PlaceholderAPI.setPlaceholders(killEvent.getDeadPlayer(), "&a&lKILL!&7 on %luckperms_prefix%" +
 					(deadNon == null ? "%player_name%" : deadNon.displayName) + " &b+" + killEvent.getFinalXp() + "XP" +
@@ -594,7 +601,7 @@ public class DamageManager implements Listener {
 
 			TextComponent killComponent = new TextComponent(kill);
 			if(altarMultiplier != 1) killComponent.addExtra(hover);
-			if(killerPlayer != null && pitKiller != null && !pitKiller.killFeedDisabled) killerPlayer.sendMessage(killComponent);
+			if(killerPlayer != null && !pitKiller.killFeedDisabled) killerPlayer.sendMessage(killComponent);
 			kill = null;
 		}
 
