@@ -34,6 +34,7 @@ public class ComboVenom extends PitEnchant {
 	}
 
 	public static boolean isVenomed(LivingEntity entity) {
+		if(entity == null) return false;
 		return venomMap.contains(entity.getUniqueId());
 	}
 
