@@ -65,7 +65,7 @@ public class ToTheMoon extends Megastreak {
 		killEvent.goldMultipliers.add(0.5);
 
 		if(pitPlayer.getKills() > 1500 && !hopperCallList.contains(killEvent.getKillerPlayer())) {
-			HopperManager.callHopper("PayForTruce", Hopper.Type.VENOM, killEvent.getKiller());
+			HopperManager.callHopper("PayForTruce", Hopper.Type.VENOM, killEvent.getKillerPlayer());
 			hopperCallList.add(killEvent.getKillerPlayer());
 		}
 	}

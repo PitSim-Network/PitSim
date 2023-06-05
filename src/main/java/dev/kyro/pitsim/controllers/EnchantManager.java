@@ -12,10 +12,7 @@ import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.aitems.PitItem;
 import dev.kyro.pitsim.aitems.TemporaryItem;
 import dev.kyro.pitsim.aitems.misc.GoldenHelmet;
-import dev.kyro.pitsim.controllers.objects.HelmetManager;
-import dev.kyro.pitsim.controllers.objects.PitEnchant;
-import dev.kyro.pitsim.controllers.objects.PitPlayer;
-import dev.kyro.pitsim.controllers.objects.PluginMessage;
+import dev.kyro.pitsim.controllers.objects.*;
 import dev.kyro.pitsim.enchants.overworld.ComboVenom;
 import dev.kyro.pitsim.enchants.overworld.SelfCheckout;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -85,6 +82,7 @@ public class EnchantManager implements Listener {
 	public static void readPlayerEnchants() {
 		enchantMap.clear();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) enchantMap.put(onlinePlayer, readEnchantsOnPlayer(onlinePlayer));
+		for(Hopper hopper : HopperManager.hopperList) enchantMap.put(hopper.hopper, readEnchantsOnPlayer(hopper.hopper));
 	}
 
 	@EventHandler

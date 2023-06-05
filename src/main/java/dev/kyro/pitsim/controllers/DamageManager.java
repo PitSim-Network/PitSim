@@ -358,7 +358,7 @@ public class DamageManager implements Listener {
 		}
 
 //		As strong as iron
-		attackEvent.multipliers.add(ArmorReduction.getReductionMultiplier(attackEvent.getDefender()));
+		attackEvent.multipliers.add(ArmorReduction.getMissingReductionMultiplier(attackEvent.getDefender()));
 
 //		New player defence
 		if(PitSim.status.isOverworld() && attackEvent.isDefenderRealPlayer() && attackEvent.isAttackerRealPlayer() &&

@@ -9,14 +9,14 @@ import org.bukkit.inventory.ItemStack;
 
 public class ArmorReduction {
 
-	public static double getReductionMultiplier(LivingEntity entity) {
+	public static double getMissingReductionMultiplier(LivingEntity entity) {
 		int actualPoints = getArmorPoints(entity);
 		int missingPoints = 0;
 
 		ItemStack leggings = entity.getEquipment().getLeggings();
 		if(!Misc.isAirOrNull(leggings) && leggings.getType() == Material.LEATHER_LEGGINGS) {
 			PitItem pitItem = ItemFactory.getItem(leggings);
-			if(pitItem != null && pitItem instanceof MysticPants) missingPoints += 3;
+			if(pitItem instanceof MysticPants) missingPoints += 3;
 		}
 
 		ItemStack helmet = entity.getEquipment().getHelmet();
