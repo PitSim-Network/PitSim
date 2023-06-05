@@ -529,7 +529,7 @@ public class PitSim extends JavaPlugin {
 		ScoreboardManager.registerScoreboard(new StrengthScoreboard());
 		ScoreboardManager.registerScoreboard(new GladiatorScoreboard());
 		ScoreboardManager.registerScoreboard(new TelebowScoreboard());
-		ScoreboardManager.registerScoreboard(new BulletTimeScoreboard());
+//		ScoreboardManager.registerScoreboard(new BulletTimeScoreboard());
 		ScoreboardManager.registerScoreboard(new ReallyToxicScoreboard());
 		ScoreboardManager.registerScoreboard(new JudgementScoreboard());
 		ScoreboardManager.registerScoreboard(new AuctionScoreboard());

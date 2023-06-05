@@ -704,6 +704,8 @@ public class Misc {
 	}
 
 	public static HealEvent heal(LivingEntity entity, double amount, HealEvent.HealType healType, int max, PitEnchant pitEnchant) {
+		if(entity == null) return null;
+		if(HopperManager.isHopper(entity) && healType == HealEvent.HealType.ABSORPTION) return null;
 		if(max == -1) max = Integer.MAX_VALUE;
 
 		HealEvent healEvent = new HealEvent(entity, amount, healType, max);

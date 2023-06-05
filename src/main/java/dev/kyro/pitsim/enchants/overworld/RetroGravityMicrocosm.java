@@ -27,11 +27,13 @@ import java.util.List;
 import java.util.Map;
 
 public class RetroGravityMicrocosm extends PitEnchant {
+	public static RetroGravityMicrocosm INSTANCE;
 	public static Map<LivingEntity, RGMInfo> rgmGlobalMap = new HashMap<>();
 
 	public RetroGravityMicrocosm() {
 		super("Retro-Gravity Microcosm", true, ApplyType.PANTS,
 				"rgm", "retro", "retrogravitymicrocosm", "retro-gravitymicrocosm", "retro-gravity-microcosm");
+		INSTANCE = this;
 	}
 
 	@EventHandler

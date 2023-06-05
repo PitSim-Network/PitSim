@@ -2,8 +2,6 @@ package dev.kyro.pitsim.enchants.overworld;
 
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HitCounter;
-import dev.kyro.pitsim.controllers.NonManager;
-import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
@@ -59,7 +57,15 @@ public class ComboVenom extends PitEnchant {
 
 	@EventHandler
 	public void onVenomAttacked(AttackEvent.Pre attackEvent) {
-		if(isVenomed(attackEvent.getAttacker()) || isVenomed(attackEvent.getDefender())) {
+		if(attackEvent.getAttackerEnchantLevel(this) != 0) {
+			attackEvent.getAttackerEnchantMap().clear();
+			attackEvent.getDefenderEnchantMap().clear();
+			attackEvent.getAttackerEnchantMap().put(this, 1);
+		} else if(attackEvent.getDefenderEnchantLevel(this) != 0) {
+			attackEvent.getAttackerEnchantMap().clear();
+			attackEvent.getDefenderEnchantMap().clear();
+			attackEvent.getDefenderEnchantMap().put(this, 1);
+		} else if(isVenomed(attackEvent.getAttacker()) || isVenomed(attackEvent.getDefender())) {
 			attackEvent.getAttackerEnchantMap().clear();
 			attackEvent.getDefenderEnchantMap().clear();
 		}
@@ -68,11 +74,6 @@ public class ComboVenom extends PitEnchant {
 	@EventHandler
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(!canApply(attackEvent)) return;
-
-		if(isVenomed(attackEvent.getAttacker()) || isVenomed(attackEvent.getDefender())) {
-			Non non = NonManager.getNon(attackEvent.getDefender());
-			if(non == null) attackEvent.multipliers.add(10 / 8.5D);
-		}
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0 || attackEvent.getArrow() != null) return;

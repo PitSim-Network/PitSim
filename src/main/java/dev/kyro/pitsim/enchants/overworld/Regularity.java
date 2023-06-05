@@ -4,6 +4,8 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.ASound;
 import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.controllers.HitCounter;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
 import dev.kyro.pitsim.enums.ApplyType;
 import dev.kyro.pitsim.events.AttackEvent;
@@ -33,9 +35,12 @@ public class Regularity extends PitEnchant {
 		INSTANCE = this;
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onAttack(AttackEvent.Pre attackEvent) {
-		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderRealPlayer()) return;
+		if(!attackEvent.isAttackerPlayer() || !attackEvent.isDefenderPlayer()) return;
+
+		Non non = NonManager.getNon(attackEvent.getDefender());
+		if(non != null) return;
 
 		if(attackEvent.getAttackerEnchantMap().containsKey(this) && attackEvent.getAttackerEnchantMap().containsKey(Billionaire.INSTANCE)) {
 			attackEvent.getAttackerEnchantMap().remove(this);
@@ -55,9 +60,12 @@ public class Regularity extends PitEnchant {
 	public void onAttack(AttackEvent.Post attackEvent) {
 		HitCounter.setCharge(attackEvent.getDefenderPlayer(), this, 0);
 
-		if(!attackEvent.isDefenderRealPlayer()) return;
+		if(!attackEvent.isDefenderPlayer()) return;
 		if(!canApply(attackEvent)) return;
 		if(!fakeHits && attackEvent.isFakeHit()) return;
+
+		Non non = NonManager.getNon(attackEvent.getDefender());
+		if(non != null) return;
 
 		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
 		if(enchantLvl == 0) return;
@@ -150,7 +158,7 @@ public class Regularity extends PitEnchant {
 
 		return new PitLoreBuilder(
 				"&7Your hits against players have a &a" + secondHitChance(enchantLvl) + "% &7chance to &astrike again &7for &c" +
-						secondHitDamage(enchantLvl) + "% &7damage if the final damage of your strike is low enough. " +
+						secondHitDamage(enchantLvl) + "% &7damage. " +
 						"Does not work with " + Billionaire.INSTANCE.getDisplayName().replaceAll(" ", "[]")
 		).getLore();
 	}

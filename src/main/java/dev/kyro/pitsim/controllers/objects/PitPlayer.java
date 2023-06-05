@@ -716,6 +716,8 @@ public class PitPlayer {
 
 	@Exclude
 	public void updateMaxHealth() {
+		if(HopperManager.isHopper(player)) return;
+
 		int maxHealth = 24;
 		if(hasPerk(Thick.INSTANCE) && !MapManager.inDarkzone(player)) maxHealth += 4;
 
