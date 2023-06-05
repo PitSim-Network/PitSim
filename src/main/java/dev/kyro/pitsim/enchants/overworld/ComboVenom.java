@@ -1,18 +1,30 @@
 package dev.kyro.pitsim.enchants.overworld;
 
+import dev.kyro.pitsim.PitSim;
+import dev.kyro.pitsim.controllers.HitCounter;
+import dev.kyro.pitsim.controllers.NonManager;
+import dev.kyro.pitsim.controllers.objects.Non;
 import dev.kyro.pitsim.controllers.objects.PitEnchant;
+import dev.kyro.pitsim.controllers.objects.PitPlayer;
 import dev.kyro.pitsim.enums.ApplyType;
+import dev.kyro.pitsim.events.AttackEvent;
+import dev.kyro.pitsim.misc.Misc;
 import dev.kyro.pitsim.misc.PitLoreBuilder;
+import dev.kyro.pitsim.misc.Sounds;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ComboVenom extends PitEnchant {
 	public static ComboVenom INSTANCE;
+
+	public static List<UUID> venomMap = new ArrayList<>();
 
 	public ComboVenom() {
 		super("Combo: Venom", true, ApplyType.NONE,
@@ -24,7 +36,20 @@ public class ComboVenom extends PitEnchant {
 	}
 
 	public static boolean isVenomed(LivingEntity entity) {
-		return entity.hasPotionEffect(PotionEffectType.POISON);
+		return venomMap.contains(entity.getUniqueId());
+	}
+
+	public void venom(LivingEntity player) {
+		venomMap.add(player.getUniqueId());
+		Misc.applyPotionEffect(player, PotionEffectType.POISON, 20 * 12, 0, true, false);
+		Sounds.VENOM.play(player);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				venomMap.remove(player.getUniqueId());
+			}
+		}.runTaskLater(PitSim.INSTANCE, 20 * 24);
 	}
 
 	@EventHandler
@@ -32,37 +57,35 @@ public class ComboVenom extends PitEnchant {
 		if(event.getCause() == EntityDamageEvent.DamageCause.POISON) event.setCancelled(true);
 	}
 
-//	@EventHandler
-//	public void onVenomAttacked(AttackEvent.Pre attackEvent) {
-//		if(isVenomed(attackEvent.attacker) || isVenomed(attackEvent.defender)) {
-//			attackEvent.getAttackerEnchantMap().clear();
-//			attackEvent.getDefenderEnchantMap().clear();
-//		}
-//	}
+	@EventHandler
+	public void onVenomAttacked(AttackEvent.Pre attackEvent) {
+		if(isVenomed(attackEvent.getAttacker()) || isVenomed(attackEvent.getDefender())) {
+			attackEvent.getAttackerEnchantMap().clear();
+			attackEvent.getDefenderEnchantMap().clear();
+		}
+	}
 
-//	@EventHandler
-//	public void onAttack(AttackEvent.Apply attackEvent) {
-//		if(!canApply(attackEvent)) return;
-//
-//		if(attackEvent.attacker.hasPotionEffect(PotionEffectType.POISON) || attackEvent.defender.hasPotionEffect(PotionEffectType.POISON)) {
-//			Non non = NonManager.getNon(attackEvent.defender);
-//			if(non == null) attackEvent.multipliers.add(10 / 8.5D);
-//		}
-//
-//		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
-//		if(enchantLvl == 0 || attackEvent.arrow != null) return;
-//
-//		if(attackEvent.attackerIsPlayer) {
-//			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.attackerPlayer);
-//			HitCounter.incrementCounter(pitPlayer.player, this);
-//			if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 3)) return;
-//
-//			Misc.applyPotionEffect(attackEvent.attacker, PotionEffectType.POISON, 20 * 24, 0, true, false);
-//			Misc.applyPotionEffect(attackEvent.defender, PotionEffectType.POISON, 20 * 12, 0, true, false);
-//			Sounds.VENOM.play(attackEvent.attacker);
-//			Sounds.VENOM.play(attackEvent.defender);
-//		}
-//	}
+	@EventHandler
+	public void onAttack(AttackEvent.Apply attackEvent) {
+		if(!canApply(attackEvent)) return;
+
+		if(isVenomed(attackEvent.getAttacker()) || isVenomed(attackEvent.getDefender())) {
+			Non non = NonManager.getNon(attackEvent.getDefender());
+			if(non == null) attackEvent.multipliers.add(10 / 8.5D);
+		}
+
+		int enchantLvl = attackEvent.getAttackerEnchantLevel(this);
+		if(enchantLvl == 0 || attackEvent.getArrow() != null) return;
+
+		if(attackEvent.isAttackerPlayer()) {
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(attackEvent.getAttackerPlayer());
+			HitCounter.incrementCounter(pitPlayer.player, this);
+			if(!HitCounter.hasReachedThreshold(pitPlayer.player, this, 3)) return;
+
+			venom(attackEvent.getAttacker());
+			venom(attackEvent.getDefender());
+		}
+	}
 
 	@Override
 	public String getSummary() {
