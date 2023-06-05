@@ -13,6 +13,7 @@ import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
+import dev.kyro.pitsim.SQL.TableManager;
 import dev.kyro.pitsim.adarkzone.*;
 import dev.kyro.pitsim.adarkzone.abilities.CageAbility;
 import dev.kyro.pitsim.adarkzone.altar.AltarManager;
@@ -150,6 +151,7 @@ public class PitSim extends JavaPlugin {
 		serverName = AConfig.getString("server");
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.STANDALONE;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
+		TableManager.registerTables();
 		LitebansManager.init();
 
 		if(status.isDarkzone()) {

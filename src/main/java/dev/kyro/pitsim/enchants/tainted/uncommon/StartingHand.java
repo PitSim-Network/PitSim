@@ -22,7 +22,7 @@ public class StartingHand extends PitEnchant {
 	public static Map<Player, List<LivingEntity>> hitPlayers = new HashMap<>();
 
 	public StartingHand() {
-		super("Starting Hand", false, ApplyType.SCYTHES,
+		super(" Starting Hand", false, ApplyType.SCYTHES,
 				"startinghand", "starting", "start");
 		isUncommonEnchant = true;
 		isTainted = true;
