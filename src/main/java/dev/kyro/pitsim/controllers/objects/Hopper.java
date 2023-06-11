@@ -7,6 +7,7 @@ import dev.kyro.pitsim.PitSim;
 import dev.kyro.pitsim.aitems.MysticFactory;
 import dev.kyro.pitsim.controllers.*;
 import dev.kyro.pitsim.enchants.overworld.Hearts;
+import dev.kyro.pitsim.enchants.overworld.RetroGravityMicrocosm;
 import dev.kyro.pitsim.enums.MysticType;
 import dev.kyro.pitsim.enums.PantColor;
 import dev.kyro.pitsim.misc.MinecraftSkin;
@@ -16,15 +17,16 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.util.Util;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -36,7 +38,7 @@ public class Hopper {
 	public Player hopper;
 	public String name;
 	public Type type;
-	public LivingEntity target;
+	public Player target;
 	public Player judgementPlayer;
 	public List<UUID> team = new ArrayList<>();
 	public int count = 0;
@@ -44,9 +46,9 @@ public class Hopper {
 	public boolean lockedToTarget = false;
 	public boolean canHitOtherHoppers = false;
 	public long lastHitTarget;
-	public double speed = Math.random() < 0.1 ? 0.12 : 5 * (Math.random() / 100D) + 0.04;
+	public double speed = Math.random() * 0.05 + 0.04;
 
-	public double switchBias = 4 * (Math.random() / 100D) + 0.02;
+	public double switchBias = Math.random() * 0.04 + 0.02;
 	public boolean dirClockwise = true;
 
 	public Hopper(String name, Type type) {
@@ -55,7 +57,7 @@ public class Hopper {
 		start();
 	}
 
-	public Hopper(String name, Type type, LivingEntity target) {
+	public Hopper(String name, Type type, Player target) {
 		this.name = name;
 		this.type = type;
 		this.target = target;
@@ -78,11 +80,10 @@ public class Hopper {
 		Equipment equipment = npc.getTrait(Equipment.class);
 		for(Map.Entry<Equipment.EquipmentSlot, ItemStack> entry : type.getEquipment().entrySet())
 			equipment.set(entry.getKey(), entry.getValue());
-		if(type == Type.GSET) {
+		if(type.isGSet) {
 			int maxHealth = 28;
-			int heartsLvl = EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), EnchantManager.getEnchant("hearts"));
-			if(!Misc.isAirOrNull(hopper.getEquipment().getLeggings()) && heartsLvl != 0)
-				maxHealth += Hearts.INSTANCE.getExtraHealth(heartsLvl);
+			int heartsLvl = EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), Hearts.INSTANCE);
+			if(heartsLvl != 0) maxHealth += Hearts.getExtraHealth(heartsLvl);
 
 			hopper.setMaxHealth(maxHealth);
 			hopper.setHealth(hopper.getMaxHealth());
@@ -101,48 +102,43 @@ public class Hopper {
 			lastHitTarget = System.currentTimeMillis();
 		}
 
-		if(count % 5 == 0) {
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(!onlinePlayer.getWorld().equals(hopper.getWorld())) continue;
-				PacketPlayOutAnimation attackPacket = new PacketPlayOutAnimation(((CraftEntity) hopper).getHandle(), 0);
-				((CraftPlayer) onlinePlayer).getHandle().playerConnection.sendPacket(attackPacket);
-			}
-		}
-		if(count % 5 == 4) {
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				if(!onlinePlayer.getWorld().equals(hopper.getWorld())) continue;
-
-				PacketContainer packet = PitSim.PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_METADATA);
-				packet.getIntegers().write(0, hopper.getEntityId());
-				WrappedDataWatcher watcher = new WrappedDataWatcher();
-				watcher.setEntity(hopper);
-				watcher.setObject(0, (byte) (0x0));
-				packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
-
-				try {
-					PitSim.PROTOCOL_MANAGER.sendServerPacket(onlinePlayer, packet);
-				} catch(Exception e) {
-					e.printStackTrace();
+		if(target != null && target.getWorld() == hopper.getWorld() && target.getLocation().distance(hopper.getLocation()) < 6) {
+			if(type == Type.VENOM) {
+				if(count % 4 == 0) {
+					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+						if(!onlinePlayer.getWorld().equals(hopper.getWorld())) continue;
+						PacketPlayOutEntityEquipment equipment = new PacketPlayOutEntityEquipment(hopper.getEntityId(), 0,
+								CraftItemStack.asNMSCopy(new ItemStack(Material.DIAMOND_SWORD)));
+						((CraftPlayer) onlinePlayer).getHandle().playerConnection.sendPacket(equipment);
+					}
+					setBlocking(true);
+				} else if(count % 4 == 2) {
+					for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+						if(!onlinePlayer.getWorld().equals(hopper.getWorld())) continue;
+						PacketPlayOutEntityEquipment equipment = new PacketPlayOutEntityEquipment(hopper.getEntityId(), 0,
+								CraftItemStack.asNMSCopy(new ItemStack(Material.DIAMOND_SPADE)));
+						((CraftPlayer) onlinePlayer).getHandle().playerConnection.sendPacket(equipment);
+					}
 				}
 			}
-		} else {
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				PacketContainer packet = PitSim.PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_METADATA);
-				packet.getIntegers().write(0, hopper.getEntityId());
-				WrappedDataWatcher watcher = new WrappedDataWatcher();
-				watcher.setEntity(hopper);
-				watcher.setObject(0, (byte) (0x10));
-				packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
 
-				try {
-					PitSim.PROTOCOL_MANAGER.sendServerPacket(onlinePlayer, packet);
-				} catch(Exception e) {
-					e.printStackTrace();
+			if(count % 5 == 0) {
+				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					if(!onlinePlayer.getWorld().equals(hopper.getWorld())) continue;
+					PacketPlayOutAnimation attackPacket = new PacketPlayOutAnimation(((CraftEntity) hopper).getHandle(), 0);
+					((CraftPlayer) onlinePlayer).getHandle().playerConnection.sendPacket(attackPacket);
 				}
 			}
+			if(count % 5 == 4) {
+				setBlocking(false);
+			} else {
+				setBlocking(true);
+			}
+		} else if(count % 5 == 4) {
+			setBlocking(false);
 		}
 
-		if(count % 5 == 0) {
+		if(count % 5 == 0 && shouldJump()) {
 			Block underneath = hopper.getLocation().clone().subtract(0, 0.2, 0).getBlock();
 			if(underneath.getType() != Material.AIR) {
 				hopper.setVelocity(new Vector(0, 0.42, 0));
@@ -160,14 +156,16 @@ public class Hopper {
 
 		if(target != null) {
 			if(target.getLocation().distance(hopper.getLocation()) > 6) {
-
-				entity.setVelocity(npcVelo.add(dir.setY(0).normalize().multiply(speed + 0.02)));
+				Vector velocity = npcVelo.add(dir.setY(0).normalize().multiply(speed + 0.02));
+				if(!shouldJump()) velocity.multiply(1.2);
+				entity.setVelocity(velocity);
 			} else {
-
 				Location rotLoc = entity.getLocation().clone();
 				rotLoc.setYaw(entity.getLocation().getYaw() + (dirClockwise ? -70 : 70));
-				entity.setVelocity(npcVelo.add(rotLoc.getDirection().setY(0).normalize().multiply(speed))
-						.add(dir.setY(0).normalize().multiply(distanceFromOptimal / 20D)));
+				Vector velocity = npcVelo.add(rotLoc.getDirection().setY(0).normalize().multiply(speed))
+						.add(dir.setY(0).normalize().multiply(distanceFromOptimal / 20D));
+				if(!shouldJump()) velocity.multiply(1.2);
+				entity.setVelocity(velocity);
 			}
 		}
 
@@ -183,7 +181,7 @@ public class Hopper {
 //						EnchantManager.getEnchantLevel(hopper.getEquipment().getLeggings(), EnchantManager.getEnchant("regularity")) != 0)
 //					range -= 0.7;
 
-				double damage = 7.5;
+				double damage = getDamage(hopper.getItemInHand());
 				if(isCritical) damage *= 1.5;
 				if(target != null && target != hitTarget) {
 					damage /= 2;
@@ -194,49 +192,96 @@ public class Hopper {
 				if(hopper.getLocation().distance(hitTarget.getLocation()) > range) continue;
 				if(!canHitOtherHoppers && HopperManager.isHopper(hitTarget)) continue;
 				if(NonManager.getNon(hitTarget) != null && Math.random() > 0.05) continue;
-				hitTarget.damage(damage, hopper);
+				if(type == Type.VENOM && !DamageManager.hitCooldownList.contains(hitTarget) && Math.random() < 0.05) {
+					hitTarget.setNoDamageTicks(0);
+					DamageManager.createIndirectAttack(hopper, hitTarget, damage * 0.5);
+				} else {
+					DamageManager.createDirectAttack(hopper, hitTarget, damage);
+//					hitTarget.damage(damage, hopper);
+				}
 				if(hitTarget == target) lastHitTarget = System.currentTimeMillis();
 			}
 		}
 	}
 
-	public void remove() {
+	public void setBlocking(boolean blocking) {
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(!onlinePlayer.getWorld().equals(hopper.getWorld())) continue;
 
+			PacketContainer packet = PitSim.PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_METADATA);
+			packet.getIntegers().write(0, hopper.getEntityId());
+			WrappedDataWatcher watcher = new WrappedDataWatcher();
+			watcher.setEntity(hopper);
+			watcher.setObject(0, (byte) (blocking ? 0x10 : 0x0));
+			packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
+
+			try {
+				PitSim.PROTOCOL_MANAGER.sendServerPacket(onlinePlayer, packet);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void remove() {
 		HopperManager.toRemove.add(this);
 		npc.destroy();
 		hopper.remove();
 	}
 
 	public double getDamage(ItemStack weapon) {
-		if(weapon == null) return 1;
-		switch(weapon.getType()) {
-			case IRON_SWORD:
-				return 7;
-			case DIAMOND_SWORD:
-				return 9.6;
-			case GOLD_SWORD:
-				return 7.5;
+		double damage = 1;
+		if(weapon != null) {
+			switch(weapon.getType()) {
+				case IRON_SWORD:
+					damage = 7;
+					break;
+				case DIAMOND_SWORD:
+					damage = 9.6;
+					break;
+				case DIAMOND_SPADE:
+					damage = 9;
+					break;
+				case GOLD_SWORD:
+					damage = 7.5;
+					break;
+			}
 		}
-		return 1;
+		return damage;
+	}
+
+	public boolean shouldJump() {
+		if(target == null || !type.isGSet) return true;
+		int rgmLevel = EnchantManager.getEnchantLevel(target, RetroGravityMicrocosm.INSTANCE);
+		return rgmLevel == 0;
 	}
 
 	public enum Type {
-		CHAIN("&7Chain Hopper", "chain", "&7", 0.5),
-		DIAMOND("&9Diamond Hopper", "diamond", "&9", 0.5),
-		MYSTIC("&eMystic Hopper", "mystic", "&e", 0.5),
-		VENOM("&2Venom Hopper", "venom", "&2", 0.6),
-		GSET("&6GSet Hopper", "gset", "&6", 0.6);
+		CHAIN("&7Chain Hopper", "chain", "&7", 0.5, false),
+		DIAMOND("&9Diamond Hopper", "diamond", "&9", 0.5, false),
+		MYSTIC("&eMystic Hopper", "mystic", "&e", 0.5, false),
+		VENOM("&2Venom Hopper", "venom", "&2", 0.5, false),
+		REG("&6GSet Hopper", "reg", "&6", 0.5, true),
+		RGM("&6GSet Hopper", "rgm", "&6", 0.5, true);
 
 		public String name;
 		public String refName;
 		public String colorCode;
 		public double damageMultiplier;
+		public boolean isGSet;
 
-		Type(String name, String refName, String colorCode, double damageMultiplier) {
+		Type(String name, String refName, String colorCode, double damageMultiplier, boolean isGSet) {
 			this.name = name;
 			this.refName = refName;
 			this.colorCode = colorCode;
 			this.damageMultiplier = damageMultiplier;
+			this.isGSet = isGSet;
+		}
+
+		public static Type getRandomGSet() {
+			List<Type> gSetTypes = new ArrayList<>();
+			for(Type type : values()) if(type.isGSet) gSetTypes.add(type);
+			return gSetTypes.get(new Random().nextInt(gSetTypes.size()));
 		}
 
 		public static Type getType(String refName) {
@@ -246,6 +291,8 @@ public class Hopper {
 
 		public Map<Equipment.EquipmentSlot, ItemStack> getEquipment() {
 			Map<Equipment.EquipmentSlot, ItemStack> equipmentMap = new HashMap<>();
+			ItemStack sword = MysticFactory.getFreshItem(MysticType.SWORD, null);
+			ItemStack pants = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
 			switch(this) {
 				case CHAIN:
 					equipmentMap.put(Equipment.EquipmentSlot.HAND, new ItemStack(Material.IRON_SWORD));
@@ -273,38 +320,31 @@ public class Hopper {
 					equipmentMap.put(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
 					break;
 				case MYSTIC:
-					ItemStack mysticSword = MysticFactory.getFreshItem(MysticType.SWORD, null);
 					try {
-						mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("sharpness"), (int) (Math.random() * 11), false);
-						mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("lifesteal"), 2, false);
-						if(Math.random() < 0.25)
-							mysticSword = EnchantManager.addEnchant(mysticSword, EnchantManager.getEnchant("perun"), 3, false);
-					} catch(Exception ignored) {
-					}
-					ItemStack mysticPants = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
-					try {
-						mysticPants = EnchantManager.addEnchant(mysticPants, EnchantManager.getEnchant("mirror"), 2, false);
-						mysticPants = EnchantManager.addEnchant(mysticPants, EnchantManager.getEnchant("protection"), 3, false);
-						if(Math.random() < 0.25) {
-							mysticPants = EnchantManager.addEnchant(mysticPants, EnchantManager.getEnchant("rgm"), 1, false);
-						} else if(Math.random() < 0.25) {
-							mysticPants = EnchantManager.addEnchant(mysticPants, EnchantManager.getEnchant("regularity"), 1, false);
-						}
-					} catch(Exception ignored) {
-					}
+						sword = EnchantManager.addEnchant(sword, EnchantManager.getEnchant("sharpness"), (int) (Math.random() * 11), false);
+						sword = EnchantManager.addEnchant(sword, EnchantManager.getEnchant("lifesteal"), 2, false);
+						if(Math.random() < 0.25) sword = EnchantManager.addEnchant(sword, EnchantManager.getEnchant("perun"), 3, false);
 
-					equipmentMap.put(Equipment.EquipmentSlot.HAND, mysticSword);
+						pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("mirror"), 2, false);
+						pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("protection"), 3, false);
+						if(Math.random() < 0.25) {
+							pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("rgm"), 1, false);
+						} else if(Math.random() < 0.25) {
+							pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("regularity"), 1, false);
+						}
+					} catch(Exception ignored) {}
+
+					equipmentMap.put(Equipment.EquipmentSlot.HAND, sword);
 					equipmentMap.put(Equipment.EquipmentSlot.HELMET, new ItemStack(Math.random() < 0.25 ? Material.DIAMOND_HELMET : Material.IRON_HELMET));
 					equipmentMap.put(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.DIAMOND_CHESTPLATE));
-					equipmentMap.put(Equipment.EquipmentSlot.LEGGINGS, mysticPants);
+					equipmentMap.put(Equipment.EquipmentSlot.LEGGINGS, pants);
 					equipmentMap.put(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
 					break;
 				case VENOM:
 					ItemStack venoms = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.DARK);
 					try {
 						venoms = EnchantManager.addEnchant(venoms, EnchantManager.getEnchant("venom"), 1, false);
-					} catch(Exception ignored) {
-					}
+					} catch(Exception ignored) {}
 
 					equipmentMap.put(Equipment.EquipmentSlot.HAND, new ItemStack(Material.DIAMOND_SWORD));
 					equipmentMap.put(Equipment.EquipmentSlot.HELMET, new ItemStack(Math.random() < 0.25 ? Material.DIAMOND_HELMET : Material.IRON_HELMET));
@@ -312,46 +352,39 @@ public class Hopper {
 					equipmentMap.put(Equipment.EquipmentSlot.LEGGINGS, venoms);
 					equipmentMap.put(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
 					break;
-				case GSET:
-					ItemStack gsetSword = MysticFactory.getFreshItem(MysticType.SWORD, null);
-					double random = Math.random();
-//					double random = 0.3;
+				case REG:
 					try {
-						if(random < 0.33) {
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 2, false);
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("perun"), 3, false);
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("comboheal"), 3, false);
-						} else if(random < 0.67) {
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("lifesteal"), 1, false);
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("bill"), 8, false);
-						} else {
-//							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("lifesteal"), 1, false);
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("sharp"), 50, false);
-							gsetSword = EnchantManager.addEnchant(gsetSword, EnchantManager.getEnchant("painfocus"), 15, false);
-						}
-					} catch(Exception ignored) {
-					}
-					ItemStack gsetPants = MysticFactory.getFreshItem(MysticType.PANTS, PantColor.getNormalRandom());
-					try {
+//						sword = EnchantManager.addEnchant(sword, EnchantManager.getEnchant("sharp"), 13, false);
+						sword = EnchantManager.addEnchant(sword, EnchantManager.getEnchant("perun"), 3, false);
+						sword = EnchantManager.addEnchant(sword, EnchantManager.getEnchant("comboheal"), 3, false);
 
-						gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("cf"), 3, false);
-						gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("toxic"), 40, false);
-						if(random < 0.33) {
-							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("mirror"), 3, false);
-							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("regularity"), 5, false);
-						} else if(random < 0.66) {
-							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("mirror"), 3, false);
-							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("rgm"), 5, false);
-						} else {
-							gsetPants = EnchantManager.addEnchant(gsetPants, EnchantManager.getEnchant("hearts"), 39, false);
-						}
-					} catch(Exception ignored) {
-					}
+						pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("cf"), 3, false);
+						pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("toxic"), 40, false);
+						pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("mirror"), 3, false);
+						pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("regularity"), 5, false);
+					} catch(Exception ignored) {}
 
-					equipmentMap.put(Equipment.EquipmentSlot.HAND, gsetSword);
+					equipmentMap.put(Equipment.EquipmentSlot.HAND, sword);
 					equipmentMap.put(Equipment.EquipmentSlot.HELMET, new ItemStack(Material.GOLD_HELMET));
 					equipmentMap.put(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.DIAMOND_CHESTPLATE));
-					equipmentMap.put(Equipment.EquipmentSlot.LEGGINGS, gsetPants);
+					equipmentMap.put(Equipment.EquipmentSlot.LEGGINGS, pants);
+					equipmentMap.put(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
+					break;
+				case RGM:
+					try {
+						sword = EnchantManager.addEnchant(sword, EnchantManager.getEnchant("lifesteal"), 2, false);
+						sword = EnchantManager.addEnchant(sword, EnchantManager.getEnchant("bill"), 3, false);
+
+						pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("cf"), 3, false);
+						pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("toxic"), 40, false);
+						pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("mirror"), 3, false);
+						pants = EnchantManager.addEnchant(pants, EnchantManager.getEnchant("rgm"), 5, false);
+					} catch(Exception ignored) {}
+
+					equipmentMap.put(Equipment.EquipmentSlot.HAND, sword);
+					equipmentMap.put(Equipment.EquipmentSlot.HELMET, new ItemStack(Material.GOLD_HELMET));
+					equipmentMap.put(Equipment.EquipmentSlot.CHESTPLATE, new ItemStack(Material.DIAMOND_CHESTPLATE));
+					equipmentMap.put(Equipment.EquipmentSlot.LEGGINGS, pants);
 					equipmentMap.put(Equipment.EquipmentSlot.BOOTS, new ItemStack(Material.DIAMOND_BOOTS));
 					break;
 			}

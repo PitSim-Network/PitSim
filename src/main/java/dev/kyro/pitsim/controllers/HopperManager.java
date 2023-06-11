@@ -37,13 +37,24 @@ public class HopperManager implements Listener {
 		}.runTaskTimer(PitSim.INSTANCE, 0L, 1L);
 	}
 
-	public static Hopper callHopper(String name, Hopper.Type type, LivingEntity target) {
+	public static Hopper callHopper(String name, Hopper.Type type, Player target) {
 		Hopper hopper = new Hopper(name, type, target);
 		hopperList.add(hopper);
 		return hopper;
 	}
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.LOW)
+	public void onAttack(AttackEvent.Pre attackEvent) {
+		if(!isHopper(attackEvent.getDefender()) || attackEvent.getWrapperEvent().hasAttackInfo()) return;
+		attackEvent.setCancelled(true);
+		attackEvent.getDefender().setNoDamageTicks(0);
+
+		DamageManager.hitCooldownList.remove(attackEvent.getDefender());
+		DamageManager.hopperCooldownList.remove(attackEvent.getDefender());
+		DamageManager.createIndirectAttack(attackEvent.getAttacker(), attackEvent.getDefender(), attackEvent.getWrapperEvent().getDamage());
+	}
+
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onAttack(AttackEvent.Apply attackEvent) {
 		if(isHopper(attackEvent.getDefender())) {
 			Hopper hopper = getHopper(attackEvent.getDefenderPlayer());
