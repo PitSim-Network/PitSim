@@ -32,10 +32,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -44,6 +41,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -756,6 +754,17 @@ public class PlayerManager implements Listener {
 
 		event.setCancelled(true);
 		AOutput.error(player, "&CBlock interactions disabled, run /pitsim bypass to toggle");
+	}
+
+	@EventHandler
+	public void onWitherSkullExplode(ExplosionPrimeEvent event) {
+		if(!(event.getEntity() instanceof WitherSkull)) return;
+		for(Entity nearbyEntity : event.getEntity().getNearbyEntities(5, 5, 5)) {
+			if(nearbyEntity instanceof ItemFrame) {
+				event.setCancelled(true);
+				return;
+			}
+		}
 	}
 
 	@EventHandler
