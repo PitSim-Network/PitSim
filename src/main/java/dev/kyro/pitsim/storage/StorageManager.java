@@ -191,30 +191,30 @@ public class StorageManager implements Listener {
 			strings.remove(0);
 			UUID uuid = UUID.fromString(strings.remove(0));
 
-			if(booleans.size() > 0 && booleans.remove(0)) {
-				StorageProfile profile = new StorageProfile(uuid);
-				profile.loadData(message, true);
-
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						for(Map.Entry<UUID, ViewGUI> entry : ViewGUI.viewGUIs.entrySet()) {
-							if(entry.getValue().target.getUniqueID().equals(uuid)) {
-								Player player = Bukkit.getPlayer(entry.getKey());
-								if(player == null || !player.isOnline()) continue;
-								player.closeInventory();
-								ViewGUI gui = new ViewGUI(player, profile, profile.getUniqueID(), entry.getValue().name);
-								gui.open();
-							}
-						}
-					}
-				}.runTask(PitSim.INSTANCE);
-				viewProfiles.removeIf(p -> p.getUniqueID().equals(uuid));
-
-				viewProfiles.add(profile);
-				System.out.println("Added view profile");
-				return;
-			}
+//			if(booleans.size() > 0 && booleans.remove(0)) {
+//				StorageProfile profile = new StorageProfile(uuid);
+//				profile.loadData(message, true);
+//
+//				new BukkitRunnable() {
+//					@Override
+//					public void run() {
+//						for(Map.Entry<UUID, ViewGUI> entry : ViewGUI.viewGUIs.entrySet()) {
+//							if(entry.getValue().target.getUniqueID().equals(uuid)) {
+//								Player player = Bukkit.getPlayer(entry.getKey());
+//								if(player == null || !player.isOnline()) continue;
+//								player.closeInventory();
+//								ViewGUI gui = new ViewGUI(player, profile, profile.getUniqueID(), entry.getValue().name);
+//								gui.open();
+//							}
+//						}
+//					}
+//				}.runTask(PitSim.INSTANCE);
+//				viewProfiles.removeIf(p -> p.getUniqueID().equals(uuid));
+//
+//				viewProfiles.add(profile);
+//				System.out.println("Added view profile");
+//				return;
+//			}
 
 			StorageProfile profile = getProfile(uuid);
 			profile.loadData(message, false);
