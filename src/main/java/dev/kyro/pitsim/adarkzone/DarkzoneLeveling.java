@@ -68,7 +68,8 @@ public class DarkzoneLeveling {
 	}
 
 	public static double getReductionMultiplier(int altarLevel, int darkzoneLevel) {
-		int levelDifference = Math.min(Math.max(darkzoneLevel - altarLevel, -40), 40);
+		int levelDifference = Math.min(Math.max(darkzoneLevel - altarLevel, -160), 40);
+		if(levelDifference < 0) levelDifference /= 4;
 		return 1 - (levelDifference / 100.0);
 	}
 
