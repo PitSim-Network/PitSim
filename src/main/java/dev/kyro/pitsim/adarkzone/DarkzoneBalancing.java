@@ -30,7 +30,7 @@ public class DarkzoneBalancing {
 	public static final double EVERY_LEVEL_XP_INCREASE = 1;
 
 	public static final int BASE_ALTAR_COST = 50;
-	public static final double AVERAGE_XP_PER_100_SOULS = 500.0;
+	public static final double AVERAGE_XP_PER_100_SOULS = 300.0;
 	public static final double AVERAGE_RENOWN_PER_100_SOULS = 3.0;
 	public static final double AVERAGE_VOUCHERS_PER_100_SOULS = 3.0;
 	public static final double NONE_REWARD_MULTIPLIER = 0.0;
