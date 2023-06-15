@@ -39,7 +39,7 @@ dependencies {
     compileOnly 'com.github.Polar-Anticheat:PolarApi:master-SNAPSHOT'
     compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.5'
 
-    compileOnly files('libs/PitRemakeDependencies-1.0.0-all.jar')
+    compileOnly files('libs/PitRemakeDependencies-1-all.jar')
 }
 
 shadowJar {
@@ -50,6 +50,6 @@ shadowJar {
 
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xmaxerrs" << "1000"
+        options.compilerArgs << '-Xmaxerrs' << '1000'
     }
 }
