@@ -11,50 +11,35 @@ project.targetCompatibility = '1.8'
 repositories {
     mavenCentral()
 
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url 'https://jitpack.io' }
-    maven { url "https://repo.codemc.org/repository/maven-public" }
-    maven { url "http://repo.citizensnpcs.co" }
-    maven { url "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
-    maven { url "https://maven.enginehub.org/repo/" }
-    maven { url "https://repo.inventivetalent.org/content/repositories/snapshots" }
-    maven { url "https://repo.dmulloy2.net/repository/public/" }
-    maven { url "https://eldonexus.de/repository/maven-public" }
-    maven { url "https://repo.mattmalec.com/repository/releases" }
+    maven { url 'https://repo.codemc.org/repository/maven-public' }
+    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url 'https://maven.enginehub.org/repo/' }
+    maven { url 'https://repo.mattmalec.com/repository/releases' }
 }
 
 dependencies {
+    compile 'com.github.ArcticDevelopment:ArcticAPI:032bf8696c'
+
+    compileOnly 'com.mattmalec:Pterodactyl4J:2.BETA_81'
+    compileOnly 'net.kyori:adventure-platform-bukkit:4.1.0'
+    compileOnly 'de.tr7zw:item-nbt-api-plugin:2.8.0'
+    compileOnly 'com.google.firebase:firebase-admin:8.0.0'
+    compileOnly 'com.google.cloud:google-cloud-dialogflow-cx:0.17.0'
+
     compileOnly 'org.jetbrains:annotations:23.0.0'
-//    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
-    compileOnly files('libs/ispigot.jar')
-    compileOnly files('libs/Citizens-2.0.30-Kyro.jar')
-    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
-    compileOnly "me.clip:placeholderapi:2.10.9"
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly 'me.clip:placeholderapi:2.10.9'
     compileOnly 'com.sk89q.worldguard:worldguard-legacy:6.2'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.0'
     compileOnly 'com.github.LeonMangler:PremiumVanishAPI:2.7.11-2'
     compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.5'
-    compileOnly files("libs/ProtocolLib-pitsim.jar")
-
-    compileOnly files('libs/NoteBlockAPI-1.6.2-Kyro.jar')
-//    compile 'com.theokanning.openai-gpt3-java:client:0.9.0'
-    compile 'com.github.ArcticDevelopment:ArcticAPI:032bf8696c'
-    compileOnly 'de.tr7zw:item-nbt-api-plugin:2.8.0'// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
-    compileOnly files('libs/FeatherBoard.jar')
-    compileOnly files('libs/CPCameraStudioReborn.jar')
-    compileOnly files('libs/ArcticGuilds-all.jar')
-    compileOnly files('libs/ArmorEquipEvent-1.7.2.jar')
-    compileOnly files('libs/PluginQuery.jar')
-    compileOnly files('libs/DeluxeChat-1.16.2.jar')
-    compileOnly 'com.mattmalec:Pterodactyl4J:2.BETA_81'
-    compileOnly "net.kyori:adventure-platform-bukkit:4.1.0"
     compileOnly 'net.luckperms:api:5.4'
-    compileOnly 'com.google.firebase:firebase-admin:8.0.0'
     compileOnly 'com.github.MWHunter:GrimAPI:add576ba8b'
     compileOnly 'com.github.Polar-Anticheat:PolarApi:master-SNAPSHOT'
-    compileOnly 'com.google.cloud:google-cloud-dialogflow-cx:0.17.0'
     compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.5'
+
+    compileOnly files('libs/PitRemakeDependencies-1.0.0-all.jar')
 }
 
 shadowJar {

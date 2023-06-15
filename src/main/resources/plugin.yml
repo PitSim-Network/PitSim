@@ -62,7 +62,6 @@ commands:
     aliases:
       - kits
   music:
-  cutscene:
   migrate:
   pass:
   quests:

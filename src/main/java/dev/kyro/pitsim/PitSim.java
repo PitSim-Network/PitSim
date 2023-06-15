@@ -619,7 +619,6 @@ public class PitSim extends JavaPlugin {
 		getCommand("stat").setExecutor(new StatCommand());
 //		getCommand("captcha").setExecutor(new CaptchaCommand());
 		getCommand("pay").setExecutor(new PayCommand());
-		getCommand("cutscene").setExecutor(new CutsceneCommand());
 		getCommand("kit").setExecutor(new KitCommand());
 		getCommand("music").setExecutor(new MusicCommand());
 //		getCommand("migrate").setExecutor(new MigrateCommand());
@@ -718,7 +717,6 @@ public class PitSim extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new TaintedWell(), this);
 			getServer().getPluginManager().registerEvents(new BrewingManager(), this);
 			getServer().getPluginManager().registerEvents(new MusicManager(), this);
-			getServer().getPluginManager().registerEvents(new CutsceneManager(), this);
 			getServer().getPluginManager().registerEvents(new AuctionDisplays(), this);
 
 			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);
