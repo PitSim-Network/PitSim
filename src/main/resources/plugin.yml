@@ -1,20 +1,21 @@
-name: PitRemake
+name: PitSim
 authors:
   - Kyro
   - Wiji
 version: 1.0.0
-main: dev.kyro.pitsim.PitSim
+main: net.pitsim.pitsim.PitSim
 description: Remake of the Hypixel Pit
 depend:
+  - PitSimSpigotDependencies
   - Citizens
-  - PlaceholderAPI
+  - DeluxeChat
+  - FeatherBoard
   - NoteBlockAPI
+  - PluginQuery
   - ProtocolLib
-  - PitRemakeDependencies
+  - PlaceholderAPI
   - LiteBans
   - PremiumVanish
-  - DeluxeChat
-  - PluginQuery
 softdepend: [GrimAC, PolarLoader]
 commands:
   pitsim:

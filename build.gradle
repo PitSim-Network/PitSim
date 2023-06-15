@@ -3,7 +3,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
-group 'dev.kyro'
+group 'net.pitsim'
 version ''
 project.sourceCompatibility = '1.8'
 project.targetCompatibility = '1.8'
