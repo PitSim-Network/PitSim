@@ -39,7 +39,7 @@ dependencies {
     compileOnly 'com.github.Polar-Anticheat:PolarApi:master-SNAPSHOT'
     compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.5'
 
-    compileOnly files('libs/PitRemakeDependencies-1-all.jar')
+    compileOnly files('libs/PitSimSpigotDependencies-1-all.jar')
 }
 
 shadowJar {
