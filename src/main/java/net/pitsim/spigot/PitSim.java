@@ -18,6 +18,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
+import net.pitsim.spigot.enchants.tainted.uncommon.basic.Shield;
 import net.pitsim.spigot.sql.TableManager;
 import net.pitsim.spigot.darkzone.*;
 import net.pitsim.spigot.darkzone.abilities.CageAbility;
