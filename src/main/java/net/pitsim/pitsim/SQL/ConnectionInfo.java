@@ -1,14 +1,13 @@
 package net.pitsim.pitsim.SQL;
 
-import net.pitsim.pitsim.misc.PrivateInfo;
+import net.pitsim.pitsim.controllers.FirestoreManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public enum ConnectionInfo {
 
-
-	PLAYER_DATA("jdbc:mysql://sql.pitsim.net:3306/s9_PlayerData", "***REMOVED***", PrivateInfo.PLAYER_DATA_SQL_PASSWORD, 1000L * 60 * 60 * 24 * 30),
+	PLAYER_DATA(FirestoreManager.CONFIG.sqlDataURL, FirestoreManager.CONFIG.sqlDataUser, FirestoreManager.CONFIG.sqlDataPass, 1000L * 60 * 60 * 24 * 30),
 	;
 
 	 public final String URL;

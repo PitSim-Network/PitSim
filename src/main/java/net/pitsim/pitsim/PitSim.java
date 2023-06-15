@@ -13,6 +13,11 @@ import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.data.AConfig;
 import dev.kyro.arcticapi.hooks.AHook;
 import dev.kyro.arcticapi.misc.AOutput;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.luckperms.api.LuckPerms;
 import net.pitsim.pitsim.SQL.TableManager;
 import net.pitsim.pitsim.adarkzone.*;
 import net.pitsim.pitsim.adarkzone.abilities.CageAbility;
@@ -83,7 +88,6 @@ import net.pitsim.pitsim.logging.LogManager;
 import net.pitsim.pitsim.market.MarketMessaging;
 import net.pitsim.pitsim.megastreaks.*;
 import net.pitsim.pitsim.misc.ItemRename;
-import net.pitsim.pitsim.misc.PrivateInfo;
 import net.pitsim.pitsim.misc.ReloadManager;
 import net.pitsim.pitsim.misc.effects.PacketBlock;
 import net.pitsim.pitsim.misc.packets.SignPrompt;
@@ -99,11 +103,6 @@ import net.pitsim.pitsim.storage.StorageManager;
 import net.pitsim.pitsim.tutorial.TutorialManager;
 import net.pitsim.pitsim.tutorial.checkpoints.*;
 import net.pitsim.pitsim.upgrades.*;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.api.npc.NPCRegistry;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.luckperms.api.LuckPerms;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -133,7 +132,7 @@ public class PitSim extends JavaPlugin {
 
 	public static String serverName;
 
-	public static PteroClient client = PteroBuilder.createClient("***REMOVED***", PrivateInfo.PTERO_KEY);
+	public static PteroClient client;
 
 	public static long currentTick = 0;
 	public static final ZoneId TIME_ZONE = ZoneId.of("America/New_York");
@@ -151,6 +150,10 @@ public class PitSim extends JavaPlugin {
 		serverName = AConfig.getString("server");
 		if(AConfig.getBoolean("standalone-server")) status = ServerStatus.STANDALONE;
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
+
+		FirestoreManager.init();
+		client = PteroBuilder.createClient(FirestoreManager.CONFIG.pteroURL, FirestoreManager.CONFIG.pteroClientKey);
+
 		LitebansManager.init();
 		TableManager.registerTables();
 
@@ -180,7 +183,6 @@ public class PitSim extends JavaPlugin {
 		}
 
 		BossBarManager.init();
-		FirestoreManager.init();
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			boolean success = PitPlayer.loadPitPlayer(onlinePlayer.getUniqueId());
 			if(success) continue;
@@ -321,6 +323,7 @@ public class PitSim extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		StatisticsManager.getDataChunk().send();
+		FirestoreManager.CONFIG.save();
 
 		if(status.isDarkzone()) {
 			TaintedWell.onStop();

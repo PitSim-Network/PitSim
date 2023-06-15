@@ -8,10 +8,11 @@ import com.google.firebase.cloud.FirestoreClient;
 import dev.kyro.arcticapi.misc.AOutput;
 import net.pitsim.pitsim.PitSim;
 import net.pitsim.pitsim.controllers.objects.Config;
-import net.pitsim.pitsim.misc.FileResourcesUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 public class FirestoreManager {
 	public static Firestore FIRESTORE;
@@ -26,7 +27,7 @@ public class FirestoreManager {
 	public static void init() {
 		try {
 			AOutput.log("Loading PitSim database");
-			InputStream serviceAccount = new FileResourcesUtils().getFileFromResourceAsStream("google-key.json");
+			InputStream serviceAccount = Files.newInputStream(new File(PitSim.INSTANCE.getDataFolder() + "/google-key.json").toPath());
 			GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
 			FirebaseOptions options = new FirebaseOptions.Builder()
 					.setCredentials(credentials)

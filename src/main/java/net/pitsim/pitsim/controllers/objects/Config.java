@@ -4,11 +4,9 @@ import com.google.cloud.firestore.annotation.Exclude;
 import dev.kyro.arcticapi.misc.AOutput;
 import net.pitsim.pitsim.PitSim;
 import net.pitsim.pitsim.controllers.FirestoreManager;
-import net.pitsim.pitsim.misc.PrivateInfo;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -20,7 +18,6 @@ public class Config {
 
 	public String prefix = "";
 	public String errorPrefix = "&c";
-	public List<String> whitelistedIPs = PrivateInfo.WHITELISTED_IPS;
 	public boolean nons = true;
 	public String mapData;
 
@@ -41,6 +38,16 @@ public class Config {
 		public boolean requireVerification = false;
 		public boolean requireCaptcha = false;
 	}
+
+	public String pteroURL = null;
+	public String pteroClientKey = null;
+
+	public String sqlDataURL = null;
+	public String sqlDataUser = null;
+	public String sqlDataPass = null;
+
+	public String alertsWebhook = null;
+	public String bansWebhook = null;
 
 	public Config() {}
 

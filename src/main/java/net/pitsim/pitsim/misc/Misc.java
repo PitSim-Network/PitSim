@@ -183,7 +183,7 @@ public class Misc {
 	}
 
 	public static void alertDiscord(String message) {
-		DiscordWebhook discordWebhook = new DiscordWebhook(PrivateInfo.ALERTS_WEBHOOK);
+		DiscordWebhook discordWebhook = new DiscordWebhook(FirestoreManager.CONFIG.alertsWebhook);
 		discordWebhook.setContent(message);
 		new BukkitRunnable() {
 			@Override
