@@ -1,7 +1,7 @@
 package net.pitsim.spigot.misc;
 
 import com.google.common.collect.Sets;
-import net.pitsim.spigot.adarkzone.SubLevel;
+import net.pitsim.spigot.darkzone.SubLevel;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;

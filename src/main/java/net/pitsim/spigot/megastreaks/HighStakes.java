@@ -2,7 +2,7 @@ package net.pitsim.spigot.megastreaks;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
-import net.pitsim.spigot.aitems.misc.GoldPickup;
+import net.pitsim.spigot.items.misc.GoldPickup;
 import net.pitsim.spigot.battlepass.quests.daily.DailyMegastreakQuest;
 import net.pitsim.spigot.controllers.DamageManager;
 import net.pitsim.spigot.controllers.ItemFactory;

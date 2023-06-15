@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.FastTravelGUI;
+import net.pitsim.spigot.darkzone.FastTravelGUI;
 import net.pitsim.spigot.controllers.CombatManager;
 import net.pitsim.spigot.misc.Sounds;
 import org.bukkit.command.Command;

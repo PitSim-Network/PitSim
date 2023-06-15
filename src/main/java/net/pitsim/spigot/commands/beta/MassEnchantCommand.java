@@ -3,7 +3,7 @@ package net.pitsim.spigot.commands.beta;
 import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
-import net.pitsim.spigot.aitems.MysticFactory;
+import net.pitsim.spigot.items.MysticFactory;
 import net.pitsim.spigot.inventories.MassEnchantGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

@@ -1,7 +1,7 @@
 package net.pitsim.spigot.misc;
 
-import net.pitsim.spigot.aitems.PitItem;
-import net.pitsim.spigot.aitems.mystics.MysticPants;
+import net.pitsim.spigot.items.PitItem;
+import net.pitsim.spigot.items.mystics.MysticPants;
 import net.pitsim.spigot.controllers.ItemFactory;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;

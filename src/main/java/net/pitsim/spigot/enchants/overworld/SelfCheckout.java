@@ -2,9 +2,9 @@ package net.pitsim.spigot.enchants.overworld;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import net.pitsim.spigot.aitems.MysticFactory;
-import net.pitsim.spigot.aitems.PitItem;
-import net.pitsim.spigot.aitems.TemporaryItem;
+import net.pitsim.spigot.items.MysticFactory;
+import net.pitsim.spigot.items.PitItem;
+import net.pitsim.spigot.items.TemporaryItem;
 import net.pitsim.spigot.battlepass.quests.EarnRenownQuest;
 import net.pitsim.spigot.controllers.DamageManager;
 import net.pitsim.spigot.controllers.EnchantManager;

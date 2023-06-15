@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import net.pitsim.spigot.aitems.MysticFactory;
+import net.pitsim.spigot.items.MysticFactory;
 import net.pitsim.spigot.battlepass.PassReward;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.enums.MysticType;

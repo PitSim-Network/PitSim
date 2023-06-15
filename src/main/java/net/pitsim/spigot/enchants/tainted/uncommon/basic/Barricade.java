@@ -1,9 +1,9 @@
 package net.pitsim.spigot.enchants.tainted.uncommon.basic;
 
-import net.pitsim.spigot.adarkzone.PitMob;
-import net.pitsim.spigot.adarkzone.mobs.PitCreeper;
-import net.pitsim.spigot.adarkzone.mobs.PitEnderman;
-import net.pitsim.spigot.adarkzone.mobs.PitIronGolem;
+import net.pitsim.spigot.darkzone.PitMob;
+import net.pitsim.spigot.darkzone.mobs.PitCreeper;
+import net.pitsim.spigot.darkzone.mobs.PitEnderman;
+import net.pitsim.spigot.darkzone.mobs.PitIronGolem;
 import net.pitsim.spigot.controllers.objects.BasicDarkzoneEnchant;
 import net.pitsim.spigot.enums.ApplyType;
 

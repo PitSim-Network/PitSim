@@ -2,7 +2,7 @@ package net.pitsim.spigot.commands;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import net.pitsim.spigot.aitems.misc.StaffCookie;
+import net.pitsim.spigot.items.misc.StaffCookie;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.misc.Lang;
 import org.bukkit.Bukkit;

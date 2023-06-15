@@ -1,7 +1,7 @@
 package net.pitsim.spigot.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
-import net.pitsim.spigot.aitems.PitItem;
+import net.pitsim.spigot.items.PitItem;
 import net.pitsim.spigot.enums.NBTTag;
 import net.pitsim.spigot.misc.Misc;
 import org.bukkit.inventory.ItemStack;

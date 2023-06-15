@@ -6,7 +6,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.aitems.MysticFactory;
+import net.pitsim.spigot.items.MysticFactory;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.enums.ItemType;
 import net.pitsim.spigot.misc.Sounds;

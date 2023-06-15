@@ -3,7 +3,7 @@ package net.pitsim.spigot.commands.beta;
 import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
-import net.pitsim.spigot.adarkzone.progression.DarkzoneData;
+import net.pitsim.spigot.darkzone.progression.DarkzoneData;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.misc.Sounds;
 import org.bukkit.command.Command;

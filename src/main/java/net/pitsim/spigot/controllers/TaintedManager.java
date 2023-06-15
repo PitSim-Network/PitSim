@@ -1,9 +1,9 @@
 package net.pitsim.spigot.controllers;
 
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.DarkzoneBalancing;
-import net.pitsim.spigot.aitems.PitItem;
-import net.pitsim.spigot.aitems.mystics.TaintedScythe;
+import net.pitsim.spigot.darkzone.DarkzoneBalancing;
+import net.pitsim.spigot.items.PitItem;
+import net.pitsim.spigot.items.mystics.TaintedScythe;
 import net.pitsim.spigot.events.AttackEvent;
 import net.pitsim.spigot.misc.Misc;
 import org.bukkit.Bukkit;

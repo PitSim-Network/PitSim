@@ -1,7 +1,7 @@
 package net.pitsim.spigot.controllers;
 
 import dev.kyro.arcticapi.misc.AUtil;
-import net.pitsim.spigot.adarkzone.DarkzoneLeveling;
+import net.pitsim.spigot.darkzone.DarkzoneLeveling;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

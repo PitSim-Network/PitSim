@@ -6,7 +6,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import net.pitsim.spigot.aitems.misc.GoldenHelmet;
+import net.pitsim.spigot.items.misc.GoldenHelmet;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.controllers.objects.HelmetAbility;
 import net.pitsim.spigot.controllers.objects.HelmetManager;

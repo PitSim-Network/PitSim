@@ -1,7 +1,7 @@
 package net.pitsim.spigot.events;
 
-import net.pitsim.spigot.adarkzone.notdarkzone.EquipmentType;
-import net.pitsim.spigot.adarkzone.notdarkzone.PitEquipment;
+import net.pitsim.spigot.enums.EquipmentType;
+import net.pitsim.spigot.misc.PitEquipment;
 import net.pitsim.spigot.controllers.EnchantManager;
 import net.pitsim.spigot.controllers.objects.PitEnchant;
 import net.pitsim.spigot.controllers.objects.PitPlayer;

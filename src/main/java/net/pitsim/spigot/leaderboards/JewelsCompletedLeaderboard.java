@@ -2,7 +2,7 @@ package net.pitsim.spigot.leaderboards;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
-import net.pitsim.spigot.aitems.MysticFactory;
+import net.pitsim.spigot.items.MysticFactory;
 import net.pitsim.spigot.controllers.objects.Leaderboard;
 import net.pitsim.spigot.controllers.objects.LeaderboardData;
 import net.pitsim.spigot.controllers.objects.LeaderboardPosition;

@@ -1,6 +1,6 @@
 package net.pitsim.spigot.market;
 
-import net.pitsim.spigot.aitems.PitItem;
+import net.pitsim.spigot.items.PitItem;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.enums.MarketCategory;
 import org.bukkit.ChatColor;

@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import net.pitsim.spigot.aitems.misc.AncientGemShard;
+import net.pitsim.spigot.items.misc.AncientGemShard;
 import net.pitsim.spigot.controllers.EnchantManager;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.controllers.objects.PitEnchant;

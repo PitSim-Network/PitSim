@@ -2,8 +2,8 @@ package net.pitsim.spigot.storage;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import net.pitsim.spigot.aitems.PitItem;
-import net.pitsim.spigot.aitems.StaticPitItem;
+import net.pitsim.spigot.items.PitItem;
+import net.pitsim.spigot.items.StaticPitItem;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.controllers.objects.PluginMessage;
 import net.pitsim.spigot.enums.NBTTag;

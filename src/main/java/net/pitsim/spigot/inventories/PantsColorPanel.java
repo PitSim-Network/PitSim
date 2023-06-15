@@ -3,7 +3,7 @@ package net.pitsim.spigot.inventories;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
-import net.pitsim.spigot.aitems.MysticFactory;
+import net.pitsim.spigot.items.MysticFactory;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.enums.MysticType;
 import net.pitsim.spigot.enums.NBTTag;

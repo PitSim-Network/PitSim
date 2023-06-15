@@ -1,8 +1,8 @@
 package net.pitsim.spigot.enums;
 
 import de.tr7zw.nbtapi.NBTItem;
-import net.pitsim.spigot.aitems.MysticFactory;
-import net.pitsim.spigot.aitems.mystics.MysticPants;
+import net.pitsim.spigot.items.MysticFactory;
+import net.pitsim.spigot.items.mystics.MysticPants;
 import net.pitsim.spigot.controllers.ItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;

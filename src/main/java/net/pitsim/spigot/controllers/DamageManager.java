@@ -2,11 +2,11 @@ package net.pitsim.spigot.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.*;
-import net.pitsim.spigot.adarkzone.notdarkzone.Shield;
-import net.pitsim.spigot.adarkzone.progression.ProgressionManager;
-import net.pitsim.spigot.adarkzone.progression.SkillBranch;
-import net.pitsim.spigot.adarkzone.progression.skillbranches.DefenceBranch;
+import net.pitsim.spigot.darkzone.*;
+import net.pitsim.spigot.controllers.objects.Shield;
+import net.pitsim.spigot.darkzone.progression.ProgressionManager;
+import net.pitsim.spigot.darkzone.progression.SkillBranch;
+import net.pitsim.spigot.darkzone.progression.skillbranches.DefenceBranch;
 import net.pitsim.spigot.controllers.objects.Non;
 import net.pitsim.spigot.controllers.objects.PitEnchant;
 import net.pitsim.spigot.controllers.objects.PitPlayer;

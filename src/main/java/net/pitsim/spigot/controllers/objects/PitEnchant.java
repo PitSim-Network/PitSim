@@ -2,12 +2,12 @@ package net.pitsim.spigot.controllers.objects;
 
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.ahelp.Summarizable;
+import net.pitsim.spigot.help.Summarizable;
 import net.pitsim.spigot.controllers.Cooldown;
 import net.pitsim.spigot.enchants.overworld.Regularity;
 import net.pitsim.spigot.enums.ApplyType;
 import net.pitsim.spigot.enums.EnchantRarity;
-import net.pitsim.spigot.aserverstatistics.StatisticCategory;
+import net.pitsim.spigot.serverstatistics.StatisticCategory;
 import net.pitsim.spigot.events.AttackEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

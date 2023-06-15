@@ -1,6 +1,6 @@
 package net.pitsim.spigot.tutorial.checkpoints;
 
-import net.pitsim.spigot.adarkzone.altar.AltarPedestal;
+import net.pitsim.spigot.darkzone.altar.AltarPedestal;
 import net.pitsim.spigot.controllers.MapManager;
 import net.pitsim.spigot.tutorial.Midpoint;
 import net.pitsim.spigot.tutorial.NPCCheckpoint;

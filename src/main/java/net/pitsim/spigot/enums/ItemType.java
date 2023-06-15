@@ -1,10 +1,10 @@
 package net.pitsim.spigot.enums;
 
-import net.pitsim.spigot.aitems.MysticFactory;
-import net.pitsim.spigot.aitems.misc.AncientGemShard;
-import net.pitsim.spigot.aitems.misc.ChunkOfVile;
-import net.pitsim.spigot.aitems.misc.CorruptedFeather;
-import net.pitsim.spigot.aitems.misc.FunkyFeather;
+import net.pitsim.spigot.items.MysticFactory;
+import net.pitsim.spigot.items.misc.AncientGemShard;
+import net.pitsim.spigot.items.misc.ChunkOfVile;
+import net.pitsim.spigot.items.misc.CorruptedFeather;
+import net.pitsim.spigot.items.misc.FunkyFeather;
 import net.pitsim.spigot.commands.admin.JewelCommand;
 import net.pitsim.spigot.controllers.EnchantManager;
 import net.pitsim.spigot.controllers.ItemFactory;

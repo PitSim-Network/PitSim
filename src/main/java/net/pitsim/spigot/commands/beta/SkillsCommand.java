@@ -2,7 +2,7 @@ package net.pitsim.spigot.commands.beta;
 
 import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
-import net.pitsim.spigot.adarkzone.progression.ProgressionGUI;
+import net.pitsim.spigot.darkzone.progression.ProgressionGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

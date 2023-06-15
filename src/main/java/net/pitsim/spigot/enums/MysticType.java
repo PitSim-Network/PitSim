@@ -1,6 +1,6 @@
 package net.pitsim.spigot.enums;
 
-import net.pitsim.spigot.aitems.PitItem;
+import net.pitsim.spigot.items.PitItem;
 import net.pitsim.spigot.controllers.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 

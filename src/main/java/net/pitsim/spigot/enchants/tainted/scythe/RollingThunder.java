@@ -1,10 +1,10 @@
 package net.pitsim.spigot.enchants.tainted.scythe;
 
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.BossManager;
-import net.pitsim.spigot.adarkzone.DarkzoneManager;
-import net.pitsim.spigot.adarkzone.PitBoss;
-import net.pitsim.spigot.adarkzone.PitMob;
+import net.pitsim.spigot.darkzone.BossManager;
+import net.pitsim.spigot.darkzone.DarkzoneManager;
+import net.pitsim.spigot.darkzone.PitBoss;
+import net.pitsim.spigot.darkzone.PitMob;
 import net.pitsim.spigot.controllers.PlayerManager;
 import net.pitsim.spigot.controllers.SpawnManager;
 import net.pitsim.spigot.controllers.objects.PitEnchantSpell;
