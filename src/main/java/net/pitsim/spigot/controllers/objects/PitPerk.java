@@ -1,7 +1,7 @@
 package net.pitsim.spigot.controllers.objects;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import net.pitsim.spigot.ahelp.Summarizable;
+import net.pitsim.spigot.help.Summarizable;
 import net.pitsim.spigot.controllers.PerkManager;
 import net.pitsim.spigot.controllers.PlayerManager;
 import net.pitsim.spigot.enums.DisplayItemType;

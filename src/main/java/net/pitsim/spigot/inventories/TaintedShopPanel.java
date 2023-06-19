@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.APagedGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import net.pitsim.spigot.adarkzone.DarkzoneBalancing;
+import net.pitsim.spigot.darkzone.DarkzoneBalancing;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.misc.Misc;

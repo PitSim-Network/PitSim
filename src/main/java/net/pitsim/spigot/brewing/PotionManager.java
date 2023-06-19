@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.aitems.mobdrops.SpiderEye;
+import net.pitsim.spigot.items.mobdrops.SpiderEye;
 import net.pitsim.spigot.brewing.objects.BrewingIngredient;
 import net.pitsim.spigot.brewing.objects.PotionEffect;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
@@ -122,7 +122,7 @@ public class PotionManager implements Listener {
 		nbtItem.setInteger(NBTTag.POTION_POTENCY.getRef(), potency.tier);
 		nbtItem.setInteger(NBTTag.POTION_DURATION.getRef(), duration.tier);
 //		nbtItem.setBoolean(NBTTag.DROP_CONFIRM.getRef(), true);
-		net.pitsim.spigot.aitems.misc.Potion potion = new net.pitsim.spigot.aitems.misc.Potion();
+		net.pitsim.spigot.items.misc.Potion potion = new net.pitsim.spigot.items.misc.Potion();
 		potion.updateItem(nbtItem.getItem());
 //		return potionStack; //temp
 		return potion.getItem(nbtItem.getItem());

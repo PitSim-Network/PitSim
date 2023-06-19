@@ -1,9 +1,9 @@
 package net.pitsim.spigot.controllers;
 
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.BossManager;
-import net.pitsim.spigot.adarkzone.PitBoss;
-import net.pitsim.spigot.adarkzone.SubLevel;
+import net.pitsim.spigot.darkzone.BossManager;
+import net.pitsim.spigot.darkzone.PitBoss;
+import net.pitsim.spigot.darkzone.SubLevel;
 import net.pitsim.spigot.controllers.objects.PitBossBar;
 import net.pitsim.spigot.enums.PitEntityType;
 import net.pitsim.spigot.misc.Misc;

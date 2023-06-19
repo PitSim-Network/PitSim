@@ -5,11 +5,11 @@ import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.notdarkzone.EquipmentType;
-import net.pitsim.spigot.adarkzone.notdarkzone.PitEquipment;
-import net.pitsim.spigot.aitems.PitItem;
-import net.pitsim.spigot.aitems.TemporaryItem;
-import net.pitsim.spigot.aitems.misc.Arrow;
+import net.pitsim.spigot.enums.EquipmentType;
+import net.pitsim.spigot.misc.PitEquipment;
+import net.pitsim.spigot.items.PitItem;
+import net.pitsim.spigot.items.TemporaryItem;
+import net.pitsim.spigot.items.misc.Arrow;
 import net.pitsim.spigot.controllers.objects.*;
 import net.pitsim.spigot.enums.NBTTag;
 import net.pitsim.spigot.enums.NonTrait;
@@ -236,8 +236,8 @@ public class PlayerManager implements Listener {
 
 	public Map<UUID, Long> viewShiftCooldown = new HashMap<>();
 
-	@EventHandler
-	public void onInteract(PlayerInteractAtEntityEvent event) {
+//	@EventHandler
+//	public void onInteract(PlayerInteractAtEntityEvent event) {
 //		Player player = event.getPlayer();
 //		if(!(event.getRightClicked() instanceof Player)) return;
 //		Player target = (Player) event.getRightClicked();
@@ -249,7 +249,7 @@ public class PlayerManager implements Listener {
 //
 //		new PluginMessage().writeString("VIEW REQUEST").writeString(player.getUniqueId().toString())
 //				.writeString(target.getUniqueId().toString()).send();
-	}
+//	}
 
 	@EventHandler
 	public void onAnvil(PlayerInteractEvent event) {

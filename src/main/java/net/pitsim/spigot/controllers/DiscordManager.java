@@ -1,6 +1,6 @@
 package net.pitsim.spigot.controllers;
 
-import net.pitsim.spigot.SQL.*;
+import net.pitsim.spigot.sql.*;
 import net.pitsim.spigot.commands.ClaimCommand;
 import net.pitsim.spigot.controllers.objects.PluginMessage;
 import net.pitsim.spigot.events.MessageEvent;

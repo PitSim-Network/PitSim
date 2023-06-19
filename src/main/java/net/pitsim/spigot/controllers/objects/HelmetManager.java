@@ -4,7 +4,7 @@ import de.myzelyam.api.vanish.VanishAPI;
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.aitems.misc.GoldenHelmet;
+import net.pitsim.spigot.items.misc.GoldenHelmet;
 import net.pitsim.spigot.battlepass.quests.UseHelmetGoldQuest;
 import net.pitsim.spigot.controllers.*;
 import net.pitsim.spigot.enchants.overworld.ComboVenom;

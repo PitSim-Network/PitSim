@@ -2,10 +2,10 @@ package net.pitsim.spigot.tutorial.checkpoints;
 
 import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AUtil;
-import net.pitsim.spigot.aitems.MysticFactory;
-import net.pitsim.spigot.aitems.PitItem;
-import net.pitsim.spigot.aitems.mystics.TaintedChestplate;
-import net.pitsim.spigot.aitems.mystics.TaintedScythe;
+import net.pitsim.spigot.items.MysticFactory;
+import net.pitsim.spigot.items.PitItem;
+import net.pitsim.spigot.items.mystics.TaintedChestplate;
+import net.pitsim.spigot.items.mystics.TaintedScythe;
 import net.pitsim.spigot.controllers.EnchantManager;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.controllers.MapManager;

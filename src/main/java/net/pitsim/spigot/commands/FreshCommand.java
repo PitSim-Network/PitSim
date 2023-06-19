@@ -3,7 +3,7 @@ package net.pitsim.spigot.commands;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.aitems.MysticFactory;
+import net.pitsim.spigot.items.MysticFactory;
 import net.pitsim.spigot.enums.MysticType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

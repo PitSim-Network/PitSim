@@ -4,7 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.aitems.MysticFactory;
+import net.pitsim.spigot.items.MysticFactory;
 import net.pitsim.spigot.controllers.*;
 import net.pitsim.spigot.enchants.overworld.Hearts;
 import net.pitsim.spigot.enchants.overworld.RetroGravityMicrocosm;

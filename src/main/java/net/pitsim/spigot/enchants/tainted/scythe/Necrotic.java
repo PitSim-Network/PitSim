@@ -1,6 +1,6 @@
 package net.pitsim.spigot.enchants.tainted.scythe;
 
-import net.pitsim.spigot.adarkzone.DarkzoneBalancing;
+import net.pitsim.spigot.darkzone.DarkzoneBalancing;
 import net.pitsim.spigot.controllers.objects.PitEnchantSpell;
 import net.pitsim.spigot.events.AttackEvent;
 import net.pitsim.spigot.events.SpellUseEvent;

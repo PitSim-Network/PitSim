@@ -3,7 +3,7 @@ package net.pitsim.spigot.commands.admin;
 import dev.kyro.arcticapi.commands.ACommand;
 import dev.kyro.arcticapi.commands.AMultiCommand;
 import dev.kyro.arcticapi.misc.AOutput;
-import net.pitsim.spigot.aitems.PitItem;
+import net.pitsim.spigot.items.PitItem;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.misc.Misc;
 import org.bukkit.command.Command;

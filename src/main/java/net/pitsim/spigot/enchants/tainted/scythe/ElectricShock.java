@@ -1,7 +1,7 @@
 package net.pitsim.spigot.enchants.tainted.scythe;
 
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.DarkzoneBalancing;
+import net.pitsim.spigot.darkzone.DarkzoneBalancing;
 import net.pitsim.spigot.controllers.DamageManager;
 import net.pitsim.spigot.controllers.EnchantManager;
 import net.pitsim.spigot.controllers.objects.PitEnchant;

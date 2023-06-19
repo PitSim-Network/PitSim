@@ -4,7 +4,7 @@ import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AUtil;
-import net.pitsim.spigot.ahelp.Summarizable;
+import net.pitsim.spigot.help.Summarizable;
 import net.pitsim.spigot.controllers.UpgradeManager;
 import net.pitsim.spigot.misc.Formatter;
 import net.pitsim.spigot.misc.PitLoreBuilder;

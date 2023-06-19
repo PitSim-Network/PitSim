@@ -2,8 +2,8 @@ package net.pitsim.spigot.controllers;
 
 import de.tr7zw.nbtapi.NBTItem;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.aitems.PitItem;
-import net.pitsim.spigot.aitems.TemporaryItem;
+import net.pitsim.spigot.items.PitItem;
+import net.pitsim.spigot.items.TemporaryItem;
 import net.pitsim.spigot.controllers.objects.PitEnchant;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.controllers.objects.PluginMessage;

@@ -1,8 +1,8 @@
 package net.pitsim.spigot.tutorial.checkpoints;
 
-import net.pitsim.spigot.adarkzone.progression.MainProgressionPanel;
-import net.pitsim.spigot.adarkzone.progression.MainProgressionUnlock;
-import net.pitsim.spigot.adarkzone.progression.ProgressionManager;
+import net.pitsim.spigot.darkzone.progression.MainProgressionPanel;
+import net.pitsim.spigot.darkzone.progression.MainProgressionUnlock;
+import net.pitsim.spigot.darkzone.progression.ProgressionManager;
 import net.pitsim.spigot.controllers.MapManager;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.tutorial.Midpoint;

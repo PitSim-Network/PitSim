@@ -2,8 +2,8 @@ package net.pitsim.spigot.enchants.tainted.chestplate;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.DarkzoneManager;
-import net.pitsim.spigot.adarkzone.PitMob;
+import net.pitsim.spigot.darkzone.DarkzoneManager;
+import net.pitsim.spigot.darkzone.PitMob;
 import net.pitsim.spigot.controllers.*;
 import net.pitsim.spigot.controllers.objects.PitEnchant;
 import net.pitsim.spigot.controllers.objects.PitPlayer;

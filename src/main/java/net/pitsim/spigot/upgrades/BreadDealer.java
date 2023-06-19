@@ -1,8 +1,8 @@
 package net.pitsim.spigot.upgrades;
 
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
-import net.pitsim.spigot.aitems.misc.VeryYummyBread;
-import net.pitsim.spigot.aitems.misc.YummyBread;
+import net.pitsim.spigot.items.misc.VeryYummyBread;
+import net.pitsim.spigot.items.misc.YummyBread;
 import net.pitsim.spigot.controllers.UpgradeManager;
 import net.pitsim.spigot.controllers.objects.TieredRenownUpgrade;
 import net.pitsim.spigot.events.KillEvent;

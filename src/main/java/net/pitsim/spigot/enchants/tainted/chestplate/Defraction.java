@@ -1,7 +1,7 @@
 package net.pitsim.spigot.enchants.tainted.chestplate;
 
-import net.pitsim.spigot.adarkzone.DarkzoneManager;
-import net.pitsim.spigot.adarkzone.PitMob;
+import net.pitsim.spigot.darkzone.DarkzoneManager;
+import net.pitsim.spigot.darkzone.PitMob;
 import net.pitsim.spigot.controllers.EnchantManager;
 import net.pitsim.spigot.controllers.objects.PitEnchant;
 import net.pitsim.spigot.cosmetics.particles.WaterBubbleParticle;

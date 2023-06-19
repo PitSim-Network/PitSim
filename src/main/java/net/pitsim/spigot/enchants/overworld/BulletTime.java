@@ -1,6 +1,6 @@
 package net.pitsim.spigot.enchants.overworld;
 
-import net.pitsim.spigot.aserverstatistics.StatisticsManager;
+import net.pitsim.spigot.serverstatistics.StatisticsManager;
 import net.pitsim.spigot.controllers.objects.PitEnchant;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.enums.ApplyType;

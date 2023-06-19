@@ -2,8 +2,8 @@ package net.pitsim.spigot.controllers;
 
 import dev.kyro.arcticapi.misc.AOutput;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.ahelp.HelpManager;
-import net.pitsim.spigot.aitems.PitItem;
+import net.pitsim.spigot.help.HelpManager;
+import net.pitsim.spigot.items.PitItem;
 import net.pitsim.spigot.commands.essentials.GamemodeCommand;
 import net.pitsim.spigot.commands.essentials.TeleportCommand;
 import net.pitsim.spigot.controllers.objects.PitPlayer;

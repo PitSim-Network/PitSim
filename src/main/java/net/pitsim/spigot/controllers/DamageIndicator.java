@@ -2,7 +2,7 @@ package net.pitsim.spigot.controllers;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.*;
+import net.pitsim.spigot.darkzone.*;
 import net.pitsim.spigot.controllers.objects.Non;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.events.AttackEvent;

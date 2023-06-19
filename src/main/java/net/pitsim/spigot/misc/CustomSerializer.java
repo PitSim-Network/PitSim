@@ -1,7 +1,7 @@
 package net.pitsim.spigot.misc;
 
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.aitems.PitItem;
+import net.pitsim.spigot.items.PitItem;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.controllers.ItemManager;
 import net.minecraft.server.v1_8_R3.MojangsonParseException;

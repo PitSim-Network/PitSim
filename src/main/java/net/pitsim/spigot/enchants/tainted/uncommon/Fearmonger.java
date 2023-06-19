@@ -1,9 +1,9 @@
 package net.pitsim.spigot.enchants.tainted.uncommon;
 
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.DarkzoneManager;
-import net.pitsim.spigot.adarkzone.PitMob;
-import net.pitsim.spigot.adarkzone.SubLevel;
+import net.pitsim.spigot.darkzone.DarkzoneManager;
+import net.pitsim.spigot.darkzone.PitMob;
+import net.pitsim.spigot.darkzone.SubLevel;
 import net.pitsim.spigot.controllers.objects.PitEnchant;
 import net.pitsim.spigot.enums.ApplyType;
 import net.pitsim.spigot.events.KillEvent;

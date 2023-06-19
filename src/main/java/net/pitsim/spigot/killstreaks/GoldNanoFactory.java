@@ -3,7 +3,7 @@ package net.pitsim.spigot.killstreaks;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AUtil;
-import net.pitsim.spigot.aitems.misc.GoldPickup;
+import net.pitsim.spigot.items.misc.GoldPickup;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.controllers.objects.Killstreak;
 import net.pitsim.spigot.events.KillEvent;

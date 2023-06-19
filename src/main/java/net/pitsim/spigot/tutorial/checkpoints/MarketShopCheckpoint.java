@@ -1,7 +1,7 @@
 package net.pitsim.spigot.tutorial.checkpoints;
 
-import net.pitsim.spigot.aitems.PitItem;
-import net.pitsim.spigot.aitems.diamond.DiamondLeggings;
+import net.pitsim.spigot.items.PitItem;
+import net.pitsim.spigot.items.diamond.DiamondLeggings;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.controllers.MapManager;
 import net.pitsim.spigot.tutorial.Midpoint;

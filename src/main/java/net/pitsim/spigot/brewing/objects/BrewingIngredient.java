@@ -2,8 +2,8 @@ package net.pitsim.spigot.brewing.objects;
 
 import de.tr7zw.nbtapi.NBTItem;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.aitems.PitItem;
-import net.pitsim.spigot.aitems.StaticPitItem;
+import net.pitsim.spigot.items.PitItem;
+import net.pitsim.spigot.items.StaticPitItem;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.misc.Misc;
 import org.bukkit.Bukkit;

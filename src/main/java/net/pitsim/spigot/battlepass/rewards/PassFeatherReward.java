@@ -3,7 +3,7 @@ package net.pitsim.spigot.battlepass.rewards;
 import dev.kyro.arcticapi.builders.AItemStackBuilder;
 import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
-import net.pitsim.spigot.aitems.misc.FunkyFeather;
+import net.pitsim.spigot.items.misc.FunkyFeather;
 import net.pitsim.spigot.battlepass.PassReward;
 import net.pitsim.spigot.controllers.ItemFactory;
 import net.pitsim.spigot.controllers.objects.PitPlayer;

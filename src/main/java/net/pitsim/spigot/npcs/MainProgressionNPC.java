@@ -1,6 +1,6 @@
 package net.pitsim.spigot.npcs;
 
-import net.pitsim.spigot.adarkzone.progression.ProgressionGUI;
+import net.pitsim.spigot.darkzone.progression.ProgressionGUI;
 import net.pitsim.spigot.controllers.MapManager;
 import net.pitsim.spigot.controllers.objects.PitNPC;
 import org.bukkit.Location;

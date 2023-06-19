@@ -2,7 +2,7 @@ package net.pitsim.spigot.brewing.objects;
 
 import dev.kyro.arcticapi.misc.AUtil;
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.aitems.mobdrops.SpiderEye;
+import net.pitsim.spigot.items.mobdrops.SpiderEye;
 import net.pitsim.spigot.brewing.BrewingManager;
 import net.pitsim.spigot.controllers.MapManager;
 import net.pitsim.spigot.events.PitQuitEvent;

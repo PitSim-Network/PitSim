@@ -1,7 +1,7 @@
 package net.pitsim.spigot.tutorial;
 
 import net.pitsim.spigot.PitSim;
-import net.pitsim.spigot.adarkzone.altar.AltarPedestal;
+import net.pitsim.spigot.darkzone.altar.AltarPedestal;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.misc.Misc;
 import org.bukkit.entity.LivingEntity;
