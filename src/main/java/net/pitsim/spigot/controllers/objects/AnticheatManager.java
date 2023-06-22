@@ -14,8 +14,8 @@ public abstract class AnticheatManager implements Listener {
 		GROUND_SPOOF("groundspoof", "MOVEMENT"),
 		NO_FALL("nofall", "MOVEMENT");
 
-		public String refName;
-		public String polarName;
+		public final String refName;
+		public final String polarName;
 
 		FlagType(String refName, String polarName) {
 			this.refName = refName;
