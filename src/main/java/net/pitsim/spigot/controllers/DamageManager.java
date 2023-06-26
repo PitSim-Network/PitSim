@@ -601,7 +601,7 @@ public class DamageManager implements Listener {
 
 			TextComponent killComponent = new TextComponent(kill);
 			if(altarMultiplier != 1) killComponent.addExtra(hover);
-			if(killerPlayer != null && !pitKiller.killFeedDisabled) killerPlayer.sendMessage(killComponent);
+			if(killerPlayer != null && !pitKiller.killFeedDisabled) killerPlayer.spigot().sendMessage(killComponent);
 			kill = null;
 		}
 

@@ -275,7 +275,7 @@ public class TaintedEnchanting {
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			PitPlayer pitPlayer = PitPlayer.getPitPlayer(onlinePlayer);
-			if(!pitPlayer.playerChatDisabled) onlinePlayer.sendMessage(message);
+			if(!pitPlayer.playerChatDisabled) onlinePlayer.spigot().sendMessage(message);
 		}
 	}
 

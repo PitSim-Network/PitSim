@@ -31,7 +31,7 @@ public class ReloadManager {
 					if(file.lastModified() == lastModified && startedUpload) {
 						cancel();
 						AOutput.log("Jar upload finished. Restarting plugin");
-						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitremake");
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "plugman reload pitsim");
 						return;
 					}
 

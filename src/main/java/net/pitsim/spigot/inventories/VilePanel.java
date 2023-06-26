@@ -102,7 +102,7 @@ public class VilePanel extends AGUIPanel {
 			TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&5WITHERCRAFT!&7 Repaired "));
 			message.addExtra(Misc.createItemHover(itemStack));
 			message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "&7!")));
-			player.sendMessage(message);
+			player.spigot().sendMessage(message);
 
 			LogManager.onItemRepair(player, itemStack);
 

@@ -91,7 +91,7 @@ public class BoosterManager implements Listener {
 				nonClick.addExtra(click);
 
 				for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					onlinePlayer.sendMessage(nonClick);
+					onlinePlayer.spigot().sendMessage(nonClick);
 					Sounds.BOOSTER_REMIND.play(onlinePlayer);
 				}
 

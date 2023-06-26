@@ -23,7 +23,7 @@ public class ResourcePackManager implements Listener {
 			TextComponent click = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6&lhere."));
 			click.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/resource"));
 			nonClick.addExtra(click);
-			event.getPlayer().sendMessage(nonClick);
+			event.getPlayer().spigot().sendMessage(nonClick);
 		}
 	}
 

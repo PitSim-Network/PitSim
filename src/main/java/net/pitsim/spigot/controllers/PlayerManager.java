@@ -226,7 +226,7 @@ public class PlayerManager implements Listener {
 		message.addExtra(Misc.createItemHover(itemStack));
 //		message.addExtra(new TextComponent(ChatColor.translateAlternateColorCodes('&', "")));
 
-		player.sendMessage(message);
+		player.spigot().sendMessage(message);
 	}
 
 	public static void sendLivesLostMessage(Player player, int livesLost) {

@@ -37,6 +37,7 @@ public class AltarRenownReward {
 		Random random = new Random();
 		World world = ((CraftWorld) location.getWorld()).getHandle();
 
+
 		for(Integer stackSize : Misc.createDistribution(amount, 3.0 / 5.0)) {
 			double offsetX = (random.nextInt(20) - 10) * 0.1;
 			double offsetZ = (random.nextInt(20) - 10) * 0.1;

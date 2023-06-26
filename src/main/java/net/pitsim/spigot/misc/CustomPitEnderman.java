@@ -334,7 +334,7 @@ public class CustomPitEnderman extends EntityMonster {
 			int var4 = MathHelper.floor(this.a.locY + var1.nextDouble() * 2.0);
 			int var5 = MathHelper.floor(this.a.locZ - 1.0 + var1.nextDouble() * 2.0);
 			BlockPosition var6 = new BlockPosition(var3, var4, var5);
-			Block var7 = var2.getTypeIfLoaded(var6).getBlock();
+			Block var7 = var2.getType(var6).getBlock();
 			if (var7 != Blocks.AIR) {
 				Block var8 = var2.getType(var6.down()).getBlock();
 				if (this.a(var2, var6, this.a.getCarried().getBlock(), var7, var8) && !CraftEventFactory.callEntityChangeBlockEvent(this.a, var6.getX(), var6.getY(), var6.getZ(), this.a.getCarried().getBlock(), this.a.getCarried().getBlock().toLegacyData(this.a.getCarried())).isCancelled()) {

@@ -196,7 +196,7 @@ public class Uberstreak extends Megastreak {
 		TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&',
 				"&d&lUBERDROP!&7 " + displayName + " &7obtained an &dUberdrop: &7"));
 		message.addExtra(Misc.createItemHover(itemStack));
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) onlinePlayer.sendMessage(message);
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) onlinePlayer.spigot().sendMessage(message);
 	}
 
 	public static ItemStack getUberDropDisplayStack(String displayName, ItemStack displayStack) {

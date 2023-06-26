@@ -40,7 +40,7 @@ public class UUIDCommand extends ACommand {
 		message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, uuid.toString()));
 		message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(
 				ChatColor.translateAlternateColorCodes('&', "&7Click to copy")).create()));
-		player.sendMessage(message);
+		player.spigot().sendMessage(message);
 	}
 
 	@Override

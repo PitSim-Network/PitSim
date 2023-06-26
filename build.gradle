@@ -38,6 +38,7 @@ dependencies {
     compileOnly 'com.github.MWHunter:GrimAPI:add576ba8b'
     compileOnly 'com.github.Polar-Anticheat:PolarApi:master-SNAPSHOT'
     compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.5'
+    compileOnly files('libs/spigot-1.8.8.jar')
 
     compileOnly files('libs/PitSimSpigotDependencies-1-all.jar')
 }

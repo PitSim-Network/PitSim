@@ -24,7 +24,7 @@ public class ReloadCommand extends ACommand {
 			return;
 		}
 
-		Bukkit.getServer().dispatchCommand(player, "plugman reload pitremake");
+		Bukkit.getServer().dispatchCommand(player, "plugman reload pitsim");
 	}
 
 	@Override
