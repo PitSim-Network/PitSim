@@ -26,7 +26,7 @@ public class PassXPReward extends PassReward {
 	@Override
 	public double getMultiplier(PitPlayer pitPlayer) {
 		PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		return Math.sqrt(prestigeInfo.getXpMultiplier());
+		return Math.pow(prestigeInfo.getXpMultiplier(), 2.0 / 3.0);
 	}
 
 	@Override
