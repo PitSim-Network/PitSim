@@ -128,7 +128,23 @@ public class PassManager implements Listener {
 						null), PitSimPass.RewardType.PREMIUM, 36)
 		);
 
-		registerPass(new PitSimPass(getDate("7/1/2023")));
+		registerPass(new PitSimPass(getDate("7/1/2023"))
+				.registerStandardRewards()
+				.registerReward(new PassCosmeticReward(Material.RAILS, CosmeticManager.getCosmetic("railed"),
+						null), PitSimPass.RewardType.FREE, 18)
+				.registerReward(new PassCosmeticReward(Material.INK_SACK, 13, CosmeticManager.getCosmetic("potionaura"),
+						ParticleColor.LIGHT_PURPLE), PitSimPass.RewardType.FREE, 36)
+				.registerReward(new PassCosmeticReward(Material.IRON_INGOT, CosmeticManager.getCosmetic("irontrail"),
+						null), PitSimPass.RewardType.PREMIUM, 9)
+				.registerReward(new PassCosmeticReward(Material.INK_SACK, 8, CosmeticManager.getCosmetic("solidcape"),
+						ParticleColor.DARK_GRAY), PitSimPass.RewardType.PREMIUM, 18)
+				.registerReward(new PassCosmeticReward(Material.GHAST_TEAR,  CosmeticManager.getCosmetic("scream"),
+						null), PitSimPass.RewardType.PREMIUM, 27)
+				.registerReward(new PassCosmeticReward(Material.REDSTONE_TORCH_ON, CosmeticManager.getCosmetic("fireworkaura"),
+						null), PitSimPass.RewardType.PREMIUM, 36)
+		);
+
+		registerPass(new PitSimPass(getDate("8/1/2023")));
 		updateCurrentPass();
 	}
 
