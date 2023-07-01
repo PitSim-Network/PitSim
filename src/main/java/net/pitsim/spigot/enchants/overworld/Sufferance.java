@@ -46,6 +46,7 @@ public class Sufferance extends PitEnchant {
 
 	public static int getReductionPercent(int enchantLvl) {
 		if(enchantLvl == 0) return 15;
-		return enchantLvl * 25 - 15;
+
+		return 10 + (enchantLvl - 1) * 20;
 	}
 }
