@@ -32,7 +32,11 @@ public class MainViewPanel extends AGUIPanel {
 
 		StorageProfile target = viewGUI.target;
 		PitPlayer pitTarget = viewGUI.getPitPlayer();
-		assert pitTarget != null;
+
+		if(pitTarget == null || pitTarget.pitPerks == null) {
+			viewGUI.player.closeInventory();
+			return;
+		}
 
 		ItemStack[] armor = target.getArmor();
 		getInventory().setItem(0, armor[3]);

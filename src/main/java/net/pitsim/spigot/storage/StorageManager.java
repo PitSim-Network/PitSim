@@ -285,7 +285,10 @@ public class StorageManager implements Listener {
 		StorageProfile topProfile = getProfile(event.getView().getTopInventory());
 		if(profile == null && topProfile != null && viewProfiles.contains(topProfile)) event.setCancelled(true);
 
-		if(profile == null || !profile.isLoaded()) return;
+		if(profile == null || !profile.isLoaded()) {
+			if(event.getView().getTopInventory() == event.getClickedInventory() && event.getInventory().getName().contains("Enderchest")) event.setCancelled(true);
+			return;
+		}
 
 		if(profile.isLoaded() && profile.isSaving()) {
 			event.setCancelled(true);
