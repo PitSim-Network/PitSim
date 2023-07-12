@@ -21,6 +21,7 @@ public class HopperCommand extends ACommand {
 	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
 		if(!(sender instanceof Player)) return;
 		Player player = (Player) sender;
+		if(!player.isOp()) return;
 //		if(!FirestoreManager.CONFIG.whitelistedIPs.contains(player.getAddress().getAddress().toString())) return;
 
 		String concatHoppers = "";
