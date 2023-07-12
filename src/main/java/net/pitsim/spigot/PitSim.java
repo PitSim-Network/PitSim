@@ -583,6 +583,7 @@ public class PitSim extends JavaPlugin {
 		new JewelCommand(giveCommand, "jewel");
 		new StreakCommand(giveCommand, "streak");
 		new BountyCommand(giveCommand, "bounty");
+		new RNGCommand(giveCommand, "rng");
 
 		AMultiCommand betaCommand = new BaseBetaCommand("beta");
 		new SoulsCommand(betaCommand, "souls");
