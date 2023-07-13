@@ -223,12 +223,12 @@ public class RNGesus extends Megastreak {
 		if(pitPlayer.getKills() >= INSTABILITY_THRESHOLD) {
 			pitPlayer.stats.rngesusCompleted++;
 			DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
+
+			PitPlayer.MegastreakLimit limit = pitPlayer.getMegastreakCooldown(this);
+			limit.completeStreak(pitPlayer);
 		}
 
 		if(!pitPlayer.isOnMega()) return;
-
-		PitPlayer.MegastreakLimit limit = pitPlayer.getMegastreakCooldown(this);
-		limit.completeStreak(pitPlayer);
 
 		int xp = getXP(rngesusInfo.realityMap.get(Reality.XP).getLevel());
 		double gold = getGold(rngesusInfo.realityMap.get(Reality.GOLD).getLevel());
@@ -237,7 +237,7 @@ public class RNGesus extends Megastreak {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				DecimalFormat decimalFormat = new DecimalFormat("#,####,##0");
+				DecimalFormat decimalFormat = new DecimalFormat("#,##0");
 				AOutput.send(pitPlayer.player, "&bXP &7increased by &b" + decimalFormat.format(xp));
 				AOutput.send(pitPlayer.player, "&6Gold &7increased by &6" + decimalFormat.format(gold));
 				AOutput.send(pitPlayer.player, "&cDamage &7increased by &c" + decimalFormat.format(damage));
