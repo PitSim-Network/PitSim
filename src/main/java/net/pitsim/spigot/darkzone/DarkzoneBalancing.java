@@ -65,11 +65,11 @@ public class DarkzoneBalancing {
 	}
 
 	public enum Attribute {
-		BOSS_DAMAGE(5, 1.5),
-		BOSS_HEALTH(50, 1.5),
+		BOSS_DAMAGE(4.3, 1.4),
+		BOSS_HEALTH(43.2, 1.4),
 		BOSS_SOULS(30.8, 1.2),
-		MOB_DAMAGE(8.1, 1.5),
-		MOB_HEALTH(9.5, 1.5),
+		MOB_DAMAGE(7.0, 1.4),
+		MOB_HEALTH(8.2, 1.4),
 		MOB_SOULS(7.7, 1.2),
 		;
 

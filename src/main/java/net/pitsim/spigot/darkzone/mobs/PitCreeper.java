@@ -89,7 +89,7 @@ public class PitCreeper extends PitMob {
 
 	@Override
 	public double getDamage() {
-		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE);
+		return DarkzoneBalancing.getAttribute(getSubLevelType(), DarkzoneBalancing.Attribute.MOB_DAMAGE) * 0.75;
 	}
 
 	@Override
