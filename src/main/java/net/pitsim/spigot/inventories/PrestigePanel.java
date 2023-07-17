@@ -4,6 +4,7 @@ import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
+import net.pitsim.spigot.controllers.PostPrestigeManager;
 import net.pitsim.spigot.controllers.PrestigeValues;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.misc.Formatter;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrestigePanel extends AGUIPanel {
+
+	DecimalFormat formatter = new DecimalFormat("#,###.#");
 
 	PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 	PrestigeValues.PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
@@ -77,11 +80,19 @@ public class PrestigePanel extends AGUIPanel {
 		prestigeMeta.setDisplayName(ChatColor.AQUA + "Prestige");
 		if(pitPlayer.prestige == PrestigeValues.MAX_PRESTIGE) {
 			prestigeLore.add(ChatColor.GREEN + "You've reached the maximum prestige, GG");
+			prestigeLore.add("");
+			prestigeLore.add(ChatColor.YELLOW + "Post-Prestige Progress:");
+			prestigeLore.add(ChatColor.GRAY + "Next Unlock: " + ChatColor.AQUA + formatter.format(PostPrestigeManager.getNextUnlockDisplayXP(player)) + " XP");
+			prestigeLore.add(ChatColor.GRAY + "You Have: " + ChatColor.AQUA + formatter.format(PrestigeValues.getTotalXP(pitPlayer.prestige, pitPlayer.level, 0)) + " XP");
+			prestigeLore.add("");
+			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', PostPrestigeManager.getProgressionString(player)));
+			prestigeLore.add("");
+			prestigeLore.add(ChatColor.RED + "You may not prestige any further!");
+
 		} else {
 			if(pitPlayer.prestige != 0)
 				prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Current: &e" + AUtil.toRoman(pitPlayer.prestige)));
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Required Level: " + prestigeInfo.getOpenBracket() + "&b&l120" + prestigeInfo.getCloseBracket()));
-			DecimalFormat formatter = new DecimalFormat("#,###.#");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', "&7Grinded: &6" +
 					formatter.format(pitPlayer.goldGrinded) + "&7/&6" + formatter.format(prestigeInfo.getGoldReq()) + "g"));
 			prestigeLore.add("");
