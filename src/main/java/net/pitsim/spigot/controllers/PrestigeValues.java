@@ -224,12 +224,12 @@ public class PrestigeValues {
 		prestigeMap.put(52, new PrestigeInfo(52, 7_000.0, 250_000_000, 20_000, 100, "&2"));
 		prestigeMap.put(53, new PrestigeInfo(53, 8_000.0, 300_000_000, 20_000, 100, "&2"));
 		prestigeMap.put(54, new PrestigeInfo(54, 9_000.0, 400_000_000, 20_000, 100, "&2"));
-		prestigeMap.put(55, new PrestigeInfo(55, 25_000.0, 500_000_000, 25_000, 120, "&0"));
-		prestigeMap.put(56, new PrestigeInfo(56, 40_000.0, 600_000_000, 25_000, 140, "&0"));
-		prestigeMap.put(57, new PrestigeInfo(57, 60_000.0, 700_000_000, 25_000, 160, "&0"));
-		prestigeMap.put(58, new PrestigeInfo(58, 80_000.0, 850_000_000, 25_000, 180, "&0"));
-		prestigeMap.put(59, new PrestigeInfo(59, 100_000.0, 1_000_000_000, 25_000, 10_000, "&0"));
-		prestigeMap.put(60, new PrestigeInfo(60, 1_000_000.0, 0, 100_000, 120, "&4"));
+		prestigeMap.put(55, new PrestigeInfo(55, 10_000, 500_000_000, 25_000, 120, "&0"));
+		prestigeMap.put(56, new PrestigeInfo(56, 15_000, 600_000_000, 25_000, 140, "&0"));
+		prestigeMap.put(57, new PrestigeInfo(57, 20_000, 700_000_000, 25_000, 160, "&0"));
+		prestigeMap.put(58, new PrestigeInfo(58, 25_000, 850_000_000, 25_000, 180, "&0"));
+		prestigeMap.put(59, new PrestigeInfo(59, 30_000, 1_000_000_000, 25_000, 10_000, "&0"));
+		prestigeMap.put(60, new PrestigeInfo(60, 50_000, 0, 100_000, 120, "&4"));
 
 		for(int i = 0; i <= PrestigeValues.MAX_PRESTIGE; i++) {
 			PrestigeInfo prestigeInfo = getPrestigeInfo(i);
