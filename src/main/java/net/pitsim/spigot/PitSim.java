@@ -594,6 +594,7 @@ public class PitSim extends JavaPlugin {
 		new SkillsCommand(betaCommand, "skills");
 		new AltarCommand(betaCommand, "altar");
 		new PrestigeCommand(betaCommand, "prestige");
+		new OverflowCommand(betaCommand, "overflow");
 		new LevelCommand(betaCommand, "level");
 		new ApostleCommand(betaCommand, "apostle");
 		new MassEnchantCommand(betaCommand, "me");

@@ -142,7 +142,7 @@ public class Apostle extends Megastreak {
 				"   &7up to &b" + Formatter.decimalCommaFormat.format(getMaxMultiplier()) + "x",
 				"&e\u25a0 &7If your streak is at least 1,000,",
 				"   &7permanently alter this megastreak's",
-				"   &bmax XP &7per kill by &b+2 &7(&b" + pitPlayer.apostleBonus + "&7/&b" + getMaxMaxXPIncrease() + "&7)"
+				"   &bmax XP &7per kill by &b+3 &7(&b" + pitPlayer.apostleBonus + "&7/&b" + getMaxMaxXPIncrease() + "&7)"
 		);
 	}
 
