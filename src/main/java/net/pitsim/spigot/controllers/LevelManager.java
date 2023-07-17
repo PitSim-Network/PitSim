@@ -24,6 +24,11 @@ public class LevelManager {
 		long addedXP = 0;
 		while(true) {
 			if(pitPlayer.level >= 120) {
+
+				if(pitPlayer.prestige == PrestigeValues.MAX_PRESTIGE) {
+					pitPlayer.overflowXP += xpToAdd;
+				}
+
 				pitPlayer.remainingXP = 0;
 				break;
 			}

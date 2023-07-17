@@ -120,6 +120,8 @@ public class PitPlayer {
 	public int prestige = 0;
 	public int level = 1;
 	public long remainingXP = PrestigeValues.getXPForLevel(1);
+	public long overflowXP = 0;
+
 	public String savedLeaderboardRef = "xp";
 
 	public int renown = 0;

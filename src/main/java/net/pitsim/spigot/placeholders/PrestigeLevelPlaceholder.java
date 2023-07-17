@@ -2,6 +2,7 @@ package net.pitsim.spigot.placeholders;
 
 import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
 import dev.kyro.arcticapi.misc.AUtil;
+import net.pitsim.spigot.controllers.PostPrestigeManager;
 import net.pitsim.spigot.controllers.PrestigeValues;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import org.bukkit.ChatColor;
@@ -29,6 +30,10 @@ public class PrestigeLevelPlaceholder implements APAPIPlaceholder {
 		builder.append("-");
 		builder.append(PrestigeValues.getLevelColor(pitPlayer.level)).append(pitPlayer.level);
 		builder.append(prestigeInfo.getCloseBracket());
+
+		String star = PostPrestigeManager.getStarString(player);
+		if(!star.isEmpty()) builder.append(" ").append(star);
+
 		builder.append(" ");
 		return builder.toString();
 	}

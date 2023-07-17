@@ -74,7 +74,7 @@ public class LeaderboardData {
 			this.primaryValue = primaryValue;
 			this.prestige = prestige;
 			this.level = level;
-			this.prefix = PrestigeValues.getPlayerPrefix(prestige, level);
+			this.prefix = PrestigeValues.getPlayerPrefix(prestige, level, 0);
 		}
 	}
 

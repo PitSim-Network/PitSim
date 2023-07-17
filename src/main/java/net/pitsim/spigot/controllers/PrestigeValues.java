@@ -136,20 +136,22 @@ public class PrestigeValues {
 	public static String getPlayerPrefixNameTag(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(pitPlayer.prestige);
-		return prestigeInfo.getOpenBracketNameTag() + getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracketNameTag() + " ";
+		String star = PostPrestigeManager.getStarString(player);
+		return prestigeInfo.getOpenBracketNameTag() + getLevelColor(pitPlayer.level) + pitPlayer.level + prestigeInfo.getCloseBracketNameTag()
+				+ (star.isEmpty() ? "" : " " + star) + " ";
 	}
 
 	public static String getPlayerPrefix(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-		return getPlayerPrefix(pitPlayer.prestige, pitPlayer.level);
+		return getPlayerPrefix(pitPlayer.prestige, pitPlayer.level, pitPlayer.overflowXP);
 	}
 
-	public static String getPlayerPrefix(int prestige, int level) {
+	public static String getPlayerPrefix(int prestige, int level, double overflow) {
 		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
 		return prestigeInfo.getOpenBracket() + getLevelColor(level) + level + prestigeInfo.getCloseBracket();
 	}
 
-	public static String getLeaderboardPrefix(int prestige, int level) {
+	public static String getLeaderboardPrefix(int prestige, int level, double overflow) {
 		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
 		return prestigeInfo.getOpenBracket() + ChatColor.YELLOW + AUtil.toRoman(prestige) + prestigeInfo.bracketColor + "-" +
 				getLevelColor(level) + level + prestigeInfo.getCloseBracket();

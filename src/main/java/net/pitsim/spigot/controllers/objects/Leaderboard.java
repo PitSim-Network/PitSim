@@ -83,7 +83,7 @@ public abstract class Leaderboard {
 	}
 
 	private static String getPrestigeBrackets(PitPlayer pitPlayer) {
-		return PrestigeValues.getPlayerPrefix(pitPlayer.prestige, pitPlayer.level);
+		return PrestigeValues.getPlayerPrefix(pitPlayer.prestige, pitPlayer.level, pitPlayer.overflowXP);
 	}
 
 	public void calculate(UUID uuid) {
