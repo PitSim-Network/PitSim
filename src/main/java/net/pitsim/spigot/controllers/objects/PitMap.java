@@ -29,7 +29,9 @@ public abstract class PitMap {
 
 	public abstract Location getWijiNPCSpawn();
 
-	public abstract Location getSplkNPCSpawn();
+	public abstract Location getSammyNPCSpawn();
+
+	public abstract Location getReyNPCSpawn();
 
 	public abstract Location getStatsNPCSpawn();
 

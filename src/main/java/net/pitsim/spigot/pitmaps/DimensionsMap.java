@@ -59,8 +59,13 @@ public class DimensionsMap extends PitMap {
 	}
 
 	@Override
-	public Location getSplkNPCSpawn() {
+	public Location getSammyNPCSpawn() {
 		return new Location(world, 6.5, 58, -13.5, 35, 0);
+	}
+
+	@Override
+	public Location getReyNPCSpawn() {
+		return new Location(world, 3.5, 58, -14.5, 0, 0);
 	}
 
 	@Override

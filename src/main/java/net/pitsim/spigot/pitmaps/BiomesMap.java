@@ -63,8 +63,13 @@ public class BiomesMap extends PitMap {
 	}
 
 	@Override
-	public Location getSplkNPCSpawn() {
+	public Location getSammyNPCSpawn() {
 		return new Location(world, 8.5, 90, -7.5, 45, 0);
+	}
+
+	@Override
+	public Location getReyNPCSpawn() {
+		return new Location(world, -0.5, 91, -11.5, 0, 0);
 	}
 
 	@Override

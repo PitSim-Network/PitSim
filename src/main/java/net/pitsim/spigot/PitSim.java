@@ -560,6 +560,7 @@ public class PitSim extends JavaPlugin {
 			NPCManager.registerNPC(new KyroNPC(Collections.singletonList(MapManager.currentMap.world)));
 			NPCManager.registerNPC(new WijiNPC(Collections.singletonList(MapManager.currentMap.world)));
 			NPCManager.registerNPC(new SammymonNPC(Collections.singletonList(MapManager.currentMap.world)));
+			NPCManager.registerNPC(new ReyerticNPC(Collections.singletonList(MapManager.currentMap.world)));
 		}
 	}
 

@@ -63,8 +63,13 @@ public class SandMap extends PitMap {
 	}
 
 	@Override
-	public Location getSplkNPCSpawn() {
+	public Location getSammyNPCSpawn() {
 		return new Location(world, -10.5, 73, -5.5, -62, 0);
+	}
+
+	@Override
+	public Location getReyNPCSpawn() {
+		return new Location(world, -12.5, 73, -5.5, -45, 0);
 	}
 
 	@Override
