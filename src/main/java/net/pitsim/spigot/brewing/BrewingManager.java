@@ -79,8 +79,11 @@ public class BrewingManager implements Listener {
 					for(int i = 0; i < pitPlayer.brewingSessions.size(); i++) {
 						BrewingSession session = getBrewingSession(player, i + 1);
 						if(session != null) {
+							double percent = ProgressionManager.getUnlockedLevel(pitPlayer, BrewingBranch.INSTANCE.secondPath) / 20D;
+
 							int addTicks = (105 - session.reduction.getBrewingReductionMinutes()) * 60 * 20;
-							int timeLeft = (int) ((int) (((session.startTime / 1000) * 20) + addTicks) - (((System.currentTimeMillis() / 1000) * 20)));
+							int timeLeft = (int) ((((int) (((session.startTime / 1000) * 20) + addTicks) - (((System.currentTimeMillis() / 1000) * 20)))));
+							timeLeft *= (1 - percent);
 							if(timeLeft < 0) text[i + 1] = "&a&lREADY!";
 							else
 								text[i + 1] = session.identifier.color + session.identifier.name + " &f" + Misc.ticksToTime(timeLeft) + "";
@@ -153,12 +156,14 @@ public class BrewingManager implements Listener {
 			for(int i = 0; i < 3; i++) {
 				BrewingSession session = getBrewingSession(player, i + 1);
 				if(session == null) continue;
+				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+				double percent = ProgressionManager.getUnlockedLevel(pitPlayer, BrewingBranch.INSTANCE.secondPath) / 20D;
 
 				int addTicks = (105 - session.reduction.getBrewingReductionMinutes()) * 60 * 20;
-				int timeLeft = (int) ((int) (((session.startTime / 1000) * 20) + addTicks) - (((System.currentTimeMillis() / 1000) * 20)));
+				int timeLeft = (int) ((((int) (((session.startTime / 1000) * 20) + addTicks) - (((System.currentTimeMillis() / 1000) * 20)))));
+				timeLeft *= (1 - percent);
 				if(timeLeft < 0) {
 					session.givePotion();
-					PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 					pitPlayer.stats.potionsBrewed++;
 					BrewPotionsQuest.INSTANCE.brewPotion(pitPlayer);
 				}
@@ -247,9 +252,12 @@ public class BrewingManager implements Listener {
 		for(int i = 0; i < 3; i++) {
 			BrewingSession session = getBrewingSession(player, i + 1);
 			if(session == null) continue;
+			PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+			double percent = ProgressionManager.getUnlockedLevel(pitPlayer, BrewingBranch.INSTANCE.secondPath) / 20D;
 
 			int addTicks = (105 - session.reduction.getBrewingReductionMinutes()) * 60 * 20;
-			int timeLeft = (int) ((int) (((session.startTime / 1000) * 20) + addTicks) - (((System.currentTimeMillis() / 1000) * 20)));
+			int timeLeft = (int) ((((int) (((session.startTime / 1000) * 20) + addTicks) - (((System.currentTimeMillis() / 1000) * 20)))));
+			timeLeft *= (1 - percent);
 			if(timeLeft < 0) return true;
 		}
 		return false;

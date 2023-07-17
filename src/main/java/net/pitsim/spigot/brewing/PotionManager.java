@@ -4,6 +4,10 @@ import de.tr7zw.nbtapi.NBTItem;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import net.pitsim.spigot.PitSim;
+import net.pitsim.spigot.darkzone.progression.ProgressionManager;
+import net.pitsim.spigot.darkzone.progression.SkillBranch;
+import net.pitsim.spigot.darkzone.progression.skillbranches.BrewingBranch;
+import net.pitsim.spigot.darkzone.progression.skillbranches.ManaBranch;
 import net.pitsim.spigot.items.mobdrops.SpiderEye;
 import net.pitsim.spigot.brewing.objects.BrewingIngredient;
 import net.pitsim.spigot.brewing.objects.PotionEffect;
@@ -158,11 +162,17 @@ public class PotionManager implements Listener {
 			AOutput.send(player, "&5&lPOTION!&7 You already have a stonger tier of this effect!");
 			return;
 		}
-		replaceLesserEffects(player, identifier, potency);
-		player.setItemInHand(new ItemStack(Material.AIR));
 
 		assert identifier != null;
 		assert potency != null;
+
+		if(potency.tier > getMaxPotionTier(player)) {
+			AOutput.send(player, "&5&lPOTION!&7 You cannot handle this powerful of an effect!");
+			return;
+		}
+
+		replaceLesserEffects(player, identifier, potency);
+		player.setItemInHand(new ItemStack(Material.AIR));
 
 		if(identifier instanceof SpiderEye) {
 			identifier.administerEffect(player, potency, 0);
@@ -182,6 +192,9 @@ public class PotionManager implements Listener {
 		BrewingIngredient potency = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_POTENCY.getRef()));
 		BrewingIngredient duration = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_DURATION.getRef()));
 
+		assert identifier != null;
+		assert potency != null;
+
 		int durationTime = identifier.getDuration(duration);
 
 		for(LivingEntity affectedEntity : event.getAffectedEntities()) {
@@ -193,10 +206,15 @@ public class PotionManager implements Listener {
 				AOutput.send(player, "&5&lPOTION!&7 You already have a stonger tier of this effect!");
 				continue;
 			}
+
+			if(potency.tier > getMaxPotionTier(player)) {
+				AOutput.send(player, "&5&lPOTION!&7 You cannot handle this powerful of an effect!");
+				continue;
+			}
+
 			replaceLesserEffects(player, identifier, potency);
 
-			assert identifier != null;
-			assert potency != null;
+
 
 			if(identifier instanceof SpiderEye) {
 				identifier.administerEffect(player, potency, 0);
@@ -307,5 +325,10 @@ public class PotionManager implements Listener {
 	public static void hideActiveBossBar(final @NonNull Audience player, Player realPlayer) {
 		player.hideBossBar(bossBars.get(realPlayer));
 		bossBars.remove(realPlayer);
+	}
+
+	public static int getMaxPotionTier(Player player) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		return 4 + ProgressionManager.getUnlockedLevel(pitPlayer, BrewingBranch.INSTANCE.firstPath);
 	}
 }

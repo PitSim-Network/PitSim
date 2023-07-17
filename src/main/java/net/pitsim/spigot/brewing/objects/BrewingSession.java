@@ -1,9 +1,14 @@
 package net.pitsim.spigot.brewing.objects;
 
+import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import net.pitsim.spigot.brewing.BrewingManager;
 import net.pitsim.spigot.brewing.PotionManager;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
+import net.pitsim.spigot.darkzone.progression.ProgressionManager;
+import net.pitsim.spigot.darkzone.progression.SkillBranch;
+import net.pitsim.spigot.darkzone.progression.skillbranches.BrewingBranch;
+import net.pitsim.spigot.misc.Sounds;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -46,10 +51,20 @@ public class BrewingSession {
 	}
 
 	public void givePotion() {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(ProgressionManager.isUnlocked(pitPlayer, BrewingBranch.INSTANCE, SkillBranch.MajorUnlockPosition.SECOND_PATH)) {
+			double rand = Math.random();
+			if(identifier.tier == 10) return;
+			if(rand <= 0.25) {
+				identifier = BrewingIngredient.getIngredientFromTier(Integer.parseInt(saveString.split(",")[1]) + 1);
+				Sounds.SUCCESS.play(player);
+				AOutput.send(player, "&5&lLUCKY BREW! &7Potion tier increased by &f1&7!");
+			}
+		}
+
 		ItemStack potion = PotionManager.createPotion(identifier, potency, duration);
 		AUtil.giveItemSafely(player, potion);
 		BrewingManager.brewingSessions.remove(this);
-		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 		pitPlayer.brewingSessions.set(brewingSlot - 1, null);
 	}
 
