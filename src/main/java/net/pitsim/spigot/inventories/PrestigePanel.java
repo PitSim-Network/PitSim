@@ -83,7 +83,7 @@ public class PrestigePanel extends AGUIPanel {
 			prestigeLore.add("");
 			prestigeLore.add(ChatColor.YELLOW + "Post-Prestige Progress:");
 			prestigeLore.add(ChatColor.GRAY + "Next Unlock: " + ChatColor.AQUA + formatter.format(PostPrestigeManager.getNextUnlockDisplayXP(player)) + " XP");
-			prestigeLore.add(ChatColor.GRAY + "You Have: " + ChatColor.AQUA + formatter.format(PrestigeValues.getTotalXP(pitPlayer.prestige, pitPlayer.level, 0)) + " XP");
+			prestigeLore.add(ChatColor.GRAY + "You Have: " + ChatColor.AQUA + formatter.format(pitPlayer.overflowXP) + " XP");
 			prestigeLore.add("");
 			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', PostPrestigeManager.getProgressionString(player)));
 			prestigeLore.add("");

@@ -31,8 +31,6 @@ public class PostPrestigeManager {
 		colorMap.put(150_000_000_000D, ChatColor.GREEN);
 		colorMap.put(200_000_000_000D, ChatColor.BLACK);
 		colorMap.put(Double.MAX_VALUE, ChatColor.DARK_RED);
-
-
 	}
 
 	public static String getStarString(Player player) {
@@ -77,8 +75,6 @@ public class PostPrestigeManager {
 		return xp.get(index);
 	}
 
-
-
 	public static String getProgressionString(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
@@ -98,6 +94,6 @@ public class PostPrestigeManager {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
 
 		int index = getStarIndex(pitPlayer.overflowXP);
-		return getXP(index + 1) + PrestigeValues.getTotalXP(pitPlayer.prestige, pitPlayer.level, 0);
+		return getXP(index + 1);
 	}
 }
