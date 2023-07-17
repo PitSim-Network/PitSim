@@ -18,7 +18,21 @@ public class PostPrestigeManager {
 
 	static {
 		colorMap.put(1D, ChatColor.GRAY);
-		colorMap.put(50D, ChatColor.BLUE);
+		colorMap.put(1_000_000_000D, ChatColor.BLUE);
+		colorMap.put(2_500_000_000D, ChatColor.YELLOW);
+		colorMap.put(5_000_000_000D, ChatColor.GOLD);
+		colorMap.put(10_000_000_000D, ChatColor.RED);
+		colorMap.put(20_000_000_000D, ChatColor.DARK_PURPLE);
+		colorMap.put(35_000_000_000D, ChatColor.LIGHT_PURPLE);
+		colorMap.put(50_000_000_000D, ChatColor.WHITE);
+		colorMap.put(75_000_000_000D, ChatColor.AQUA);
+		colorMap.put(100_000_000_000D, ChatColor.DARK_AQUA);
+		colorMap.put(125_000_000_000D, ChatColor.DARK_BLUE);
+		colorMap.put(150_000_000_000D, ChatColor.GREEN);
+		colorMap.put(200_000_000_000D, ChatColor.BLACK);
+		colorMap.put(Double.MAX_VALUE, ChatColor.DARK_RED);
+
+
 	}
 
 	public static String getStarString(Player player) {
@@ -72,11 +86,7 @@ public class PostPrestigeManager {
 		String current = getStarString(index);
 		String next = getStarString(index + 1);
 
-		System.out.println("One: " + (pitPlayer.overflowXP - getXP(index)));
-		System.out.println("Two: " + (getXP(index + 1) - getXP(index)));
-
 		double percent = (pitPlayer.overflowXP - getXP(index)) / (getXP(index + 1) - getXP(index));
-		System.out.println("Three: " + percent);
 
 		DecimalFormat formatter = new DecimalFormat("##.##");
 
