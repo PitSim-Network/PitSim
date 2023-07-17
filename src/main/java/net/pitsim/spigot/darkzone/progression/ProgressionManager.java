@@ -41,7 +41,7 @@ public class ProgressionManager implements Listener {
 		registerBranch(new SoulBranch());
 		registerBranch(new ManaBranch());
 		registerBranch(new AltarBranch());
-//		registerBranch(new BrewingBranch()); // TODO: Remove fake itemstack from MainProgressionPanel
+		registerBranch(new BrewingBranch()); // TODO: Remove fake itemstack from MainProgressionPanel
 
 		registerMainUnlock(new MainProgressionStart("start", 1, 3));
 
@@ -51,7 +51,7 @@ public class ProgressionManager implements Listener {
 		registerMainUnlock(new MainProgressionMinorUnlock("main-4", 5, 3));
 		registerMainUnlock(new MainProgressionMinorUnlock("main-5", 6, 3));
 		registerMainUnlock(new MainProgressionMinorUnlock("main-6", 7, 3));
-//		registerMainUnlock(new MainProgressionMinorUnlock("main-7", 8, 3));
+		registerMainUnlock(new MainProgressionMinorUnlock("main-7", 8, 3));
 //		registerMainUnlock(new MainProgressionMinorUnlock("main-8", 9, 3));
 
 		registerMainUnlock(new MainProgressionMinorUnlock("top-1", 2, 2));
@@ -69,7 +69,7 @@ public class ProgressionManager implements Listener {
 		registerMainUnlock(new MainProgressionMajorUnlock(SoulBranch.class, index++));
 		registerMainUnlock(new MainProgressionMajorUnlock(ManaBranch.class, index++));
 		registerMainUnlock(new MainProgressionMajorUnlock(AltarBranch.class, index++));
-//		registerMainUnlock(new MainProgressionMajorUnlock(BrewingBranch.class, index++));
+		registerMainUnlock(new MainProgressionMajorUnlock(BrewingBranch.class, index++));
 	}
 
 	/*

@@ -62,21 +62,21 @@ public class BrewingBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "&5+1 Brewing Ingredient Slot";
+				return "&5+1 Potion Brewing Slot";
 			}
 
 			@Override
 			public String getRefName() {
-				return "ingredient-slot";
+				return "brewing-slot-2";
 			}
 
 			@Override
 			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.CAULDRON_ITEM)
 						.setLore(new ALoreBuilder(
-								"&7A larger cauldron! Perfect",
-								"&7for packing another ingredient",
-								"&7into brews!"
+								"&7A larger cauldron! Unlock",
+								"&7an extra brewing slot for",
+								"&7making more potions!"
 						))
 						.getItemStack();
 			}
@@ -88,20 +88,20 @@ public class BrewingBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "&5Unlock: Potion Pouch";
+				return "&5Unlock: Splash Potions";
 			}
 
 			@Override
 			public String getRefName() {
-				return "unlock-potion-pouch";
+				return "unlock-splash-potions";
 			}
 
 			@Override
 			public ItemStack getBaseDisplayStack() {
-				return new AItemStackBuilder(Material.FLOWER_POT_ITEM)
+				return new AItemStackBuilder(Material.POTION, 1, 16422)
 						.setLore(new ALoreBuilder(
-								"&7The perfect item for carrying",
-								"&7around your potions"
+								"&7Unlock access to the &dPotion Master",
+								"&7and create Splash Potions for &fSouls"
 						))
 						.getItemStack();
 			}
@@ -113,21 +113,21 @@ public class BrewingBranch extends SkillBranch {
 		return new MajorProgressionUnlock() {
 			@Override
 			public String getDisplayName() {
-				return "&5Unlock: Catalyst";
+				return "&5Unlock: Lucky Brewer";
 			}
 
 			@Override
 			public String getRefName() {
-				return "unlock-catalyst";
+				return "unlock-lucky-brewer";
 			}
 
 			@Override
 			public ItemStack getBaseDisplayStack() {
 				return new AItemStackBuilder(Material.NETHER_STAR)
 						.setLore(new ALoreBuilder(
-								"&7The most powerful potion",
-								"&7ingredient now craftable",
-								"&7and at your disposal"
+								"&7There is now a &f25% &7chance",
+								"&7for potions to come out",
+								"&f1 Tier &7higher than normal"
 						))
 						.getItemStack();
 			}
@@ -139,7 +139,28 @@ public class BrewingBranch extends SkillBranch {
 		return new Path() {
 			@Override
 			public String getDisplayName() {
-				return "&5Brewing Time Reduction";
+				return "&5Potion Tier Usage";
+			}
+
+			@Override
+			public String getRefName() {
+				return "potion-tier-usage";
+			}
+
+			@Override
+			public void addEffects() {
+				addEffect(new EffectData("potion-tier", "&7Ability to use Tier &5%value% &7potions",
+						5, 6, 7, 8, 9, 10));
+			}
+		};
+	}
+
+	@Override
+	public Path createSecondPath() {
+		return new Path() {
+			@Override
+			public String getDisplayName() {
+				return "&5Brew Time Reduction";
 			}
 
 			@Override
@@ -150,28 +171,7 @@ public class BrewingBranch extends SkillBranch {
 			@Override
 			public void addEffects() {
 				addEffect(new EffectData("brew-time-reduction", "&5-%value%% &7potion brew time",
-						100, 100, 100, 100, 100, 100));
-			}
-		};
-	}
-
-	@Override
-	public Path createSecondPath() {
-		return new Path() {
-			@Override
-			public String getDisplayName() {
-				return "&5Brewing Luck";
-			}
-
-			@Override
-			public String getRefName() {
-				return "brewing-luck";
-			}
-
-			@Override
-			public void addEffects() {
-				addEffect(new EffectData("brewing-luck", "&5+%value%% &7brewing luck",
-						100, 100, 100, 100, 100, 100));
+						5, 10, 15, 20, 25, 30));
 			}
 		};
 	}

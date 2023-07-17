@@ -5,6 +5,10 @@ import net.pitsim.spigot.battlepass.quests.BrewPotionsQuest;
 import net.pitsim.spigot.brewing.objects.BrewingAnimation;
 import net.pitsim.spigot.brewing.objects.BrewingSession;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
+import net.pitsim.spigot.darkzone.progression.ProgressionManager;
+import net.pitsim.spigot.darkzone.progression.SkillBranch;
+import net.pitsim.spigot.darkzone.progression.skillbranches.BrewingBranch;
+import net.pitsim.spigot.darkzone.progression.skillbranches.SoulBranch;
 import net.pitsim.spigot.events.AttackEvent;
 import net.pitsim.spigot.events.PitQuitEvent;
 import net.pitsim.spigot.misc.Misc;
@@ -80,7 +84,8 @@ public class BrewingManager implements Listener {
 							if(timeLeft < 0) text[i + 1] = "&a&lREADY!";
 							else
 								text[i + 1] = session.identifier.color + session.identifier.name + " &f" + Misc.ticksToTime(timeLeft) + "";
-						} else text[i + 1] = "&cSlot Locked!";
+						} else if(hasSlotUnlocked(player, i)) text[i + 1] = "&cSlot Empty!";
+						else text[i + 1] = "&cSlot Locked!";
 					}
 
 					if(hasReadyPotions(player)) text[4] = "&aRight-Click to collect!";
@@ -214,9 +219,16 @@ public class BrewingManager implements Listener {
 	public static int getBrewingSlot(Player player) {
 		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player.getPlayer());
 		for(int i = 0; i < pitPlayer.brewingSessions.size(); i++) {
-			if(pitPlayer.brewingSessions.get(i) == null) return i + 1;
+			if(pitPlayer.brewingSessions.get(i) == null && hasSlotUnlocked(player, i)) return i + 1;
 		}
 		return -1;
+	}
+
+	public static boolean hasSlotUnlocked(Player player, int index) {
+		PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
+		if(index == 0) return true;
+		else if(index == 1 && ProgressionManager.isUnlocked(pitPlayer, BrewingBranch.INSTANCE, SkillBranch.MajorUnlockPosition.FIRST)) return true;
+		return ProgressionManager.isUnlocked(pitPlayer, BrewingBranch.INSTANCE, SkillBranch.MajorUnlockPosition.LAST);
 	}
 
 	public static int getStandID(final ArmorStand stand, Location location) {
