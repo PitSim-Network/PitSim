@@ -148,13 +148,15 @@ public class PrestigeValues {
 
 	public static String getPlayerPrefix(int prestige, int level, double overflow) {
 		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
-		return prestigeInfo.getOpenBracket() + getLevelColor(level) + level + prestigeInfo.getCloseBracket();
+		String star = PostPrestigeManager.getStarString(overflow);
+		return prestigeInfo.getOpenBracket() + getLevelColor(level) + level + prestigeInfo.getCloseBracket() + (star.isEmpty() ? "" : " " + star);
 	}
 
 	public static String getLeaderboardPrefix(int prestige, int level, double overflow) {
 		PrestigeInfo prestigeInfo = PrestigeValues.getPrestigeInfo(prestige);
+		String star = PostPrestigeManager.getStarString(overflow);
 		return prestigeInfo.getOpenBracket() + ChatColor.YELLOW + AUtil.toRoman(prestige) + prestigeInfo.bracketColor + "-" +
-				getLevelColor(level) + level + prestigeInfo.getCloseBracket();
+				getLevelColor(level) + level + prestigeInfo.getCloseBracket() + (star.isEmpty() ? "" : " " + star);
 	}
 
 	static {

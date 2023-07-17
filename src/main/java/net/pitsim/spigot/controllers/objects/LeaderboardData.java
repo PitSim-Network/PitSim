@@ -25,8 +25,9 @@ public class LeaderboardData {
 				double value = Double.parseDouble(playerData[2]);
 				String username = playerData[3];
 
-				String[] prestigeAndLevel = playerData[1].split(" ");
-				PlayerData dataObject = new PlayerData(username, value, Integer.parseInt(prestigeAndLevel[0]), Integer.parseInt(prestigeAndLevel[1]));
+				String[] progressionInfo = playerData[1].split(" ");
+				PlayerData dataObject = new PlayerData(username, value, Integer.parseInt(progressionInfo[0]),
+						Integer.parseInt(progressionInfo[1]), Double.parseDouble(progressionInfo[2]));
 
 				leaderboardDataMap.put(uuid, dataObject);
 			}
@@ -68,13 +69,16 @@ public class LeaderboardData {
 
 		public int level;
 		public int prestige;
+		public double overflow;
 
-		public PlayerData(String username, double primaryValue, int prestige, int level) {
+
+		public PlayerData(String username, double primaryValue, int prestige, int level, double overflow) {
 			this.username = username;
 			this.primaryValue = primaryValue;
 			this.prestige = prestige;
 			this.level = level;
-			this.prefix = PrestigeValues.getPlayerPrefix(prestige, level, 0);
+			this.overflow = overflow;
+			this.prefix = PrestigeValues.getPlayerPrefix(prestige, level, overflow);
 		}
 	}
 
