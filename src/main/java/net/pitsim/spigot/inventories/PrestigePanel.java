@@ -80,12 +80,15 @@ public class PrestigePanel extends AGUIPanel {
 		prestigeMeta.setDisplayName(ChatColor.AQUA + "Prestige");
 		if(pitPlayer.prestige == PrestigeValues.MAX_PRESTIGE) {
 			prestigeLore.add(ChatColor.GREEN + "You've reached the maximum prestige, GG");
-			prestigeLore.add("");
-			prestigeLore.add(ChatColor.YELLOW + "Post-Prestige Progress:");
-			prestigeLore.add(ChatColor.GRAY + "Next Unlock: " + ChatColor.AQUA + formatter.format(PostPrestigeManager.getNextUnlockDisplayXP(player)) + " XP");
-			prestigeLore.add(ChatColor.GRAY + "You Have: " + ChatColor.AQUA + formatter.format(pitPlayer.overflowXP) + " XP");
-			prestigeLore.add("");
-			prestigeLore.add(ChatColor.translateAlternateColorCodes('&', PostPrestigeManager.getProgressionString(player)));
+
+			if(pitPlayer.overflowXP > 0) {
+				prestigeLore.add("");
+				prestigeLore.add(ChatColor.YELLOW + "Post-Prestige Progress:");
+				prestigeLore.add(ChatColor.GRAY + "Next Unlock: " + ChatColor.AQUA + formatter.format(PostPrestigeManager.getNextUnlockDisplayXP(player)) + " XP");
+				prestigeLore.add(ChatColor.GRAY + "You Have: " + ChatColor.AQUA + formatter.format(pitPlayer.overflowXP) + " XP");
+				prestigeLore.add("");
+				prestigeLore.add(ChatColor.translateAlternateColorCodes('&', PostPrestigeManager.getProgressionString(player)));
+			}
 			prestigeLore.add("");
 			prestigeLore.add(ChatColor.RED + "You may not prestige any further!");
 
