@@ -223,12 +223,15 @@ public class RNGesus extends Megastreak {
 		if(pitPlayer.getKills() >= INSTABILITY_THRESHOLD) {
 			pitPlayer.stats.rngesusCompleted++;
 			DailyMegastreakQuest.INSTANCE.onMegastreakComplete(pitPlayer);
-
-			PitPlayer.MegastreakLimit limit = pitPlayer.getMegastreakCooldown(this);
-			limit.completeStreak(pitPlayer);
 		}
 
 		if(!pitPlayer.isOnMega()) return;
+
+//		Has to be after the isOnMega check because it resets the megastreak
+		if(pitPlayer.getKills() >= INSTABILITY_THRESHOLD) {
+			PitPlayer.MegastreakLimit limit = pitPlayer.getMegastreakCooldown(this);
+			limit.completeStreak(pitPlayer);
+		}
 
 		int xp = getXP(rngesusInfo.realityMap.get(Reality.XP).getLevel());
 		double gold = getGold(rngesusInfo.realityMap.get(Reality.GOLD).getLevel());

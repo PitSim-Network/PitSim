@@ -158,7 +158,7 @@ public class SpawnManager implements Listener {
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			if(isInSpawn(player) && !lastLocationMap.containsKey(player)) {
 				PitPlayer pitPlayer = PitPlayer.getPitPlayer(player);
-				pitPlayer.endKillstreak();
+//				pitPlayer.endKillstreak();
 			}
 		}
 	}
