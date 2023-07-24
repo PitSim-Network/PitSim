@@ -28,8 +28,6 @@ public class Apostle extends Megastreak {
 	public static Apostle INSTANCE;
 	public static Map<Player, Long> storedXPMap = new HashMap<>();
 
-	public static final int DEATH_BONUS = 3;
-
 	public Apostle() {
 		super("&3Apostle", "apostle", 100, 42, 110);
 		INSTANCE = this;
@@ -101,7 +99,7 @@ public class Apostle extends Megastreak {
 		}
 
 		if(pitPlayer.getKills() >= 1000) {
-			int apostleIncrease = Math.min(DEATH_BONUS * doubleDeathMultiplier, getMaxMaxXPIncrease() - pitPlayer.apostleBonus);
+			int apostleIncrease = Math.min(getMaxXPIncrement() * doubleDeathMultiplier, getMaxMaxXPIncrease() - pitPlayer.apostleBonus);
 			if(apostleIncrease != 0) {
 				pitPlayer.apostleBonus += apostleIncrease;
 				AOutput.send(pitPlayer.player, getCapsDisplayName() + "!&7 Permanent &b+" + apostleIncrease +
@@ -142,7 +140,7 @@ public class Apostle extends Megastreak {
 				"   &7up to &b" + Formatter.decimalCommaFormat.format(getMaxMultiplier()) + "x",
 				"&e\u25a0 &7If your streak is at least 1,000,",
 				"   &7permanently alter this megastreak's",
-				"   &bmax XP &7per kill by &b+3 &7(&b" + pitPlayer.apostleBonus + "&7/&b" + getMaxMaxXPIncrease() + "&7)"
+				"   &bmax XP &7per kill by &b+" + getMaxXPIncrement() + " &7(&b" + pitPlayer.apostleBonus + "&7/&b" + getMaxMaxXPIncrease() + "&7)"
 		);
 	}
 
@@ -161,6 +159,10 @@ public class Apostle extends Megastreak {
 
 	public static int getMaxMaxXPIncrease() {
 		return 500;
+	}
+
+	public static int getMaxXPIncrement() {
+		return 3;
 	}
 
 	public static double getPerKillMultiplier() {
