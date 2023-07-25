@@ -5,9 +5,8 @@ import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
 import net.pitsim.spigot.PitSim;
 import net.pitsim.spigot.darkzone.progression.ProgressionManager;
-import net.pitsim.spigot.darkzone.progression.SkillBranch;
 import net.pitsim.spigot.darkzone.progression.skillbranches.BrewingBranch;
-import net.pitsim.spigot.darkzone.progression.skillbranches.ManaBranch;
+import net.pitsim.spigot.enums.PitEntityType;
 import net.pitsim.spigot.items.mobdrops.SpiderEye;
 import net.pitsim.spigot.brewing.objects.BrewingIngredient;
 import net.pitsim.spigot.brewing.objects.PotionEffect;
@@ -157,21 +156,20 @@ public class PotionManager implements Listener {
 		BrewingIngredient identifier = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_IDENTIFIER.getRef()));
 		BrewingIngredient potency = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_POTENCY.getRef()));
 		BrewingIngredient duration = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_DURATION.getRef()));
+		assert identifier != null;
+		assert potency != null;
 
-		if(hasLesserEffect(player, identifier, potency)) {
+		if(hasStrongerEffect(player, identifier, potency)) {
 			AOutput.send(player, "&5&lPOTION!&7 You already have a stonger tier of this effect!");
 			return;
 		}
 
-		assert identifier != null;
-		assert potency != null;
-
-		if(potency.tier > getMaxPotionTier(player)) {
+		if(potency.tier > getMaxPotionTier(player) && identifier.isPositive) {
 			AOutput.send(player, "&5&lPOTION!&7 You cannot handle this powerful of an effect!");
 			return;
 		}
 
-		replaceLesserEffects(player, identifier, potency);
+		replaceWeakerEffects(player, identifier, potency);
 		player.setItemInHand(new ItemStack(Material.AIR));
 
 		if(identifier instanceof SpiderEye) {
@@ -183,7 +181,6 @@ public class PotionManager implements Listener {
 
 	@EventHandler
 	public void onSplash(PotionSplashEvent event) {
-
 		ItemStack potion = event.getPotion().getItem();
 		NBTItem nbtItem = new NBTItem(potion);
 		if(!nbtItem.hasKey(NBTTag.POTION_IDENTIFIER.getRef())) return;
@@ -191,35 +188,38 @@ public class PotionManager implements Listener {
 		BrewingIngredient identifier = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_IDENTIFIER.getRef()));
 		BrewingIngredient potency = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_POTENCY.getRef()));
 		BrewingIngredient duration = BrewingIngredient.getIngredientFromTier(nbtItem.getInteger(NBTTag.POTION_DURATION.getRef()));
-
 		assert identifier != null;
 		assert potency != null;
 
-		int durationTime = identifier.getDuration(duration);
+		int initialDuration = identifier.getDuration(duration);
 
+		List<Player> affectedPlayers = new ArrayList<>();
 		for(LivingEntity affectedEntity : event.getAffectedEntities()) {
-			if(!(affectedEntity instanceof Player)) continue;
-
+			if(!Misc.isEntity(affectedEntity, PitEntityType.REAL_PLAYER)) continue;
 			Player player = (Player) affectedEntity;
 
-			if(hasLesserEffect(player, identifier, potency)) {
-				AOutput.send(player, "&5&lPOTION!&7 You already have a stonger tier of this effect!");
+			if(hasStrongerEffect(player, identifier, potency)) {
+				AOutput.send(player, "&5&lPOTION!&7 You already have a stronger tier of this effect!");
 				continue;
 			}
 
-			if(potency.tier > getMaxPotionTier(player)) {
+			if(potency.tier > getMaxPotionTier(player) && identifier.isPositive) {
 				AOutput.send(player, "&5&lPOTION!&7 You cannot handle this powerful of an effect!");
 				continue;
 			}
 
-			replaceLesserEffects(player, identifier, potency);
+			affectedPlayers.add(player);
+		}
 
+		int effectiveDuration = (int) (Math.max(1 - 0.2 * (affectedPlayers.size() - 1), 0.2) * initialDuration);
 
+		for(Player player : affectedPlayers) {
+			replaceWeakerEffects(player, identifier, potency);
 
 			if(identifier instanceof SpiderEye) {
 				identifier.administerEffect(player, potency, 0);
 			} else {
-				potionEffectList.add(new PotionEffect(player, identifier, potency, Math.max(1, durationTime / event.getAffectedEntities().size())));
+				potionEffectList.add(new PotionEffect(player, identifier, potency, effectiveDuration));
 			}
 		}
 	}
@@ -274,19 +274,17 @@ public class PotionManager implements Listener {
 		pitPlayer.potionStrings.clear();
 	}
 
-	public boolean hasLesserEffect(Player player, BrewingIngredient identifier, BrewingIngredient potency) {
+	public boolean hasStrongerEffect(Player player, BrewingIngredient identifier, BrewingIngredient potency) {
 		for(PotionEffect potionEffect : potionEffectList) {
 			if(potionEffect.player != player) continue;
 			if(potionEffect.potionType != identifier) continue;
 
-			if(potionEffect.potency.tier > potency.tier) {
-				return true;
-			}
+			if(potionEffect.potency.tier > potency.tier) return true;
 		}
 		return false;
 	}
 
-	public void replaceLesserEffects(Player player, BrewingIngredient identifier, BrewingIngredient potency) {
+	public void replaceWeakerEffects(Player player, BrewingIngredient identifier, BrewingIngredient potency) {
 		for(PotionEffect potionEffect : potionEffectList) {
 			if(potionEffect.player != player) continue;
 			if(potionEffect.potionType != identifier) continue;

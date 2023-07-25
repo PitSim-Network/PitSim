@@ -17,12 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BrewingIngredient extends StaticPitItem implements Listener {
+	public static List<BrewingIngredient> ingredients = new ArrayList<>();
+
 	public int tier;
 	public String name;
 	public ChatColor color;
 	public PotionType potionType;
 
-	public static List<BrewingIngredient> ingredients = new ArrayList<>();
+//	Used to allow overriding of the brewing path required unlocks (ex: wither)
+	public boolean isPositive = true;
 
 	public BrewingIngredient(int tier, String name, ChatColor color, PotionType potionType) {
 		this.tier = tier;

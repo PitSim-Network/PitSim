@@ -27,6 +27,7 @@ public class Charcoal extends BrewingIngredient implements TemporaryItem {
 		hasDropConfirm = true;
 		itemData = 1;
 		marketCategory = MarketCategory.DARKZONE_DROPS;
+		isPositive = false;
 	}
 
 	@Override

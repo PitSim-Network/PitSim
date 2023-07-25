@@ -30,6 +30,7 @@ public class EnderPearl extends BrewingIngredient implements TemporaryItem {
 		super(10, "Venom", ChatColor.GREEN, PotionType.POISON);
 		hasDropConfirm = true;
 		marketCategory = MarketCategory.DARKZONE_DROPS;
+		isPositive = false;
 	}
 
 	@Override
