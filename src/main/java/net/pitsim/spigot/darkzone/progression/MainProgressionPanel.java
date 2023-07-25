@@ -38,15 +38,6 @@ public class MainProgressionPanel extends AGUIPanel {
 		inventoryBuilder.setSlots(Material.STAINED_GLASS_PANE, 15, 45, 46, 47, 48, 49, 50, 51, 52);
 		getInventory().setItem(53, HelpItemStacks.getMainProgressionStack());
 
-//		ItemStack brewingWIP = new AItemStackBuilder(Material.BREWING_STAND_ITEM)
-//				.setName("&5Brewing")
-//				.setLore(new ALoreBuilder(
-//						"&7Upgrade potion brewing skills",
-//						"",
-//						"&c&lWORK IN PROGRESS"
-//				)).getItemStack();
-//		getInventory().setItem(42, brewingWIP);
-
 		setInventory();
 	}
 
