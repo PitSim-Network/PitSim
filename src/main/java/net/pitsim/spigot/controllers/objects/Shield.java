@@ -1,6 +1,7 @@
 package net.pitsim.spigot.controllers.objects;
 
 import com.google.cloud.firestore.annotation.Exclude;
+import net.pitsim.spigot.PitSim;
 import net.pitsim.spigot.darkzone.progression.ProgressionManager;
 import net.pitsim.spigot.darkzone.progression.SkillBranch;
 import net.pitsim.spigot.darkzone.progression.skillbranches.DefenceBranch;
@@ -45,7 +46,7 @@ public class Shield {
 
 	@Exclude
 	public boolean isActive() {
-		if(!isUnlocked()) return false;
+		if(!isUnlocked() || PitSim.status.isOverworld()) return false;
 		return isActive;
 	}
 
