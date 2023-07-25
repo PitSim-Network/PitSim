@@ -149,7 +149,7 @@ public class BrewingBranch extends SkillBranch {
 
 			@Override
 			public void addEffects() {
-				addEffect(new EffectData("potion-tier", "&7Ability to use Tier &5%value% &7potions",
+				addEffect(new EffectData("potion-tier", "&7Ability to use &5Tier %value% &7potions",
 						5, 6, 7, 8, 9, 10));
 			}
 		};
