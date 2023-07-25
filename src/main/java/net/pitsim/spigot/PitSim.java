@@ -719,6 +719,7 @@ public class PitSim extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new HologramManager(), this);
 		getServer().getPluginManager().registerEvents(new AuctionManager(), this);
 		getServer().getPluginManager().registerEvents(new OutpostManager(), this);
+		getServer().getPluginManager().registerEvents(new ProgressionManager(), this);
 		if(!PitSim.isDev()) getServer().getPluginManager().registerEvents(new StatisticsManager(), this);
 
 		if(getStatus().isDarkzone()) {
@@ -730,7 +731,6 @@ public class PitSim extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new DarkzoneManager(), this);
 			getServer().getPluginManager().registerEvents(new BossManager(), this);
 			getServer().getPluginManager().registerEvents(new ShieldManager(), this);
-			getServer().getPluginManager().registerEvents(new ProgressionManager(), this);
 			getServer().getPluginManager().registerEvents(new AltarManager(), this);
 		}
 	}

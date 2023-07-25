@@ -315,7 +315,7 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, MainProgressionUnlock unlock) {
-		if(pitPlayer == null || unlock == null || !PitSim.status.isDarkzone()) return false;
+		if(pitPlayer == null || unlock == null) return false;
 		if(unlock instanceof MainProgressionStart) return true;
 		return pitPlayer.darkzoneData.mainProgressionUnlocks.contains(unlock.id);
 	}
@@ -325,14 +325,14 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, SkillBranch.Path path, int level) {
-		if(pitPlayer == null || path == null || !PitSim.status.isDarkzone()) return false;
+		if(pitPlayer == null || path == null) return false;
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(path.skillBranch.getRefName());
 		if(skillBranchData == null || !skillBranchData.pathUnlocks.containsKey(path.getRefName())) return false;
 		return skillBranchData.pathUnlocks.get(path.getRefName()) >= level;
 	}
 
 	public static int getUnlockedLevel(PitPlayer pitPlayer, SkillBranch.Path path) {
-		if(pitPlayer == null || path == null || !PitSim.status.isDarkzone()) return 0;
+		if(pitPlayer == null || path == null) return 0;
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(path.skillBranch.getRefName());
 		if(skillBranchData == null) return 0;
 		return skillBranchData.pathUnlocks.getOrDefault(path.getRefName(), 0);
@@ -346,7 +346,7 @@ public class ProgressionManager implements Listener {
 
 	public static List<Double> getUnlockedEffectAsList(PitPlayer pitPlayer, SkillBranch skillBranch, SkillBranch.PathPosition position, String refName) {
 		List<Double> valueList = new ArrayList<>();
-		if(pitPlayer == null || skillBranch == null || position == null || !PitSim.status.isDarkzone()) return valueList;
+		if(pitPlayer == null || skillBranch == null || position == null) return valueList;
 		SkillBranch.Path path;
 		switch(position) {
 			case FIRST_PATH:
@@ -369,7 +369,7 @@ public class ProgressionManager implements Listener {
 	}
 
 	public static boolean isUnlocked(PitPlayer pitPlayer, SkillBranch skillBranch, SkillBranch.MajorUnlockPosition position) {
-		if(pitPlayer == null || skillBranch == null || position == null || !PitSim.status.isDarkzone()) return false;
+		if(pitPlayer == null || skillBranch == null || position == null) return false;
 		DarkzoneData.SkillBranchData skillBranchData = pitPlayer.darkzoneData.skillBranchUnlocks.get(skillBranch.getRefName());
 		if(skillBranchData == null) return false;
 		SkillBranch.MajorProgressionUnlock unlock;
