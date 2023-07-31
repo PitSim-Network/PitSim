@@ -6,9 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
-import top.polar.api.event.DetectionAlertEvent;
-import top.polar.api.event.MitigationEvent;
-import top.polar.api.mitigation.MitigationType;
+import top.polar.api.check.Check;
+import top.polar.api.user.User;
+import top.polar.api.user.event.DetectionAlertEvent;
+import top.polar.api.user.event.MitigationEvent;
+import top.polar.api.user.event.type.CheckType;
 
 import java.util.*;
 
@@ -28,18 +30,19 @@ public class PolarManager extends AnticheatManager implements Listener {
 
 	@EventHandler
 	public void onFlag(DetectionAlertEvent event) {
-		if(event.getChatMessage().contains("Clicking suspiciously")) event.setCancelled(true);
+		if(event.chatAlertMessage().contains("Clicking suspiciously")) event.cancelled(true);
 	}
 
 	@EventHandler
 	public void onMitigate(MitigationEvent event) {
-		Player player = event.getPlayer();
-		if(player == null) return;
-		MitigationType mitigationType = event.getMitigationType();
+		User user = event.user();
+		if(user == null || !user.bukkitPlayer().isPresent()) return;
+		Player player = event.user().bukkitPlayer().get();
+
+		CheckType mitigationType = event.check().type();
 		if(!isExempt(player, FlagType.getFlagPolar(mitigationType.name()))) return;
 
-//		System.out.println(player.getName() + " was exempted from flag " + check.getCheckName());
-		event.setCancelled(true);
+		event.cancelled(true);
 	}
 
 	@Override
