@@ -7,34 +7,40 @@ import net.pitsim.spigot.controllers.HopperManager;
 import net.pitsim.spigot.controllers.objects.Hopper;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class HopperCommand extends ACommand {
+public class HopperCommand extends ACommand implements CommandExecutor {
 	public HopperCommand(AMultiCommand base, String executor) {
 		super(base, executor);
 	}
 
 	@Override
+	public boolean onCommand(CommandSender sender, Command command, String alias, String[] argsArray) {
+		execute(sender, command, alias, new ArrayList<>(Arrays.asList(argsArray)));
+		return false;
+	}
+
+	@Override
 	public void execute(CommandSender sender, Command command, String alias, List<String> args) {
-		if(!(sender instanceof Player)) return;
-		Player player = (Player) sender;
-		if(!player.isOp()) return;
-//		if(!FirestoreManager.CONFIG.whitelistedIPs.contains(player.getAddress().getAddress().toString())) return;
+		if(!sender.isOp()) return;
 
 		String concatHoppers = "";
 		for(Hopper.Type type : Hopper.Type.values())
 			concatHoppers += concatHoppers.isEmpty() ? type.refName : ", " + type.refName;
 		if(args.size() < 2) {
-			AOutput.send(player, "Usage: /hopper <" + concatHoppers + "> <target>");
+			AOutput.send(sender, "Usage: /hopper <" + concatHoppers + "> <target>");
 			return;
 		}
 
 		Hopper.Type type = Hopper.Type.getType(args.get(0));
 		if(type == null) {
-			AOutput.error(player, "Invalid hopper type");
+			AOutput.error(sender, "Invalid hopper type");
 			return;
 		}
 
@@ -45,7 +51,7 @@ public class HopperCommand extends ACommand {
 			break;
 		}
 		if(target == null) {
-			AOutput.error(player, "Could not find the target");
+			AOutput.error(sender, "Could not find the target");
 			return;
 		}
 

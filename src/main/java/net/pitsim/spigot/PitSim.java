@@ -572,7 +572,7 @@ public class PitSim extends JavaPlugin {
 		AMultiCommand giveCommand = new BaseSetCommand(adminCommand, "give");
 		AMultiCommand setCommand = new BaseSetCommand(adminCommand, "set");
 
-		new HopperCommand(adminCommand, "hopper");
+		HopperCommand hopperCommand = new HopperCommand(adminCommand, "hopper");
 		new UUIDCommand(adminCommand, "uuid");
 		new NBTCommand(adminCommand, "nbt");
 		new RandomizeCommand(adminCommand, "randomize");
@@ -662,6 +662,7 @@ public class PitSim extends JavaPlugin {
 		getCommand("broadcast").setExecutor(new BroadcastCommand());
 		getCommand("trash").setExecutor(new TrashCommand());
 		getCommand("rename").setExecutor(new RenameCommand());
+		getCommand("hopper").setExecutor(hopperCommand);
 	}
 
 	private void registerListeners() {

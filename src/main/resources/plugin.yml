@@ -131,3 +131,4 @@ commands:
     aliases:
       - fit
       - wear
+  hopper:
