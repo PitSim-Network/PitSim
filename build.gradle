@@ -10,44 +10,10 @@ project.targetCompatibility = '1.8'
 
 repositories {
     mavenCentral()
-
-    maven { url 'https://jitpack.io' }
-    maven { url 'https://repo.codemc.org/repository/maven-public' }
-    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
-    maven { url 'https://maven.enginehub.org/repo/' }
-    maven { url 'https://repo.mattmalec.com/repository/releases' }
-    maven { url 'https://repo.polar.top/repository/polar/'}
 }
 
 dependencies {
-    compile 'com.github.ArcticDevelopment:ArcticAPI:032bf8696c'
-
-    compileOnly 'com.mattmalec:Pterodactyl4J:2.BETA_81'
-    compileOnly 'net.kyori:adventure-platform-bukkit:4.1.0'
-    compileOnly 'de.tr7zw:item-nbt-api-plugin:2.8.0'
-    compileOnly 'com.google.firebase:firebase-admin:8.0.0'
-    compileOnly 'com.google.cloud:google-cloud-dialogflow-cx:0.17.0'
-
-    compileOnly 'org.jetbrains:annotations:23.0.0'
-    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
-    compileOnly 'me.clip:placeholderapi:2.10.9'
-    compileOnly 'com.sk89q.worldguard:worldguard-legacy:6.2'
-    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:6.0'
-    compileOnly 'com.github.LeonMangler:PremiumVanishAPI:2.7.11-2'
-    compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.5'
-    compileOnly 'net.luckperms:api:5.4'
-    compileOnly 'com.github.MWHunter:GrimAPI:add576ba8b'
-    compileOnly 'top.polar:api:2.0.0'
-    compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.5'
-    compileOnly files('libs/spigot-1.8.8.jar')
-
     compileOnly files('libs/PitSimSpigotDependencies-1-all.jar')
-}
-
-shadowJar {
-    relocate 'dev.kyro.arcticapi', 'net.pitsim.pitsim.arcticapi'
-    relocate 'net.kyori', 'net.pitsim.pitsim.kyori'
-    relocate 'com.google', 'net.pitsim.pitsim.com.google'
 }
 
 gradle.projectsEvaluated {
