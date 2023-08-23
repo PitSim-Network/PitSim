@@ -53,8 +53,8 @@ public class Non {
 
 		String levelString = level.color + (level.bold ? "" + ChatColor.BOLD : "") + levelInt;
 
-		displayName = prestige.color + "[" + levelString + prestige.color + "] " + ChatColor.GRAY + name;
-		System.out.println(displayName);
+		displayName = ChatColor.GRAY + "[1] " + name;
+//		displayName = prestige.color + "[" + levelString + prestige.color + "] " + ChatColor.GRAY + name;
 
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
 
