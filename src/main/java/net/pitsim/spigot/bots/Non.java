@@ -9,6 +9,7 @@ import net.citizensnpcs.util.PlayerAnimation;
 import net.citizensnpcs.util.Util;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,6 +24,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Non {
 	public NPC npc;
@@ -30,6 +32,9 @@ public class Non {
 	public Player target;
 	public String name;
 	public String displayName;
+
+	public static int NON_DAMAGE = 2;
+	public static int NON_HEALTH = 40;
 
 	public List<NonTrait> traits = new ArrayList<>();
 	public double persistence;
@@ -39,7 +44,18 @@ public class Non {
 	public Non(MinecraftSkin skin) {
 		this.name = skin.skinName;
 
-		displayName = "&7" + name;
+		PitLevel level = PitLevel.getRandom();
+		Prestige prestige = Prestige.getRandom();
+
+		Random random = new Random();
+		int levelMax = Math.min(level.min + 10, 120);
+		int levelInt = random.nextInt(levelMax - level.min + 1) + level.min;
+
+		String levelString = level.color + (level.bold ? "" + ChatColor.BOLD : "") + levelInt;
+
+		displayName = prestige.color + "[" + levelString + prestige.color + "] " + ChatColor.GRAY + name;
+		System.out.println(displayName);
+
 		this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, displayName);
 
 		spawn();
@@ -47,6 +63,9 @@ public class Non {
 
 		this.non = (Player) npc.getEntity();
 		NonManager.nons.add(this);
+
+		non.setMaxHealth(NON_HEALTH);
+		non.setHealth(NON_HEALTH);
 
 		CitizensNavigator navigator = (CitizensNavigator) npc.getNavigator();
 		navigator.getDefaultParameters()
@@ -87,7 +106,7 @@ public class Non {
 				pickTarget();
 //				npc.getNavigator().setTarget(target, true);
 				if(target != null && Math.abs(non.getLocation().getY() - NonManager.SPAWN_Y_LEVEL) < 5 && target.canSee(non)) {
-					target.damage(7, non);
+					target.damage(NON_DAMAGE, non);
 					if(Math.random() < 0.5) PlayerAnimation.ARM_SWING.play(non);
 				}
 			}
@@ -187,7 +206,7 @@ public class Non {
 		try {
 
 			if(npc.isSpawned() && !fakeKill) {
-				non.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+				npc.teleport(spawnLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
 			}
 
 		} catch(Exception ignored) {

@@ -13,8 +13,8 @@ import java.util.List;
 public class NonManager {
 
 	public static final Location SPAWN_LOCATION = new Location(Bukkit.getWorld("world"), 0.5, 100, 0.5);
-	public static final Location MID_LOCATION = new Location(Bukkit.getWorld("world"), 0.5, 100, 0.5);
-	public static final int SPAWN_Y_LEVEL = 5;
+	public static final Location MID_LOCATION = new Location(Bukkit.getWorld("world"), 0.5, 82, 0.5);
+	public static final int SPAWN_Y_LEVEL = 82;
 
 	public static List<MinecraftSkin> botSkins = new ArrayList<>();
 	public static boolean defaultNons = true;
@@ -64,6 +64,13 @@ public class NonManager {
 	public static int getMaxNons() {
 		int base = 30;
 		int max = 50;
+
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			if(player.hasPermission("pitsim.chaos")) {
+				base = 60;
+				max = 75;
+			}
+		}
 
 		Location mid = NonManager.MID_LOCATION;
 		int playersNearMid = 0;
@@ -115,4 +122,6 @@ public class NonManager {
 		}
 		return null;
 	}
+
+
 }

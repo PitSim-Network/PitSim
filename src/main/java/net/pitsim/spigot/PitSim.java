@@ -3,6 +3,8 @@ package net.pitsim.spigot;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.pitsim.spigot.bots.LoadSkinCommand;
+import net.pitsim.spigot.bots.NonListener;
+import net.pitsim.spigot.bots.NonManager;
 import net.pitsim.spigot.bots.SkinManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,7 +21,10 @@ public class PitSim extends JavaPlugin {
 	public void onEnable() {
 		INSTANCE = this;
 
+		getServer().getPluginManager().registerEvents(new NonListener(), this);
+
 		loadConfig();
+		NonManager.init();
 		new BukkitRunnable() {
 			@Override
 			public void run() {
