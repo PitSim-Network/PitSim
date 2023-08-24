@@ -154,7 +154,7 @@ public class PitSim extends JavaPlugin {
 		else status = serverName.contains("darkzone") ? ServerStatus.DARKZONE : ServerStatus.OVERWORLD;
 
 		FirestoreManager.init();
-		client = PteroBuilder.createClient(FirestoreManager.CONFIG.pteroURL, FirestoreManager.CONFIG.pteroClientKey);
+		client = status == ServerStatus.STANDALONE ? null : PteroBuilder.createClient(FirestoreManager.CONFIG.pteroURL, FirestoreManager.CONFIG.pteroClientKey);
 
 		LitebansManager.init();
 		TableManager.registerTables();
