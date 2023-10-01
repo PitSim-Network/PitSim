@@ -1,6 +1,9 @@
 package net.pitsim.spigot.storage;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dev.kyro.arcticapi.misc.AOutput;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.pitsim.spigot.PitSim;
 import net.pitsim.spigot.controllers.EnchantManager;
 import net.pitsim.spigot.controllers.ItemFactory;
@@ -20,33 +23,50 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class StorageProfile implements Cloneable {
-	private ItemStack[] inventory = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
-	private ItemStack[] armor = new ItemStack[4];
+	private transient ItemStack[] inventory = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
+	private transient ItemStack[] armor = new ItemStack[4];
+	private final String[] inventoryData = new String[StorageManager.ENDERCHEST_ITEM_SLOTS];
+	private final String[] armorData = new String[4];
 	private final EnderchestPage[] enderchestPages = new EnderchestPage[StorageManager.MAX_ENDERCHEST_PAGES];
 
 	private int defaultOverworldSet = -1;
 	private int defaultDarkzoneSet = -1;
 	private final Outfit[] outfits = new Outfit[9];
 
-	private final UUID uuid;
-	private BukkitTask saveTask;
-	private BukkitRunnable saveRunnable;
-	private boolean isLoaded;
-	private boolean saving;
+	private transient UUID uuid;
+	private transient boolean isLoaded;
+	private transient File saveFile;
 
 	public StorageProfile(UUID uuid) {
 		this.uuid = uuid;
+		this.saveFile = StorageManager.getStorageFile(uuid);
+		this.isLoaded = true;
+
+		Arrays.fill(inventoryData, "");
+		Arrays.fill(armorData, "");
+
+		for(int i = 0; i < outfits.length; i++) {
+			outfits[i] = new Outfit(i);
+		}
+
+		for(int i = 0; i < enderchestPages.length; i++) {
+			enderchestPages[i] = new EnderchestPage(i);
+		}
+
+		loadData(false, uuid);
 	}
 
 	public void saveData(BukkitRunnable runnable, boolean logout) {
-		saveRunnable = runnable;
-		if(saving) return;
-		saveData(logout);
+		saveData();
 	}
 
 	@Override
@@ -54,17 +74,29 @@ public class StorageProfile implements Cloneable {
 		return (StorageProfile) super.clone();
 	}
 
-	public void loadData(PluginMessage message, boolean view) {
-		List<String> strings = message.getStrings();
-		List<Integer> integers = message.getIntegers();
+	public void loadData(boolean view, UUID uuid) {
+		inventory = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
+		armor = new ItemStack[4];
 
-		defaultOverworldSet = integers.remove(0);
-		defaultDarkzoneSet = integers.remove(0);
-		for(int i = 0; i < 36; i++) inventory[i] = deserialize(strings.remove(0), uuid);
-		for(int i = 0; i < 4; i++) armor[i] = deserialize(strings.remove(0), uuid);
-		for(int i = 0; i < enderchestPages.length; i++) enderchestPages[i] = new EnderchestPage(this, message);
-		for(int i = 0; i < StorageManager.OUTFITS; i++) outfits[i] = new Outfit(this, message);
-		isLoaded = true;
+		this.uuid = uuid;
+		this.saveFile = StorageManager.getStorageFile(uuid);
+		this.isLoaded = true;
+
+		for(int i = 0; i < inventoryData.length; i++) {
+			ItemStack itemStack = deserialize(inventoryData[i], uuid);
+			inventory[i] = itemStack;
+		}
+
+		for(int i = 0; i < armorData.length; i++) {
+			armor[i] = deserialize(armorData[i], uuid);
+		}
+
+		for(EnderchestPage enderchestPage : enderchestPages) {
+			enderchestPage.init(this);
+		}
+		for(Outfit outfit : outfits) {
+			outfit.init(this);
+		}
 
 		if(view) return;
 
@@ -77,43 +109,38 @@ public class StorageProfile implements Cloneable {
 		initializePlayerInventory(player);
 	}
 
-	public void saveData(boolean isLogout) {
+	public void saveData() {
 		if(!isLoaded) throw new DataNotLoadedException();
-
-		PluginMessage message = new PluginMessage()
-				.writeString("ITEM DATA SAVE")
-				.writeString(PitSim.serverName)
-				.writeString(uuid.toString())
-				.writeBoolean(isLogout)
-				.writeInt(defaultOverworldSet)
-				.writeInt(defaultDarkzoneSet);
 
 		if(StorageManager.isEditing(uuid) && Bukkit.getPlayer(uuid) != null) return;
 		if(StorageManager.isBeingEdited(uuid) && Bukkit.getPlayer(uuid) != null) return;
 
-		if(getOnlinePlayer() != null) {
-			for(ItemStack itemStack : getOnlinePlayer().getInventory()) message.writeString(serialize(getOfflinePlayer(), itemStack, isLogout));
-			for(ItemStack itemStack : getOnlinePlayer().getInventory().getArmorContents()) message.writeString(serialize(getOfflinePlayer(), itemStack, isLogout));
-		} else if(inventory != null) {
-			for(ItemStack itemStack : inventory) message.writeString(serialize(getOfflinePlayer(), itemStack, isLogout));
-			for(ItemStack itemStack : armor) message.writeString(serialize(getOfflinePlayer(), itemStack, isLogout));
+		for(int i = 0; i < inventory.length; i++) {
+			inventoryData[i] = serialize(getOfflinePlayer(), inventory[i], false);
 		}
-		for(EnderchestPage enderchestPage : enderchestPages) enderchestPage.writeData(message, isLogout);
 
-		for(Outfit outfit : outfits) outfit.writeData(message);
+		for(int i = 0; i < armor.length; i++) {
+			armorData[i] = serialize(getOfflinePlayer(), armor[i], false);
+		}
 
-		saving = true;
-		saveTask = isLogout ? null : new BukkitRunnable() {
-			@Override
-			public void run() {
-				OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-				if(!player.isOnline()) return;
-				player.getPlayer().kickPlayer(ChatColor.RED + "Your playerdata failed to save. Please report this issue");
-				Misc.alertDiscord("@everyone Save Confirmation failed for player: " + uuid + " on server: " + PitSim.serverName);
-			}
-		}.runTaskLater(PitSim.INSTANCE, 40);
+		for(EnderchestPage enderchestPage : enderchestPages) {
+			enderchestPage.save();
+		}
 
-		message.send();
+		for(Outfit outfit : outfits) {
+			outfit.saveData();
+		}
+
+		try {
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			String json = gson.toJson(this);
+			FileWriter writer = new FileWriter(saveFile.toPath().toString());
+			writer.write(json);
+			writer.close();
+
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public boolean storeInvAndArmor(Map<PlayerItemLocation, ItemStack> proposedChanges, List<PlayerItemLocation> emptySlots,
@@ -237,7 +264,7 @@ public class StorageProfile implements Cloneable {
 	}
 
 	public static ItemStack deserialize(String string, UUID informUUID) {
-		if(string.isEmpty()) return new ItemStack(Material.AIR);
+		if(string == null || string.isEmpty()) return new ItemStack(Material.AIR);
 		return CustomSerializer.deserializeFromPlayerData(string, informUUID);
 	}
 
@@ -258,22 +285,8 @@ public class StorageProfile implements Cloneable {
 		return CustomSerializer.serialize(itemStack);
 	}
 
-	public boolean isSaving() {
-		return saving;
-	}
-
 	public boolean isLoaded() {
 		return isLoaded;
-	}
-
-	protected void receiveSaveConfirmation(PluginMessage message) {
-		saving = false;
-
-		if(message.getStrings().get(0).equals("SAVE CONFIRMATION")) {
-			if(saveRunnable != null) saveRunnable.run();
-			saveRunnable = null;
-			if(saveTask != null) saveTask.cancel();
-		}
 	}
 
 	public void initializePlayerInventory(Player player) {

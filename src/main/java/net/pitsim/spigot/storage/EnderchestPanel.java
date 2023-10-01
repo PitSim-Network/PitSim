@@ -72,7 +72,7 @@ public class EnderchestPanel extends AGUIPanel {
 			return;
 		}
 
-		if(!profile.isLoaded() || profile.isSaving()) return;
+		if(!profile.isLoaded()) return;
 
 		EnderchestPage enderchestPage = profile.getEnderchestPage(slot - 9);
 

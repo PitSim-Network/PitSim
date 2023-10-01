@@ -11,29 +11,33 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class EnderchestPage {
-	private final StorageProfile profile;
-	private Inventory inventory;
+	private transient StorageProfile profile;
+	private transient Inventory inventory;
 	private final int index;
 
 	private ItemStack displayItem;
 	private boolean isWardrobeEnabled;
-	private final ItemStack[] items = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
+	private final String[] itemsData = new String[StorageManager.ENDERCHEST_ITEM_SLOTS];
+	private transient ItemStack[] items = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
 
-	public EnderchestPage(StorageProfile profile, PluginMessage message) {
+	public EnderchestPage(int index) {
+		this.index = index;
+		this.displayItem = new ItemStack(Material.ENDER_CHEST);
+		this.isWardrobeEnabled = false;
+
+		Arrays.fill(itemsData, "");
+	}
+
+	public void init(StorageProfile profile) {
 		this.profile = profile;
 
-		List<String> strings = message.getStrings();
-		List<Integer> integers = message.getIntegers();
-		List<Boolean> booleans = message.getBooleans();
+		items = new ItemStack[StorageManager.ENDERCHEST_ITEM_SLOTS];
 
-		index = integers.remove(0);
-		displayItem = CustomSerializer.deserializeDirectly(strings.remove(0));
+		for(int i = 0; i < items.length; i++) items[i] = StorageProfile.deserialize(itemsData[i], profile.getUniqueID());
 		if(Misc.isAirOrNull(displayItem) || displayItem.getType() == Material.BARRIER) displayItem = new AItemStackBuilder(Material.ENDER_CHEST).getItemStack();
-		isWardrobeEnabled = booleans.remove(0);
-		for(int i = 0; i < items.length; i++) items[i] = StorageProfile.deserialize(strings.remove(0), profile.getUniqueID());
 
 		createInventory();
 	}
@@ -63,6 +67,19 @@ public class EnderchestPage {
 			inventory.setItem(StorageManager.ENDERCHEST_ITEM_SLOTS + 9, AGUIManager.getPreviousPageItemStack());
 		if(index + 1 != StorageManager.MAX_ENDERCHEST_PAGES)
 			inventory.setItem(StorageManager.ENDERCHEST_ITEM_SLOTS + 17, AGUIManager.getNextPageItemStack());
+	}
+
+	public void save() {
+
+		for(int i = 0; i < items.length; i++) {
+			ItemStack item = inventory.getItem(i + 9);
+			items[i] = (item == null ? new ItemStack(Material.AIR) : item);
+		}
+
+		for(int i = 0; i < items.length; i++) {
+			String data = StorageProfile.serialize(profile.getOfflinePlayer(), items[i], false);
+			itemsData[i] = data;
+		}
 	}
 
 	public void writeData(PluginMessage message, boolean isLogout) {

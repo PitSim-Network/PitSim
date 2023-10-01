@@ -19,24 +19,29 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class Outfit {
-	private final StorageProfile profile;
+	private transient StorageProfile profile;
 	private final int index;
 
-	private ItemStack displayItem;
-	private final Map<PlayerItemLocation, String> itemLocationMap = new LinkedHashMap<>();
+	private transient ItemStack displayItem;
+	private transient Map<PlayerItemLocation, String> itemLocationMap = new LinkedHashMap<>();
 
-	public Outfit(StorageProfile profile, PluginMessage message) {
+	private String displayItemData;
+	private final Map<String, String> itemLocationMapData = new LinkedHashMap<>();
+
+	public Outfit(int index) {
+		this.index = index;
+		this.displayItem = new ItemStack(Material.BARRIER);
+	}
+
+	public void init(StorageProfile profile) {
 		this.profile = profile;
 
-		List<String> strings = message.getStrings();
-		List<Integer> integers = message.getIntegers();
+		if(displayItem == null) this.displayItem = StorageProfile.deserialize(displayItemData, null);
+		itemLocationMap = new LinkedHashMap<>();
 
-		this.index = integers.remove(0);
-		this.displayItem = CustomSerializer.deserializeDirectly(strings.remove(0));
-		int locationMapSize = integers.remove(0);
-		for(int i = 0; i < locationMapSize; i++) {
-			PlayerItemLocation itemLocation = PlayerItemLocation.getLocation(strings.remove(0));
-			itemLocationMap.put(itemLocation, strings.remove(0));
+		for(Map.Entry<String, String> entry : itemLocationMapData.entrySet()) {
+			PlayerItemLocation itemLocation = PlayerItemLocation.getLocation(entry.getKey());
+			itemLocationMap.put(itemLocation, entry.getValue());
 		}
 	}
 
@@ -131,6 +136,15 @@ public class Outfit {
 		System.out.println("SAVING WARDROBE " + (getIndex() + 1));
 		for(Map.Entry<PlayerItemLocation, String> entry : itemLocationMap.entrySet()) {
 			System.out.println(entry.getKey().getIdentifier() + ": " + entry.getValue());
+		}
+	}
+
+	void saveData() {
+		displayItemData = CustomSerializer.serialize(displayItem);
+		itemLocationMapData.clear();
+
+		for(Map.Entry<PlayerItemLocation, String> entry : itemLocationMap.entrySet()) {
+			itemLocationMapData.put(entry.getKey().getIdentifier(), entry.getValue());
 		}
 	}
 
