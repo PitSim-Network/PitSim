@@ -59,13 +59,7 @@ public class PotionManager implements Listener {
 				for(Player player : Bukkit.getOnlinePlayers()) {
 					List<PotionEffect> effects = getPotionEffects(player);
 					if(effects.size() == 0) continue;
-//					TODO: Readd
-//					if(OldBossManager.activePlayers.contains(player)) {
-//						hideActiveBossBar(PitSim.adventure.player(player), player);
-//						hideActiveBossBar(PitSim.adventure.player(player), player);
-//						continue;
-//					}
-
+//
 					playerIndex.putIfAbsent(player, 0);
 					int index = playerIndex.get(player);
 
