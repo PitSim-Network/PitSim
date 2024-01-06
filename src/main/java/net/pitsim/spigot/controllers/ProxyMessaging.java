@@ -3,9 +3,10 @@ package net.pitsim.spigot.controllers;
 import de.myzelyam.api.vanish.VanishAPI;
 import dev.kyro.arcticapi.misc.AOutput;
 import dev.kyro.arcticapi.misc.AUtil;
-import dev.kyro.arcticguilds.ArcticGuilds;
-import dev.kyro.arcticguilds.GuildManager;
-import dev.kyro.arcticguilds.events.GuildWithdrawalEvent;
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.pitsim.arcticguilds.ArcticGuilds;
+import net.pitsim.arcticguilds.GuildManager;
+import net.pitsim.arcticguilds.events.GuildWithdrawalEvent;
 import net.pitsim.spigot.PitSim;
 import net.pitsim.spigot.controllers.objects.*;
 import net.pitsim.spigot.enums.ItemType;
@@ -19,7 +20,6 @@ import net.pitsim.spigot.misc.Sounds;
 import net.pitsim.spigot.storage.EditSession;
 import net.pitsim.spigot.storage.StorageManager;
 import net.pitsim.spigot.storage.StorageProfile;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -344,7 +344,7 @@ public class ProxyMessaging implements Listener {
 
 			if(LobbySwitchManager.switchingPlayers.contains(player)) success = false;
 
-			dev.kyro.arcticguilds.misc.PluginMessage response = new dev.kyro.arcticguilds.misc.PluginMessage()
+			PluginMessage response = new PluginMessage()
 					.writeString("DEPOSIT")
 					.writeString(player.getUniqueId().toString())
 					.writeBoolean(success);

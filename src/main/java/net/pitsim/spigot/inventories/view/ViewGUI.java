@@ -1,9 +1,7 @@
 package net.pitsim.spigot.inventories.view;
 
 import dev.kyro.arcticapi.gui.AGUI;
-import dev.kyro.arcticguilds.Guild;
-import dev.kyro.arcticguilds.GuildManager;
-import dev.kyro.arcticguilds.GuildMember;
+import net.pitsim.arcticguilds.*;
 import net.pitsim.spigot.controllers.objects.PitPlayer;
 import net.pitsim.spigot.storage.StorageProfile;
 import org.bukkit.Bukkit;

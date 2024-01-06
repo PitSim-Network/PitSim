@@ -5,7 +5,7 @@ import dev.kyro.arcticapi.builders.ALoreBuilder;
 import dev.kyro.arcticapi.gui.AGUI;
 import dev.kyro.arcticapi.gui.AGUIPanel;
 import dev.kyro.arcticapi.misc.AOutput;
-import dev.kyro.arcticguilds.Guild;
+import net.pitsim.arcticguilds.Guild;
 import net.pitsim.spigot.controllers.objects.Killstreak;
 import net.pitsim.spigot.controllers.objects.PitPerk;
 import net.pitsim.spigot.controllers.objects.PitPlayer;

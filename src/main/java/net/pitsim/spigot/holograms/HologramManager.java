@@ -1,6 +1,6 @@
 package net.pitsim.spigot.holograms;
 
-import dev.kyro.arcticguilds.GuildLeaderboardData;
+import net.pitsim.arcticguilds.GuildLeaderboardData;
 import net.pitsim.spigot.PitSim;
 import net.pitsim.spigot.controllers.LeaderboardManager;
 import net.pitsim.spigot.controllers.MapManager;

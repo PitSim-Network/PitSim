@@ -579,7 +579,7 @@ public class DamageManager implements Listener {
 		String kill = null;
 		if(deadMob != null) {
 			kill = "&a&lKILL!&7 on " + deadMob.getDisplayName();
-		} else if(killType != KillType.DEATH && PitSim.status.isOverworld()) {
+		} else if(killType != KillType.DEATH && PitSim.status.isOverworld() && pitKiller != null) {
 			double altarMultiplier = DarkzoneLeveling.getReductionMultiplier(pitKiller);
 			String altarPercent = DarkzoneLeveling.getReductionPercent(pitKiller);
 

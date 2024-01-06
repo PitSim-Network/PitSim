@@ -1,8 +1,8 @@
 package net.pitsim.spigot.placeholders;
 
 import dev.kyro.arcticapi.hooks.papi.APAPIPlaceholder;
-import dev.kyro.arcticguilds.Guild;
-import dev.kyro.arcticguilds.GuildManager;
+import net.pitsim.arcticguilds.Guild;
+import net.pitsim.arcticguilds.GuildManager;
 import net.pitsim.spigot.PitSim;
 import net.pitsim.spigot.controllers.AFKManager;
 import net.pitsim.spigot.controllers.objects.PitPlayer;

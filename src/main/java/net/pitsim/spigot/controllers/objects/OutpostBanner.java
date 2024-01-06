@@ -1,6 +1,7 @@
 package net.pitsim.spigot.controllers.objects;
 
-import dev.kyro.arcticguilds.Guild;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.pitsim.arcticguilds.Guild;
 import net.pitsim.spigot.PitSim;
 import net.pitsim.spigot.controllers.MapManager;
 import net.pitsim.spigot.controllers.OutpostManager;
@@ -14,7 +15,6 @@ import net.pitsim.spigot.enums.PitEntityType;
 import net.pitsim.spigot.holograms.Hologram;
 import net.pitsim.spigot.misc.Misc;
 import net.pitsim.spigot.misc.Sounds;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
